@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>me.Abhigya</groupId>
+    <artifactId>CoreAPI</artifactId>
+    <version>1.0.0</version>
+    <packaging>jar</packaging>
+
+    <name>CoreAPI</name>
+
+    <properties>
+        <java.version>1.8</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.2.4</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+    </build>
+
+    <repositories>
+        <!-- Spigot -->
+        <repository>
+            <id>spigotmc-repo</id>
+            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+        </repository>
+        <repository>
+            <id>sonatype</id>
+            <url>https://oss.sonatype.org/content/groups/public/</url>
+        </repository>
+        <!-- Vault -->
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+        <!-- Placeholder API -->
+        <repository>
+            <id>placeholderapi</id>
+            <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
+        </repository>
+        <!-- Protocol Lib -->
+        <repository>
+            <id>dmulloy2-repo</id>
+            <url>https://repo.dmulloy2.net/repository/public/</url>
+        </repository>
+        <!-- PermissionsEx -->
+        <repository>
+            <id>pex-repo</id>
+            <url>http://pex-repo.aoeu.xyz</url>
+        </repository>
+    </repositories>
+
+    <dependencies>
+        <!-- Spigot -->
+        <dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot-api</artifactId>
+            <version>1.16.3-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.5</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/commons-codec/commons-codec -->
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.15</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.mongodb/mongo-java-driver -->
+        <!-- Mongo DB -->
+        <dependency>
+            <groupId>org.mongodb</groupId>
+            <artifactId>mongo-java-driver</artifactId>
+            <version>3.12.8</version>
+        </dependency>
+        <!-- Vault -->
+        <dependency>
+            <groupId>com.github.MilkBowl</groupId>
+            <artifactId>VaultAPI</artifactId>
+            <version>1.7</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- Placeholder API -->
+        <dependency>
+            <groupId>me.clip</groupId>
+            <artifactId>placeholderapi</artifactId>
+            <version>2.10.9</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- Protocol Lib -->
+        <dependency>
+            <groupId>com.comphenix.protocol</groupId>
+            <artifactId>ProtocolLib</artifactId>
+            <version>4.6.0</version>
+        </dependency>
+        <!-- LuckPerms -->
+        <dependency>
+            <groupId>net.luckperms</groupId>
+            <artifactId>api</artifactId>
+            <version>5.3</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- PermissionsEx -->
+        <dependency>
+            <groupId>ru.tehkode</groupId>
+            <artifactId>PermissionsEx</artifactId>
+            <version>1.23.5-SNAPSHOT</version>
+        </dependency>
+        <!-- Powerful Perms -->
+        <dependency>
+            <groupId>com.github.gustav9797.PowerfulPerms</groupId>
+            <artifactId>PowerfulPermsAPI</artifactId>
+            <version>4.5.2</version>
+            <scope>system</scope>
+            <systemPath>H:/Minecraft/Plugin/PowerfulPerms-4.5.2.jar</systemPath>
+        </dependency>
+        <!-- NMS Spigots -->
+        <dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigotv1.8</artifactId>
+            <version>1.8</version>
+            <scope>system</scope>
+            <systemPath>H:/Minecraft/Build Tools/spigot-1.8.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigotv1.8.3</artifactId>
+            <version>1.8.3</version>
+            <scope>system</scope>
+            <systemPath>H:/Minecraft/Build Tools/spigot-1.8.3.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigotv1.8.8</artifactId>
+            <version>1.8.8</version>
+            <scope>system</scope>
+            <systemPath>H:/Minecraft/Build Tools/spigot-1.8.8.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigotv1.9</artifactId>
+            <version>1.9</version>
+            <scope>system</scope>
+            <systemPath>H:/Minecraft/Build Tools/spigot-1.9.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigotv1.9.2</artifactId>
+            <version>1.9.2</version>
+            <scope>system</scope>
+            <systemPath>H:/Minecraft/Build Tools/spigot-1.9.2.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigotv1.9.4</artifactId>
+            <version>1.9.4</version>
+            <scope>system</scope>
+            <systemPath>H:/Minecraft/Build Tools/spigot-1.9.4.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigotv1.10.2</artifactId>
+            <version>1.10.2</version>
+            <scope>system</scope>
+            <systemPath>H:/Minecraft/Build Tools/spigot-1.10.2.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigotv1.11</artifactId>
+            <version>1.11</version>
+            <scope>system</scope>
+            <systemPath>H:/Minecraft/Build Tools/spigot-1.11.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigotv1.12</artifactId>
+            <version>1.12</version>
+            <scope>system</scope>
+            <systemPath>H:/Minecraft/Build Tools/spigot-1.12.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigotv1.12.1</artifactId>
+            <version>1.12.1</version>
+            <scope>system</scope>
+            <systemPath>H:/Minecraft/Build Tools/spigot-1.12.1.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigotv1.12.2</artifactId>
+            <version>1.12.2</version>
+            <scope>system</scope>
+            <systemPath>H:/Minecraft/Build Tools/spigot-1.12.2.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigotv1.13</artifactId>
+            <version>1.13</version>
+            <scope>system</scope>
+            <systemPath>H:/Minecraft/Build Tools/spigot-1.13.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot</artifactId>
+            <version>1.16.3-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+</project>

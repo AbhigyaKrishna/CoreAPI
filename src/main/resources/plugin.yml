@@ -1,0 +1,6 @@
+name: CoreAPI
+version: ${project.version}
+main: me.Abhigya.core.main.Main
+api-version: 1.16
+author: Abhigya
+softdepend: [Vault, PlaceHolderAPI, ProtocolLib, Luckperms, PermissionsEx, PowerfulPerms]
