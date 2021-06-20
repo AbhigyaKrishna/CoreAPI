@@ -1,5 +1,6 @@
 package me.Abhigya.core.util;
 
+import com.google.common.base.Strings;
 import org.bukkit.ChatColor;
 
 import java.util.ArrayList;
@@ -377,6 +378,7 @@ public class StringUtils extends org.apache.commons.lang.StringUtils {
 
     /**
      * Converts only the characters sequence of the given target to lower case.
+     * <p>
      *
      * @param string {@code String} where the characters to convert are located
      * @param target Characters sequence reference
@@ -384,6 +386,27 @@ public class StringUtils extends org.apache.commons.lang.StringUtils {
      */
     public static String toLowerCase(String string, String target) {
         return toLowerCase(string, target, Locale.getDefault());
+    }
+
+    /**
+     * Get a string progress bar for your given data,
+     * <p>
+     *
+     * @param current           The current progress
+     * @param max               Max progress for progress bar
+     * @param totalBars         Number of individual bars in the progress bar
+     * @param symbol            Symbol of the bars in progress bar
+     * @param completedColor    Color of completed bars
+     * @param notCompletedColor Default color of bars
+     * @return Progress bar for the given data
+     */
+    public static String getProgressBar(int current, int max, int totalBars, char symbol, ChatColor completedColor,
+                                        ChatColor notCompletedColor) {
+        float percent = (float) current / max;
+        int progressBars = (int) (totalBars * percent);
+
+        return Strings.repeat("" + completedColor + symbol, progressBars)
+                + Strings.repeat("" + notCompletedColor + symbol, totalBars - progressBars);
     }
 
     /**

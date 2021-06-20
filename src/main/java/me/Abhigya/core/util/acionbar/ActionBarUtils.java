@@ -14,7 +14,7 @@ import java.lang.reflect.InvocationTargetException;
 /**
  * Class for sending actionbar to players
  */
-public class ReflectionActionBarUtils {
+public class ActionBarUtils {
 
     /**
      * Sends an action bar message to the provided {@link Player}.
@@ -66,7 +66,7 @@ public class ReflectionActionBarUtils {
      * @see #send(Player, String)
      */
     public static void broadcast(final String message) {
-        Bukkit.getOnlinePlayers().forEach(player -> ReflectionActionBarUtils.send(player, message));
+        Bukkit.getOnlinePlayers().forEach(player -> ActionBarUtils.send(player, message));
     }
 
 }

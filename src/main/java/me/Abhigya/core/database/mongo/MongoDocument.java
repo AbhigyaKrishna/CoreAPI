@@ -373,4 +373,11 @@ public class MongoDocument {
         collection.remove(searchQuery);
     }
 
+    /**
+     * Gets the {@link DBCollection} registered in this class.
+     * @return The collection registered in this class
+     */
+    public DBCollection getCollection() {
+        return collection;
+    }
 }

@@ -92,7 +92,7 @@ public class CommandHandler extends PluginHandler implements TabCompleter, Comma
      * @return This Object, for chaining.
      */
     public CommandHandler registerArgument(CommandArgument argument) {
-        Validate.notNull(argument, "argument cannot be null!");
+        Validate.notNull(argument, "Argument cannot be null!");
 
         arguments.add(argument);
         return this;

@@ -1,5 +1,6 @@
 package me.Abhigya.core.plugin;
 
+import me.Abhigya.core.metrics.MetricsAdaptor;
 import me.Abhigya.core.util.console.ConsoleUtils;
 import me.Abhigya.core.util.lang.PluginInternalLanguageEnumContainer;
 import me.Abhigya.core.util.reflection.general.ClassReflection;
@@ -31,13 +32,13 @@ public abstract class Plugin extends JavaPlugin {
         /* checking the required core version */
         if (getRequiredCoreVersion() != null
                 && CoreVersion.getCoreVersion().isOlder(getRequiredCoreVersion())) {
-            ConsoleUtils.sendPluginMessage(ChatColor.RED, "obsolete core version! a core version newer than or equal to "
+            ConsoleUtils.sendPluginMessage(ChatColor.RED, "Obsolete core version! A core version newer than or equal to "
                     + getRequiredCoreVersion().name() + " is required!", this);
             Bukkit.getPluginManager().disablePlugin(this);
             return;
         }
 
-        /* checking the plugin dependences */
+        /* checking the plugin dependencies */
         if (getDependences() != null && getDependences().length > 0) {
             for (PluginDependence dependence : getDependences()) {
                 final org.bukkit.plugin.Plugin plugin = Bukkit.getPluginManager().getPlugin(dependence.getName());
@@ -48,6 +49,12 @@ public abstract class Plugin extends JavaPlugin {
                     return;
                 }
             }
+        }
+
+        /* checking metrics */
+        if (getMetrics() != null) {
+            MetricsAdaptor metrics = getMetrics();
+            metrics.register();
         }
 
         /* plugin setup */
@@ -66,7 +73,6 @@ public abstract class Plugin extends JavaPlugin {
             // any exception will disable the plugin
             ex.printStackTrace();
             Bukkit.getPluginManager().disablePlugin(this);
-            return;
         }
     }
 
@@ -93,9 +99,19 @@ public abstract class Plugin extends JavaPlugin {
      * version is required.
      * <p>
      *
-     * @return the required core version, or null if no required.
+     * @return The required core version, or null if not required.
      */
     public abstract CoreVersion getRequiredCoreVersion();
+
+    /**
+     * Gets the metrics adaptor and setup the metrics with the graphs accordingly.
+     * <p>
+     * This method might return <strong>{@code null}</strong> if no metrics is
+     * required.
+     * <p>
+     * @return The required metrics adaptor, or null if not required.
+     */
+    public abstract MetricsAdaptor getMetrics();
 
     /**
      * Gets the plugins on which this plugin depends.
@@ -104,8 +120,8 @@ public abstract class Plugin extends JavaPlugin {
      * this plugin doesn't depend on another.
      * <p>
      *
-     * @return the dependences or null if this plugin doesn't depend on another.
-     * @see {@link PluginDependence}
+     * @return The dependencies or null if this plugin doesn't depend on another.
+     * @see PluginDependence
      */
     public abstract PluginDependence[] getDependences();
 
@@ -116,7 +132,7 @@ public abstract class Plugin extends JavaPlugin {
      * that should be found at the given resources package. {@link #getInternalLanguageResourcesPackage()}.
      * <p>
      *
-     * @return the language container of this {@link Plugin}, or null if not implemented.
+     * @return The language container of this {@link Plugin}, or null if not implemented.
      */
     public abstract Class<? extends Enum<? extends PluginInternalLanguageEnumContainer>> getInternalLanguageContainer();
 
@@ -125,7 +141,7 @@ public abstract class Plugin extends JavaPlugin {
      * files), or <strong>null</strong> if not implemented.
      * <p>
      *
-     * @return the package that stores this plugin internal language files (.lang
+     * @return The package that stores this plugin internal language files (.lang
      * files), or <strong>null</strong> if not implemented.
      */
     public abstract String getInternalLanguageResourcesPackage();
@@ -165,7 +181,7 @@ public abstract class Plugin extends JavaPlugin {
      * </ul>
      * <p>
      *
-     * @return whether the initialization of the handlers was successfully.
+     * @return Whether the initialization of the handlers was successfully.
      */
     protected abstract boolean setUpHandlers();
 
@@ -186,7 +202,7 @@ public abstract class Plugin extends JavaPlugin {
      * </ul>
      * <p>
      *
-     * @return whether the initialization of the commands was successfully.
+     * @return Whether the initialization of the commands was successfully.
      */
     protected abstract boolean setUpCommands();
 
@@ -207,7 +223,7 @@ public abstract class Plugin extends JavaPlugin {
      * <li> {@link #setUpCommands()}
      * </ul>
      *
-     * @return whether the initialization of the listeners was successfully.
+     * @return Whether the initialization of the listeners was successfully.
      */
     protected abstract boolean setUpListeners();
 
@@ -227,26 +243,26 @@ public abstract class Plugin extends JavaPlugin {
      *
      * <pre>
      *  <code> <h1><strong>Plugin Class:</strong></h1>
-     * public class MyPlugin extends Plugin {
-     *     .....
+     * public class MyPlugin extends Plugin { <br>
+     * &nbsp;&nbsp;&nbsp;&nbsp;..... <br>
      * }
      *
      * <h1><strong>Listener Class:</strong></h1>
-     * public class MyListener implements Listener {
+     * public class MyListener implements Listener { <br>
      *
-     *     public MyListener ( MyPlugin plugin ) {
-     *         Bukkit.getPluginManager ( ).registerEvents ( this , plugin );
-     *     }
+     * &nbsp;&nbsp;&nbsp;&nbsp;public MyListener(MyPlugin plugin) { <br>
+     * &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Bukkit.getPluginManager().registerEvents(this, plugin); <br>
+     * &nbsp;&nbsp;&nbsp;&nbsp;} <br>
      * }
      * </code>
      * </pre>
      * <p>
      *
-     * @param packaje the listeners package.
-     * @throws InvocationTargetException exception to handle.
-     * @throws IllegalArgumentException  exception to handle.
-     * @throws IllegalAccessException    exception to handle.
-     * @throws InstantiationException    exception to handle.
+     * @param packaje The listeners package
+     * @throws InvocationTargetException exception to handle
+     * @throws IllegalArgumentException  exception to handle
+     * @throws IllegalAccessException    exception to handle
+     * @throws InstantiationException    exception to handle
      */
     protected void setUpListenersPackage(String packaje)
             throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
@@ -265,10 +281,10 @@ public abstract class Plugin extends JavaPlugin {
             }
 
             constructor.newInstance(this);
-//			} catch ( Throwable ex ) {
-//				ConsoleUtil.sendPluginMessage ( ChatColor.YELLOW ,
-//						"couldn't load listener " + clazz.getSimpleName ( ) , this );
-//				ex.printStackTrace ( );
+//			} catch (Throwable ex) {
+//				ConsoleUtil.sendPluginMessage(ChatColor.YELLOW,
+//						"couldn't load listener " + clazz.getSimpleName(), this );
+//				ex.printStackTrace();
 //			}
         }
     }
@@ -280,10 +296,10 @@ public abstract class Plugin extends JavaPlugin {
      * The resource is saved into the desired {@code out_directory}.
      * <p>
      *
-     * @param resource_path the embedded resource path to look for within the
+     * @param resource_path The embedded resource path to look for within the
      *                      plugin's .jar file. (No preceding slash).
-     * @param out_directory the directory into which the resource will be saved.
-     * @param replace       if true, the embedded resource will overwrite the
+     * @param out_directory The directory into which the resource will be saved.
+     * @param replace       If true, the embedded resource will overwrite the
      *                      contents of an existing file.
      */
     public void saveResource(String resource_path, File out_directory, boolean replace) {

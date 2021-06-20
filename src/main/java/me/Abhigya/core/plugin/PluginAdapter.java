@@ -1,5 +1,6 @@
 package me.Abhigya.core.plugin;
 
+import me.Abhigya.core.metrics.MetricsAdaptor;
 import me.Abhigya.core.util.lang.PluginInternalLanguageEnumContainer;
 import me.Abhigya.core.version.CoreVersion;
 
@@ -11,6 +12,11 @@ public abstract class PluginAdapter extends Plugin {
 
     @Override
     public CoreVersion getRequiredCoreVersion() {
+        return null;
+    }
+
+    @Override
+    public MetricsAdaptor getMetrics() {
         return null;
     }
 

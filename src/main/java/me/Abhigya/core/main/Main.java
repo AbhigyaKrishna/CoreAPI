@@ -1,6 +1,7 @@
 package me.Abhigya.core.main;
 
 import me.Abhigya.core.item.ActionItemHandler;
+import me.Abhigya.core.metrics.MetricsAdaptor;
 import me.Abhigya.core.plugin.Plugin;
 import me.Abhigya.core.plugin.PluginAdapter;
 import me.Abhigya.core.util.console.ConsoleUtils;
@@ -18,8 +19,9 @@ public final class Main extends PluginAdapter {
         return true;
     }
 
-    private static String format(String suppose_version) {
-        return ("v" + suppose_version.trim().toLowerCase().replace('.', '_').replace('v', (char) 0));
+    @Override
+    public MetricsAdaptor getMetrics() {
+        return new Metrics(this, 11582);
     }
 
     @Override

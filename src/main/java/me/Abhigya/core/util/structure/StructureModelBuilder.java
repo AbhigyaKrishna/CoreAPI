@@ -22,7 +22,7 @@ public class StructureModelBuilder {
     }
 
     public StructureModelBuilder set(Vector position, Material material) {
-        Validate.notNull(position, "position cannot be null!");
+        Validate.notNull(position, "Position cannot be null!");
 
         Vector cloned = position.clone();
         BlockVector block_position = cloned instanceof BlockVector

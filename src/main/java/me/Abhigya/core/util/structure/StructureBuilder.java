@@ -77,7 +77,7 @@ public class StructureBuilder {
             if (state != -1) {
                 this.state = 0;
             } else {
-                throw new IllegalStateException("cannot resume a stopped build task!");
+                throw new IllegalStateException("Cannot resume a stopped build task!");
             }
         }
 

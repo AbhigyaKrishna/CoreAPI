@@ -145,11 +145,11 @@ public class SimpleScoreboard {
     }
 
     /**
-     * A {@link Set} of {@link Player}s that are viewing
+     * A {@link Set} of {@link Player} that are viewing
      * this Scoreboard.
      * <p>
      *
-     * @return
+     * @return Players viewing the scoreboard
      */
     public Set<Player> getViewers() {
         return Collections.unmodifiableSet(viewers);

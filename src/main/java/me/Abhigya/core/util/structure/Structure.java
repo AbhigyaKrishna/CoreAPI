@@ -25,9 +25,9 @@ public class Structure {
 
     /**
      * Gets this structure's model.
-     * <br>
+     * <p>
      *
-     * @return This structure's model.
+     * @return This structure's model
      */
     public StructureModel getModel() {
         return model;
@@ -35,10 +35,10 @@ public class Structure {
 
     /**
      * Gets the origin to which this structure will be pasted.
-     * <br>
+     * <p>
      *
-     * @param vector Vector object to copy into.
-     * @return This structure's origin.
+     * @param vector Vector object to copy into
+     * @return This structure's origin
      */
     public BlockVector getOrigin(BlockVector vector) {
         vector.setX(x);
@@ -50,9 +50,9 @@ public class Structure {
 
     /**
      * Gets the origin to which this structure will be pasted.
-     * <br>
+     * <p>
      *
-     * @return This structure's origin.
+     * @return This structure's origin
      */
     public BlockVector getOrigin() {
         return getOrigin(new BlockVector());
