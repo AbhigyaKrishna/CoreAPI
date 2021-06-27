@@ -1,5 +1,6 @@
 package me.Abhigya.core.database.sql;
 
+import me.Abhigya.core.database.DatabaseType;
 import me.Abhigya.core.util.StringUtils;
 import org.apache.commons.lang.Validate;
 
@@ -11,7 +12,7 @@ import java.sql.SQLTimeoutException;
 /**
  * Class for interacting with a MySQL database.
  */
-public class MySQL {
+public class MySQL extends SQLDatabase {
 
     /**
      * Connection URL format.
@@ -58,6 +59,8 @@ public class MySQL {
      * @param ssl       <strong>{@code true}</strong> to use SSL
      */
     public MySQL(String host, int port, String database, String username, String password, boolean reconnect, boolean ssl) {
+        super(DatabaseType.MYSQL);
+
         Validate.isTrue(!StringUtils.isBlank(host), "The host cannot be null or empty!");
         Validate.isTrue(!StringUtils.isBlank(database), "The database cannot be null or empty!");
         Validate.notNull(username, "The username cannot be null!");
@@ -93,6 +96,7 @@ public class MySQL {
      *
      * @return true if connected.
      */
+    @Override
     public boolean isConnected() {
         try {
             return this.connection != null && !this.connection.isClosed();
@@ -128,6 +132,7 @@ public class MySQL {
      * @throws IllegalStateException if the JDBC drivers is unavailable
      * @throws SQLException          if a database access error occurs.
      */
+    @Override
     public Connection getConnection()
             throws SQLTimeoutException, IllegalStateException, SQLException {
         if (!isConnected() && reconnect) {
@@ -144,6 +149,7 @@ public class MySQL {
      * @return Times the connection was lost, or
      * <strong>{@code -1}</strong> if the auto-reconnection is disabled.
      */
+    @Override
     public int getLostConnections() {
         return reconnect ? lost_connections : -1;
     }
@@ -158,6 +164,7 @@ public class MySQL {
      *                               has been exceeded and has at least tried to
      *                               cancel the current database connection attempt.
      */
+    @Override
     public synchronized void connect()
             throws IllegalStateException, SQLException, SQLTimeoutException {
         try {
@@ -180,6 +187,7 @@ public class MySQL {
      *                               {@link #isConnected()}.
      * @throws SQLException          if a database access error occurs.
      */
+    @Override
     public void disconnect() throws SQLException {
         if (!isConnected()) {
             throw new IllegalStateException("Not connected!");

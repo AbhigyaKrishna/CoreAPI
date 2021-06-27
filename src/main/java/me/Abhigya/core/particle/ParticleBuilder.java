@@ -2,10 +2,12 @@ package me.Abhigya.core.particle;
 
 import me.Abhigya.core.particle.data.ParticleData;
 import me.Abhigya.core.particle.data.color.RegularColor;
+import me.Abhigya.core.particle.utils.ParticleReflectionUtils;
 import me.Abhigya.core.util.reflection.bukkit.BukkitReflection;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.util.Vector;
 
 import java.awt.*;
 import java.util.Arrays;
@@ -146,6 +148,36 @@ public class ParticleBuilder {
     }
 
     /**
+     * Sets the offset.
+     * <p>
+     *
+     * @param offsetX The new value of the {@link #offsetX} field
+     * @param offsetY The new value of the {@link #offsetY} field
+     * @param offsetZ The new value of the {@link #offsetZ} field
+     * @return Current instance to support building operations
+     */
+    public ParticleBuilder setOffset(float offsetX, float offsetY, float offsetZ) {
+        this.offsetX = offsetX;
+        this.offsetY = offsetY;
+        this.offsetZ = offsetZ;
+        return this;
+    }
+
+    /**
+     * Sets the offset.
+     * <p>
+     *
+     * @param offset {@link Vector} containing the offset values
+     * @return Current instance to support building operations
+     */
+    public ParticleBuilder setOffset(Vector offset) {
+        this.offsetX = (float) offset.getX();
+        this.offsetY = (float) offset.getX();
+        this.offsetZ = (float) offset.getX();
+        return this;
+    }
+
+    /**
      * Sets the Z offset.
      * <p>
      *
@@ -261,7 +293,7 @@ public class ParticleBuilder {
      */
     public void display(Collection<? extends Player> players) {
         Object packet = toPacket();
-        players.forEach(player -> BukkitReflection.sendPacket(player, packet));
+        players.forEach(player -> ParticleReflectionUtils.sendPacket(player, packet));
     }
 
 }

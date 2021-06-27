@@ -1,13 +1,11 @@
 package me.Abhigya.core.particle;
 
 import me.Abhigya.core.particle.data.ParticleData;
-import me.Abhigya.core.particle.data.color.NoteColor;
-import me.Abhigya.core.particle.data.color.ParticleColor;
-import me.Abhigya.core.particle.data.color.RegularColor;
+import me.Abhigya.core.particle.data.VibrationData;
+import me.Abhigya.core.particle.data.color.*;
 import me.Abhigya.core.particle.data.texture.BlockTexture;
 import me.Abhigya.core.particle.data.texture.ItemTexture;
-import me.Abhigya.core.util.reflection.bukkit.BukkitReflection;
-import me.Abhigya.core.util.server.Version;
+import me.Abhigya.core.particle.utils.ParticleReflectionUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -21,7 +19,8 @@ import java.util.function.IntFunction;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import static me.Abhigya.core.particle.ParticleConstants.*;
+import static me.Abhigya.core.particle.ParticleConstants.PARTICLE_TYPE_REGISTRY;
+import static me.Abhigya.core.particle.ParticleConstants.REGISTRY_GET_METHOD;
 import static me.Abhigya.core.particle.PropertyType.*;
 
 /**
@@ -53,6 +52,7 @@ import static me.Abhigya.core.particle.PropertyType.*;
  * <li>{@link #DRIPPING_HONEY}</li>
  * <li>{@link #DRIPPING_OBSIDIAN_TEAR}</li>
  * <li>{@link #DUST_COLOR_TRANSITION}</li>
+ * <li>{@link #ELECTRIC_SPARK}</li>
  * <li>{@link #ENCHANTMENT_TABLE}</li>
  * <li>{@link #END_ROD}</li>
  * <li>{@link #EXPLOSION_HUGE}</li>
@@ -76,11 +76,14 @@ import static me.Abhigya.core.particle.PropertyType.*;
  * <li>{@link #LANDING_HONEY}</li>
  * <li>{@link #LANDING_OBSIDIAN_TEAR}</li>
  * <li>{@link #LAVA}</li>
+ * <li>{@link #LIGHT}</li>
  * <li>{@link #MOB_APPEARANCE}</li>
  * <li>{@link #NAUTILUS}</li>
  * <li>{@link #NOTE}</li>
  * <li>{@link #PORTAL}</li>
  * <li>{@link #REDSTONE}</li>
+ * <li>{@link #REVERSE_PORTAL}</li>
+ * <li>{@link #SCRAPE}</li>
  * <li>{@link #SLIME}</li>
  * <li>{@link #SMOKE_LARGE}</li>
  * <li>{@link #SMOKE_NORMAL}</li>
@@ -111,16 +114,20 @@ import static me.Abhigya.core.particle.PropertyType.*;
  * <li>{@link #WATER_DROP}</li>
  * <li>{@link #WATER_SPLASH}</li>
  * <li>{@link #WATER_WAKE}</li>
+ * <li>{@link #WAX_OFF}</li>
+ * <li>{@link #WAX_ON}</li>
  * <li>{@link #WHITE_ASH}</li>
  * </ul>
+ *
+ * @author ByteZ
+ * @since 28.05.2019
  */
 public enum ParticleEffect {
 
     /**
-     * In the base game this particle is randomly displayed in the
+     * In vanilla, this particle is randomly displayed in the
      * basalt deltas nether biome.
      * <p>
-     * The particle originates from the nms BiomeBasaltDeltas class.
      * The movement of this particle is handled completely clientside
      * and can therefore not be influenced.
      * <p>
@@ -133,13 +140,8 @@ public enum ParticleEffect {
      */
     ASH(version -> version < 16 ? "NONE" : "ash"),
     /**
-     * In the base game this particle is displayed by barrier blocks
+     * In vanilla, this particle is displayed by barrier blocks
      * when a player holds a barrier item in the main or off hand.
-     * <p>
-     * The original use of this particle is clientside. However
-     * when the server writes the data of a WorldParticles into a
-     * ByteBuf and the particle field is {@code null} the barrier
-     * particle is used.
      * <p>
      * <b>Information</b>:
      * <ul>
@@ -149,12 +151,9 @@ public enum ParticleEffect {
      */
     BARRIER(version -> version < 8 ? "NONE" : (version < 13 ? "BARRIER" : "barrier")),
     /**
-     * In the base game this particle is displayed when a player breaks
+     * In vanilla, this particle is displayed when a player breaks
      * a block or sprints. It's also displayed by iron golems while
      * walking.
-     * <p>
-     * The particle originates from the nms Entity and EntityIronGolem
-     * classes.
      * <p>
      * <b>Information</b>:
      * <ul>
@@ -165,11 +164,8 @@ public enum ParticleEffect {
      */
     BLOCK_CRACK(version -> version < 8 ? "NONE" : (version < 13 ? "BLOCK_CRACK" : "block"), REQUIRES_BLOCK),
     /**
-     * In the base game this particle is displayed when an entity hits the ground
+     * In vanilla, this particle is displayed when an entity hits the ground
      * after falling. It's also displayed when a armorstand is broken.
-     * <p>
-     * The particle originates from the nms EntityArmorStand,
-     * EntityRabbit and EntityLiving classes.
      * <p>
      * <b>Information</b>:
      * <ul>
@@ -181,10 +177,8 @@ public enum ParticleEffect {
      */
     BLOCK_DUST(version -> version < 8 ? "NONE" : (version < 13 ? "BLOCK_DUST" : "falling_dust"), DIRECTIONAL, REQUIRES_BLOCK),
     /**
-     * In the base game this particle is randomly displayed by magma
+     * In vanilla, this particle is randomly displayed by magma
      * blocks and soulsand underwater.
-     * <p>
-     * The particle is displayed clientside so it's not used in any nms classes.
      * <p>
      * <b>Information</b>:
      * <ul>
@@ -195,10 +189,8 @@ public enum ParticleEffect {
      */
     BUBBLE_COLUMN_UP(version -> version < 13 ? "NONE" : "bubble_column_up", DIRECTIONAL),
     /**
-     * In the base game this particle is displayed at the top of
+     * In vanilla, this particle is displayed at the top of
      * bubble columns.
-     * <p>
-     * The particle is displayed clientside so it's not used in any nms classes.
      * <p>
      * <b>Information</b>:
      * <ul>
@@ -209,9 +201,7 @@ public enum ParticleEffect {
      */
     BUBBLE_POP(version -> version < 13 ? "NONE" : "bubble_pop", DIRECTIONAL),
     /**
-     * In the base game this particle is displayed by campfires.
-     * <p>
-     * The particle originates from the nms BlockCampfire class.
+     * In vanilla, this particle is displayed by campfires.
      * <p>
      * <b>Information</b>:
      * <ul>
@@ -222,10 +212,8 @@ public enum ParticleEffect {
      */
     CAMPFIRE_COSY_SMOKE(version -> version < 14 ? "NONE" : "campfire_cosy_smoke", DIRECTIONAL),
     /**
-     * In the base game this particle is displayed by campfires with
+     * In vanilla, this particle is displayed by campfires with
      * a hay bale placed under them.
-     * <p>
-     * The particle originates from the nms BlockCampfire class.
      * <p>
      * <b>Information</b>:
      * <ul>
@@ -236,9 +224,7 @@ public enum ParticleEffect {
      */
     CAMPFIRE_SIGNAL_SMOKE(version -> version < 14 ? "NONE" : "campfire_signal_smoke", DIRECTIONAL),
     /**
-     * In the base game this particle is displayed when an entity dies.
-     * <p>
-     * The particle is displayed clientside so it's not used in any nms classes.
+     * In vanilla, this particle is displayed when an entity dies.
      * <p>
      * <b>Information</b>:
      * <ul>
@@ -249,10 +235,8 @@ public enum ParticleEffect {
      */
     CLOUD(version -> version < 8 ? "NONE" : (version < 13 ? "CLOUD" : "cloud"), DIRECTIONAL),
     /**
-     * In the base game this particle is displayed when a composter
+     * In vanilla, this particle is displayed when a composter
      * is used by a player.
-     * <p>
-     * The particle is displayed clientside  so it's not used in any nms classes.
      * <p>
      * <b>Information</b>:
      * <ul>
@@ -262,10 +246,8 @@ public enum ParticleEffect {
      */
     COMPOSTER(version -> version < 14 ? "NONE" : "composter"),
     /**
-     * In the base game this particle is displayed in the crimson forest
+     * In vanilla, this particle is displayed in the crimson forest
      * nether biome.
-     * <p>
-     * The particle originates from the nms BiomeCrimsonForest class.
      * <p>
      * <b>Information</b>:
      * <ul>
@@ -276,11 +258,8 @@ public enum ParticleEffect {
      */
     CRIMSON_SPORE(version -> version < 16 ? "NONE" : "crimson_spore"),
     /**
-     * In the base game this particle is displayed when a player lands
+     * In vanilla, this particle is displayed when a player lands
      * a critical hit on an entity or an  arrow is launched with full power.
-     * <p>
-     * The normal critical particle is displayed clientside which is why it
-     * is only used in the nms EntityArrow class.
      * <p>
      * <b>Information</b>:
      * <ul>
@@ -290,10 +269,8 @@ public enum ParticleEffect {
      */
     CRIT(version -> version < 8 ? "NONE" : (version < 13 ? "CRIT" : "crit"), DIRECTIONAL),
     /**
-     * In the base game this particle  is displayed when a player hits
+     * In vanilla, this particle  is displayed when a player hits
      * an entity with a sharpness sword.
-     * <p>
-     * The particle is displayed clientside so it's not used in any nms classes.
      * <p>
      * <b>Information</b>:
      * <ul>
@@ -303,10 +280,8 @@ public enum ParticleEffect {
      */
     CRIT_MAGIC(version -> version < 8 ? "NONE" : (version < 13 ? "CRIT_MAGIC" : "enchanted_hit"), DIRECTIONAL),
     /**
-     * In the base game this particle is displayed by magma blocks
+     * In vanilla, this particle is displayed by magma blocks
      * under water.
-     * <p>
-     * The particle is displayed clientside so it's not used in any nms classes.
      * <p>
      * <b>Information</b>:
      * <ul>
@@ -316,10 +291,8 @@ public enum ParticleEffect {
      */
     CURRENT_DOWN(version -> version < 13 ? "NONE" : "current_down"),
     /**
-     * In the base game this particle is displayed when a Player hits
+     * In vanilla, this particle is displayed when a Player hits
      * an Entity by melee attack.
-     * <p>
-     * The particle originates from the nms EntityHuman class.
      * <p>
      * <b>Information</b>:
      * <ul>
@@ -330,10 +303,8 @@ public enum ParticleEffect {
      */
     DAMAGE_INDICATOR(version -> version < 9 ? "NONE" : (version < 13 ? "DAMAGE_INDICATOR" : "damage_indicator"), DIRECTIONAL),
     /**
-     * In the base game this particle is displayed as a trail of
+     * In vanilla, this particle is displayed as a trail of
      * dolphins.
-     * <p>
-     * The particle originates from the nms EntityDolphin class.
      * <p>
      * <b>Information</b>:
      * <ul>
@@ -343,11 +314,8 @@ public enum ParticleEffect {
      */
     DOLPHIN(version -> version < 13 ? "NONE" : "dolphin"),
     /**
-     * In the base game this particle is displayed by the ender dragons
+     * In vanilla, this particle is displayed by the ender dragons
      * breath and ender fireballs.
-     * <p>
-     * The particle originates from the nms DragonControllerLandedFlame,
-     * DragonControllerLanding and EntityDragonFireball classes.
      * <p>
      * <b>Information</b>:
      * <ul>
@@ -358,11 +326,8 @@ public enum ParticleEffect {
      */
     DRAGON_BREATH(version -> version < 9 ? "NONE" : (version < 13 ? "DRAGON_BREATH" : "dragon_breath"), DIRECTIONAL),
     /**
-     * In the base game this particle is displayed randomly when a
+     * In vanilla, this particle is displayed randomly when a
      * lava block is above a block.
-     * <p>
-     * The particle is displayed clientside so it's not used in any nms classes.
-     * <p>
      * <b>Information</b>:
      * <ul>
      * <li>Appearance: Orange drop.</li>
@@ -371,10 +336,8 @@ public enum ParticleEffect {
      */
     DRIP_LAVA(version -> version < 8 ? "NONE" : (version < 13 ? "DRIP_LAVA" : "dripping_lava")),
     /**
-     * In the base game this particle is displayed randomly when a
+     * In vanilla, this particle is displayed randomly when a
      * water block is above a block.
-     * <p>
-     * The particle is displayed clientside so it's not used in any nms classes.
      * <p>
      * <b>Information</b>:
      * <ul>
@@ -384,19 +347,31 @@ public enum ParticleEffect {
      */
     DRIP_WATER(version -> version < 8 ? "NONE" : (version < 13 ? "DRIP_WATER" : "dripping_water")),
     /**
-     * 1.17 Placeholder
+     * In vanilla, this particle is shown dripping from the
+     * tip of pointed dripstones.
+     * <p>
+     * <b>Information</b>:
+     * <ul>
+     * <li>Appearance: Orange drop.</li>
+     * <li>Speed value: Doesn't influence the particle.</li>
+     * </ul>
      */
     DRIPPING_DRIPSTONE_LAVA(version -> version < 17 ? "NONE" : "dripping_dripstone_lava"),
     /**
-     * 1.17 Placeholder
+     * In vanilla, this particle is shown dripping from the
+     * tip of pointed dripstones.
+     * <p>
+     * <b>Information</b>:
+     * <ul>
+     * <li>Appearance: Blue drop.</li>
+     * <li>Speed value: Doesn't influence the particle.</li>
+     * </ul>
      */
     DRIPPING_DRIPSTONE_WATER(version -> version < 17 ? "NONE" : "dripping_dripstone_water"),
     /**
-     * In the base game this particle is displayed by beehives filled
+     * In vanilla, this particle is displayed by beehives filled
      * with honey. As opposed to the {@link #FALLING_HONEY} particles,
      * this particle floats in the air before falling to the ground.
-     * <p>
-     * The particle is displayed clientside so it's not used in any nms classes.
      * <p>
      * <b>Information</b>:
      * <ul>
@@ -407,9 +382,7 @@ public enum ParticleEffect {
      */
     DRIPPING_HONEY(version -> version < 15 ? "NONE" : "dripping_honey"),
     /**
-     * In the base game this particle is displayed by crying obsidian.
-     * <p>
-     * The particle is displayed clientside so it's not used in any nms classes.
+     * In vanilla, this particle is displayed by crying obsidian.
      * <p>
      * <b>Information</b>:
      * <ul>
@@ -420,14 +393,33 @@ public enum ParticleEffect {
      */
     DRIPPING_OBSIDIAN_TEAR(version -> version < 16 ? "NONE" : "dripping_obsidian_tear"),
     /**
-     * 1.17 Placeholder
-     */
-    DUST_COLOR_TRANSITION(version -> version < 17 ? "NONE" : "dust_color_transition"),
-    /**
-     * In the base game this particle is displayed by bookshelves near
-     * an enchanting table.
+     * In vanilla, this particle is displayed when a sculk sensor is triggered.
      * <p>
-     * The particle is displayed clientside so it's not used in any nms classes.
+     * <b>Information</b>:
+     * <ul>
+     * <li>Appearance: Tiny colored cloud that changes color.</li>
+     * <li>Speed value: Doesn't influence the particle.</li>
+     * <li>Extra: This particle supports 2 colors. It will display a fade animation between the two colors. It also
+     * supports a custom size.
+     * More information can be found here: {@link PropertyType#DUST}, {@link DustColorTransitionData}</li>
+     * </ul>
+     */
+    DUST_COLOR_TRANSITION(version -> version < 17 ? "NONE" : "dust_color_transition", COLORABLE, DUST),
+    /**
+     * In vanilla, this particle appears when a lightning bolt hits
+     * copper blocks.
+     * <p>
+     * <b>Information</b>:
+     * <ul>
+     * <li>Appearance: A small spark.</li>
+     * <li>Speed value: Influences the velocity at which the particle flies off.</li>
+     * <li>Extra: The velocity of this particle can be set.</li>
+     * </ul>
+     */
+    ELECTRIC_SPARK(version -> version < 17 ? "NONE" : "electric_spark", DIRECTIONAL),
+    /**
+     * In vanilla, this particle is displayed by bookshelves near
+     * an enchanting table.
      * <p>
      * <b>Information</b>:
      * <ul>
@@ -438,11 +430,8 @@ public enum ParticleEffect {
      */
     ENCHANTMENT_TABLE(version -> version < 8 ? "NONE" : (version < 13 ? "ENCHANTMENT_TABLE" : "enchant"), DIRECTIONAL),
     /**
-     * In the base game this particle is displayed by end rods and
+     * In vanilla, this particle is displayed by end rods and
      * shulker bullets.
-     * <p>
-     * Even though the original purpose of this particle is handled clientside
-     * the nms EntityShulkerBullet class still uses this particle.
      * <p>
      * <b>Information</b>:
      * <ul>
@@ -453,11 +442,8 @@ public enum ParticleEffect {
      */
     END_ROD(version -> version < 9 ? "NONE" : (version < 13 ? "END_ROD" : "end_rod"), DIRECTIONAL),
     /**
-     * In the base game this particle is displayed when tnt or creeper
+     * In vanilla, this particle is displayed when tnt or creeper
      * explodes.
-     * <p>
-     * The particle originates from the nms EntityEnderDragon and Explosion
-     * classes and will only be shown when the size field is greater than 2.
      * <p>
      * <b>Information</b>:
      * <ul>
@@ -467,11 +453,8 @@ public enum ParticleEffect {
      */
     EXPLOSION_HUGE(version -> version < 8 ? "NONE" : (version < 13 ? "EXPLOSION_HUGE" : "explosion_emitter")),
     /**
-     * In the base game this particle is displayed when a fireball
+     * In vanilla, this particle is displayed when a fireball
      * explodes or a wither skull hits a block/entity.
-     * <p>
-     * The particle originates from the  nms Explosion class and will only
-     * be shown when the size field is smaller than 2.
      * <p>
      * <b>Information</b>:
      * <ul>
@@ -481,11 +464,8 @@ public enum ParticleEffect {
      */
     EXPLOSION_LARGE(version -> version < 8 ? "NONE" : (version < 13 ? "EXPLOSION_LARGE" : "explosion")),
     /**
-     * In the base game this particle is displayed when either a creeper or
+     * In vanilla, this particle is displayed when either a creeper or
      * a tnt explodes.
-     * <p>
-     * The particle originates from the nms
-     * Explosion class.
      * <p>
      * <b>Information</b>:
      * <ul>
@@ -495,18 +475,30 @@ public enum ParticleEffect {
      */
     EXPLOSION_NORMAL(version -> version < 8 ? "NONE" : (version < 13 ? "EXPLOSION_NORMAL" : "poof"), DIRECTIONAL),
     /**
-     * 1.17 Placeholder
+     * In vanilla, this particle is displayed after {@link #DRIPPING_DRIPSTONE_LAVA}
+     * starts falling from pointed dripstones.
+     * <p>
+     * <b>Information</b>:
+     * <ul>
+     * <li>Appearance: Orange drop.</li>
+     * <li>Speed value: Doesn't influence the particle.</li>
+     * </ul>
      */
     FALLING_DRIPSTONE_LAVA(version -> version < 17 ? "NONE" : "falling_dripstone_lava"),
     /**
-     * 1.17 Placeholder
+     * In vanilla, this particle is displayed after {@link #DRIPPING_DRIPSTONE_WATER}
+     * starts falling from pointed dripstones.
+     * <p>
+     * <b>Information</b>:
+     * <ul>
+     * <li>Appearance: Blue drop.</li>
+     * <li>Speed value: Doesn't influence the particle.</li>
+     * </ul>
      */
     FALLING_DRIPSTONE_WATER(version -> version < 17 ? "NONE" : "falling_dripstone_water"),
     /**
-     * In the base game this particle is displayed randomly by floating sand
+     * In vanilla, this particle is displayed randomly by floating sand
      * and gravel.
-     * <p>
-     * The particle is displayed clientside so it's not used in any nms classes.
      * <p>
      * <b>Information</b>:
      * <ul>
@@ -517,11 +509,9 @@ public enum ParticleEffect {
      */
     FALLING_DUST(version -> version < 10 ? "NONE" : (version < 13 ? "FALLING_DUST" : "falling_dust"), REQUIRES_BLOCK),
     /**
-     * In the base game this particle is displayed below beehives filled
+     * In vanilla, this particle is displayed below beehives filled
      * with honey. As opposed to the {@link #DRIPPING_HONEY} particles,
      * this particle falls instantly.
-     * <p>
-     * The particle is displayed clientside so it's not used in any nms classes.
      * <p>
      * <b>Information</b>:
      * <ul>
@@ -532,10 +522,8 @@ public enum ParticleEffect {
      */
     FALLING_HONEY(version -> version < 15 ? "NONE" : "falling_honey"),
     /**
-     * In the base game this particle is displayed by bees that have pollen
+     * In vanilla, this particle is displayed by bees that have pollen
      * and are on their way to the beehive.
-     * <p>
-     * The particle originates from the nms EntityBee class.
      * <p>
      * <b>Information</b>:
      * <ul>
@@ -545,10 +533,8 @@ public enum ParticleEffect {
      */
     FALLING_NECTAR(version -> version < 15 ? "NONE" : "falling_nectar"),
     /**
-     * In the base game this particle is displayed below crying obsidian
+     * In vanilla, this particle is displayed below crying obsidian
      * blocks.
-     * <p>
-     * The particle originates from the nms EntityBee class.
      * <p>
      * <b>Information</b>:
      * <ul>
@@ -558,14 +544,18 @@ public enum ParticleEffect {
      */
     FALLING_OBSIDIAN_TEAR(version -> version < 16 ? "NONE" : "falling_obsidian_tear"),
     /**
-     * 1.17 Placeholder
+     * In vanilla, this particle is displayed below spore blossoms.
+     * <p>
+     * <b>Information</b>:
+     * <ul>
+     * <li>Appearance: Green square.</li>
+     * <li>Speed value: Doesn't influence the particle.</li>
+     * </ul>
      */
     FALLING_SPORE_BLOSSOM(version -> version < 17 ? "NONE" : "falling_spore_blossom"),
     /**
-     * In the base game this particle is displayed when a firework is
+     * In vanilla, this particle is displayed when a firework is
      * launched.
-     * <p>
-     * The particle originates from the nms EntityFireworks class.
      * <p>
      * <b>Information</b>:
      * <ul>
@@ -575,11 +565,8 @@ public enum ParticleEffect {
      */
     FIREWORKS_SPARK(version -> version < 8 ? "NONE" : (version < 13 ? "FIREWORKS_SPARK" : "firework"), DIRECTIONAL),
     /**
-     * In the base game this particle is randomly displayed by torches,
+     * In vanilla, this particle is randomly displayed by torches,
      * active furnaces,spawners and magma cubes.
-     * <p>
-     * The particle originates from the nms MobSpawnerAbstract and
-     * EntityMagmaCube class.
      * <p>
      * <b>Information</b>:
      * <ul>
@@ -590,9 +577,7 @@ public enum ParticleEffect {
      */
     FLAME(version -> version < 8 ? "NONE" : (version < 13 ? "FLAME" : "flame"), DIRECTIONAL),
     /**
-     * In the base game this particle is displayed by exploding fireworks
-     * <p>
-     * The particle is displayed clientside so it's not used in any nms classes.
+     * In vanilla, this particle is displayed by exploding fireworks
      * <p>
      * <b>Information</b>:
      * <ul>
@@ -605,8 +590,6 @@ public enum ParticleEffect {
     /**
      * This particle is unused and is removed in the version 1.13.
      * <p>
-     * Since this particle is unused it isn't used in any nms classes.
-     * <p>
      * <b>Information</b>:
      * <ul>
      * <li>Appearance: Low opacity gray square.</li>
@@ -615,19 +598,31 @@ public enum ParticleEffect {
      */
     FOOTSTEP(version -> version > 8 && version < 13 ? "FOOTSTEP" : "NONE"),
     /**
-     * 1.17 Placeholder
-     */
-    GLOW(version -> version < 17 ? "NONE" : "glow"),
-    /**
-     * 1.17 Placeholder
-     */
-    GLOW_SQUID_INK(version -> version < 17 ? "NONE" : "glow_squid_ink"),
-    /**
-     * In the base game this particle is displayed when taming or
-     * breeding animals.
+     * In vanilla, this particle is displayed by a glow squid.
      * <p>
-     * The particle originates from the nms EntityAnimal,
-     * EntityTameableAnimal and PathfinderGoalBreed classes.
+     * <b>Information</b>:
+     * <ul>
+     * <li>Appearance: Cyan star.</li>
+     * <li>Speed value: Doesn't seem to influence the particle.</li>
+     * <li>Extra: The velocity of this particle can be set. The amount has to be 0. Please note that this particle
+     * is barely moveable.</li>
+     * </ul>
+     */
+    GLOW(version -> version < 17 ? "NONE" : "glow", DIRECTIONAL),
+    /**
+     * In vanilla, this particle is displayed by a glow squid when it gets hurt.
+     * <p>
+     * <b>Information</b>:
+     * <ul>
+     * <li>Appearance: Cyan ink.</li>
+     * <li>Speed value: Influences the velocity at which the particle flies off.</li>
+     * <li>Extra: The velocity of this particle can be set. The amount has to be 0.</li>
+     * </ul>
+     */
+    GLOW_SQUID_INK(version -> version < 17 ? "NONE" : "glow_squid_ink", DIRECTIONAL),
+    /**
+     * In vanilla, this particle is displayed when taming or
+     * breeding animals.
      * <p>
      * <b>Information</b>:
      * <ul>
@@ -637,13 +632,9 @@ public enum ParticleEffect {
      */
     HEART(version -> version < 8 ? "NONE" : (version < 13 ? "HEART" : "heart")),
     /**
-     * In the base game this particle is displayed when a tool is
+     * In vanilla, this particle is displayed when a tool is
      * broken, a egg or a splash potion hits an entity or a block, It is
      * also displayed when a player eats or a eye of ender breaks.
-     * <p>
-     * The particle originates from
-     * the nms EntityEgg, EntityHuman
-     * and EntityLiving classes.
      * <p>
      * <b>Information</b>:
      * <ul>
@@ -655,10 +646,8 @@ public enum ParticleEffect {
      */
     ITEM_CRACK(version -> version < 8 ? "NONE" : (version < 13 ? "ITEM_CRACK" : "item"), DIRECTIONAL, REQUIRES_ITEM),
     /**
-     * In the base game this particle is displayed after a falling or
+     * In vanilla, this particle is displayed after a falling or
      * dripping Honey particle reaches a block.
-     * <p>
-     * The particle is displayed clientside so it's not used in any nms classes.
      * <p>
      * <b>Information</b>:
      * <ul>
@@ -669,10 +658,8 @@ public enum ParticleEffect {
      */
     LANDING_HONEY(version -> version < 15 ? "NONE" : "landing_honey"),
     /**
-     * In the base game this particle is displayed after a falling or
+     * In vanilla, this particle is displayed after a falling or
      * dripping obsidian tear reaches a block.
-     * <p>
-     * The particle is displayed clientside so it's not used in any nms classes.
      * <p>
      * <b>Information</b>:
      * <ul>
@@ -683,9 +670,7 @@ public enum ParticleEffect {
      */
     LANDING_OBSIDIAN_TEAR(version -> version < 16 ? "NONE" : "landing_obsidian_tear"),
     /**
-     * In the base game this particle is randomly displayed by lava.
-     * <p>
-     * The particle is displayed clientside so it's not used in any nms classes.
+     * In vanilla, this particle is randomly displayed by lava.
      * <p>
      * <b>Information</b>:
      * <ul>
@@ -695,10 +680,17 @@ public enum ParticleEffect {
      */
     LAVA(version -> version < 8 ? "NONE" : (version < 13 ? "LAVA" : "lava")),
     /**
-     * In the base game this particle is displayed by elder guardians.
+     * In vanilla, this particle is displayed by the light block.
      * <p>
-     * The particle is displayed clientside
-     * so it's not used in any nms classes.
+     * <b>Information</b>:
+     * <ul>
+     * <li>Appearance: four yellow stars.</li>
+     * <li>Speed value: Doesn't influence the particle.</li>
+     * </ul>
+     */
+    LIGHT(version -> version < 17 ? "NONE" : "light"),
+    /**
+     * In vanilla, this particle is displayed by elder guardians.
      * <p>
      * <b>Information</b>:
      * <ul>
@@ -708,9 +700,7 @@ public enum ParticleEffect {
      */
     MOB_APPEARANCE(version -> version < 8 ? "NONE" : (version < 13 ? "MOB_APPEARANCE" : "elder_guardian")),
     /**
-     * In the base game this particle is displayed by active conduits.
-     * <p>
-     * The particle originates from the nmsTileEntityConduit class.
+     * In vanilla, this particle is displayed by active conduits.
      * <p>
      * <b>Information</b>:
      * <ul>
@@ -721,10 +711,8 @@ public enum ParticleEffect {
      */
     NAUTILUS(version -> version < 13 ? "NONE" : "nautilus", DIRECTIONAL),
     /**
-     * In the base game this particle is displayed when rightclicking
+     * In vanilla, this particle is displayed when rightclicking
      * or activating a note block.
-     * <p>
-     * The particle originates from the nms BlockNote class.
      * <p>
      * <b>Information</b>:
      * <ul>
@@ -735,15 +723,11 @@ public enum ParticleEffect {
      */
     NOTE(version -> version < 8 ? "NONE" : (version < 13 ? "NOTE" : "note"), COLORABLE),
     /**
-     * In the base game this particle is randomly displayed by nether
+     * In vanilla, this particle is randomly displayed by nether
      * portal, endermen, ender chests, dragon eggs, endermites and end
      * gateway portals. It is also displayed when a ender pearl hits
      * a block or an entity, when a eye of ender beaks or when the player eats
      * a chorus fruit.
-     * <p>
-     * The particle originates from the following nms classes:<br>
-     * BlockDragonEgg, EntityEnderman, EntityEndermite, EntityEnderPearl
-     * and EntityEnderSignal
      * <p>
      * <b>Information</b>:
      * <ul>
@@ -754,14 +738,11 @@ public enum ParticleEffect {
      */
     PORTAL(version -> version < 8 ? "NONE" : (version < 13 ? "PORTAL" : "portal"), DIRECTIONAL),
     /**
-     * In the base game this particle is randomly displayed by active
+     * In vanilla, this particle is randomly displayed by active
      * redstone ore, active redstone, active redstone repeater and
      * active redstone torches. Since 1.13 it is also displayed when
      * pressing a button, activating a lever or stepping onto a pressure
      * plate
-     * <p>
-     * The particle is mainly displayed clientside. However it is used
-     * in the BlockRedstoneOre nms class
      * <p>
      * <b>Information</b>:
      * <ul>
@@ -770,10 +751,10 @@ public enum ParticleEffect {
      * <li>Extra: offsetX, offsetY and offsetZ represent the rgb values of the particle. The amount has to be 0 or the color won't work.</li>
      * </ul>
      */
-    REDSTONE(version -> version < 8 ? "NONE" : (version < 13 ? "REDSTONE" : "dust"), COLORABLE),
+    REDSTONE(version -> version < 8 ? "NONE" : (version < 13 ? "REDSTONE" : "dust"), COLORABLE, DUST),
     /**
-     * Currently Unused in the base game. It's pretty much the same as the normal protal
-     * particle but insted of flying to the original location it flies away at the specfied
+     * Currently Unused in vanilla. It's pretty much the same as the normal portal
+     * particle but instead of flying to the original location it flies away at the specified
      * velocity.
      * <p>
      * <b>Information</b>:
@@ -785,7 +766,18 @@ public enum ParticleEffect {
      */
     REVERSE_PORTAL(version -> version < 16 ? "NONE" : "reverse_portal", DIRECTIONAL),
     /**
-     * In the base game this particle is displayed by jumping slimes.
+     * In vanilla, this particle is displayed when oxidation is scraped off a copper block.
+     * <p>
+     * <b>Information</b>:
+     * <ul>
+     * <li>Appearance: Cyan star.</li>
+     * <li>Speed value: Influences the velocity at which the particle flies off.</li>
+     * <li>Extra: The velocity of this particle can be set. The amount has to be 0.</li>
+     * </ul>
+     */
+    SCRAPE(version -> version < 17 ? "NONE" : "scrape", DIRECTIONAL),
+    /**
+     * In vanilla, this particle is displayed by jumping slimes.
      * <p>
      * The particle originates from the nms EntitySlime class.
      * <p>
@@ -797,7 +789,7 @@ public enum ParticleEffect {
      */
     SLIME(version -> version < 8 ? "NONE" : (version < 13 ? "SLIME" : "item_slime")),
     /**
-     * In the base game this particle is randomly displayed by fire, furnace
+     * In vanilla, this particle is randomly displayed by fire, furnace
      * minecarts and blazes. It's also displayed when trying to place water
      * in the nether.
      * <p>
@@ -812,13 +804,10 @@ public enum ParticleEffect {
      */
     SMOKE_LARGE(version -> version < 8 ? "NONE" : (version < 13 ? "SMOKE_LARGE" : "large_smoke"), DIRECTIONAL),
     /**
-     * In the base game this particle is randomly displayed by primed
+     * In vanilla, this particle is randomly displayed by primed
      * tnt, torches, end portals, active brewing stands, monster
      * spawners or when either a dropper or dispenser gets triggered. It's
      * also displayed when taming a wild animal or an explosion occurs.
-     * <p>
-     * Most of the particles are displayed by the client however the explosion
-     * particles, the taming particles and a lot more are displayed by the server.
      * <p>
      * <b>Information</b>:
      * <ul>
@@ -828,9 +817,7 @@ public enum ParticleEffect {
      */
     SMOKE_NORMAL(version -> version < 8 ? "NONE" : (version < 13 ? "SMOKE_NORMAL" : "smoke"), DIRECTIONAL),
     /**
-     * In the base game this particle is displayed by sneezing baby pandas.
-     * <p>
-     * The particle originates from the nms EntityPanda class.
+     * In vanilla, this particle is displayed by sneezing baby pandas.
      * <p>
      * <b>Information</b>:
      * <ul>
@@ -841,10 +828,8 @@ public enum ParticleEffect {
      */
     SNEEZE(version -> version < 14 ? "NONE" : "sneeze", DIRECTIONAL),
     /**
-     * In the base game this particle is displayed when a snowball
+     * In vanilla, this particle is displayed when a snowball
      * hits an entity or a block.
-     * <p>
-     * The particle originates from the nms EntitySnowball class.
      * <p>
      * <b>Information</b>:
      * <ul>
@@ -854,13 +839,18 @@ public enum ParticleEffect {
      */
     SNOWBALL(version -> version < 8 ? "NONE" : (version < 13 ? "SNOWBALL" : "item_snowball")),
     /**
-     * 1.17 Placeholder
+     * In vanilla, this particle is displayed when a player sinks in powder snow.
+     * <p>
+     * <b>Information</b>:
+     * <ul>
+     * <li>Appearance: A small white snowflake.</li>
+     * <li>Speed value: Influences the velocity at which the particle flies off.</li>
+     * <li>Extra: The velocity of this particle can be set. The amount has to be 0.</li>
+     * </ul>
      */
-    SNOWFLAKE(version -> version < 17 ? "NONE" : "snowflake"),
+    SNOWFLAKE(version -> version < 17 ? "NONE" : "snowflake", DIRECTIONAL),
     /**
      * This particle is unused and is merged into "poof" in 1.13.
-     * <p>
-     * Since this particle is unused it isn't used in any nms classes.
      * <p>
      * <b>Information</b>:
      * <ul>
@@ -871,10 +861,8 @@ public enum ParticleEffect {
      */
     SNOW_SHOVEL(version -> version < 8 ? "NONE" : (version < 13 ? "SNOW_SHOVEL" : "poof"), DIRECTIONAL),
     /**
-     * In the base game this particle is displayed when a player walks
+     * In vanilla, this particle is displayed when a player walks
      * on soulsand with the soul speed enchantment.
-     * <p>
-     * The particle originates from the nms EntityLiving class
      * <p>
      * <b>Information</b>:
      * <ul>
@@ -885,9 +873,7 @@ public enum ParticleEffect {
      */
     SOUL(version -> version < 16 ? "NONE" : "soul", DIRECTIONAL),
     /**
-     * In the base game this particle is displayed by soul torches
-     * <p>
-     * The particle originates from the nms Blocks class.
+     * In vanilla, this particle is displayed by soul torches
      * <p>
      * <b>Information</b>:
      * <ul>
@@ -898,11 +884,9 @@ public enum ParticleEffect {
      */
     SOUL_FIRE_FLAME(version -> version < 16 ? "NONE" : "soul_fire_flame", DIRECTIONAL),
     /**
-     * In the base game this particle is displayed when a splash potion or
+     * In vanilla, this particle is displayed when a splash potion or
      * a experience bottle hits a block or an entity. It's also displayed by
      * evokers.
-     * <p>
-     * The particle is displayed clientside so it's not used in any nms classes.
      * <p>
      * <b>Information</b>:
      * <ul>
@@ -913,10 +897,8 @@ public enum ParticleEffect {
      */
     SPELL(version -> version < 8 ? "NONE" : (version < 13 ? "SPELL" : "effect")),
     /**
-     * In the base game this particle is displayed when a instant splash
+     * In vanilla, this particle is displayed when a instant splash
      * potion (e.g. instant health) hits a block or an entity.
-     * <p>
-     * The particle is displayed clientside so it's not used in any nms classes.
      * <p>
      * <b>Information</b>:
      * <ul>
@@ -927,11 +909,8 @@ public enum ParticleEffect {
      */
     SPELL_INSTANT(version -> version < 8 ? "NONE" : (version < 13 ? "SPELL_INSTANT" : "instant_effect")),
     /**
-     * In the base game this particle is displayed when a entity has
+     * In vanilla, this particle is displayed when a entity has
      * a active potion effect with the "ShowParticles" tag set to 1.
-     * <p>
-     * The particle originates from the nms EntityLiving and
-     * EntityWither classes.
      * <p>
      * <b>Information</b>:
      * <ul>
@@ -942,11 +921,8 @@ public enum ParticleEffect {
      */
     SPELL_MOB(version -> version < 8 ? "NONE" : (version < 13 ? "SPELL_MOB" : "entity_effect"), COLORABLE),
     /**
-     * In the base game this particle is displayed when a entity has
+     * In vanilla, this particle is displayed when a entity has
      * a active potion effect from a nearby beacon.
-     * <p>
-     * The particle originates from
-     * the nms EntityLiving class.
      * <p>
      * <b>Information</b>:
      * <ul>
@@ -957,9 +933,7 @@ public enum ParticleEffect {
      */
     SPELL_MOB_AMBIENT(version -> version < 8 ? "NONE" : (version < 13 ? "SPELL_MOB_AMBIENT" : "ambient_entity_effect"), COLORABLE),
     /**
-     * In the base game this particle is displayed randomly by witches.
-     * <p>
-     * The particle is displayed clientside so it's not used in any nms classes.
+     * In vanilla, this particle is displayed randomly by witches.
      * <p>
      * <b>Information</b>:
      * <ul>
@@ -970,28 +944,30 @@ public enum ParticleEffect {
      */
     SPELL_WITCH(version -> version < 8 ? "NONE" : (version < 13 ? "SPELL_WITCH" : "witch")),
     /**
-     * In the base game this particle is displayed by llamas while
+     * In vanilla, this particle is displayed by llamas while
      * attacking an entity.
-     * <p>
-     * The particle is displayed clientside so it's not used in any nms classes.
      * <p>
      * <b>Information</b>:
      * <ul>
-     * <li>Appearance: A white cloud.</li>
-     * <li>Speed value:Influences the velocity at which the particle flies off.</li>
+     * <li>Appearance: White cloud.</li>
+     * <li>Speed value: Influences the velocity at which the particle flies off.</li>
      * <li>Extra: The velocity of this particle can be set. The amount has to be 0.</li>
      * </ul>
      */
     SPIT(version -> version < 11 ? "NONE" : (version < 13 ? "SPIT" : "spit")),
     /**
-     * 1.17 Placeholder
+     * In vanilla, this particle is emitted around spore blossoms.
+     * <p>
+     * <b>Information</b>:
+     * <ul>
+     * <li>Appearance: Green square.</li>
+     * <li>Speed value: Doesn't influence the particle.</li>
+     * </ul>
      */
     SPORE_BLOSSOM_AIR(version -> version < 17 ? "NONE" : "spore_blossom_air"),
     /**
-     * In the base game this particle is displayed when a squid gets
+     * In vanilla, this particle is displayed when a squid gets
      * damaged.
-     * <p>
-     * The particle originates from the nmsEntitySquid class.
      * <p>
      * <b>Information</b>:
      * <ul>
@@ -1002,9 +978,7 @@ public enum ParticleEffect {
      */
     SQUID_INK(version -> version < 13 ? "NONE" : "squid_ink", DIRECTIONAL),
     /**
-     * In the base game this particle is displayed randomly in water.
-     * <p>
-     * The particle is displayed clientside so it's not used in any nms classes.
+     * In vanilla, this particle is displayed randomly in water.
      * <p>
      * <b>Information</b>:
      * <ul>
@@ -1014,10 +988,8 @@ public enum ParticleEffect {
      */
     SUSPENDED(version -> version < 8 ? "NONE" : (version < 13 ? "SUSPENDED" : "underwater"), REQUIRES_WATER),
     /**
-     * In the base game this particle is displayed when a player is close
+     * In vanilla, this particle is displayed when a player is close
      * to bedrock or the void.
-     * <p>
-     * The particle is displayed clientside so it's not used in any nms classes.
      * <p>
      * <b>Information</b>:
      * <ul>
@@ -1027,10 +999,8 @@ public enum ParticleEffect {
      */
     SUSPENDED_DEPTH(version -> version > 8 && version < 13 ? "SUSPENDED_DEPTH" : "NONE", DIRECTIONAL),
     /**
-     * In the base game this particle is displayed when a Player hits
+     * In vanilla, this particle is displayed when a Player hits
      * multiple entities at once with a sword.
-     * <p>
-     * The particle originates from the nms EntityHuman class,
      * <p>
      * <b>Information</b>:
      * <ul>
@@ -1041,10 +1011,8 @@ public enum ParticleEffect {
      */
     SWEEP_ATTACK(version -> version < 9 ? "NONE" : (version < 13 ? "SWEEP_ATTACK" : "sweep_attack"), RESIZEABLE),
     /**
-     * In the base game this particle is displayed when a totem of
+     * In vanilla, this particle is displayed when a totem of
      * undying is used.
-     * <p>
-     * The particle is displayed clientside so it's not used in any nms classes.
      * <p>
      * <b>Information</b>:
      * <ul>
@@ -1055,10 +1023,8 @@ public enum ParticleEffect {
      */
     TOTEM(version -> version < 11 ? "NONE" : (version < 13 ? "TOTEM" : "totem_of_undying"), DIRECTIONAL),
     /**
-     * In the base game this particle is randomly displayed by mycelium
+     * In vanilla, this particle is randomly displayed by mycelium
      * blocks.
-     * <p>
-     * The particle is displayed clientside so it's not used in any nms classes.
      * <p>
      * <b>Information</b>:
      * <ul>
@@ -1069,13 +1035,21 @@ public enum ParticleEffect {
      */
     TOWN_AURA(version -> version < 8 ? "NONE" : (version < 13 ? "TOWN_AURA" : "mycelium"), DIRECTIONAL),
     /**
-     * 1.17 Placeholder
-     */
-    VIBRATION(version -> version < 17 ? "NONE" : "vibration"),
-    /**
-     * In the base game this particle is displayed when attacking a village.
+     * In vanilla, this particle is displayed when a sculk sensor is triggered.
      * <p>
-     * The particle is displayed clientside so it's not used in any nms classes.
+     * The vibration particle needs a lot of data in order to be displayed. Please
+     * have a look at the {@link VibrationData} documentation for more information.
+     * <p>
+     * <b>Information</b>:
+     * <ul>
+     * <li>Appearance: cyan wave.</li>
+     * <li>Speed value: Doesn't influence the particle.</li>
+     * <li>Extra: Takes a start and destination location. (More information: {@link VibrationData})</li>
+     * </ul>
+     */
+    VIBRATION(version -> version < 17 ? "NONE" : "vibration", DIRECTIONAL),
+    /**
+     * In vanilla, this particle is displayed when attacking a village.
      * <p>
      * <b>Information</b>:
      * <ul>
@@ -1085,11 +1059,9 @@ public enum ParticleEffect {
      */
     VILLAGER_ANGRY(version -> version < 8 ? "NONE" : (version < 13 ? "VILLAGER_ANGRY" : "angry_villager")),
     /**
-     * In the base game this particle is displayed when trading with a
+     * In vanilla, this particle is displayed when trading with a
      * villager, using bone meal on crops, feeding baby animals or walking on
      * turtle eggs.
-     * <p>
-     * The particle originates from the nms EntityAgeable class.
      * <p>
      * <b>Information</b>:
      * <ul>
@@ -1100,10 +1072,8 @@ public enum ParticleEffect {
      */
     VILLAGER_HAPPY(version -> version < 8 ? "NONE" : (version < 13 ? "VILLAGER_HAPPY" : "happy_villager"), DIRECTIONAL),
     /**
-     * In the base game this particle is displayed in the warped forest
+     * In vanilla, this particle is displayed in the warped forest
      * nether biome.
-     * <p>
-     * The particle originates from the nms BiomeWarpedForest class.
      * <p>
      * <b>Information</b>:
      * <ul>
@@ -1114,12 +1084,9 @@ public enum ParticleEffect {
      */
     WARPED_SPORE(version -> version < 16 ? "NONE" : "warped_spore"),
     /**
-     * In the base game this particle is displayed when a Entity is
+     * In vanilla, this particle is displayed when a Entity is
      * swimming in water, a projectile flies into the water or a fish
      * bites onto the bait.
-     * <p>
-     * The particle originates from the  nms EntityLiving, EntityProjectile
-     * and EntityFishingHook classes.
      * <p>
      * <b>Information</b>:
      * <ul>
@@ -1129,9 +1096,7 @@ public enum ParticleEffect {
      */
     WATER_BUBBLE(version -> version < 8 ? "NONE" : (version < 13 ? "WATER_BUBBLE" : "bubble"), DIRECTIONAL, REQUIRES_WATER),
     /**
-     * In the base game this particle is displayed when rain hits the ground.
-     * <p>
-     * The particle is displayed clientside so it's not used in any nms classes.
+     * In vanilla, this particle is displayed when rain hits the ground.
      * <p>
      * <b>Information</b>:
      * <ul>
@@ -1141,11 +1106,8 @@ public enum ParticleEffect {
      */
     WATER_DROP(version -> version > 8 && version < 13 ? "WATER_DROP" : "NONE"),
     /**
-     * In the base game this particle is displayed when a Entity is
+     * In vanilla, this particle is displayed when a Entity is
      * swimming in water, wolves shaking  off after swimming or boats.
-     * <p>
-     * The particle originates from the nms EntityWolf, EntityLiving and
-     * EntityBoat classes.
      * <p>
      * <b>Information</b>:
      * <ul>
@@ -1155,10 +1117,8 @@ public enum ParticleEffect {
      */
     WATER_SPLASH(version -> version < 8 ? "NONE" : (version < 13 ? "WATER_SPLASH" : "splash"), DIRECTIONAL),
     /**
-     * In the base game this particle is displayed when a fish bites
+     * In vanilla, this particle is displayed when a fish bites
      * onto the bait of a fishing rod.
-     * <p>
-     * The particle originates from the nms EntityFishingHook class.
      * <p>
      * <b>Information</b>:
      * <ul>
@@ -1168,10 +1128,31 @@ public enum ParticleEffect {
      */
     WATER_WAKE(version -> version < 8 ? "NONE" : (version < 13 ? "WATER_WAKE" : "fishing"), DIRECTIONAL),
     /**
-     * In the base game this particle is randomly displayed in the
+     * In vanilla, this particle is displayed when wax is removed from a copper block.
+     * <p>
+     * <b>Information</b>:
+     * <ul>
+     * <li>Appearance: White star.</li>
+     * <li>Speed value: Influences the velocity at which the particle flies off.</li>
+     * <li>Extra: The velocity of this particle can be set. The amount has to be 0.</li>
+     * </ul>
+     */
+    WAX_OFF(version -> version < 17 ? "NONE" : "wax_off", DIRECTIONAL),
+    /**
+     * In vanilla, this particle is displayed when wax is applied to a copper block.
+     * <p>
+     * <b>Information</b>:
+     * <ul>
+     * <li>Appearance: Orange star.</li>
+     * <li>Speed value: Influences the velocity at which the particle flies off.</li>
+     * <li>Extra: The velocity of this particle can be set. The amount has to be 0.</li>
+     * </ul>
+     */
+    WAX_ON(version -> version < 17 ? "NONE" : "wax_on", DIRECTIONAL),
+    /**
+     * In vanilla, this particle is randomly displayed in the
      * basalt deltas nether biome.
      * <p>
-     * The particle originates from the nms BiomeBasaltDeltas class.
      * The movement of this particle is handled completely clientside
      * and can therefore not be influenced.
      * <p>
@@ -1244,7 +1225,7 @@ public enum ParticleEffect {
      * @return {@link String} name of the particle.
      */
     public String getFieldName() {
-        return fieldNameMapper.apply(Integer.parseInt((String.valueOf(Version.getServerVersion().getID() / 10)).substring(1)));
+        return fieldNameMapper.apply(ParticleReflectionUtils.MINECRAFT_VERSION);
     }
 
     /**
@@ -1272,7 +1253,9 @@ public enum ParticleEffect {
             return isCorrectColor(((ParticleColor) data));
         if (data instanceof BlockTexture)
             return hasProperty(REQUIRES_BLOCK);
-        return data instanceof ItemTexture && hasProperty(REQUIRES_ITEM);
+        if (data instanceof ItemTexture)
+            return hasProperty(REQUIRES_ITEM);
+        return data instanceof VibrationData && this == VIBRATION;
     }
 
     /**
@@ -1285,12 +1268,15 @@ public enum ParticleEffect {
      * @return {@code true} if the current instance supports the given {@link ParticleColor}
      */
     public boolean isCorrectColor(ParticleColor color) {
+        if (color instanceof DustColorTransitionData)
+            return this == DUST_COLOR_TRANSITION;
+        if (color instanceof DustData)
+            return hasProperty(DUST);
         return hasProperty(COLORABLE) && (this.equals(ParticleEffect.NOTE) ? color instanceof NoteColor : color instanceof RegularColor);
     }
 
     /**
      * Gets the nms instance of the current {@link ParticleEffect} instance.
-     * <p>
      *
      * @return The NMS instance or {@code null} if the particle isn't supported in the current minecraft version.
      */
@@ -1300,10 +1286,10 @@ public enum ParticleEffect {
         String fieldName = getFieldName();
         if ("NONE".equals(fieldName))
             return null;
-        if (Version.getServerVersion().isOlder(Version.v1_13_R1))
+        if (ParticleReflectionUtils.MINECRAFT_VERSION < 13)
             return Arrays.stream(ParticleConstants.PARTICLE_ENUM.getEnumConstants()).filter(effect -> effect.toString().equals(fieldName)).findFirst().orElse(null);
         else try {
-            return REGISTRY_GET_METHOD.invoke(PARTICLE_TYPE_REGISTRY, MINECRAFT_KEY_CONSTRUCTOR.newInstance(fieldName));
+            return REGISTRY_GET_METHOD.invoke(PARTICLE_TYPE_REGISTRY, ParticleReflectionUtils.getMinecraftKey(fieldName));
         } catch (Exception ignored) {
         }
         return null;
@@ -1578,7 +1564,7 @@ public enum ParticleEffect {
             data.setEffect(this);
         ParticlePacket packet = new ParticlePacket(this, offsetX, offsetY, offsetZ, speed, amount, data);
         Object nmsPacket = packet.createPacket(location);
-        players.forEach(player -> BukkitReflection.sendPacket(player, nmsPacket));
+        players.forEach(player -> ParticleReflectionUtils.sendPacket(player, nmsPacket));
     }
 
 }

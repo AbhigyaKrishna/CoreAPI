@@ -1,5 +1,6 @@
 package me.Abhigya.core.database.sql;
 
+import me.Abhigya.core.database.DatabaseType;
 import org.apache.commons.lang.Validate;
 import org.bukkit.plugin.Plugin;
 
@@ -13,7 +14,7 @@ import java.sql.SQLTimeoutException;
 /**
  * Class for interacting with a SQLite database.
  */
-public class SQLite {
+public class SQLite extends SQLDatabase {
 
     /**
      * The JDBC driver class.
@@ -39,6 +40,8 @@ public class SQLite {
      * @param reconnect <strong>{@code true}</strong> to auto reconnect
      */
     public SQLite(Plugin plugin, File db, boolean reconnect) {
+        super(DatabaseType.SQLite);
+
         Validate.notNull(plugin, "The plugin cannot be null!");
         Validate.notNull(db, "The database file cannot be null!");
 
@@ -67,6 +70,7 @@ public class SQLite {
      *
      * @return true if connected.
      */
+    @Override
     public boolean isConnected() {
         try {
             return this.connection != null && !this.connection.isClosed();
@@ -103,6 +107,7 @@ public class SQLite {
      *                               is not s sqlite database file
      * @throws SQLException          if a database access error occurs.
      */
+    @Override
     public Connection getConnection()
             throws IOException, SQLTimeoutException, IllegalStateException, SQLException {
         if (!isConnected() && reconnect) {
@@ -119,6 +124,7 @@ public class SQLite {
      * @return Times the connection was lost, or
      * <strong>{@code -1}</strong> if the auto-reconnection is disabled.
      */
+    @Override
     public int getLostConnections() {
         return reconnect ? lost_connections : -1;
     }
@@ -135,6 +141,7 @@ public class SQLite {
      *                               has been exceeded and has at least tried to
      *                               cancel the current database connection attempt.
      */
+    @Override
     public synchronized void connect()
             throws IOException, IllegalStateException, SQLException, SQLTimeoutException {
         if (!plugin.getDataFolder().exists())
@@ -160,6 +167,7 @@ public class SQLite {
      *                               {@link #isConnected()}.
      * @throws SQLException          if a database access error occurs.
      */
+    @Override
     public void disconnect() throws SQLException {
         if (!isConnected()) {
             throw new IllegalStateException("Not connected!");

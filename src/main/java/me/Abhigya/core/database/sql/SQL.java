@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 public class SQL {
 
@@ -13,11 +15,18 @@ public class SQL {
         this.connection = connection;
     }
 
-    public void createTable(String table, String columns) {
+    public void createTable(String table, String... columns) {
+        String col = Arrays.stream(columns).map(str -> {
+            if (!(str.equalsIgnoreCase(columns[columns.length - 1])))
+                return str + ", ";
+            else
+                return str;
+        }).collect(Collectors.joining()).trim();
+
         PreparedStatement ps;
         try {
             ps = connection.prepareStatement("CREATE TABLE IF NOT EXISTS "
-                    + table + " (" + columns + ");");
+                    + table + " (" + col + ");");
             ps.executeUpdate();
             ps.close();
         } catch(SQLException ex) {

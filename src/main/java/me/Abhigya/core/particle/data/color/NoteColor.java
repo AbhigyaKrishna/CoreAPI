@@ -24,7 +24,7 @@ public class NoteColor extends ParticleColor {
      * Sets the {@link ParticleEffect}.
      * <p>
      *
-     * @param effect {@link ParticleEffect} that should be displayed.
+     * @param effect {@link ParticleEffect} that should be displayed
      */
     @Override
     public void setEffect(ParticleEffect effect) {
@@ -33,6 +33,7 @@ public class NoteColor extends ParticleColor {
 
     /**
      * Gets the red value of the color.
+     * <p>
      *
      * @return Red value
      */
@@ -73,7 +74,7 @@ public class NoteColor extends ParticleColor {
      */
     @Override
     public Object toNMSData() {
-        return null;
+        return new int[0];
     }
 
     /**
@@ -81,7 +82,7 @@ public class NoteColor extends ParticleColor {
      * cloaks and other effects that can be constructed using the note particle.
      * <p>
      *
-     * @return Random {@link NoteColor} instance.
+     * @return Random {@link NoteColor} instance
      */
     public static NoteColor random() {
         return new NoteColor(MathUtils.generateRandomInteger(0, 24));

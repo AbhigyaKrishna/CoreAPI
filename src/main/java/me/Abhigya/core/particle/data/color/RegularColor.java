@@ -4,12 +4,19 @@ import me.Abhigya.core.particle.ParticleConstants;
 import me.Abhigya.core.particle.ParticleEffect;
 import me.Abhigya.core.particle.data.ParticleData;
 import me.Abhigya.core.particle.utils.MathUtils;
+import me.Abhigya.core.particle.utils.ParticleReflectionUtils;
 import me.Abhigya.core.util.server.Version;
 
 import java.awt.*;
 
 /**
  * A implementation of the {@link ParticleColor} class that supports normal RGB values.
+ * <p>
+ * If you want to define a custom size for {@link ParticleEffect#REDSTONE} or the second
+ * color for {@link ParticleEffect#DUST_COLOR_TRANSITION}, use {@link DustData} and
+ * {@link DustColorTransitionData}. You can however use this class if you're just looking
+ * to set the color.
+ *
  */
 public class RegularColor extends ParticleColor {
 
@@ -61,7 +68,7 @@ public class RegularColor extends ParticleColor {
      * Gets the blue value of the color.
      * <p>
      *
-     * @return Blue value.
+     * @return Blue value
      */
     @Override
     public float getBlue() {
@@ -73,15 +80,24 @@ public class RegularColor extends ParticleColor {
      * minecraft version was released before 1.13 an int array should be returned. If the
      * version was released after 1.12 a nms "ParticleParam" has to be returned.
      * <p>
+     * This method also supports TransitioningDust particles since 1.6.
+     * <p>
      *
      * @return Nms data
      */
     @Override
     public Object toNMSData() {
-        if (getEffect() != ParticleEffect.REDSTONE || Version.getServerVersion().isOlder(Version.v1_13_R1))
+        if (ParticleReflectionUtils.MINECRAFT_VERSION < 13 || (getEffect() != ParticleEffect.REDSTONE && getEffect() != ParticleEffect.DUST_COLOR_TRANSITION))
             return new int[0];
         try {
-            return ParticleConstants.PARTICLE_PARAM_REDSTONE_CONSTRUCTOR.newInstance(getRed(), getGreen(), getBlue(), 1f);
+            if (getEffect() == ParticleEffect.REDSTONE)
+                return ParticleReflectionUtils.MINECRAFT_VERSION < 17
+                        ? ParticleConstants.PARTICLE_PARAM_REDSTONE_CONSTRUCTOR.newInstance(getRed(), getGreen(), getBlue(), 1f)
+                        : ParticleConstants.PARTICLE_PARAM_REDSTONE_CONSTRUCTOR.newInstance(ParticleReflectionUtils.createVector3fa(getRed(), getGreen(), getBlue()), 1f);
+            if (ParticleReflectionUtils.MINECRAFT_VERSION < 17)
+                return null;
+            Object colorVector = ParticleReflectionUtils.createVector3fa(getRed(), getGreen(), getBlue());
+            return ParticleConstants.PARTICLE_PARAM_DUST_COLOR_TRANSITION_CONSTRUCTOR.newInstance(colorVector, colorVector, 1f);
         } catch (Exception ex) {
             return null;
         }

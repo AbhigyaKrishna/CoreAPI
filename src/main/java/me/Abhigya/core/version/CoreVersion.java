@@ -5,7 +5,9 @@ import me.Abhigya.core.main.Main;
 public enum CoreVersion {
 
     v1_0_0(100),
-    v1_0_1(101);
+    v1_0_1(101),
+    v1_1_0(110),
+    v1_1_1(111);
 
     private final int id;
 

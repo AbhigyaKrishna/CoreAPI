@@ -6,7 +6,9 @@ import me.Abhigya.core.plugin.Plugin;
 import me.Abhigya.core.plugin.PluginAdapter;
 import me.Abhigya.core.util.console.ConsoleUtils;
 import me.Abhigya.core.util.world.GameRuleHandler;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.plugin.ServicePriority;
 
 /**
  * Api main class
@@ -15,6 +17,7 @@ public final class Main extends PluginAdapter {
 
     @Override
     protected boolean setUp() {
+        Bukkit.getServicesManager().register(Main.class, getInstance(), getInstance(), ServicePriority.Highest);
         ConsoleUtils.sendPluginMessage(ChatColor.GREEN, "Plugin Started", this);
         return true;
     }

@@ -4,3 +4,4 @@ main: me.Abhigya.core.main.Main
 api-version: 1.16
 author: Abhigya
 softdepend: [Vault, PlaceHolderAPI, Luckperms, PermissionsEx, PowerfulPerms]
+load: STARTUP

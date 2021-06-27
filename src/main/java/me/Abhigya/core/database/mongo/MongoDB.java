@@ -3,6 +3,8 @@ package me.Abhigya.core.database.mongo;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.MongoClient;
+import me.Abhigya.core.database.Database;
+import me.Abhigya.core.database.DatabaseType;
 import me.Abhigya.core.util.StringUtils;
 import org.apache.commons.lang.Validate;
 import org.bukkit.plugin.Plugin;
@@ -13,7 +15,7 @@ import java.util.Set;
 /**
  * Class for interacting with a Mongo database.
  */
-public class MongoDB {
+public class MongoDB extends Database {
 
     private final Plugin plugin;
     private final String ip;
@@ -34,6 +36,8 @@ public class MongoDB {
      * @param dbname Database name
      */
     public MongoDB(Plugin plugin, String host, int port, String dbname) {
+        super(DatabaseType.MongoDB);
+
         Validate.isTrue(!StringUtils.isBlank(host), "Host Address cannot be null or empty!");
 
         this.plugin = plugin;
@@ -60,6 +64,7 @@ public class MongoDB {
      *
      * @return true if connected.
      */
+    @Override
     public boolean isConnected() {
         return this.client != null && this.db != null;
     }
@@ -67,6 +72,7 @@ public class MongoDB {
     /**
      * Starts the connection with MongoDB.
      */
+    @Override
     public synchronized void connect() {
         this.client = new MongoClient(this.ip, this.port);
         this.db = client.getDB(this.dbname);
@@ -75,6 +81,7 @@ public class MongoDB {
     /**
      * Closes the connection with MongoDB.
      */
+    @Override
     public void disconnect() {
         this.client.close();
         this.client = null;

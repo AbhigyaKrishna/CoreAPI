@@ -3,11 +3,13 @@ package me.Abhigya.core.particle.data.texture;
 import me.Abhigya.core.particle.ParticleConstants;
 import me.Abhigya.core.particle.PropertyType;
 import me.Abhigya.core.particle.data.ParticleData;
-import me.Abhigya.core.util.reflection.general.FieldReflection;
-import me.Abhigya.core.util.server.Version;
+import me.Abhigya.core.particle.utils.ParticleReflectionUtils;
 import org.bukkit.Material;
 
 import java.lang.reflect.Field;
+
+import static me.Abhigya.core.particle.ParticleConstants.BLOCK_REGISTRY;
+import static me.Abhigya.core.particle.ParticleConstants.REGISTRY_GET_METHOD;
 
 /**
  * A implementation of the {@link ParticleTexture} object to support block texture particles.
@@ -47,7 +49,7 @@ public class BlockTexture extends ParticleTexture {
     public Object toNMSData() {
         if (getMaterial() == null || !getMaterial().isBlock() || getEffect() == null || !getEffect().hasProperty(PropertyType.REQUIRES_BLOCK))
             return null;
-        if (Version.getServerVersion().isOlder(Version.v1_13_R1))
+        if (ParticleReflectionUtils.MINECRAFT_VERSION < 13)
             return super.toNMSData();
         Object block = getBlockData(getMaterial());
         if (block == null)
@@ -63,15 +65,20 @@ public class BlockTexture extends ParticleTexture {
      * Gets the nms block data of the given bukkit {@link Material}.
      * <p>
      *
-     * @param material {@link Material} whose data should be getted
+     * @param material {@link Material} whose data should be gotten
      * @return Block data of the specified {@link Material} or {@code null} when an error occurs.
      */
-    public Object getBlockData(Material material) {
+    public Object getBlockData(Material material) { // FIXME
         try {
-            Field blockField = FieldReflection.get(ParticleConstants.BLOCKS_CLASS, material.name(), false);
-            if (blockField == null)
-                return null;
-            Object block = FieldReflection.getValue(blockField, blockField.getName());
+            Object block;
+            if (ParticleReflectionUtils.MINECRAFT_VERSION < 17) {
+                Field blockField = ParticleReflectionUtils.getFieldOrNull(ParticleConstants.BLOCKS_CLASS, material.name(), false);
+                if (blockField == null)
+                    return null;
+                block = ParticleReflectionUtils.readField(blockField, null);
+            } else
+                block = REGISTRY_GET_METHOD.invoke(BLOCK_REGISTRY, ParticleReflectionUtils.getMinecraftKey(material.name().toLowerCase()));
+
             return ParticleConstants.BLOCK_GET_BLOCK_DATA_METHOD.invoke(block);
         } catch (Exception ex) {
             return null;
