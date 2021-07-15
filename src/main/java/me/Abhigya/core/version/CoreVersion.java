@@ -1,13 +1,14 @@
 package me.Abhigya.core.version;
 
-import me.Abhigya.core.main.Main;
+import me.Abhigya.core.main.CoreAPI;
 
 public enum CoreVersion {
 
     v1_0_0(100),
     v1_0_1(101),
     v1_1_0(110),
-    v1_1_1(111);
+    v1_1_1(111),
+    v1_1_2(112);
 
     private final int id;
 
@@ -16,7 +17,7 @@ public enum CoreVersion {
     }
 
     public static CoreVersion getCoreVersion() {
-        return valueOf(format(Main.getInstance().getDescription().getVersion()));
+        return valueOf(format(CoreAPI.getInstance().getDescription().getVersion()));
     }
 
     private static String format(String suppose_version) {

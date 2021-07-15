@@ -1,6 +1,6 @@
 package me.Abhigya.core.util.bossbar.version.oldest;
 
-import me.Abhigya.core.main.Main;
+import me.Abhigya.core.main.CoreAPI;
 import me.Abhigya.core.util.bossbar.BarColor;
 import me.Abhigya.core.util.bossbar.BarFlag;
 import me.Abhigya.core.util.bossbar.BarStyle;
@@ -93,12 +93,12 @@ public abstract class BossBarOldest extends BossBarBase implements Listener {
         this.setProgress(progress);
         this.create();
 
-        Bukkit.getPluginManager().registerEvents(this, Main.getInstance());
+        Bukkit.getPluginManager().registerEvents(this, CoreAPI.getInstance());
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onTeleport(final PlayerTeleportEvent event) {
-        Bukkit.getScheduler().runTaskLater(Main.getInstance(), new Runnable() {
+        Bukkit.getScheduler().runTaskLater(CoreAPI.getInstance(), new Runnable() {
             @Override
             public void run() {
                 Player player = event.getPlayer();
@@ -113,7 +113,7 @@ public abstract class BossBarOldest extends BossBarBase implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onRespawn(final PlayerRespawnEvent event) {
-        Bukkit.getScheduler().runTaskLater(Main.getInstance(), new Runnable() {
+        Bukkit.getScheduler().runTaskLater(CoreAPI.getInstance(), new Runnable() {
             @Override
             public void run() {
                 Player player = event.getPlayer();
@@ -132,7 +132,7 @@ public abstract class BossBarOldest extends BossBarBase implements Listener {
     protected synchronized void create() {
         disposeExecutors();
 
-        update_executor = Bukkit.getScheduler().runTaskTimerAsynchronously(Main.getInstance(),
+        update_executor = Bukkit.getScheduler().runTaskTimerAsynchronously(CoreAPI.getInstance(),
                 update_command, 0L, 0L);
     }
 

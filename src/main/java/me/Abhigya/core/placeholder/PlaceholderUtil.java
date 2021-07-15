@@ -1,7 +1,7 @@
 package me.Abhigya.core.placeholder;
 
+import me.Abhigya.core.main.CoreAPI;
 import me.Abhigya.core.placeholder.managers.CustomPlaceholderManager;
-import me.Abhigya.core.main.Main;
 import me.Abhigya.core.placeholder.events.PlaceholderManagerHookEvent;
 import me.Abhigya.core.placeholder.managers.PAPIPlaceholderManager;
 import me.Abhigya.core.util.PluginUtils;
@@ -72,13 +72,13 @@ public final class PlaceholderUtil {
         Bukkit.getPluginManager().callEvent(event);
         if (event.getPlaceholderManager() != null) {
             manager = event.getPlaceholderManager();
-            ConsoleUtils.sendPluginMessage(ChatColor.GREEN, "Successfully hooked with custom PlaceholderManager", Main.getInstance());
+            ConsoleUtils.sendPluginMessage(ChatColor.GREEN, "Successfully hooked with custom PlaceholderManager", CoreAPI.getInstance());
         } else if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
             manager = new PAPIPlaceholderManager();
-            ConsoleUtils.sendPluginMessage(ChatColor.GREEN, "Successfully hooked into PlaceholderAPI", Main.getInstance());
+            ConsoleUtils.sendPluginMessage(ChatColor.GREEN, "Successfully hooked into PlaceholderAPI", CoreAPI.getInstance());
         } else {
             manager = new CustomPlaceholderManager();
-            ConsoleUtils.sendPluginMessage(ChatColor.YELLOW, "Cannot find PlaceholderAPI, using internal system.", Main.getInstance());
+            ConsoleUtils.sendPluginMessage(ChatColor.YELLOW, "Cannot find PlaceholderAPI, using internal system.", CoreAPI.getInstance());
             fallback = true;
             PluginUtils.onPluginLoaded("PlaceholderAPI", PlaceholderUtil::onPapiEnable);
         }
@@ -86,7 +86,7 @@ public final class PlaceholderUtil {
 
     public static void onPapiEnable(Plugin plugin) {
         if (!fallback) return; // Another manager has been registered (and it is not a fallback)
-        ConsoleUtils.sendPluginMessage(ChatColor.YELLOW, "Late hooking into PlaceholderAPI", Main.getInstance());
+        ConsoleUtils.sendPluginMessage(ChatColor.YELLOW, "Late hooking into PlaceholderAPI", CoreAPI.getInstance());
         manager = new PAPIPlaceholderManager();
     }
 

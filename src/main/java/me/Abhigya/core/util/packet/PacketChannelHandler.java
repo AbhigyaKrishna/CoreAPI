@@ -4,7 +4,7 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPromise;
-import me.Abhigya.core.main.Main;
+import me.Abhigya.core.main.CoreAPI;
 import me.Abhigya.core.util.packet.PacketListener.Priority;
 import me.Abhigya.core.util.reflection.bukkit.BukkitReflection;
 import me.Abhigya.core.util.reflection.general.FieldReflection;
@@ -30,7 +30,7 @@ public final class PacketChannelHandler {
 
     /* initialize channels handler by registering a player injector instance */
     static {
-        Bukkit.getPluginManager().registerEvents(new PlayerInjector(), Main.getInstance());
+        Bukkit.getPluginManager().registerEvents(new PlayerInjector(), CoreAPI.getInstance());
     }
 
     /**

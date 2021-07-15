@@ -120,17 +120,18 @@ public class LocationUtils {
 
     /**
      * Get cuboid around of location.
+     * <p>
      *
      * @param center Center location
      * @param radius Cuboid radius
      * @param amount Cuboid definition
-     * @return List with circle locations
+     * @return List with cuboid locations
      */
     public static ArrayList<Location> getCuboid(Location center, double radius, int amount) {
         // make list.
         ArrayList<Location> locations = new ArrayList<Location>();
 
-        // get main ejes.
+        // get main eyes.
         final double mainX = center.getX();
         final double mainY = center.getY();
         final double mainZ = center.getZ();

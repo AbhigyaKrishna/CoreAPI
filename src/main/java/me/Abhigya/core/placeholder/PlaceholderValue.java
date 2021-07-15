@@ -1,6 +1,6 @@
 package me.Abhigya.core.placeholder;
 
-import me.Abhigya.core.main.Main;
+import me.Abhigya.core.main.CoreAPI;
 import me.Abhigya.core.util.ColorUtils;
 import me.Abhigya.core.util.StringUtils;
 import me.Abhigya.core.util.console.ConsoleUtils;
@@ -112,11 +112,11 @@ public interface PlaceholderValue<T> {
             parsed = parser.apply(string);
         } catch (Exception e) {
             if (!PlaceholderUtil.hasPlaceholders(string)) {
-                ConsoleUtils.sendPluginMessage(ChatColor.RED, "Invalid value: " + string, Main.getInstance());
+                ConsoleUtils.sendPluginMessage(ChatColor.RED, "Invalid value: " + string, CoreAPI.getInstance());
                 return new FalsePlaceholderValue<>(onError);
             }
             return new SimplePlaceholderValue<>(string, parser, (str, exc) ->
-                    ConsoleUtils.sendPluginMessage(ChatColor.RED, "Cannot parse value: '" + str + "' (from '" + string + "')", Main.getInstance()), onError);
+                    ConsoleUtils.sendPluginMessage(ChatColor.RED, "Cannot parse value: '" + str + "' (from '" + string + "')", CoreAPI.getInstance()), onError);
         }
         return new FalsePlaceholderValue<>(parsed);
     }

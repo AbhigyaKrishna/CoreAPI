@@ -1,6 +1,6 @@
 package me.Abhigya.core.particle.utils;
 
-import me.Abhigya.core.main.Main;
+import me.Abhigya.core.main.CoreAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -27,7 +27,7 @@ public class PlayerConnectionCache implements Listener {
      * as an event listener. The plugin is retrieved from the PluginClassLoader.
      */
     public PlayerConnectionCache() {
-        Bukkit.getServer().getPluginManager().registerEvents(this, Main.getInstance());
+        Bukkit.getServer().getPluginManager().registerEvents(this, CoreAPI.getInstance());
     }
 
     /**

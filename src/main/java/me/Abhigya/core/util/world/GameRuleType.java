@@ -1,6 +1,6 @@
 package me.Abhigya.core.util.world;
 
-import me.Abhigya.core.main.Main;
+import me.Abhigya.core.main.CoreAPI;
 import me.Abhigya.core.util.reflection.DataType;
 import org.apache.commons.lang.Validate;
 import org.bukkit.World;
@@ -546,7 +546,7 @@ public enum GameRuleType {
                 world.setGameRuleValue(getName(), value.toString());
             }
         } else { // metadata presentation mode
-            world.setMetadata(getName(), new GameRuleMetadata(Main.getInstance(), this, value));
+            world.setMetadata(getName(), new GameRuleMetadata(CoreAPI.getInstance(), this, value));
         }
     }
 }

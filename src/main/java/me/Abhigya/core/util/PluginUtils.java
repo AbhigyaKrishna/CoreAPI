@@ -1,6 +1,6 @@
 package me.Abhigya.core.util;
 
-import me.Abhigya.core.main.Main;
+import me.Abhigya.core.main.CoreAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.event.EventHandler;
@@ -17,7 +17,7 @@ public class PluginUtils {
         if (Bukkit.getPluginManager().isPluginEnabled(pluginName)) {
             callback.accept(Bukkit.getPluginManager().getPlugin(pluginName));
         } else {
-            Bukkit.getPluginManager().registerEvents(new PluginLoadedListener(pluginName, callback), Main.getInstance());
+            Bukkit.getPluginManager().registerEvents(new PluginLoadedListener(pluginName, callback), CoreAPI.getInstance());
         }
     }
 

@@ -13,11 +13,11 @@ import org.bukkit.plugin.ServicePriority;
 /**
  * Api main class
  */
-public final class Main extends PluginAdapter {
+public final class CoreAPI extends PluginAdapter {
 
     @Override
     protected boolean setUp() {
-        Bukkit.getServicesManager().register(Main.class, getInstance(), getInstance(), ServicePriority.Highest);
+        Bukkit.getServicesManager().register(CoreAPI.class, getInstance(), getInstance(), ServicePriority.Highest);
         ConsoleUtils.sendPluginMessage(ChatColor.GREEN, "Plugin Started", this);
         return true;
     }
@@ -35,13 +35,13 @@ public final class Main extends PluginAdapter {
     }
 
     /**
-     * Gets the {@link Main} plugin instance.
+     * Gets the {@link CoreAPI} plugin instance.
      * <p>
      *
      * @return Core instance.
      */
-    public static Main getInstance() {
-        return Plugin.getPlugin(Main.class);
+    public static CoreAPI getInstance() {
+        return Plugin.getPlugin(CoreAPI.class);
     }
 
 }

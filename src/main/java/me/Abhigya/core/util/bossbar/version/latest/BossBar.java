@@ -1,6 +1,6 @@
 package me.Abhigya.core.util.bossbar.version.latest;
 
-import me.Abhigya.core.main.Main;
+import me.Abhigya.core.main.CoreAPI;
 import me.Abhigya.core.util.StringUtils;
 import me.Abhigya.core.util.bossbar.BarColor;
 import me.Abhigya.core.util.bossbar.BarFlag;
@@ -53,7 +53,7 @@ public class BossBar extends BossBarBase implements Listener {
         this.setTitle(title);
         this.setProgress(progress);
 
-        Bukkit.getPluginManager().registerEvents(this, Main.getInstance());
+        Bukkit.getPluginManager().registerEvents(this, CoreAPI.getInstance());
     }
 
     @Override

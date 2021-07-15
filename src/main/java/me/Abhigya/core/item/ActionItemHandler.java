@@ -1,7 +1,7 @@
 package me.Abhigya.core.item;
 
 import me.Abhigya.core.handler.PluginHandler;
-import me.Abhigya.core.main.Main;
+import me.Abhigya.core.main.CoreAPI;
 import me.Abhigya.core.util.EventUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -46,7 +46,7 @@ public class ActionItemHandler extends PluginHandler {
         return ACTION_ITEMS.remove(item);
     }
 
-    public ActionItemHandler(Main plugin) {
+    public ActionItemHandler(CoreAPI plugin) {
         super(plugin);
         register();
 

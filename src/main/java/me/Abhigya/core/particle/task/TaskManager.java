@@ -1,6 +1,6 @@
 package me.Abhigya.core.particle.task;
 
-import me.Abhigya.core.main.Main;
+import me.Abhigya.core.main.CoreAPI;
 import me.Abhigya.core.particle.utils.ParticleUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -39,7 +39,7 @@ public final class TaskManager {
      */
     public int startTask(ParticleTask task) {
         //noinspection CodeBlock2Expr
-        int taskId = Bukkit.getScheduler().runTaskTimerAsynchronously(Main.getInstance(), () -> {
+        int taskId = Bukkit.getScheduler().runTaskTimerAsynchronously(CoreAPI.getInstance(), () -> {
             ParticleUtils.sendBulk(task.getPackets(), task.getTargetPlayers());
         }, 0, task.getTickDelay()).getTaskId();
 

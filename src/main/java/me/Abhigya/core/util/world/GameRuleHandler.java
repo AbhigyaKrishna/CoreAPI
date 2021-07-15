@@ -1,7 +1,7 @@
 package me.Abhigya.core.util.world;
 
 import me.Abhigya.core.handler.PluginHandler;
-import me.Abhigya.core.main.Main;
+import me.Abhigya.core.main.CoreAPI;
 import org.bukkit.GameMode;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -18,7 +18,7 @@ import org.bukkit.event.entity.FoodLevelChangeEvent;
  */
 public class GameRuleHandler extends PluginHandler {
 
-    public GameRuleHandler(Main plugin) {
+    public GameRuleHandler(CoreAPI plugin) {
         super(plugin);
         register();
     }

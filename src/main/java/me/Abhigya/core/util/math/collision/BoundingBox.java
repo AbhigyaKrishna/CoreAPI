@@ -403,15 +403,15 @@ public class BoundingBox {
      * @return true if intersecting.
      */
     public boolean intersects(final BoundingBox other) {
-        /* test using SAT ( separating axis theorem ) */
-        Double lx = Math.abs(this.center.getX() - other.center.getX());
-        Double sumx = (this.dimensions.getX() / 2.0F) + (other.dimensions.getX() / 2.0F);
+        /* test using SAT (separating axis theorem) */
+        double lx = Math.abs(this.center.getX() - other.center.getX());
+        double sumx = (this.dimensions.getX() / 2.0F) + (other.dimensions.getX() / 2.0F);
 
-        Double ly = Math.abs(this.center.getY() - other.center.getY());
-        Double sumy = (this.dimensions.getY() / 2.0F) + (other.dimensions.getY() / 2.0F);
+        double ly = Math.abs(this.center.getY() - other.center.getY());
+        double sumy = (this.dimensions.getY() / 2.0F) + (other.dimensions.getY() / 2.0F);
 
-        Double lz = Math.abs(this.center.getZ() - other.center.getZ());
-        Double sumz = (this.dimensions.getZ() / 2.0F) + (other.dimensions.getZ() / 2.0F);
+        double lz = Math.abs(this.center.getZ() - other.center.getZ());
+        double sumz = (this.dimensions.getZ() / 2.0F) + (other.dimensions.getZ() / 2.0F);
 
         return (lx <= sumx && ly <= sumy && lz <= sumz);
     }

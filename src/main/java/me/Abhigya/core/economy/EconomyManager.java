@@ -1,6 +1,6 @@
 package me.Abhigya.core.economy;
 
-import me.Abhigya.core.main.Main;
+import me.Abhigya.core.main.CoreAPI;
 import me.Abhigya.core.util.PluginUtils;
 import me.Abhigya.core.util.console.ConsoleUtils;
 import net.milkbowl.vault.economy.Economy;
@@ -21,13 +21,13 @@ public class EconomyManager {
      * Enables the economy manager and hooks into Vault
      */
     public static void enable() {
-        ConsoleUtils.sendPluginMessage(ChatColor.YELLOW, "Disabling economy until vault loads", Main.getInstance());
+        ConsoleUtils.sendPluginMessage(ChatColor.YELLOW, "Disabling economy until vault loads", CoreAPI.getInstance());
         enabled = false;
 
         PluginUtils.onPluginLoaded("Vault", p -> {
             RegisteredServiceProvider<Economy> rsp = Bukkit.getServicesManager().getRegistration(Economy.class);
             if (rsp == null) {
-                ConsoleUtils.sendPluginMessage(ChatColor.RED, "Cannot find any economy service, economy not supported", Main.getInstance());
+                ConsoleUtils.sendPluginMessage(ChatColor.RED, "Cannot find any economy service, economy not supported", CoreAPI.getInstance());
                 enabled = false;
                 return;
             }
