@@ -1,71 +1,98 @@
-package me.Abhigya.core.database.sql;
+package me.Abhigya.core.database.sql.mysql;
 
 import me.Abhigya.core.database.DatabaseType;
+import me.Abhigya.core.database.sql.SQLDatabase;
+import me.Abhigya.core.util.StringUtils;
 import org.apache.commons.lang.Validate;
-import org.bukkit.plugin.Plugin;
 
-import java.io.File;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.SQLTimeoutException;
 
 /**
- * Class for interacting with a SQLite database.
+ * Class for interacting with a MySQL database.
  */
-public class SQLite extends SQLDatabase {
+public class MySQL extends SQLDatabase {
+
+    /**
+     * Connection URL format.
+     */
+    private static final String URL_FORMAT = "jdbc:mysql://"
+            + "%s" // host
+            + ":"
+            + "%d" // port
+            + "/"
+            + "%s" // database
+            + "?autoReconnect="
+            + "%s" // auto reconnect
+            + "&"
+            + "useSSL="
+            + "%s" // use ssl
+            ;
 
     /**
      * The JDBC driver class.
      */
-    private static final String DRIVER_CLASS = "org.sqlite.JDBC";
+    private static final String DRIVER_CLASS = "com.mysql.jdbc.Driver";
 
-    private final Plugin plugin;
-    private final File db;
+    private final String host;
+    private final int port;
+    private final String database;
+    private final String username;
+    private final String password;
     private final boolean reconnect;
+    private final boolean ssl;
 
     private Connection connection;
     private int lost_connections;
 
     /**
-     * Constructs the SQLite database.
-     * <p>
-     * <strong>Note:</strong> Database file should end with {@code .db}
-     * extension.
+     * Constructs the MySQL database.
      * <p>
      *
-     * @param plugin    Plugin for which database is created
-     * @param db        Database file
+     * @param host      Host name
+     * @param port      Port number
+     * @param database  Database name
+     * @param username  User name
+     * @param password  User password
+     * @param reconnect <strong>{@code true}</strong> to auto reconnect
+     * @param ssl       <strong>{@code true}</strong> to use SSL
+     */
+    public MySQL(String host, int port, String database, String username, String password, boolean reconnect, boolean ssl) {
+        super(DatabaseType.MYSQL);
+
+        Validate.isTrue(!StringUtils.isBlank(host), "The host cannot be null or empty!");
+        Validate.isTrue(!StringUtils.isBlank(database), "The database cannot be null or empty!");
+        Validate.notNull(username, "The username cannot be null!");
+        Validate.notNull(password, "The password cannot be null!");
+
+        this.host = host;
+        this.port = port;
+        this.database = database;
+        this.username = username;
+        this.password = password;
+        this.reconnect = reconnect;
+        this.ssl = ssl;
+    }
+
+    /**
+     * Constructs the MySQL database.
+     * <p>
+     *
+     * @param host      Host name
+     * @param port      Port number
+     * @param database  Database name
+     * @param username  User name
+     * @param password  User password
      * @param reconnect <strong>{@code true}</strong> to auto reconnect
      */
-    public SQLite(Plugin plugin, File db, boolean reconnect) {
-        super(DatabaseType.SQLite);
-
-        Validate.notNull(plugin, "The plugin cannot be null!");
-        Validate.notNull(db, "The database file cannot be null!");
-
-        this.plugin = plugin;
-        this.db = db;
-        this.reconnect = reconnect;
+    public MySQL(String host, int port, String database, String username, String password, boolean reconnect) {
+        this(host, port, database, username, password, reconnect, true);
     }
 
     /**
-     * Constructs the SQLite database. Auto-reconnect is set {@code true}.
-     * <p>
-     * <strong>Note:</strong> Database file should end with {@code .db}
-     * extension.
-     * <p>
-     *
-     * @param plugin Plugin for which database is created
-     * @param db     Database file
-     */
-    public SQLite(Plugin plugin, File db) {
-        this(plugin, db, true);
-    }
-
-    /**
-     * Gets whether connected to SQLite.
+     * Gets whether connected to MySQL.
      * <p>
      *
      * @return true if connected.
@@ -82,11 +109,12 @@ public class SQLite extends SQLDatabase {
     /**
      * <h1>Returns:</h1>
      * <ul>
-     * <li>The current connection if connected to SQLite:
+     * <li>The current connection if connected to MySQL:
      * <li>The new connection if and only if:
      * <ul>
      * <li>It wasn't connected.
      * <li>The auto-reconnection is enabled.
+     * <li>The attempt to get connection was successfully.
      * </ul>
      * <li><strong>{@code null}</strong> if:
      * <ul>
@@ -97,19 +125,17 @@ public class SQLite extends SQLDatabase {
      * </ul>
      * <p>
      *
-     * @return Connection or null if not connected.
-     * @throws IOException           when the given database file cannot be created
+     * @return Connection or null if not connected
      * @throws SQLTimeoutException   when the driver has determined that the timeout
      *                               value has been exceeded and has at least tried
      *                               to cancel the current database connection
      *                               attempt.
-     * @throws IllegalStateException if the JDBC drivers is unavailable or the file
-     *                               is not s sqlite database file
+     * @throws IllegalStateException if the JDBC drivers is unavailable
      * @throws SQLException          if a database access error occurs.
      */
     @Override
     public Connection getConnection()
-            throws IOException, SQLTimeoutException, IllegalStateException, SQLException {
+            throws SQLTimeoutException, IllegalStateException, SQLException {
         if (!isConnected() && reconnect) {
             this.lost_connections++;
             this.connect();
@@ -130,12 +156,10 @@ public class SQLite extends SQLDatabase {
     }
 
     /**
-     * Starts the connection with SQLite.
+     * Starts the connection with MySQL.
      * <p>
      *
-     * @throws IOException           when the given database file cannot be created
-     * @throws IllegalStateException if the JDBC drivers is unavailable or the file
-     *                               is not s sqlite database file
+     * @throws IllegalStateException if the JDBC drivers is unavailable.
      * @throws SQLException          if a database access error occurs.
      * @throws SQLTimeoutException   when the driver has determined that the timeout
      *                               has been exceeded and has at least tried to
@@ -143,23 +167,20 @@ public class SQLite extends SQLDatabase {
      */
     @Override
     public synchronized void connect()
-            throws IOException, IllegalStateException, SQLException, SQLTimeoutException {
-        if (!plugin.getDataFolder().exists())
-            plugin.getDataFolder().mkdirs();
-        if (!this.db.getName().endsWith(".db"))
-            throw new IllegalStateException("The database file should have '.db' extension.");
-        if (!this.db.exists())
-            plugin.getDataFolder().createNewFile();
+            throws IllegalStateException, SQLException, SQLTimeoutException {
         try {
             Class.forName(DRIVER_CLASS);
         } catch (ClassNotFoundException ex) {
-            throw new IllegalStateException("Could not connect to SQLite! the JDBC driver is unavailable!");
+            throw new IllegalStateException("Could not connect to MySQL! The JDBC driver is unavailable!");
         }
-        this.connection = DriverManager.getConnection("jdbc:sqlite:" + db);
+
+        this.connection = DriverManager.getConnection(
+                String.format(URL_FORMAT, host, port, database, String.valueOf(reconnect), String.valueOf(ssl)),
+                username, password);
     }
 
     /**
-     * Closes the connection with SQLite.
+     * Closes the connection with MySQL.
      * <p>
      *
      * @throws IllegalStateException if currently not connected, the connection
@@ -176,4 +197,5 @@ public class SQLite extends SQLDatabase {
         this.connection.close();
         this.connection = null;
     }
+
 }

@@ -4,6 +4,7 @@ public enum DatabaseType {
 
     MYSQL,
     SQLite,
+    HikariCP,
     MongoDB;
 
 }

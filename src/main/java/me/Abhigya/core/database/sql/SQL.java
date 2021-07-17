@@ -1,9 +1,6 @@
 package me.Abhigya.core.database.sql;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
@@ -85,6 +82,14 @@ public class SQL {
             // TODO
         }
         return false;
+    }
+
+    public ResultSet executeQuery(String statement) throws SQLException {
+        return this.executeQuery(connection.prepareStatement(statement));
+    }
+
+    public ResultSet executeQuery(PreparedStatement statement) throws SQLException {
+        return statement.executeQuery();
     }
 
     public String getString(String table, String column, String gate, Object gate_value) {
