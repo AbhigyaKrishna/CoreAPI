@@ -19,9 +19,9 @@ public class GameRule implements Validable {
      * Construct the {@link GameRule}.
      * <p>
      *
-     * @param type    Game rule type.
-     * @param value   Game rule value.
-     * @param parents Required {@link GameRule GameRules} to work.
+     * @param type    Game rule type
+     * @param value   Game rule value
+     * @param parents Required {@link GameRule GameRules} to work
      */
     public GameRule(GameRuleType type, Object value, GameRule... parents) {
         Validate.notNull(type, "yype cannot be null!");
@@ -41,7 +41,7 @@ public class GameRule implements Validable {
      * Gets the game rule type.
      * <p>
      *
-     * @return Game rule type.
+     * @return Game rule type
      */
     public GameRuleType getType() {
         return type;
@@ -51,7 +51,7 @@ public class GameRule implements Validable {
      * Gets the game rule value.
      * <p>
      *
-     * @return Game rule value.
+     * @return Game rule value
      */
     public Object getValue() {
         return value;
@@ -61,7 +61,7 @@ public class GameRule implements Validable {
      * Gets the {@link GameRule GameRules} this requires to work.
      * <p>
      *
-     * @return Required game rules.
+     * @return Required game rules
      */
     public Set<GameRule> getParents() {
         return parents;
@@ -71,8 +71,8 @@ public class GameRule implements Validable {
      * Applies this rule the given world.
      * <p>
      *
-     * @param world World to apply.
-     * @return Same world, useful for chaining.
+     * @param world World to apply
+     * @return Same world, useful for chaining
      */
     public World apply(World world) {
         this.getType().apply(world, value);

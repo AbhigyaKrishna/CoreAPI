@@ -12,6 +12,9 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
+/**
+ * Implementation of {@link ActionItem} handling the close menu option.
+ */
 public class CloseMenuActionItem extends ActionItem {
 
     @Deprecated // Compatibility with server versions <= 1.8
@@ -19,14 +22,35 @@ public class CloseMenuActionItem extends ActionItem {
             ? new SafeItemStack(Material.BARRIER)
             : new StainedGlassItemStack(StainedGlassColor.RED, true);
 
+    /**
+     * Constructs the Close Menu Action Item.
+     * <p>
+     *
+     * @param lore Lore of the Item
+     */
     public CloseMenuActionItem(String... lore) {
         this(ChatColor.RED + "Close", lore);
     }
 
+    /**
+     * Constructs the Close Menu Action Item.
+     * <p>
+     *
+     * @param name Name of the Item
+     * @param lore Lore of the Item
+     */
     public CloseMenuActionItem(String name, String... lore) {
         this(name, DEFAULT_ICON, lore);
     }
 
+    /**
+     * Constructs the Close Menu Action Item.
+     * <p>
+     *
+     * @param name Name of the Item
+     * @param icon ItemStack icon of the Item
+     * @param lore Lore of the Item
+     */
     public CloseMenuActionItem(String name, ItemStack icon, String... lore) {
         super(name, icon, lore);
         addAction(new ItemAction() {

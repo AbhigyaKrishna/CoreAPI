@@ -1,5 +1,8 @@
 package me.Abhigya.core.util.bungeecord;
 
+/**
+ * Enumeration of all write types.
+ */
 public enum WriteType {
 
     BOOLEAN(boolean.class, Boolean.class),
@@ -20,10 +23,23 @@ public enum WriteType {
         this.primitive_classes = primitive_classes;
     }
 
+    /**
+     * Returns the primitive class.
+     * <p>
+     *
+     * @return Primitive classes
+     */
     public Class<?>[] getPrimitiveClasses() {
         return primitive_classes;
     }
 
+    /**
+     * Returns the write type of the given data.
+     * <p>
+     *
+     * @param to_write Object to get write type of
+     * @return WriteType of the object
+     */
     public static WriteType of(Object to_write) {
         if (to_write == null) {
             return null;

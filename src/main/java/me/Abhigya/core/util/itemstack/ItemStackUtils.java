@@ -44,6 +44,13 @@ public class ItemStackUtils {
         AVAILABLE_DURABILITY_FIELD = durability_field;
     }
 
+    /**
+     * Gets the {@link ItemStack} with the given material and amount.
+     * <p>
+     * @param material  Material of the ItemStack
+     * @param amount    Amount of the ItemStack
+     * @return  {@link ItemStack}
+     */
     public static ItemStack ofMaterial(Material material, int amount) {
         if (Version.getServerVersion().isNewer(Version.v1_12_R1)) {
             return new ItemStack(material);
@@ -51,6 +58,13 @@ public class ItemStackUtils {
         return new ItemStack(material, amount);
     }
 
+    /**
+     * Gets the {@link ItemStack} with the given material and amount.
+     * <p>
+     * @param material  XMaterial for the ItemStack
+     * @param amount    Amount of the ItemStack
+     * @return  {@link ItemStack}
+     */
     public static ItemStack ofUniversalMaterial(XMaterials material, int amount) {
         if (material.getMaterial() == null) {
             return null;
@@ -81,9 +95,10 @@ public class ItemStackUtils {
 
     /**
      * Convert {@link ItemStack} to Soulbound item.
+     * <p>
      *
      * @param stack ItemStack to convert
-     * @return  Soulbound ItemStack
+     * @return  SoulBound ItemStack
      */
     public static ItemStack addSoulbound(ItemStack stack) {
         if (stack == null) {
@@ -107,10 +122,11 @@ public class ItemStackUtils {
     }
 
     /**
-     * Check if {@link ItemStack} is Soulbound.
+     * Check if {@link ItemStack} is SoulBound.
+     * <p>
      *
      * @param stack ItemStack to check
-     * @return true if is a Soulbound
+     * @return true if is a SoulBound
      */
     public static boolean isSoulbound(ItemStack stack) {
         if (stack == null) {
@@ -135,7 +151,7 @@ public class ItemStackUtils {
      *
      * @param stack        {@link ItemStack} to extract
      * @param strip_colors Strip colors?
-     * @return Display name of the given {@link ItemStack} or an empty string if it doesn't have name.
+     * @return Display name of the given {@link ItemStack} or an empty string if it doesn't have name
      */
     public static String extractName(ItemStack stack, boolean strip_colors) {
         if (stack == null || stack.getItemMeta() == null) {
@@ -152,7 +168,7 @@ public class ItemStackUtils {
      *
      * @param stack        {@link ItemStack} to extract
      * @param strip_colors Strip colors of the lore?
-     * @return Lore of the given {@link ItemStack} or an empty list if it doesn't have lore.
+     * @return Lore of the given {@link ItemStack} or an empty list if it doesn't have lore
      */
     public static List<String> extractLore(ItemStack stack, boolean strip_colors) {
         List<String> lore = new ArrayList<>();
@@ -169,8 +185,9 @@ public class ItemStackUtils {
 
     /**
      * Set {@link ItemStack} name and lore.
+     * <p>
      *
-     * @param itemStack ItemStack to modify.
+     * @param itemStack ItemStack to modify
      * @param name      New name
      * @param lore      New lore
      * @return Modified ItemStack
@@ -185,6 +202,7 @@ public class ItemStackUtils {
 
     /**
      * Set {@link ItemStack} set ItemStack name.
+     * <p>
      *
      * @param itemStack ItemStack to modify
      * @param name      New name
@@ -207,6 +225,7 @@ public class ItemStackUtils {
 
     /**
      * Set {@link ItemStack} set ItemStack lore.
+     * <p>
      *
      * @param itemStack ItemStack to modify
      * @param lore      New lore
@@ -237,6 +256,7 @@ public class ItemStackUtils {
 
     /**
      * Add enchant to {@link ItemStack}.
+     * <p>
      *
      * @param stack   ItemStack
      * @param enchant Enchantment
@@ -260,6 +280,7 @@ public class ItemStackUtils {
 
     /**
      * Check two items have the the same lore.
+     * <p>
      *
      * @param i1 First ItemStack
      * @param i2 Second ItemStack
@@ -307,6 +328,7 @@ public class ItemStackUtils {
 
     /**
      * Get the player textured skull {@link ItemStack}.
+     * <p>
      *
      * @param p Player texture owner
      * @return Skull ItemStack textured with the player skin
@@ -317,6 +339,7 @@ public class ItemStackUtils {
 
     /**
      * Create a Skull ItemStack.
+     * <p>
      *
      * @param texture     Texture
      * @param displayname Item display name
@@ -337,6 +360,7 @@ public class ItemStackUtils {
 
     /**
      * Get texture from owner name.
+     * <p>
      *
      * @param owner Skull owner
      * @return Texture
@@ -351,6 +375,7 @@ public class ItemStackUtils {
 
     /**
      * Sets the skull texture property.
+     * <p>
      *
      * @param skullMeta {@link SkullMeta}
      * @param texture   Texture
@@ -381,6 +406,7 @@ public class ItemStackUtils {
 
     /**
      * Get a Skull Item stack.
+     * <p>
      *
      * @param amount Stack amount
      * @return Skull Item Stack
@@ -392,9 +418,10 @@ public class ItemStackUtils {
 
     /**
      * Get {@link PlayerInventory} contents.
+     * <p>
      *
-     * @param inventory Inventory.
-     * @return PlayerInventory list of contents.
+     * @param inventory Inventory
+     * @return PlayerInventory list of contents
      */
     public static final List<ItemStack> getAllContents(final PlayerInventory inventory, boolean addArmorContents) {
         final List<ItemStack> contents = new ArrayList<ItemStack>();

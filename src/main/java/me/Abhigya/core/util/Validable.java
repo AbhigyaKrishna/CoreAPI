@@ -9,7 +9,7 @@ public interface Validable {
      * Gets whether this Object represents a valid instance.
      * <p>
      *
-     * @return true if valid.
+     * @return true if valid
      */
     public boolean isValid();
 
@@ -17,7 +17,7 @@ public interface Validable {
      * Gets whether this Object represents an invalid instance.
      * <p>
      *
-     * @return true if invalid.
+     * @return true if invalid
      */
     public boolean isInvalid();
 }

@@ -31,7 +31,7 @@ public class GameRuleDisableDaylightCycle extends GameRule {
      * worlds.
      * <p>
      *
-     * @param permanent_time the permanent time for the world.
+     * @param permanent_time Permanent time for the world
      */
     public GameRuleDisableDaylightCycle(long permanent_time) {
         super(GameRuleType.DAYLIGHT_CYCLE, false);

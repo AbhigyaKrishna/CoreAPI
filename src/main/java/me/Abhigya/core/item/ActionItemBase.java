@@ -12,6 +12,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * Abstract class to be used for creating Action Items.
+ */
 public abstract class ActionItemBase implements ActionItem {
 
     protected final String display_name;
@@ -19,6 +22,15 @@ public abstract class ActionItemBase implements ActionItem {
     protected final Material material;
     protected final EventPriority priority;
 
+    /**
+     * Constructs the Action Item.
+     * <p>
+     *
+     * @param display_name Display name of the Action Item
+     * @param lore         Lore of the Action Item
+     * @param material     Material of the Action Item
+     * @param priority     {@link EventPriority} of the Action Item
+     */
     public ActionItemBase(String display_name, Collection<String> lore, Material material, EventPriority priority) {
         this.display_name = StringUtils.translateAlternateColorCodes(display_name);
         this.lore = StringUtils
@@ -27,6 +39,14 @@ public abstract class ActionItemBase implements ActionItem {
         this.priority = priority;
     }
 
+    /**
+     * Constructs the Action Item.
+     * <p>
+     *
+     * @param display_name Display name of the Action Item
+     * @param lore         Lore of the Action Item
+     * @param material     Material of the Action Item
+     */
     public ActionItemBase(String display_name, Collection<String> lore, Material material) {
         this(display_name, lore, material, EventPriority.NORMAL);
     }

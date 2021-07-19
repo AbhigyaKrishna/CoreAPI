@@ -10,10 +10,20 @@ import org.bukkit.inventory.Inventory;
 
 import java.util.Arrays;
 
+/**
+ * Implementation of {@link ItemMenu} for creating pages of {@link BookItemMenu}.
+ */
 public class BookPageItemMenu extends ItemMenu {
 
     private int page_number;
 
+    /**
+     * Constructs the Book Page menu.
+     * <p>
+     *
+     * @param book     Book menu of which this page menu is a child of
+     * @param contents Contents of this page menu
+     */
     public BookPageItemMenu(BookItemMenu book, Item... contents) {
         super(book.getTitle(), book.getPagesSize(), book, contents);
     }
@@ -40,6 +50,9 @@ public class BookPageItemMenu extends ItemMenu {
 
     /**
      * Returns the {@link BookItemMenu} owner of this.
+     * <p>
+     *
+     * @return Parent of this book menu page
      */
     public final BookItemMenu getBookMenu() {
         return (BookItemMenu) super.getParent();
@@ -152,6 +165,13 @@ public class BookPageItemMenu extends ItemMenu {
         return this;
     }
 
+    /**
+     * Sets the page number of the this page menu.
+     * <p>
+     *
+     * @param number Page number
+     * @return This Object, for chaining
+     */
     final BookPageItemMenu setPageNumber(int number) {
         this.page_number = number;
         return this;

@@ -10,6 +10,13 @@ import java.lang.reflect.Method;
  */
 public class Writable {
 
+    /**
+     * Writes values to message.
+     * <p>
+     *
+     * @param to_write Object value to write
+     * @return {@link Writable} object
+     */
     public static Writable of(Object to_write) {
         if (to_write instanceof String) {
             throw new UnsupportedOperationException("The class of the object to write is not compatible with this operation!");
@@ -25,19 +32,54 @@ public class Writable {
     private final Object to_write;
     private final WriteType type;
 
+    /**
+     * Constructs the writable object.
+     * <p>
+     *
+     * @param to_write Object to write
+     * @param type     Write type
+     */
     public Writable(Object to_write, WriteType type) {
         this.to_write = to_write;
         this.type = type;
     }
 
+    /**
+     * Returns the object which is to write.
+     * <p>
+     *
+     * @return Object to write
+     */
     public Object getObjectToWrite() {
         return to_write;
     }
 
+    /**
+     * Returns the write type.
+     * <p>
+     *
+     * @return {@link WriteType}
+     */
     public WriteType getWriteType() {
         return type;
     }
 
+    /**
+     * Writes to data output stream.
+     * <p>
+     *
+     * @param data DataOutput to write to
+     * @throws IOException               thrown when an issue occur while writing to message stream
+     * @throws SecurityException         thrown by the security manager to indicate a security violation
+     * @throws NoSuchMethodException     thrown when a particular method cannot be found
+     * @throws InvocationTargetException thrown when a error occur while invoking a method or constructor
+     * @throws IllegalArgumentException  thrown when a illegal argument is passed
+     * @throws IllegalAccessException    thrown when an application tries to reflectively create an
+     *                                   instance (other than an array), set or get a field, or invoke
+     *                                   a method, but the currently executing method does not have access
+     *                                   to the definition of the specified class, field, method
+     *                                   or constructor
+     */
     public void writeTo(DataOutput data) throws IOException, IllegalAccessException, IllegalArgumentException,
             InvocationTargetException, NoSuchMethodException, SecurityException {
         /* cannot write when the object to write is null or the write type is null */

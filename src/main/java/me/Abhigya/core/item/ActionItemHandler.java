@@ -17,6 +17,9 @@ import org.bukkit.plugin.EventExecutor;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Handler Class for Action Items.
+ */
 public class ActionItemHandler extends PluginHandler {
 
     /**

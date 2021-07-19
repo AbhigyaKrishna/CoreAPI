@@ -29,6 +29,7 @@ public class YamlUtils {
      * @param section Configuration section to set
      * @param path    Path of the object to set
      * @param value   Value to set the path to
+     * @return true if set successfully, else false
      */
     public static boolean setNotSet(ConfigurationSection section, String path, Object value) {
         if (section.isSet(path)) {
@@ -55,6 +56,7 @@ public class YamlUtils {
      * @param section Configuration section to set
      * @param path    Path of the object to set
      * @param value   Value to set the path to
+     * @return true if set successfully, else false
      */
     public static boolean setNotEqual(ConfigurationSection section, String path, Object value) {
         if (setNotSet(section, path, value)) {

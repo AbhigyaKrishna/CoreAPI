@@ -19,7 +19,8 @@ import java.util.List;
  * Represents the classes that can be loaded from a {@link ConfigurationSection}.
  * <p>
  *
- * @apiNote Every single class that implements this interface must to have an
+ * <h1><strong>Note:</strong></h1>
+ * Every single class that implements this interface must to have an
  * empty constructor whose will act as 'uninitialized constructor',
  * then the method {@link Loadable#loadEntries(ConfigurationSection)}
  * can create uninitialized instances and initialize it by using the
@@ -40,7 +41,7 @@ public interface Loadable extends Validable {
     /**
      * Load the configuration of every single field in this class from the
      * given {@link ConfigurationSection} that has the annotation
-     * {@link @LoadableEntry}/{@link @LoadableCollectionEntry} present.
+     * {@link LoadableEntry}/{@link LoadableCollectionEntry} present.
      * <p>
      *
      * @param section Section where the configuration is located

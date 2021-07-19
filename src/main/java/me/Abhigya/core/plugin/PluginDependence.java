@@ -18,16 +18,17 @@ import java.util.function.Function;
  * Also the developer can send messages to the console when checking the
  * received plugin.
  * <p>
- * <h1> Implementation example: </h1> <pre><code>
+ * <h1> Implementation example: </h1>
+ * <pre><code>
  * PluginDependence dependence = new PluginDependence("ProtocolLib") { <br>
- *     <code>@Override</code> <br>
+ *    {@code @Override} <br>
  *     public Boolean apply (org.bukkit.plugin.Plugin plugin) { <br>
  *         if (plugin == null) { <br>
  *             ConsoleUtil.sendPluginMessage(ChatColor.RED, "ProtocolLib couldn't be found!", MyPlugin.getInstance()); <br>
  *         } else { <br>
- *             return true; // <- returning <strong>{@code true}</strong> will not disable the plugin. <br>
+ *             return true; // returning <strong>true</strong> will not disable the plugin. <br>
  *         } <br>
- *         return null; // <- returning <strong>{@code null}</strong> or <strong>{@code false}</strong> will disable the plugin automatically <br>
+ *         return null; // returning <strong>null</strong> or <strong> false</strong> will disable the plugin automatically <br>
  *     } <br>
  * }; <br>
  * </code></pre>

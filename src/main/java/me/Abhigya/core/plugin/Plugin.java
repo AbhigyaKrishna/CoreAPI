@@ -241,21 +241,22 @@ public abstract class Plugin extends JavaPlugin {
      * <p>
      * Implementation example:
      *
-     * <pre>
-     *  <code> <h1><strong>Plugin Class:</strong></h1>
+     * <h1><strong>Plugin Class:</strong></h1>
+     * <pre><code>
      * public class MyPlugin extends Plugin { <br>
      * &nbsp;&nbsp;&nbsp;&nbsp;..... <br>
      * }
+     * </code></pre>
      *
      * <h1><strong>Listener Class:</strong></h1>
+     * <pre><code>
      * public class MyListener implements Listener { <br>
      *
      * &nbsp;&nbsp;&nbsp;&nbsp;public MyListener(MyPlugin plugin) { <br>
      * &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Bukkit.getPluginManager().registerEvents(this, plugin); <br>
      * &nbsp;&nbsp;&nbsp;&nbsp;} <br>
      * }
-     * </code>
-     * </pre>
+     * </code></pre>
      * <p>
      *
      * @param packaje The listeners package

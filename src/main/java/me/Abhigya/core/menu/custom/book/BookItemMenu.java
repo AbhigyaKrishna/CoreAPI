@@ -13,14 +13,30 @@ import java.util.Arrays;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
+/**
+ * Implementation of {@link ItemMenu} interacting with paginated menu.
+ */
 public class BookItemMenu extends ItemMenu {
 
+    /**
+     * Default page button bar size.
+     */
     public static final ItemMenuSize DEFAULT_BUTTONS_BAR_SIZE = ItemMenuSize.ONE_LINE;
 
     private final ItemMenuSize buttons_bar_size;
     private BookPageItemMenu[] pages;
     private final Item[] bar_buttons;
 
+    /**
+     * Constructs the Book menu.
+     * <p>
+     *
+     * @param title            Title of the menu
+     * @param pages_size       Page size of the menu
+     * @param buttons_bar_size Page button bar size of menu
+     * @param parent           Parent menu if any, else null
+     * @param contents         Contents of the menu
+     */
     public BookItemMenu(String title, ItemMenuSize pages_size, ItemMenuSize buttons_bar_size, ItemMenu parent, Item... contents) {
         super(title, pages_size, parent, contents);
         Validate.notNull(pages_size, "The pages size cannot be null!");
@@ -45,37 +61,90 @@ public class BookItemMenu extends ItemMenu {
         this.addItems(contents);
     }
 
+    /**
+     * Constructs the Book menu.
+     * <p>
+     *
+     * @param title      Title of the menu
+     * @param pages_size Page size of the menu
+     * @param parent     Parent menu if any, else null
+     * @param contents   Contents of the menu
+     */
     public BookItemMenu(String title, ItemMenuSize pages_size, ItemMenu parent, Item... contents) {
         this(title, pages_size, DEFAULT_BUTTONS_BAR_SIZE, parent, contents);
     }
 
+    /**
+     * Returns the per page menu size.
+     * <p>
+     *
+     * @return Size of the menu
+     */
     public ItemMenuSize getPagesSize() {
         return super.getSize();
     }
 
+    /**
+     * Returns the button bar size size.
+     * <p>
+     *
+     * @return Size of button bar
+     */
     public ItemMenuSize getButtonsBarSize() {
         return this.buttons_bar_size;
     }
 
+    /**
+     * Returns the per page menu size.
+     * <p>
+     *
+     * @return Size of the menu
+     */
     @Override
     @Deprecated
     public final ItemMenuSize getSize() {
-        return null;
+        return super.getSize();
     }
 
+    /**
+     * Returns the all the pages of the book menu.
+     * <p>
+     *
+     * @return Array of pages
+     */
     public BookPageItemMenu[] getPages() {
         return Arrays.copyOf(pages, pages.length);
     }
 
+    /**
+     * Returns the page of the menu from index.
+     * <p>
+     *
+     * @param page_index Index of page
+     * @return Page of menu
+     */
     public BookPageItemMenu getPage(int page_index) {
         pagesRangeCheck(page_index, page_index);
         return pages[page_index];
     }
 
+    /**
+     * Returns the button-bar buttons of the menu.
+     * <p>
+     *
+     * @return Array of button-bar buttons.
+     */
     public Item[] getBarButtons() {
         return Arrays.copyOf(bar_buttons, bar_buttons.length);
     }
 
+    /**
+     * Returns the button-bar button at the index.
+     * <p>
+     *
+     * @param button_index Index of button-bar
+     * @return Button-bar button
+     */
     public Item getBarButton(int button_index) {
         buttonsRangeCheck(button_index, button_index);
         return bar_buttons[button_index];
@@ -153,9 +222,9 @@ public class BookItemMenu extends ItemMenu {
      * or -1 if the player is not viewing any page of this book.
      * <p>
      *
-     * @param player the player viewer.
-     * @return the number of the page of this book that the given player is viewing,
-     * or -1 if the player is not viewing any page of this book.
+     * @param player Player viewer
+     * @return Number of the page of this book that the given player is viewing,
+     * or -1 if the player is not viewing any page of this book
      */
     public int getOpenPageNumber(Player player) {
         for (int i = 0; i < getPages().length; i++) {
@@ -199,6 +268,10 @@ public class BookItemMenu extends ItemMenu {
      * Stores the given items.
      * <p>
      * New pages will be created if required.
+     * <p>
+     *     
+     * @param items Items to add
+     * @return This Object, for chaining
      */
     public BookItemMenu addItems(Item... items) {
         final int count = addItemsNotFull(items);
@@ -227,8 +300,8 @@ public class BookItemMenu extends ItemMenu {
      * storing the current element of the iteration.
      * <p>
      *
-     * @param items the items to store.
-     * @return the amount of items that was stored successfully.
+     * @param items Items to store
+     * @return Amount of items that was stored successfully
      */
     public int addItemsNotFull(Item... items) {
         int added_count = 0;
@@ -249,8 +322,9 @@ public class BookItemMenu extends ItemMenu {
      * given slot.
      * <p>
      *
-     * @param index  the slot.
-     * @param button the button to store.
+     * @param index  Index of Slot
+     * @param button Button to store
+     * @return This Object, for chaining
      */
     public BookItemMenu setBarButton(int index, Item button) {
         this.buttonsRangeCheck(index, index);
@@ -263,8 +337,8 @@ public class BookItemMenu extends ItemMenu {
      * on the next empty slot of the bar.
      * <p>
      *
-     * @param buttons the button items to store.
-     * @return true if the button could be stored successfully.
+     * @param buttons Button items to store
+     * @return true if the button could be stored successfully
      */
     public boolean addBarButton(Item... buttons) {
         for (int i = 0; i < buttons.length; i++) {
@@ -302,12 +376,26 @@ public class BookItemMenu extends ItemMenu {
         return null;
     }
 
+    /**
+     * Clears all the items (including button-bar buttons and content) in the book menu.
+     * <p>
+     *
+     * @return ItemMenu Object
+     * @see #clearContents()
+     * @see #clearBarButtons()
+     */
     public ItemMenu clear() {
         clearContents();
         clearBarButtons();
         return this;
     }
 
+    /**
+     * Clears all the content in the book menu.
+     * <p>
+     *
+     * @return ItemMenu Object
+     */
     public ItemMenu clearContents() {
         for (int i = 0; i < this.getPages().length; i++) { // clear
             BookPageItemMenu page = getPage(i);
@@ -318,6 +406,12 @@ public class BookItemMenu extends ItemMenu {
         return this;
     }
 
+    /**
+     * Clears all the button-bar buttons in the book menu.
+     * <p>
+     *
+     * @return ItemMenu Object
+     */
     public ItemMenu clearBarButtons() {
         for (int i = 0; i < this.getButtonsBarSize().getSize(); i++) { // clear
             this.bar_buttons[i] = null;
@@ -331,6 +425,13 @@ public class BookItemMenu extends ItemMenu {
         return null;
     }
 
+    /**
+     * Applies button-bar button to the given inventory.
+     * <p>
+     *
+     * @param inventory Inventory to apply button-bar
+     * @return Inventory instance
+     */
     public Inventory applyBarButtons(Inventory inventory) {
         int from_index = this.getPagesSize().getSize() - this.getButtonsBarSize().getSize();
         for (int i = 0; i < getButtonsBarSize().getSize(); i++) {

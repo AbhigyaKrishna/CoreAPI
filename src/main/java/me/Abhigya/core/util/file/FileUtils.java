@@ -16,8 +16,8 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
      * within the sub-directories of the desired directory.
      * <p>
      *
-     * @param directory Desired directory.
-     * @return All the elements within the directory and its sub-directories.
+     * @param directory Desired directory
+     * @return All the elements within the directory and its sub-directories
      */
     public static Set<File> getElements(File directory) {
         Validate.isTrue(directory.isDirectory(), "the provided file is not a valid directory!");
@@ -42,9 +42,9 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
      * returned value will be the length the that file.
      * <p>
      *
-     * @param directory Desired directory.
+     * @param directory Desired directory
      * @return Sum of the sum of the lengths of all the elements within the
-     * directory.
+     * directory
      */
     public static long getLength(File directory) {
         if (directory.isFile()) {

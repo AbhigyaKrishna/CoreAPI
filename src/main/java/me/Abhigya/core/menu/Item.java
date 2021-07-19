@@ -14,6 +14,9 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * Class for creating custom Inventory items.
+ */
 public abstract class Item {
 
     protected String name;
@@ -21,6 +24,14 @@ public abstract class Item {
     protected List<String> lore;
     protected ItemMenu menu;
 
+    /**
+     * Constructs the Item.
+     * <p>
+     *
+     * @param name Name of the Item
+     * @param icon ItemStack icon for the Item
+     * @param lore Lore of the Item
+     */
     public Item(String name, ItemStack icon, Collection<String> lore) {
         Validate.notNull(icon, "The icon cannot be null!");
         this.name = name == null ? "" : name;
@@ -28,13 +39,24 @@ public abstract class Item {
         this.lore = new ArrayList<>(lore);
     }
 
+    /**
+     * Constructs the Item.
+     * <p>
+     *
+     * @param name Name of the Item
+     * @param icon ItemStack icon for the Item
+     * @param lore Lore of the Item
+     */
     public Item(String name, ItemStack icon, String... lore) {
-        Validate.notNull(icon, "The icon cannot be null!");
-        this.name = name == null ? "" : name;
-        this.icon = icon;
-        this.lore = Arrays.asList(lore);
+        this(name, icon, Arrays.asList(lore));
     }
 
+    /**
+     * Constructs the Item.
+     * <p>
+     *
+     * @param icon ItemStack icon for the Item
+     */
     public Item(ItemStack icon) {
         this(StringUtils.defaultIfBlank((icon.getItemMeta() != null ? icon.getItemMeta().getDisplayName() : null), "null name"),
                 icon,
@@ -42,20 +64,44 @@ public abstract class Item {
 
     }
 
+    /**
+     * Returns the name of the Item.
+     * <p>
+     *
+     * @return Name of the Item
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Returns the icon of the Item.
+     * <p>
+     *
+     * @return Icon of the Item
+     */
     public ItemStack getIcon() {
         return icon;
     }
 
+    /**
+     * Returns the display icon of the Item.
+     * <p>
+     *
+     * @return Display icon of the Item
+     */
     public ItemStack getDisplayIcon() {
         return (getIcon().getType() == Material.AIR ? icon : new ItemMetaBuilder(MaterialUtils.getRightMaterial(getIcon()))
                 .withDisplayName(StringUtils.translateAlternateColorCodes(getName()))
                 .withLore(getLore()).applyTo(getIcon().clone()));
     }
 
+    /**
+     * Returns the lore of the Item.
+     * <p>
+     *
+     * @return Lore of the Item
+     */
     public List<String> getLore() {
         return lore;
     }
@@ -67,28 +113,55 @@ public abstract class Item {
      * set in a menu.
      * <p>
      *
-     * @return The menu this item belongs.
+     * @return The menu this item belongs
      */
     public ItemMenu getMenu() {
         return menu;
     }
 
+    /**
+     * Sets the name of the Item
+     * <p>
+     *
+     * @param name Name for the Item
+     * @return This Object, for chaining
+     */
     public Item setName(String name) {
         this.name = name;
         return this;
     }
 
+    /**
+     * Sets the icon of the Item
+     * <p>
+     *
+     * @param icon ItemStack icon for the Item
+     * @return This Object, for chaining
+     */
     public Item setIcon(ItemStack icon) {
         Validate.notNull(icon, "The icon cannot be null!");
         this.icon = icon;
         return this;
     }
 
+    /**
+     * Sets the name of the Item
+     * <p>
+     *
+     * @param lore Lore for the Item
+     * @return This Object, for chaining
+     */
     public Item setLore(List<String> lore) {
         this.lore = lore != null ? lore : new ArrayList<String>();
         return this;
     }
 
+    /**
+     * Click trigger for this Item.
+     * <p>
+     *
+     * @param action {@link ItemClickAction} for the Item
+     */
     public abstract void onClick(final ItemClickAction action);
 
     @Override

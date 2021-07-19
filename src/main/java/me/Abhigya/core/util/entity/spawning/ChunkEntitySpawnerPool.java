@@ -20,10 +20,16 @@ public class ChunkEntitySpawnerPool implements Runnable {
     protected ExecutorService executor;
     protected boolean started;
 
+    /**
+     * Constructs the {@link ChunkEntitySpawnerPool}.
+     */
     public ChunkEntitySpawnerPool() {
         this.spawners = new Stack<>();
     }
 
+    /**
+     * Starts the chunk entity spawner pool.
+     */
     public void start() {
         if (executor == null) {
             executor = Executors.newSingleThreadExecutor();
@@ -31,15 +37,30 @@ public class ChunkEntitySpawnerPool implements Runnable {
         }
     }
 
+    /**
+     * Stops the chunk entity spawner pool.
+     */
     public void stop() {
         executor.shutdownNow();
         executor = null;
     }
 
+    /**
+     * Checks whether the chunk entity spawner pool is terminated.
+     * <p>
+     *
+     * @return <strong>{@code true}</strong> if it is terminated, else false
+     */
     public boolean isTerminated() {
         return started && spawners.size() == 0;
     }
 
+    /**
+     * Submit chunks to spawn entities.
+     * <p>
+     *
+     * @param spawners {@link ChunkEntitySpawner}
+     */
     public void submit(ChunkEntitySpawner... spawners) {
         for (ChunkEntitySpawner spawner : spawners) {
             this.spawners.addElement(spawner);

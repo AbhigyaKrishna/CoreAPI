@@ -15,7 +15,7 @@ public class SafeItemStack extends CustomItemStack {
      * Construct new {@link SafeItemStack}.
      * <p>
      *
-     * @param material Type.
+     * @param material Type
      */
     public SafeItemStack(Material material) {
         this(material, 1);
@@ -25,8 +25,8 @@ public class SafeItemStack extends CustomItemStack {
      * Construct new {@link SafeItemStack}.
      * <p>
      *
-     * @param material Type.
-     * @param amount   Stack size.
+     * @param material Type
+     * @param amount   Stack size
      */
     public SafeItemStack(Material material, int amount) {
         super.setType(MaterialUtils.getRightMaterial(material));

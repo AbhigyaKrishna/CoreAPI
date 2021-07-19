@@ -8,11 +8,22 @@ import me.Abhigya.core.menu.item.action.ItemAction;
 import me.Abhigya.core.menu.item.action.ItemActionPriority;
 import org.bukkit.inventory.ItemStack;
 
+/**
+ * Implementation of {@link ActionItem} handling page change button item in book menu.
+ */
 public class AlternateBookPageActionItem extends ActionItem {
 
     protected BookItemMenu book;
     protected boolean go_next;
 
+    /**
+     * Constructs the book page change action item.
+     * <p>
+     *
+     * @param name Name of the item
+     * @param icon ItemStack icon of the item
+     * @param lore Lore of the item
+     */
     public AlternateBookPageActionItem(String name, ItemStack icon, String... lore) {
         super(name, icon, lore);
         this.go_next = true;
@@ -48,8 +59,8 @@ public class AlternateBookPageActionItem extends ActionItem {
      * alternate.
      * <p>
      *
-     * @param book {@link BookItemMenu} owner of the pages that the player can
-     *             alternate.
+     * @param book {@link BookItemMenu} owner of the pages that the player can alternate
+     * @return This Object, for chaining
      */
     public AlternateBookPageActionItem setBookMenu(BookItemMenu book) {
         this.book = book;
@@ -61,7 +72,8 @@ public class AlternateBookPageActionItem extends ActionItem {
      * If false: The page before the current will be opened.
      * <p>
      *
-     * @param flag true == next page. false == page before.
+     * @param flag true == next page. false == page before
+     * @return This Object, for chaining
      */
     public AlternateBookPageActionItem setGoNext(boolean flag) {
         this.go_next = flag;

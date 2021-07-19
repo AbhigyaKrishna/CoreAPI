@@ -8,6 +8,9 @@ import org.bukkit.material.MaterialData;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+/**
+ * Represents a utility class for Material.
+ */
 @SuppressWarnings("deprecation")
 public class MaterialUtils {
 
@@ -30,6 +33,13 @@ public class MaterialUtils {
         }
     }
 
+    /**
+     * Returns the Material value of the given ItemStack according to server version.
+     * <p>
+     *
+     * @param stack ItemStack to get Material from
+     * @return Material according to server version
+     */
     public static Material getRightMaterial(ItemStack stack) {
         try {
             if (isLegacy(stack.getType())) {
@@ -41,6 +51,13 @@ public class MaterialUtils {
         return stack.getType();
     }
 
+    /**
+     * Returns the Material value according to server version.
+     * <p>
+     *
+     * @param material Material to get according to server version
+     * @return Material according to server version
+     */
     public static Material getRightMaterial(Material material) {
         return getRightMaterial(new ItemStack(material));
     }
@@ -54,6 +71,14 @@ public class MaterialUtils {
         }
     }
 
+    /**
+     * Checks whether both material are equal.
+     * <p>
+     *
+     * @param a Material
+     * @param b Material
+     * @return true if equal, else false
+     */
     public static boolean equals(Material a, Material b) {
         return (a != null && b != null && getRightMaterial(a) == getRightMaterial(b));
     }
@@ -64,7 +89,7 @@ public class MaterialUtils {
      * <p>
      *
      * @param material Material
-     * @return New data instance, or null if invoked from a server version older than 1_13_R1.
+     * @return New data instance, or null if invoked from a server version older than 1_13_R1
      */
     public static Object createBlockData(Material material) {
         try {

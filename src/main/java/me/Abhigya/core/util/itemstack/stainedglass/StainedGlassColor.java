@@ -4,7 +4,7 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 /**
- * The glass colors.
+ * Enumeration of glass colors.
  */
 public enum StainedGlassColor {
 
@@ -39,7 +39,7 @@ public enum StainedGlassColor {
     RED(14),
 
     BLACK(15),
-            ;
+    ;
 
     private final short value;
 
@@ -47,20 +47,49 @@ public enum StainedGlassColor {
         this.value = (short) value;
     }
 
+    /**
+     * Returns the data value of the glass color.
+     * <p>
+     *
+     * @return Data value
+     */
     public short getShortValue() {
         return value;
     }
 
+    /**
+     * Returns Glass ItemStack for the defined color.
+     * <p>
+     * <strong>Note:</strong> This method is only supported in legacy versions.
+     * <p>
+     *
+     * @return Glass ItemStack
+     */
     @SuppressWarnings("deprecation")
     public ItemStack getColoredGlass() {
         return new ItemStack(Material.valueOf("STAINED_GLASS"), 1, getShortValue());
     }
 
+    /**
+     * Returns Glass Pane ItemStack for the defined color.
+     * <p>
+     * <strong>Note:</strong> This method is only supported in legacy versions.
+     * <p>
+     *
+     * @return Glass Pane ItemStack
+     */
     @SuppressWarnings("deprecation")
     public ItemStack getColoredPaneGlass() {
         return new ItemStack(Material.valueOf("STAINED_GLASS_PANE"), 1, getShortValue());
     }
 
+    /**
+     * Returns {@link StainedGlassColor} instance from the given data value.
+     * <p>
+     *
+     * @param value Data value
+     * @return {@link StainedGlassColor} instance
+     */
     public static StainedGlassColor getFromShort(final short value) {
         for (StainedGlassColor color : values()) {
             if (color.getShortValue() == value) {

@@ -26,7 +26,7 @@ public interface Vector extends ConfigurationSerializable {
      * length is too long.
      * <p>
      * This is the equivalent of using:
-     * <dd><code>Math.sqrt ( {@link #lengthSquared()} )</code></dd>
+     * <pre><code>Math.sqrt ( {@link #lengthSquared()} )</code></pre>
      * <p>
      *
      * @return Magnitude

@@ -31,14 +31,15 @@ public class FieldReflection {
      *                              {@link SecurityManager#checkPermission
      *                              s.checkPermission} method with
      *                              {@code RuntimePermission("accessDeclaredMembers")}
-     *                              denies access to the declared field
+     *                              denies access to the declared field</li>
      *
      *                              <li>the caller's class loader is not the same as
      *                              or an ancestor of the class loader for the
      *                              current class and invocation of
      *                              {@link SecurityManager#checkPackageAccess
      *                              s.checkPackageAccess()} denies access to the
-     *                              package of this class
+     *                              package of this class</li>
+     *                              </ul>
      */
     public static Field get(Class<?> clazz, String name, boolean declared)
             throws SecurityException, NoSuchFieldException {
@@ -64,14 +65,15 @@ public class FieldReflection {
      *                              {@link SecurityManager#checkPermission
      *                              s.checkPermission} method with
      *                              {@code RuntimePermission("accessDeclaredMembers")}
-     *                              denies access to the declared field
+     *                              denies access to the declared field</li>
      *
      *                              <li>the caller's class loader is not the same as
      *                              or an ancestor of the class loader for the
      *                              current class and invocation of
      *                              {@link SecurityManager#checkPackageAccess
      *                              s.checkPackageAccess()} denies access to the
-     *                              package of this class
+     *                              package of this class</li>
+     *                              </ul>
      * @see #get(Class, String, boolean)
      */
     public static Field get(Class<?> clazz, String name)
@@ -103,16 +105,17 @@ public class FieldReflection {
      *                              {@link SecurityManager#checkPermission
      *                              s.checkPermission} method with
      *                              {@code RuntimePermission("accessDeclaredMembers")}
-     *                              denies access to the declared field
+     *                              denies access to the declared field</li>
      *
      *                              <li>the caller's class loader is not the same as
      *                              or an ancestor of the class loader for the
      *                              current class and invocation of
      *                              {@link SecurityManager#checkPackageAccess
      *                              s.checkPackageAccess()} denies access to the
-     *                              package of this class
+     *                              package of this class</li>
      *
      *                              <li>the field cannot be made accessible.
+     *                              </ul>
      */
     public static Field getAccessible(Class<?> clazz, String name, boolean declared)
             throws SecurityException, NoSuchFieldException {
@@ -140,16 +143,17 @@ public class FieldReflection {
      *                              {@link SecurityManager#checkPermission
      *                              s.checkPermission} method with
      *                              {@code RuntimePermission("accessDeclaredMembers")}
-     *                              denies access to the declared field
+     *                              denies access to the declared field</li>
      *
      *                              <li>the caller's class loader is not the same as
      *                              or an ancestor of the class loader for the
      *                              current class and invocation of
      *                              {@link SecurityManager#checkPackageAccess
      *                              s.checkPackageAccess()} denies access to the
-     *                              package of this class
+     *                              package of this class</li>
      *
-     *                              <li>the field cannot be made accessible.
+     *                              <li>the field cannot be made accessible.</li>
+     *                              </ul>
      * @see #getAccessible(Class, String, boolean)
      */
     public static Field getAccessible(Class<?> clazz, String name)
@@ -188,16 +192,17 @@ public class FieldReflection {
      *                                  {@link SecurityManager#checkPermission
      *                                  s.checkPermission} method with
      *                                  {@code RuntimePermission("accessDeclaredMembers")}
-     *                                  denies access to the declared field
+     *                                  denies access to the declared field</li>
      *
      *                                  <li>the caller's class loader is not the
      *                                  same as or an ancestor of the class loader
      *                                  for the current class and invocation of
      *                                  {@link SecurityManager#checkPackageAccess
      *                                  s.checkPackageAccess()} denies access to the
-     *                                  package of this class
+     *                                  package of this class</li>
      *
-     *                                  <li>the field cannot be made accessible.
+     *                                  <li>the field cannot be made accessible.</li>
+     *                                  </ul>
      * @see Field#get(Object)
      */
     @SuppressWarnings("unchecked")
@@ -245,16 +250,17 @@ public class FieldReflection {
      *                                  {@link SecurityManager#checkPermission
      *                                  s.checkPermission} method with
      *                                  {@code RuntimePermission("accessDeclaredMembers")}
-     *                                  denies access to the declared field
+     *                                  denies access to the declared field</li>
      *
      *                                  <li>the caller's class loader is not the
      *                                  same as or an ancestor of the class loader
      *                                  for the current class and invocation of
      *                                  {@link SecurityManager#checkPackageAccess
      *                                  s.checkPackageAccess()} denies access to the
-     *                                  package of this class
+     *                                  package of this class</li>
      *
-     *                                  <li>the field cannot be made accessible.
+     *                                  <li>the field cannot be made accessible.</li>
+     *                                  </ul>
      * @see #getValue(Object, String, boolean)
      */
     public static <T> T getValue(Object object, String name)
@@ -290,16 +296,17 @@ public class FieldReflection {
      *                                {@link SecurityManager#checkPermission
      *                                s.checkPermission} method with
      *                                {@code RuntimePermission("accessDeclaredMembers")}
-     *                                denies access to the declared field
+     *                                denies access to the declared field</li>
      *
      *                                <li>the caller's class loader is not the same
      *                                as or an ancestor of the class loader for the
      *                                current class and invocation of
      *                                {@link SecurityManager#checkPackageAccess
      *                                s.checkPackageAccess()} denies access to the
-     *                                package of this class
+     *                                package of this class</li>
      *
-     *                                <li>the field cannot be made accessible.
+     *                                <li>the field cannot be made accessible.</li>
+     *                                </ul>
      * @see Field#set(Object, Object)
      */
     public static Object setValue(Object object, String name, boolean declared, Object value)
@@ -342,16 +349,17 @@ public class FieldReflection {
      *                                {@link SecurityManager#checkPermission
      *                                s.checkPermission} method with
      *                                {@code RuntimePermission("accessDeclaredMembers")}
-     *                                denies access to the declared field
+     *                                denies access to the declared field</li>
      *
      *                                <li>the caller's class loader is not the same
      *                                as or an ancestor of the class loader for the
      *                                current class and invocation of
      *                                {@link SecurityManager#checkPackageAccess
      *                                s.checkPackageAccess()} denies access to the
-     *                                package of this class
+     *                                package of this class</li>
      *
-     *                                <li>the field cannot be made accessible.
+     *                                <li>the field cannot be made accessible.</li>
+     *                                </ul>
      * @see Field#set(Object, Object)
      */
     public static Object setValue(Object object, String name, Object value)
@@ -412,9 +420,9 @@ public class FieldReflection {
      * Returns the classes of the types of a parameterized field, like
      * {@link Collection} or {@link Map}.
      * <p>
-     * Examples: - getParameterizedTypesClasses(Collection<Integer>) (of a
+     * Examples: - {@code getParameterizedTypesClasses(Collection<Integer>)} (of a
      * collection field in this case) will return: [java.lang.Integer] -
-     * getParameterizedTypesClasses(Map<Integer, String>) (of a map field in this
+     * {@code getParameterizedTypesClasses(Map<Integer, String>)} (of a map field in this
      * case) will return: [java.lang.Integer, java.lang.String]
      * <p>
      *

@@ -14,38 +14,78 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.plugin.Plugin;
 
+/**
+ * Handler for handling Item Menu.
+ */
 public class ItemMenuHandler implements Listener {
 
     protected final ItemMenu menu;
     protected final Plugin plugin;
 
+    /**
+     * Constructs the ItemMenu Handler.
+     * <p>
+     *
+     * @param menu   ItemMenu
+     * @param plugin Plugin to register handler
+     */
     public ItemMenuHandler(ItemMenu menu, Plugin plugin) {
         this.menu = menu;
         this.plugin = plugin;
     }
 
+    /**
+     * Returns the plugin instance.
+     * <p>
+     *
+     * @return Plugin instance
+     */
     public Plugin getPlugin() {
         return plugin;
     }
 
+    /**
+     * Add delay to menu open.
+     * <p>
+     *
+     * @param player Player to open menu
+     * @param delay  Delay in milliseconds
+     */
     public void delayedOpen(Player player, int delay) {
         delayed(() -> {
             menu.open(player);
         }, delay);
     }
 
+    /**
+     * Add delay to menu update.
+     * <p>
+     *
+     * @param player Player to open menu
+     * @param delay  Delay in milliseconds
+     */
     public void delayedUpdate(Player player, int delay) {
         delayed(() -> {
             menu.update(player);
         }, delay);
     }
 
+    /**
+     * Add delay to menu close.
+     * <p>
+     *
+     * @param player Player to open menu
+     * @param delay  Delay in milliseconds
+     */
     public void delayedClose(Player player, int delay) {
         delayed(() -> {
             menu.close(player);
         }, delay);
     }
 
+    /**
+     * Unregister the handler.
+     */
     public void unregisterListener() {
         HandlerList.unregisterAll(this);
     }

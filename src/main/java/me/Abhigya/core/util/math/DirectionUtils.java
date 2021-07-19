@@ -68,7 +68,7 @@ public class DirectionUtils {
      * <li> {@link BlockFace#WEST}
      * <li> {@link BlockFace#NORTH}
      * <li> {@link BlockFace#EAST}
-     * <ul>
+     * </ul>
      * <p>
      *
      * @param blockface Desired block face
@@ -173,7 +173,7 @@ public class DirectionUtils {
      * @param from Position from
      * @param to   Position to
      * @return Euler angles of the result direction vector
-     * @see DirectionUtils#lookAt2(Vector, Vector).
+     * @see DirectionUtils#lookAt2(Vector, Vector)
      */
     public static float[] lookAt2(Location from, Location to) {
         return lookAt2(from.toVector(), to.toVector());

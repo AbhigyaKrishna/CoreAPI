@@ -30,6 +30,13 @@ public class SimpleScoreboard {
     private final Scoreboard handle;
     private Objective objective;
 
+    /**
+     * Constructs the Simple ScoreBoard.
+     * <p>
+     *
+     * @param title            Title of the scoreboard
+     * @param initial_elements Elements in the scoreboard
+     */
     @SuppressWarnings("deprecation")
     public SimpleScoreboard(String title, String... initial_elements) {
         Validate.notNull(title, "The title cannot be null!");

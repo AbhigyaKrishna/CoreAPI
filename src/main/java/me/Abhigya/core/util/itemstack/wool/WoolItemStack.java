@@ -14,8 +14,7 @@ import java.lang.reflect.Method;
 
 /**
  * Represents the item stacks whose type
- * is wool, and allows the developers to change
- * its color easily.
+ * is wool, and allows to change its color easily.
  */
 @SuppressWarnings("deprecation")
 public class WoolItemStack extends CustomItemStack {

@@ -13,13 +13,14 @@ public class ImageUtils {
 
     /**
      * Resizes an image to a absolute width and height (the image may not be
-     * proportional)
+     * proportional).
+     * <p>
      *
      * @param inputImagePath  Path of the original image
      * @param outputImagePath Path to save the resized image
      * @param scaledWidth     Absolute width in pixels
      * @param scaledHeight    Absolute height in pixels
-     * @throws IOException
+     * @throws IOException thrown while dealing with I/O functions.
      */
     public static void resize(String inputImagePath, String outputImagePath, int scaledWidth, int scaledHeight)
             throws IOException {
@@ -44,12 +45,13 @@ public class ImageUtils {
 
     /**
      * Resizes an image by a percentage of original size (proportional).
+     * <p>
      *
      * @param inputImagePath  Path of the original image
      * @param outputImagePath Path to save the resized image
      * @param percent         Double number specifies percentage of the output
-     *                        image over the input image.
-     * @throws IOException
+     *                        image over the input image
+     * @throws IOException thrown while dealing with I/O functions.
      */
     public static void resize(String inputImagePath, String outputImagePath, double percent) throws IOException {
         File inputFile = new File(inputImagePath);
@@ -61,10 +63,11 @@ public class ImageUtils {
 
     /**
      * Converts the {@link BufferedImage} type.
+     * <p>
      *
-     * @param srcImage
-     * @param destImgType
-     * @return
+     * @param srcImage    {@link BufferedImage} to convert
+     * @param destImgType Type to convert into
+     * @return Converted image
      */
     public static BufferedImage convert(final BufferedImage srcImage, final int destImgType) {
         BufferedImage img = new BufferedImage(srcImage.getWidth(), srcImage.getHeight(), destImgType);

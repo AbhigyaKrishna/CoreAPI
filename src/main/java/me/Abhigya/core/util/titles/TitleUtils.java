@@ -13,7 +13,7 @@ import java.lang.reflect.Method;
 /**
  * Class for sending titles to players
  */
-public class ReflectionTitleUtils {
+public class TitleUtils {
 
     /**
      * Sends a title and a subtitle message to the player. If either of these values
@@ -91,7 +91,7 @@ public class ReflectionTitleUtils {
      * @param subtitle Subtitle text
      */
     public static void send(Player player, String title, String subtitle) {
-        ReflectionTitleUtils.send(player, title, subtitle, 10, 70, 20);
+        TitleUtils.send(player, title, subtitle, 10, 70, 20);
     }
 
     /**
@@ -137,7 +137,7 @@ public class ReflectionTitleUtils {
      * @see #send(Player, String, String, int, int, int)
      */
     public static void broadcast(String title, String subtitle, int fade_in, int stay, int fade_out) {
-        Bukkit.getOnlinePlayers().forEach(player -> ReflectionTitleUtils.send(player, title, subtitle, fade_in, stay, fade_out));
+        Bukkit.getOnlinePlayers().forEach(player -> TitleUtils.send(player, title, subtitle, fade_in, stay, fade_out));
     }
 
     /**
@@ -149,7 +149,7 @@ public class ReflectionTitleUtils {
      * @see #send(Player, String, String)
      */
     public static void broadcast(String title, String subtitle) {
-        ReflectionTitleUtils.broadcast(title, subtitle, 10, 70, 20);
+        TitleUtils.broadcast(title, subtitle, 10, 70, 20);
     }
 
     /**
@@ -160,7 +160,7 @@ public class ReflectionTitleUtils {
      */
     @Deprecated
     public static void broadcastReset() {
-        Bukkit.getOnlinePlayers().forEach(ReflectionTitleUtils::reset);
+        Bukkit.getOnlinePlayers().forEach(TitleUtils::reset);
     }
 
 }

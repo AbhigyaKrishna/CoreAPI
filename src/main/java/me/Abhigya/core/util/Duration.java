@@ -20,8 +20,8 @@ public class Duration {
      * Construct duration.
      * <p>
      *
-     * @param duration Duration.
-     * @param unit     Time unit.
+     * @param duration Duration
+     * @param unit     Time unit
      */
     public Duration(long duration, TimeUnit unit) {
         if (duration <= 0L || unit == null) {
@@ -41,7 +41,7 @@ public class Duration {
      *
      * @param unit     Time unit of the duration
      * @param duration the time
-     * @return {@link Duration} in the given unit.
+     * @return {@link Duration} in the given unit
      */
     public static Duration of(TimeUnit unit, long duration) {
         switch (unit) {
@@ -159,6 +159,9 @@ public class Duration {
 
     /**
      * Returns the original duration.
+     * <p>
+     *
+     * @return Original duration
      */
     public long getDuration() {
         return duration;
@@ -166,6 +169,9 @@ public class Duration {
 
     /**
      * Returns the time unit.
+     * <p>
+     *
+     * @return Time unit
      */
     public TimeUnit getUnit() {
         return unit;
@@ -174,6 +180,9 @@ public class Duration {
     /**
      * Returns the duration
      * converted to nanoseconds.
+     * <p>
+     *
+     * @return Duration in nanoseconds
      */
     public long toNanos() {
         return unit.toNanos(duration);
@@ -182,6 +191,9 @@ public class Duration {
     /**
      * Returns the duration
      * converted to microseconds.
+     * <p>
+     *
+     * @return Duration in microseconds
      */
     public long toMicros() {
         return unit.toMicros(duration);
@@ -190,6 +202,9 @@ public class Duration {
     /**
      * Returns the duration
      * converted to milliseconds.
+     * <p>
+     *
+     * @return Duration in milliseconds
      */
     public long toMillis() {
         return unit.toMillis(duration);
@@ -198,6 +213,9 @@ public class Duration {
     /**
      * Returns the duration
      * converted to seconds.
+     * <p>
+     *
+     * @return Duration in seconds
      */
     public long toSeconds() {
         return unit.toSeconds(duration);
@@ -206,6 +224,9 @@ public class Duration {
     /**
      * Returns the duration
      * converted to minutes.
+     * <p>
+     *
+     * @return Duration in minutes
      */
     public long toMinutes() {
         return unit.toMinutes(duration);
@@ -214,6 +235,9 @@ public class Duration {
     /**
      * Returns the duration
      * converted to hours.
+     * <p>
+     *
+     * @return Duration in hours
      */
     public long toHours() {
         return unit.toHours(duration);
@@ -222,6 +246,9 @@ public class Duration {
     /**
      * Returns the duration
      * converted to days.
+     * <p>
+     *
+     * @return Duration in days
      */
     public long toDays() {
         return unit.toDays(duration);
@@ -229,6 +256,9 @@ public class Duration {
 
     /**
      * Returns true if this is zero.
+     * <p>
+     *
+     * @return true if duration is zero, else false
      */
     public boolean isZero() {
         return ZERO.equals(this);

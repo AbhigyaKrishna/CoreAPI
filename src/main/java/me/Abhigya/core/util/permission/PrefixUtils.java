@@ -8,9 +8,11 @@ import java.util.List;
 /**
  * Useful class for getting the prefix of a player. Supported permission
  * plugins:
- * <li> PermissionsEx
- * <li> PowerfulPerms
- * <li> LuckPerms
+ * <ul>
+ * <li> PermissionsEx </li>
+ * <li> PowerfulPerms </li>
+ * <li> LuckPerms </li>
+ * </ul>
  */
 public class PrefixUtils {
 
@@ -53,7 +55,7 @@ public class PrefixUtils {
      * <p>
      *
      * @param player Required player
-     * @return  Prefix of the player
+     * @return Prefix of the player
      */
     public static String getPermissionsExPrefix(Player player) {
         try {
@@ -68,7 +70,7 @@ public class PrefixUtils {
      * <p>
      *
      * @param player Required player
-     * @return  Prefix of the player
+     * @return Prefix of the player
      */
     public static String getPowerfulPermsPrefix(Player player) {
         try {
@@ -84,7 +86,7 @@ public class PrefixUtils {
      * <p>
      *
      * @param player Required player
-     * @return  Prefix of the player
+     * @return Prefix of the player
      */
     public static String getLuckPermsPrefix(Player player) {
         try {

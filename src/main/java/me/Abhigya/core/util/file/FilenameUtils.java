@@ -15,8 +15,8 @@ public class FilenameUtils extends org.apache.commons.io.FilenameUtils {
      * Gets the name of the provided file excluding its extension.
      * <p>
      *
-     * @param file File to get.
-     * @return Name of the file excluding its extension.
+     * @param file File to get
+     * @return Name of the file excluding its extension
      */
     public static String getBaseName(File file) {
         return getBaseName(file.getName());
@@ -27,9 +27,9 @@ public class FilenameUtils extends org.apache.commons.io.FilenameUtils {
      * including the files within the sub-directories of the desired directory.
      * <p>
      *
-     * @param directory Desired directory.
+     * @param directory Desired directory
      * @return Names of all the elements within the directory and its
-     * sub-directories.
+     * sub-directories
      */
     public static Set<String> getElementNames(File directory) {
         Validate.isTrue(directory.isDirectory(), "the provided file is not a valid directory!");

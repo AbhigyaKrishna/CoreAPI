@@ -14,7 +14,7 @@ import java.lang.reflect.Method;
 
 /**
  * Represents the item stacks whose type
- * is stained glass, and allows the developers to change
+ * is stained glass, and allows to change
  * its color easily.
  */
 @SuppressWarnings("deprecation")

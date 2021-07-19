@@ -11,8 +11,18 @@ import org.bukkit.plugin.Plugin;
 
 import java.util.function.Consumer;
 
+/**
+ * Reference to a utility class for plugin.
+ */
 public class PluginUtils {
 
+    /**
+     * Triggers the consumer function on the given plugin loads.
+     * <p>
+     *
+     * @param pluginName Plugin to check for loading
+     * @param callback   Consumer to trigger when the plugin loads
+     */
     public static void onPluginLoaded(String pluginName, Consumer<Plugin> callback) {
         if (Bukkit.getPluginManager().isPluginEnabled(pluginName)) {
             callback.accept(Bukkit.getPluginManager().getPlugin(pluginName));
@@ -21,6 +31,13 @@ public class PluginUtils {
         }
     }
 
+    /**
+     * Converts a raw string to NameSpaced key.
+     * <p>
+     *
+     * @param raw String to convert
+     * @return NameSpaced key for the string
+     */
     public static NamespacedKey parseNamespacedKey(String raw) {
         int sepIndex = raw.indexOf(':');
         if (sepIndex == -1) {
@@ -54,6 +71,7 @@ public class PluginUtils {
         }
     }
 
-    private PluginUtils() {}
+    private PluginUtils() {
+    }
 
 }

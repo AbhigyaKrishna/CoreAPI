@@ -186,12 +186,12 @@ public class Vector3D implements Vector {
     /**
      * Creates and returns a new {@link Vector2D} by specifying the components to
      * provide, following the rules explain below:
-     * <dd><strong>-1</strong> represents the value of {@link #getX()} in this
-     * vector.</dd>
-     * <dd><strong>0</strong> represents the value of {@link #getY()} in this
-     * vector.</dd>
-     * <dd><strong>1</strong> represents the value of {@link #getZ()} in this
-     * vector.</dd>
+     * <pre><strong>-1</strong> represents the value of {@link #getX()} in this
+     * vector.</pre>
+     * <pre><strong>0</strong> represents the value of {@link #getY()} in this
+     * vector.</pre>
+     * <pre><strong>1</strong> represents the value of {@link #getZ()} in this
+     * vector.</pre>
      * <p>
      *
      * @param x Providing <strong>-1</strong>, will construct the Vector2D with its x component

@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
 /**
- * Class for sending plugin messages via Bungeecord.
+ * Class for sending plugin messages via BungeeCord.
  */
 public class MessagingUtils {
 
@@ -30,17 +30,22 @@ public class MessagingUtils {
      * Send plugin message using the channel 'BungeeCord'.
      * <p>
      *
-     * @param arguments the arguments to send.
-     * @throws IOException
-     * @throws SecurityException
-     * @throws NoSuchMethodException
-     * @throws InvocationTargetException
-     * @throws IllegalArgumentException
-     * @throws IllegalAccessException
+     * @param plugin    Messaging plugin
+     * @param arguments Arguments to send
+     * @throws IOException               thrown when an issue occur while writing to message stream
+     * @throws SecurityException         thrown by the security manager to indicate a security violation
+     * @throws NoSuchMethodException     thrown when a particular method cannot be found
+     * @throws InvocationTargetException thrown when a error occur while invoking a method or constructor
+     * @throws IllegalArgumentException  thrown when a illegal argument is passed
+     * @throws IllegalAccessException    thrown when an application tries to reflectively create an
+     *                                   instance (other than an array), set or get a field, or invoke
+     *                                   a method, but the currently executing method does not have access
+     *                                   to the definition of the specified class, field, method
+     *                                   or constructor
      */
     public static void sendPluginMessage(Plugin plugin, Writable... arguments) throws IOException, IllegalAccessException,
             IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
-        /* donnot send empty arguments */
+        /* do not send empty arguments */
         if (arguments == null || arguments.length == 0) {
             return;
         }
@@ -62,13 +67,18 @@ public class MessagingUtils {
      * Send plugin message using the channel 'BungeeCord'.
      * <p>
      *
-     * @param written arguments from {@link Written}
-     * @throws IOException
-     * @throws IllegalAccessException
-     * @throws IllegalArgumentException
-     * @throws InvocationTargetException
-     * @throws NoSuchMethodException
-     * @throws SecurityException
+     * @param plugin  Messaging plugin
+     * @param written Arguments from {@link Written}
+     * @throws IOException               thrown when an issue occur while writing to message stream
+     * @throws SecurityException         thrown by the security manager to indicate a security violation
+     * @throws NoSuchMethodException     thrown when a particular method cannot be found
+     * @throws InvocationTargetException thrown when a error occur while invoking a method or constructor
+     * @throws IllegalArgumentException  thrown when a illegal argument is passed
+     * @throws IllegalAccessException    thrown when an application tries to reflectively create an
+     *                                   instance (other than an array), set or get a field, or invoke
+     *                                   a method, but the currently executing method does not have access
+     *                                   to the definition of the specified class, field, method
+     *                                   or constructor
      */
     public static void sendPluginMessage(Plugin plugin, Written written) throws IOException, IllegalAccessException,
             IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
@@ -98,12 +108,16 @@ public class MessagingUtils {
      * @param plugin    Messaging plugin
      * @param player    Player messenger
      * @param arguments Arguments to send
-     * @throws IOException
-     * @throws SecurityException
-     * @throws NoSuchMethodException
-     * @throws InvocationTargetException
-     * @throws IllegalArgumentException
-     * @throws IllegalAccessException
+     * @throws IOException               thrown when an issue occur while writing to message stream
+     * @throws SecurityException         thrown by the security manager to indicate a security violation
+     * @throws NoSuchMethodException     thrown when a particular method cannot be found
+     * @throws InvocationTargetException thrown when a error occur while invoking a method or constructor
+     * @throws IllegalArgumentException  thrown when a illegal argument is passed
+     * @throws IllegalAccessException    thrown when an application tries to reflectively create an
+     *                                   instance (other than an array), set or get a field, or invoke
+     *                                   a method, but the currently executing method does not have access
+     *                                   to the definition of the specified class, field, method
+     *                                   or constructor
      */
     public static void sendPluginMessage(Plugin plugin, Player player, Writable... arguments)
             throws IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException,
@@ -133,12 +147,16 @@ public class MessagingUtils {
      * @param plugin  Messaging plugin
      * @param player  Player messenger
      * @param written Arguments to send
-     * @throws IOException
-     * @throws IllegalAccessException
-     * @throws IllegalArgumentException
-     * @throws InvocationTargetException
-     * @throws NoSuchMethodException
-     * @throws SecurityException
+     * @throws IOException               thrown when an issue occur while writing to message stream
+     * @throws SecurityException         thrown by the security manager to indicate a security violation
+     * @throws NoSuchMethodException     thrown when a particular method cannot be found
+     * @throws InvocationTargetException thrown when a error occur while invoking a method or constructor
+     * @throws IllegalArgumentException  thrown when a illegal argument is passed
+     * @throws IllegalAccessException    thrown when an application tries to reflectively create an
+     *                                   instance (other than an array), set or get a field, or invoke
+     *                                   a method, but the currently executing method does not have access
+     *                                   to the definition of the specified class, field, method
+     *                                   or constructor
      */
     public static void sendPluginMessage(Plugin plugin, Player player, Written written)
             throws IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException,

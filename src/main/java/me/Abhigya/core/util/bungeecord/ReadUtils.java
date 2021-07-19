@@ -4,10 +4,17 @@ import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 
 /**
- * Class for reading responses.
+ * Class for reading responses from BungeeCord channel.
  */
 public class ReadUtils {
 
+    /**
+     * Read messages from 'BungeeCord' message channel.
+     * <p>
+     *
+     * @param message Message from bungeecord channel
+     * @return Parsed message
+     */
     public static Object[] read(byte[] message) {
         if (message == null || message.length == 0) { // don't read empty messages
             return new Object[0];
@@ -37,6 +44,13 @@ public class ReadUtils {
         }
     }
 
+    /**
+     * Read arguments from 'BungeeCord' message channel.
+     * <p>
+     *
+     * @param message Argument from bungeecord channel
+     * @return Parsed message
+     */
     public static String readArgument(byte[] message) {
         final Object[] arg_repo = read(message);
         if (arg_repo.length > 0) {
@@ -45,6 +59,13 @@ public class ReadUtils {
         return "";
     }
 
+    /**
+     * Read response from 'BungeeCord' message channel.
+     * <p>
+     *
+     * @param message Response from bungeecord channel
+     * @return Parsed message
+     */
     public static Object[] readResponse(byte[] message) {
         final Object[] arg_repo = read(message);
         if (arg_repo.length > 1) {
@@ -58,11 +79,12 @@ public class ReadUtils {
     }
 
     /**
-     * Read fully DataInputStreams.
+     * Read response fully from 'BungeeCord' message channel.
      * <p>
      *
-     * @param in {@link DataInputStream}.
-     * @return readed.
+     * @param argument Arguments for the message
+     * @param in       {@link DataInputStream}
+     * @return Parsed message
      */
     private static Object[] readResponseFully(final String argument, final DataInputStream in) {
         try {

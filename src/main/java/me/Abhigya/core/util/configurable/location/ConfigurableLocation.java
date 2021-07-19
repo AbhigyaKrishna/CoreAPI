@@ -10,6 +10,10 @@ import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.UUID;
 
+/**
+ * Represents a {@link Location} that is 'Configurable'
+ * because can be loaded from/saved on a {@link ConfigurationSection}.
+ */
 public class ConfigurableLocation extends Location implements Configurable, Initializable {
 
     public static final String WORLD_UID_KEY = "world-uid";
@@ -27,8 +31,8 @@ public class ConfigurableLocation extends Location implements Configurable, Init
      * Note that this method checks the given configuration section calling {@link #isConfigurableLocation(ConfigurationSection)}.
      * <p>
      *
-     * @param section Section to parse.
-     * @return Parsed location.
+     * @param section Section to parse
+     * @return Parsed location
      */
     public static ConfigurableLocation of(ConfigurationSection section) {
         return (isConfigurableLocation(section) ? new ConfigurableLocation().load(section) : null);
@@ -40,8 +44,8 @@ public class ConfigurableLocation extends Location implements Configurable, Init
      * <p>
      *
      * @param section {@link ConfigurationSection} where the supposed
-     *                {@link ConfigurableLocation} is stored.
-     * @return true if is.
+     *                {@link ConfigurableLocation} is stored
+     * @return true if is
      */
     public static boolean isConfigurableLocation(ConfigurationSection section) {
         for (String key : CONFIGURABLE_LOCATION_KEYS) {
@@ -71,23 +75,52 @@ public class ConfigurableLocation extends Location implements Configurable, Init
     }
 
     /**
-     * whether {@link #load(ConfigurationSection)} method has been called
+     * Whether {@link #load(ConfigurationSection)} method has been called.
      */
     protected boolean initialized;
 
+    /**
+     * Constructs a uninitialized {@link ConfigurableLocation}.
+     */
     public ConfigurableLocation() { // uninitialized
         super(null, 0, 0, 0, 0, 0);
     }
 
+    /**
+     * Constructs the {@link ConfigurableLocation}.
+     * <p>
+     *
+     * @param world World
+     * @param x     X-axis
+     * @param y     Y-axis
+     * @param z     Z-axis
+     * @param yaw   Yaw
+     * @param pitch Pitch
+     */
     public ConfigurableLocation(World world, double x, double y, double z, float yaw, float pitch) {
         super(world, x, y, z, yaw, pitch);
         this.initialized = true;
     }
 
+    /**
+     * Constructs the {@link ConfigurableLocation}.
+     * <p>
+     *
+     * @param world World
+     * @param x     X-axis
+     * @param y     Y-axis
+     * @param z     Z-axis
+     */
     public ConfigurableLocation(World world, double x, double y, double z) {
         this(world, x, y, z, 0.0F, 0.0F);
     }
 
+    /**
+     * Constructs the {@link ConfigurableLocation}.
+     * <p>
+     *
+     * @param copy Copy of the location
+     */
     public ConfigurableLocation(Location copy) {
         this(copy.getWorld(), copy.getX(), copy.getY(), copy.getZ(), copy.getYaw(), copy.getPitch());
     }
@@ -118,8 +151,8 @@ public class ConfigurableLocation extends Location implements Configurable, Init
      * Gets a clone of this location with the specified {@link World world}.
      * <p>
      *
-     * @param world New world for the location.
-     * @return Clone of this location with the specified {@code world}.
+     * @param world New world for the location
+     * @return Clone of this location with the specified {@code world}
      */
     public ConfigurableLocation withWorld(World world) {
         ConfigurableLocation location = clone();

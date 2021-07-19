@@ -7,6 +7,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Represents a class which stores the structure model data.
+ */
 public class StructureModel implements Cloneable {
 
     protected final Map<BlockVector, Material> types;
@@ -14,6 +17,12 @@ public class StructureModel implements Cloneable {
     protected final int y_size;
     protected final int z_size;
 
+    /**
+     * Constructs the structure model.
+     * <p>
+     *
+     * @param types A map containing block vector and material
+     */
     public StructureModel(Map<BlockVector, Material> types) {
         this.types = new HashMap<>(types);
 
@@ -54,10 +63,23 @@ public class StructureModel implements Cloneable {
         this.z_size = Math.abs(z_min) + Math.abs(z_max) + 1;
     }
 
+    /**
+     * Returns the structure model map.
+     * <p>
+     *
+     * @return Structure Model map
+     */
     public Map<BlockVector, Material> getTypeMap() {
         return Collections.unmodifiableMap(types);
     }
 
+    /**
+     * Returns the dimension of the structure model as block vector.
+     * <p>
+     *
+     * @param vector Position block vector
+     * @return Size of the model
+     */
     public BlockVector getDimensions(BlockVector vector) {
         vector.setX(x_size);
         vector.setY(y_size);
@@ -66,6 +88,12 @@ public class StructureModel implements Cloneable {
         return vector;
     }
 
+    /**
+     * Returns the dimension of the structure model as block vector.
+     * <p>
+     *
+     * @return Size of the model
+     */
     public BlockVector getDimensions() {
         return getDimensions(new BlockVector());
     }

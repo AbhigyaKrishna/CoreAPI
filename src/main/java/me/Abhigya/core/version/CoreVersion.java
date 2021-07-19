@@ -16,30 +16,77 @@ public enum CoreVersion {
         this.id = id;
     }
 
+    /**
+     * Gets the current {@link CoreAPI} version in use.
+     * <p>
+     *
+     * @return Version of CoreAPI
+     */
     public static CoreVersion getCoreVersion() {
         return valueOf(format(CoreAPI.getInstance().getDescription().getVersion()));
     }
 
+    /**
+     * Get the formatted string for the version.
+     * <p>
+     *
+     * @param suppose_version Version to format to string
+     * @return Formatted version string
+     */
     private static String format(String suppose_version) {
         return "v" + suppose_version.trim().toLowerCase().replace(".", "_").replace("v", "");
     }
 
+    /**
+     * Gets the version's id.
+     * <p>
+     *
+     * @return Version's id
+     */
     public int getID() {
         return this.id;
     }
 
+    /**
+     * Checks whether this version is older than the provided version.
+     * <p>
+     *
+     * @param other Other version
+     * @return true if older
+     */
     public boolean isOlder(CoreVersion other) {
         return (getID() < other.getID());
     }
 
+    /**
+     * Checks whether this version is older than or equals to the provided version.
+     * <p>
+     *
+     * @param other Other version
+     * @return true if older or equals
+     */
     public boolean isOlderEquals(CoreVersion other) {
         return (getID() <= other.getID());
     }
 
+    /**
+     * Checks whether this version is newer than the provided version.
+     * <p>
+     *
+     * @param other Other version
+     * @return true if newer
+     */
     public boolean isNewer(CoreVersion other) {
         return (getID() > other.getID());
     }
 
+    /**
+     * Checks whether this version is newer than or equals to the provided version.
+     * <p>
+     *
+     * @param other Other version
+     * @return true if newer or equals
+     */
     public boolean isNewerEquals(CoreVersion other) {
         return (getID() >= other.getID());
     }

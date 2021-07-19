@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.List;
@@ -21,8 +22,14 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * Class for creating custom Inventory menus.
+ */
 public class ItemMenu {
 
+    /*
+    Default title
+     */
     public static final String DEFAULT_TITLE = "Empty Title";
 
     protected String title;
@@ -31,7 +38,16 @@ public class ItemMenu {
     protected ItemMenu parent;
     protected ItemMenuHandler handler;
 
-    public ItemMenu(String title, ItemMenuSize size, ItemMenu parent, Item... contents) {
+    /**
+     * Constructs the ItemMenu.
+     * <p>
+     *
+     * @param title    Title of the ItemMenu
+     * @param size     Size of ItemMenu
+     * @param parent   Parent ItemMenu if any, else null
+     * @param contents Contents of the ItemMenu
+     */
+    public ItemMenu(String title, ItemMenuSize size, @Nullable ItemMenu parent, Item... contents) {
         Validate.notNull(size, "The size cannot be null!");
         this.title = StringUtils.defaultIfBlank(title, DEFAULT_TITLE);
         this.size = size;
@@ -40,44 +56,107 @@ public class ItemMenu {
         fill(contents);
     }
 
+    /**
+     * Returns the title of the ItemMenu.
+     * <p>
+     *
+     * @return Title of the ItemMenu
+     */
     public String getTitle() {
         return title;
     }
 
+    /**
+     * Returns the size of the ItemMenu.
+     * <p>
+     *
+     * @return Size of the ItemMenu
+     */
     public ItemMenuSize getSize() {
         return size;
     }
 
+    /**
+     * Returns the contents of the ItemMenu.
+     * <p>
+     *
+     * @return Contents of the ItemMenu
+     */
     public Item[] getContents() {
         return contents;
     }
 
+    /**
+     * Returns the contents of the ItemMenu as stream.
+     * <p>
+     *
+     * @return Stream of Contents of the ItemMenu
+     */
     public Stream<Item> getContentsStream() {
         return Arrays.stream(getContents());
     }
 
+    /**
+     * Returns the filtered contents of ItemMenu with a Predicate filter.
+     * <p>
+     *
+     * @param predicate_filter Filter for the contents of ItemMenu
+     * @return Filtered contents
+     */
     public Item[] getContents(Predicate<? super Item> predicate_filter) {
         List<Item> filtered = getContentsStream().filter(predicate_filter).collect(Collectors.toList());
         return filtered.toArray(new Item[filtered.size()]);
     }
 
+    /**
+     * Returns the parent ItemMenu for this ItemMenu.
+     * <p>
+     *
+     * @return Parent ItemMenu for this ItemMenu
+     */
     public ItemMenu getParent() {
         return parent;
     }
 
+    /**
+     * Checks of this ItemMenu has a parent ItemMenu.
+     * <p>
+     *
+     * @return <strong>{@code true}</strong> if it has a parent ItemMenu, else false
+     */
     public boolean hasParent() {
         return getParent() != null;
     }
 
+    /**
+     * Returns the ItemMenuHandler for this ItemMenu.
+     * <p>
+     *
+     * @return {@link ItemMenuHandler}
+     */
     public ItemMenuHandler getHandler() {
         return this.handler;
     }
 
+    /**
+     * Returns the Item on the given index.
+     * <p>
+     *
+     * @param index Index of the Item
+     * @return {@link Item} at the given index
+     */
     public Item getItem(int index) {
         rangeCheck(index, index);
         return this.contents[index];
     }
 
+    /**
+     * Returns an array of index of the Items with the given Predicate filter.
+     * <p>
+     *
+     * @param predicate_filter Predicate filter for the Items
+     * @return Array of index of the Items
+     */
     public Integer[] getIndexes(Predicate<? super Item> predicate_filter) {
         TreeSet<Integer> set = new TreeSet<>();
         for (int i = 0; i < getContents().length; i++) {
@@ -92,7 +171,7 @@ public class ItemMenu {
      * Returns the first empty slot.
      * <p>
      *
-     * @return the first empty slot found, or -1 if no empty slots.
+     * @return First empty slot found, or -1 if no empty slots.
      */
     public int getFirstEmpty() {
         return getEmptyIndexes().length > 0 ? getEmptyIndexes()[0] : -1;
@@ -102,17 +181,29 @@ public class ItemMenu {
      * Returns the empty slot indexes.
      * <p>
      *
-     * @return the empty slot indexes found.
+     * @return Empty slot indexes found.
      */
     public Integer[] getEmptyIndexes() {
         return getIndexes(content -> content == null || content.getDisplayIcon() == null
                 || content.getDisplayIcon().getType() == Material.AIR);
     }
 
+    /**
+     * Checks if the ItemMenu if full or has no empty slots.
+     * <p>
+     *
+     * @return <strong>{@code true}</strong> if its full, else false
+     */
     public boolean isFull() {
         return getEmptyIndexes().length == 0;
     }
 
+    /**
+     * Checks if the ItemMenu is empty or has no content.
+     * <p>
+     *
+     * @return <strong>{@code true}</strong> if its empty, else false
+     */
     public boolean isEmpty() {
         return getEmptyIndexes().length == this.getContents().length;
     }
@@ -122,9 +213,9 @@ public class ItemMenu {
      * equals this.
      * <p>
      *
-     * @param player the player with the opened inventory.
+     * @param player Player with the opened inventory
      * @return true if the opened inventory that the given {@link Player} has is
-     * this.
+     * this
      */
     public boolean isMenuOpen(Player player) {
         if (player.getOpenInventory() == null || player.getOpenInventory().getTopInventory() == null
@@ -139,7 +230,7 @@ public class ItemMenu {
      * Gets whether the provided {@link Inventory} is an instance of this {@link ItemMenu}.
      * <br>
      *
-     * @param inventory the inventory to check.
+     * @param inventory The inventory to check
      * @return true if the provided {@link Inventory} is an instance of this {@link ItemMenu}
      */
     public boolean isThisMenu(Inventory inventory) {
@@ -157,8 +248,8 @@ public class ItemMenu {
      * see the changes.
      * <p>
      *
-     * @param title new title.
-     * @return this Object, for chaining.
+     * @param title New title
+     * @return This Object, for chaining
      */
     public ItemMenu setTitle(String title) {
         this.title = StringUtils.defaultIfBlank(title, DEFAULT_TITLE);
@@ -171,16 +262,47 @@ public class ItemMenu {
 //		return this;
 //	}
 
+    /**
+     * Adds the contents to this menu.
+     * <p>
+     * Note that all the Bukkit inventories created from this, must be re-opened to
+     * see the changes.
+     * <p>
+     *
+     * @param contents Contents for this menu
+     * @return This Object, for chaining
+     */
     public ItemMenu setContents(Item[] contents) {
         fill(contents);
         return this;
     }
 
+    /**
+     * Sets the parent of this menu.
+     * <p>
+     * Note that all the Bukkit inventories created from this, must be re-opened to
+     * see the changes.
+     * <p>
+     *
+     * @param parent New parent menu
+     * @return This Object, for chaining
+     */
     public ItemMenu setParent(ItemMenu parent) {
         this.parent = parent;
         return this;
     }
 
+    /**
+     * Sets the item to the given slot in this menu.
+     * <p>
+     * Note that all the Bukkit inventories created from this, must be re-opened to
+     * see the changes.
+     * <p>
+     *
+     * @param slot    Index of slot to set item to
+     * @param content Item to set to the menu
+     * @return This Object, for chaining
+     */
     public ItemMenu setItem(int slot, Item content) {
         setItemIf(slot, content, null);
         return this;
@@ -190,9 +312,9 @@ public class ItemMenu {
      * Sets the item on the given slot.
      * <p>
      *
-     * @param slot      the slot where the given item will be stored.
-     * @param item      the item to store.
-     * @param predicate your predicate expression.
+     * @param slot      Index of slot where the given item will be stored
+     * @param item      Item to store
+     * @param predicate Your predicate expression
      * @return true if was set.
      */
     public boolean setItemIf(int slot, Item item, Predicate<? super Item> predicate) {
@@ -213,8 +335,8 @@ public class ItemMenu {
      * not full.
      * <p>
      *
-     * @param item the item to add.
-     * @return true if could be added.
+     * @param item Item to add
+     * @return true if could be added
      */
     public boolean addItem(Item item) {
         if (!isFull()) {
@@ -228,8 +350,8 @@ public class ItemMenu {
      * Clear the item stored on the given slot.
      * <p>
      *
-     * @param slot the slot where the item is stored.
-     * @return true if was clear.
+     * @param slot Index of slot where the item is stored
+     * @return true if was clear
      */
     public boolean clearItem(int slot) {
         return clearItemIf(slot, null);
@@ -239,23 +361,45 @@ public class ItemMenu {
      * Clear the item stored on the given slot.
      * <p>
      *
-     * @param slot      the slot where the item is stored.
-     * @param predicate your predicate expression.
+     * @param slot      Index of slot where the item is stored
+     * @param predicate Your predicate expression
      * @return true if was clear.
      */
     public boolean clearItemIf(int slot, Predicate<? super Item> predicate) {
         return setItemIf(slot, null, predicate);
     }
 
+    /**
+     * Fill the items to the menu.
+     * <p>
+     *
+     * @param contents Items to store
+     * @return This Object, for chaining
+     */
     public ItemMenu fill(Item... contents) {
         fill(0, contents);
         return this;
     }
 
+    /**
+     * Fill all slots with the given Item.
+     * <p>
+     *
+     * @param content Item to store
+     * @return This Object, for chaining
+     */
     public ItemMenu fillToAll(Item content) {
         return fillToAllIf(content, null);
     }
 
+    /**
+     * Fill all slots with the given Item according to the predicate.
+     * <p>
+     *
+     * @param content   Item to store
+     * @param predicate Your predicate expression
+     * @return This Object, for chaining
+     */
     public ItemMenu fillToAllIf(Item content, Predicate<? super Item> predicate) {
         for (int i = 0; i < this.getContents().length; i++) {
             if (predicate == null || predicate.test(this.contents[i])) {
@@ -265,6 +409,14 @@ public class ItemMenu {
         return this;
     }
 
+    /**
+     * Fill the Items to the menu from the given index.
+     * <p>
+     *
+     * @param from_index Index from which to start
+     * @param contents   Items to store
+     * @return This Object, for chaining
+     */
     public ItemMenu fill(int from_index, Item... contents) {
         rangeCheck(from_index, from_index);
         for (int i = from_index; i < this.getContents().length; i++) {
@@ -276,6 +428,12 @@ public class ItemMenu {
         return this;
     }
 
+    /**
+     * Clear all the Items in the menu.
+     * <p>
+     *
+     * @return This Object, for chaining
+     */
     public ItemMenu clear() {
         return fillToAll(null);
     }
@@ -297,7 +455,7 @@ public class ItemMenu {
      * Initializes the {@link ItemMenuHandler} of this.
      * <p>
      *
-     * @param plugin the plugin owner of the listener.
+     * @param plugin The plugin owner of the listener.
      * @return true if not already registered.
      */
     public boolean registerListener(Plugin plugin) {
@@ -312,7 +470,7 @@ public class ItemMenu {
      * Stop handling this.
      * <p>
      *
-     * @return false if not already registered.
+     * @return false if not already registered
      */
     public boolean unregisterListener() {
         if (this.handler != null) {
@@ -328,8 +486,8 @@ public class ItemMenu {
      * of this {@link ItemMenu}.
      * <p>
      *
-     * @param player the player viewer.
-     * @return the opened inventory.
+     * @param player The player viewer
+     * @return The opened inventory
      */
     public Inventory open(Player player) {
         Inventory inventory = apply(
@@ -345,7 +503,8 @@ public class ItemMenu {
      * this.
      * <p>
      *
-     * @return true if was updated.
+     * @param player Player to update inventory view
+     * @return true if was updated
      */
     public boolean update(Player player) {
         if (isMenuOpen(player)) {
@@ -358,6 +517,9 @@ public class ItemMenu {
 
     /**
      * Updates the viewing inventory of each online player only if it is equals this.
+     * <p>
+     *
+     * @return This Object, for chaining
      */
     public ItemMenu updateOnlinePlayers() {
         Bukkit.getOnlinePlayers().forEach(player -> update(player));
@@ -369,6 +531,7 @@ public class ItemMenu {
      * this.
      * <p>
      *
+     * @param player Player to close inventory
      * @return true if was closed.
      */
     public boolean close(Player player) {
@@ -381,12 +544,22 @@ public class ItemMenu {
 
     /**
      * Closes the viewing inventory of each online player only if it is equals this.
+     * <p>
+     *
+     * @return This Object, for chaining
      */
     public ItemMenu closeOnlinePlayers() {
         Bukkit.getOnlinePlayers().forEach(player -> close(player));
         return this;
     }
 
+    /**
+     * {@link ItemMenuClickAction} for handling click in the menu.
+     * <p>
+     *
+     * @param action {@link ItemMenuClickAction} to handle for clicks in the menu
+     * @return This Object, for chaining
+     */
     public ItemMenu onClick(final ItemMenuClickAction action) {
         if (this.getHandler() == null) {
             throw new UnsupportedOperationException("This menu has never been registered!");

@@ -7,15 +7,32 @@ import me.Abhigya.core.menu.item.action.ItemAction;
 import me.Abhigya.core.menu.item.action.ItemActionPriority;
 import org.bukkit.inventory.ItemStack;
 
+/**
+ * Implementation of {@link ActionItem} handling with open menu option.
+ */
 public class OpenMenuActionItem extends ActionItem {
 
     protected ItemMenu menu;
 
+    /**
+     * Constructs the Open Menu Action Item.
+     * <p>
+     *
+     * @param name Name of the Item
+     * @param icon ItemStack icon of the Item
+     * @param lore Lore of the Item
+     */
     public OpenMenuActionItem(String name, ItemStack icon, String... lore) {
         super(name, icon, lore);
         addDefaultAction();
     }
 
+    /**
+     * Constructs the Open Menu Action Item.
+     * <p>
+     *
+     * @param icon ItemStack icon of the Item
+     */
     public OpenMenuActionItem(ItemStack icon) {
         super(icon);
         addDefaultAction();
@@ -45,8 +62,8 @@ public class OpenMenuActionItem extends ActionItem {
      * be opened when clicking this.
      * <p>
      *
-     * @param menu Menu to open when this clicked.
-     * @return This Object, for chaining.
+     * @param menu Menu to open when this clicked
+     * @return This Object, for chaining
      */
     public OpenMenuActionItem setMenu(ItemMenu menu) {
         this.menu = menu;

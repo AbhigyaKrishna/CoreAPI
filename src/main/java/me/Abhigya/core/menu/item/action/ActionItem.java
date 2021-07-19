@@ -9,26 +9,58 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Implementation of {@link Item}.
+ */
 public class ActionItem extends Item {
 
     private final Set<ItemAction> actions;
 
+    /**
+     * Constructs the menu Action Item.
+     * <p>
+     *
+     * @param name Name of the Item
+     * @param icon ItemStack icon of the Item
+     * @param lore Lore of the Item
+     */
     public ActionItem(String name, ItemStack icon, String... lore) {
         super(name, icon, lore);
         this.actions = new HashSet<>();
     }
 
+    /**
+     * Constructs the menu Action Item.
+     * <p>
+     *
+     * @param name Name of the Item
+     * @param icon ItemStack icon of the Item
+     * @param lore Lore of the Item
+     */
     public ActionItem(String name, ItemStack icon, List<String> lore) {
         super(name, icon, lore);
 
         this.actions = new HashSet<>();
     }
 
+    /**
+     * Constructs the menu Action Item.
+     * <p>
+     *
+     * @param icon ItemStack icon of the Item
+     */
     public ActionItem(ItemStack icon) {
         super(icon);
         this.actions = new HashSet<>();
     }
 
+    /**
+     * Add action to the Action Item.
+     * <p>
+     *
+     * @param action Item Action
+     * @return This Object, for chaining
+     */
     public ActionItem addAction(ItemAction action) {
         Validate.notNull(action, "The action cannot be null!");
         Validate.notNull(action.getPriority(), "The action priority cannot be null!");
@@ -36,6 +68,13 @@ public class ActionItem extends Item {
         return this;
     }
 
+    /**
+     * Remove action from the Action Item.
+     * <p>
+     *
+     * @param action Item Action
+     * @return This Object, for chaining
+     */
     public ActionItem removeAction(ItemAction action) {
         actions.remove(action);
         return this;

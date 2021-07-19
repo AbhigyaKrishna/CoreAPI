@@ -18,6 +18,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Represents a {@link ItemStack} that is 'Configurable'
+ * because can be loaded from/saved on a {@link ConfigurationSection}.
+ */
 public class ConfigurableItemStack implements Configurable {
 
     public static final String TYPE_KEY = "type";
@@ -121,76 +125,189 @@ public class ConfigurableItemStack implements Configurable {
         return this.saveEntries(section);
     }
 
+    /**
+     * Returns the type string of the ItemStack.
+     * <p>
+     *
+     * @return Type of ItemStack as string
+     */
     public String getType() {
         return type;
     }
 
+    /**
+     * Sets the type string of the ItemStack.
+     * <p>
+     *
+     * @param type Type for ItemStack
+     */
     public void setType(String type) {
         this.setType(type, true);
     }
 
+    /**
+     * Sets the type string of the ItemStack.
+     * <p>
+     *
+     * @param type      Type for ItemStack
+     * @param overwrite whether to overwrite the previous value
+     */
     public void setType(String type, boolean overwrite) {
         this.type = overwrite ? type : (this.type == null ? type : this.type);
     }
 
+    /**
+     * Returns the amount of the ItemStack.
+     * <p>
+     *
+     * @return Amount of ItemStack
+     */
     public int getSize() {
         return size;
     }
 
+    /**
+     * Sets the amount of the ItemStack.
+     * <p>
+     *
+     * @param size Amount for ItemStack
+     */
     public void setSize(int size) {
         this.setSize(size, true);
     }
 
+    /**
+     * Sets the amount of the ItemStack.
+     * <p>
+     *
+     * @param size      Amount for ItemStack
+     * @param overwrite whether to overwrite the previous value
+     */
     public void setSize(int size, boolean overwrite) {
         this.size = overwrite ? size : (this.size == -1 ? size : this.size);
     }
 
+    /**
+     * Returns the name of the ItemStack.
+     * <p>
+     *
+     * @return Name of ItemStack
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Sets the name of the ItemStack.
+     * <p>
+     *
+     * @param name Name for ItemStack
+     */
     public void setName(String name) {
         this.setName(name, true);
     }
 
+    /**
+     * Sets the name of the ItemStack.
+     * <p>
+     *
+     * @param name      Name for ItemStack
+     * @param overwrite whether to overwrite the previous value
+     */
     public void setName(String name, boolean overwrite) {
         this.name = overwrite ? name : (this.name == null ? name : this.name);
     }
 
+    /**
+     * Returns the lore of the ItemStack.
+     * <p>
+     *
+     * @return Lore of ItemStack
+     */
     public List<String> getLore() {
         return lore;
     }
 
+    /**
+     * Sets the lore of the ItemStack.
+     * <p>
+     *
+     * @param lore Lore for ItemStack
+     */
     public void setLore(List<String> lore) {
         this.setLore(lore, true);
     }
 
+    /**
+     * Sets the lore of the ItemStack.
+     * <p>
+     *
+     * @param lore      Lore for ItemStack
+     * @param overwrite whether to overwrite the previous value
+     */
     public void setLore(List<String> lore, boolean overwrite) {
         this.lore = overwrite ? lore : (this.lore == null ? lore : this.lore);
     }
 
+    /**
+     * Returns the data of the ItemStack.
+     * <p>
+     *
+     * @return Data of ItemStack
+     */
     public short getData() {
         return data;
     }
 
+    /**
+     * Sets the data of the ItemStack.
+     * <p>
+     *
+     * @param data Data for ItemStack
+     */
     public void setData(short data) {
         this.setData(data, true);
     }
 
+    /**
+     * Sets the data of the ItemStack.
+     * <p>
+     *
+     * @param data      Data for ItemStack
+     * @param overwrite whether to overwrite the previous value
+     */
     public void setData(short data, boolean overwrite) {
         this.data = overwrite ? data : (this.data == -1 ? data : this.data);
     }
 
+    /**
+     * Returns the enchantments of the ItemStack.
+     * <p>
+     *
+     * @return {@link ConfigurableEnchantment} of ItemStack
+     */
     public Set<ConfigurableEnchantment> getEnchantments() {
         return enchants;
     }
 
+    /**
+     * Adds the enchantment of the ItemStack.
+     * <p>
+     *
+     * @param enchantment {@link ConfigurableEnchantment} for ItemStack
+     */
     public void addEnchantment(ConfigurableEnchantment enchantment) {
         Validate.notNull(enchantment, "The enchantment cannot be null!");
         Validate.isTrue(enchantment.isInvalid(), "The enchantment is invalid!");
         this.enchants.add(enchantment);
     }
 
+    /**
+     * Returns the ItemStack.
+     * <p>
+     *
+     * @return ItemStack
+     */
     @SuppressWarnings("deprecation")
     public ItemStack toItemStack() {
         ItemMetaBuilder builder = new ItemMetaBuilder(MaterialUtils.getRightMaterial(Material.valueOf(getType())));

@@ -9,6 +9,10 @@ import org.bukkit.enchantments.Enchantment;
 
 import java.util.Arrays;
 
+/**
+ * Represents a {@link Enchantment} that is 'Configurable'
+ * because can be loaded from/saved on a {@link ConfigurationSection}.
+ */
 public class ConfigurableEnchantment implements Configurable {
 
     public static final String ENCHANT_KEY = "enchant";
@@ -29,11 +33,25 @@ public class ConfigurableEnchantment implements Configurable {
         /* uninitialized */
     }
 
+    /**
+     * Constructs the {@link ConfigurableEnchantment}.
+     * <p>
+     *
+     * @param enchantment_name Enchantment name
+     * @param level            Enchantment level
+     */
     public ConfigurableEnchantment(String enchantment_name, Integer level) {
         this.name = enchantment_name;
         this.level = level;
     }
 
+    /**
+     * Constructs the {@link ConfigurableEnchantment}.
+     * <p>
+     *
+     * @param enchantment Enchantment
+     * @param level       Enchantment level
+     */
     @SuppressWarnings("deprecation")
     public ConfigurableEnchantment(Enchantment enchantment, Integer level) {
         this(enchantment.getName(), level);
@@ -49,17 +67,28 @@ public class ConfigurableEnchantment implements Configurable {
         return this.saveEntries(section);
     }
 
+    /**
+     * Returns the Enchantment name.
+     * <p>
+     *
+     * @return Enchantment name
+     */
     public String getEnchantmentName() {
         return name;
     }
 
+    /**
+     * Returns the Enchantment level.
+     * <p>
+     *
+     * @return Enchantment level
+     */
     public Integer getEnchantmentLevel() {
         return level;
     }
 
     /**
-     * Gets the enchantment bound to the
-     * enchantment name.
+     * Gets the enchantment bound to the enchantment name.
      * <p>
      *
      * @return Enchantment {@link Enchantment} bound to the {@link ConfigurableEnchantment#name}

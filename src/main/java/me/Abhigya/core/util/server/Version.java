@@ -43,7 +43,7 @@ public enum Version {
      * supported.
      * <p>
      *
-     * @return Version of this server.
+     * @return Version of this server
      */
     public static Version getServerVersion() {
         String packaje = Bukkit.getServer().getClass().getPackage().getName();
@@ -55,7 +55,7 @@ public enum Version {
      * Gets the version's id.
      * <p>
      *
-     * @return Version's id.
+     * @return Version's id
      */
     public int getID() {
         return this.id;
@@ -65,8 +65,8 @@ public enum Version {
      * Checks whether this version is older than the provided version.
      * <p>
      *
-     * @param other Other version.
-     * @return true if older.
+     * @param other Other version
+     * @return true if older
      */
     public boolean isOlder(Version other) {
         return (getID() < other.getID());
@@ -76,8 +76,8 @@ public enum Version {
      * Checks whether this version is older than or equals to the provided version.
      * <p>
      *
-     * @param other Other version.
-     * @return true if older or equals.
+     * @param other Other version
+     * @return true if older or equals
      */
     public boolean isOlderEquals(Version other) {
         return (getID() <= other.getID());
@@ -87,8 +87,8 @@ public enum Version {
      * Checks whether this version is newer than the provided version.
      * <p>
      *
-     * @param other Other version.
-     * @return true if newer.
+     * @param other Other version
+     * @return true if newer
      */
     public boolean isNewer(Version other) {
         return (getID() > other.getID());
@@ -98,8 +98,8 @@ public enum Version {
      * Checks whether this version is newer than or equals to the provided version.
      * <p>
      *
-     * @param other Other version.
-     * @return true if newer or equals.
+     * @param other Other version
+     * @return true if newer or equals
      */
     public boolean isNewerEquals(Version other) {
         return (getID() >= other.getID());
@@ -111,11 +111,11 @@ public enum Version {
      * <pre><code>
      * Version.1_8_R1.equalsVersion (1_8_R3) = true
      * Version.1_9_R1.equalsVersion (1_8_R1) = false
-     * </pre></code>
+     * </code></pre>
      * <p>
      *
-     * @param other Other version.
-     * @return true if has the same version.
+     * @param other Other version
+     * @return true if has the same version
      */
     public boolean equalsVersion(Version other) {
         String s0 = name().substring(0, name().indexOf("_R"));
@@ -129,11 +129,11 @@ public enum Version {
      * <pre><code>
      * Version.1_8_R3.equalsRevision (1_9_R3) = true
      * Version.1_8_R1.equalsRevision (1_8_R3) = false
-     * </pre></code>
+     * </code></pre>
      * <p>
      *
-     * @param other Other version.
-     * @return true if has the same revision.
+     * @param other Other version
+     * @return true if has the same revision
      */
     public boolean equalsRevision(Version other) {
         String s0 = name().substring(name().indexOf("R") + 1);

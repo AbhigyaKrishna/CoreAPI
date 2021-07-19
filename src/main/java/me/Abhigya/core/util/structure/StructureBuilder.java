@@ -11,18 +11,40 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+/**
+ * Represents a class dealing with building of the structure.
+ */
 public class StructureBuilder {
 
     protected final Structure structure;
 
+    /**
+     * Constructs the Structure builder.
+     * <p>
+     *
+     * @param structure Structure to build
+     */
     public StructureBuilder(Structure structure) {
         this.structure = structure;
     }
 
+    /**
+     * Returns the structure.
+     * <p>
+     *
+     * @return {@link Structure}
+     */
     public Structure getStructure() {
         return structure;
     }
 
+    /**
+     * Returns a synchronous structure builder task.
+     * <p>
+     *
+     * @param world World to build in
+     * @return Synchronous {@link StructureBuildTask}
+     */
     public StructureBuildTask build(World world) {
         StructureBuildTask build_task = new StructureBuildTask(this, world);
 
@@ -30,6 +52,13 @@ public class StructureBuilder {
         return build_task;
     }
 
+    /**
+     * Returns a asynchronous structure builder task.
+     * <p>
+     *
+     * @param world World to build in
+     * @return Asynchronous {@link StructureBuildTask}
+     */
     public StructureBuildTask buildAsynchronously(World world) {
         StructureBuildTask build_task = new StructureBuildTask(this, world);
 
@@ -38,7 +67,7 @@ public class StructureBuilder {
     }
 
     /**
-     * TODO: Description
+     * Represents a implementation of {@link Runnable} class which builds the structure.
      */
     protected static class StructureBuildTask implements Runnable {
 
@@ -50,12 +79,21 @@ public class StructureBuilder {
         protected final int size;
 
         /**
-         * <li> -1 = stopped.
-         * <li> 0  = processing.
-         * <li> 1  = paused.
+         * <ul>
+         * <li> -1 = stopped </li>
+         * <li> 0 = processing </li>
+         * <li> 1 = paused </li>
+         * </ul>
          */
         protected int state;
 
+        /**
+         * Constructs the builder task class.
+         * <p>
+         *
+         * @param builder {@link StructureBuilder} to build
+         * @param world   World to build in
+         */
         public StructureBuildTask(StructureBuilder builder, World world) {
             this.builder = builder;
             this.world = world;
@@ -69,10 +107,19 @@ public class StructureBuilder {
             this.state = 0;
         }
 
+        /**
+         * Returns the progress of the builder.
+         * <p>
+         *
+         * @return Progress of builder
+         */
         public double getProgress() {
             return (double) type_map.size() / size;
         }
 
+        /**
+         * Resumes the structure builder.
+         */
         public void resume() {
             if (state != -1) {
                 this.state = 0;
@@ -81,10 +128,16 @@ public class StructureBuilder {
             }
         }
 
+        /**
+         * Pauses the structure builder.
+         */
         public void pause() {
             this.state = 1;
         }
 
+        /**
+         * Stops the structure builder.
+         */
         public void stop() {
             this.state = -1;
         }
