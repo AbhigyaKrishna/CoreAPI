@@ -47,7 +47,7 @@ public abstract class PluginHandler implements Listener {
      * Constructs the plugin handler.
      * <p>
      *
-     * @param plugin the plugin to handle.
+     * @param plugin The plugin to handle.
      */
     public PluginHandler(Plugin plugin) {
         if (!isAllowMultipleInstances() && HANDLER_INSTANCES.containsKey(getClass())) {
@@ -62,7 +62,7 @@ public abstract class PluginHandler implements Listener {
      * Gets the plugin this handler handles.
      * <p>
      *
-     * @return the handling plugin.
+     * @return The handling plugin.
      */
     public Plugin getPlugin() {
         return plugin;

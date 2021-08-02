@@ -5,6 +5,7 @@ import me.Abhigya.core.metrics.MetricsAdaptor;
 import me.Abhigya.core.plugin.Plugin;
 import me.Abhigya.core.plugin.PluginAdapter;
 import me.Abhigya.core.util.console.ConsoleUtils;
+import me.Abhigya.core.util.server.Version;
 import me.Abhigya.core.util.world.GameRuleHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -15,9 +16,12 @@ import org.bukkit.plugin.ServicePriority;
  */
 public final class CoreAPI extends PluginAdapter {
 
+    private Version serverVersion;
+
     @Override
     protected boolean setUp() {
         Bukkit.getServicesManager().register(CoreAPI.class, getInstance(), getInstance(), ServicePriority.Highest);
+        this.serverVersion = Version.getServerVersion();
         ConsoleUtils.sendPluginMessage(ChatColor.GREEN, "Plugin Started", this);
         return true;
     }
@@ -44,4 +48,7 @@ public final class CoreAPI extends PluginAdapter {
         return Plugin.getPlugin(CoreAPI.class);
     }
 
+    public Version getServerVersion() {
+        return serverVersion;
+    }
 }

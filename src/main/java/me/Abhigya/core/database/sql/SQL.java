@@ -12,7 +12,7 @@ public class SQL {
         this.connection = connection;
     }
 
-    public void createTable(String table, String... columns) {
+    public void createTable(String table, String... columns) throws SQLException {
         String col = Arrays.stream(columns).map(str -> {
             if (!(str.equalsIgnoreCase(columns[columns.length - 1])))
                 return str + ", ";
@@ -20,68 +20,42 @@ public class SQL {
                 return str;
         }).collect(Collectors.joining()).trim();
 
-        PreparedStatement ps;
-        try {
-            ps = connection.prepareStatement("CREATE TABLE IF NOT EXISTS "
-                    + table + " (" + col + ");");
-            ps.executeUpdate();
-            ps.close();
-        } catch(SQLException ex) {
-            // TODO
-        }
+        PreparedStatement ps = connection.prepareStatement("CREATE TABLE IF NOT EXISTS "
+                + table + " (" + col + ");");
+        ps.executeUpdate();
+        ps.close();
     }
 
-    public void insertData(String columns, String values, String table) {
-        PreparedStatement ps;
-        try {
-            ps = connection.prepareStatement("INSERT INTO "
-                    + table + "(" + columns + ") VALUES (" + values + ");");
-            ps.executeUpdate();
-            ps.close();
-        } catch(SQLException ex) {
-            // TODO
-        }
+    public void insertData(String columns, String values, String table) throws SQLException {
+        PreparedStatement ps = connection.prepareStatement("INSERT INTO "
+                + table + "(" + columns + ") VALUES (" + values + ");");
+        ps.executeUpdate();
+        ps.close();
     }
 
-    public void deleteData(String table, String column, Object value) {
-        PreparedStatement ps;
-        try {
-            ps = connection.prepareStatement("DELETE FROM " + table + " WHERE " + column + "=?");
-            ps.setObject(1, value);
-            ps.executeUpdate();
-            ps.close();
-        } catch(SQLException ex) {
-            // TODO
-        }
+    public void deleteData(String table, String column, Object value) throws SQLException {
+        PreparedStatement ps = connection.prepareStatement("DELETE FROM " + table + " WHERE " + column + "=?;");
+        ps.setObject(1, value);
+        ps.executeUpdate();
+        ps.close();
     }
 
-    public void set(String table, String gate, Object gate_value, String column, Object value) {
-        PreparedStatement ps;
-        try {
-            ps = connection.prepareStatement("UPDATE " + table + " SET " + column + "=? WHERE " + gate + "=?");
-            ps.setObject(1, value);
-            ps.setObject(2, gate_value);
-            ps.executeUpdate();
-            ps.close();
-        } catch(SQLException ex) {
-            // TODO
-        }
+    public void set(String table, String gate, Object gate_value, String column, Object value) throws SQLException {
+        PreparedStatement ps = connection.prepareStatement("UPDATE " + table + " SET " + column + "=? WHERE " + gate + "=?;");
+        ps.setObject(1, value);
+        ps.setObject(2, gate_value);
+        ps.executeUpdate();
+        ps.close();
     }
 
-    public boolean exists(String table, String column, Object value) {
-        PreparedStatement ps;
-        try {
-            ps = connection.prepareStatement("SELECT * FROM "
-                    + table + " WHERE " + column + "=?");
-            ps.setObject(1, value);
+    public boolean exists(String table, String column, Object value) throws SQLException {
+        PreparedStatement ps = connection.prepareStatement("SELECT * FROM "
+                + table + " WHERE " + column + "=?;");
+        ps.setObject(1, value);
 
-            ResultSet results = ps.executeQuery();
-            ps.close();
-            return results.next();
-        } catch(SQLException ex) {
-            // TODO
-        }
-        return false;
+        ResultSet results = ps.executeQuery();
+        ps.close();
+        return results.next();
     }
 
     public ResultSet executeQuery(String statement) throws SQLException {
@@ -92,128 +66,107 @@ public class SQL {
         return statement.executeQuery();
     }
 
-    public String getString(String table, String column, String gate, Object gate_value) {
-        PreparedStatement ps;
-        try {
-            ps = connection.prepareStatement("SELECT " + column + " FROM " + table
-                    + " WHERE " + gate + "=?");
-            ps.setObject(1, gate_value);
+    public int executeUpdate(String statement) throws SQLException {
+        return this.executeUpdate(connection.prepareStatement(statement));
+    }
 
-            ResultSet rs = ps.executeQuery();
-            String toReturn;
+    public int executeUpdate(PreparedStatement statement) throws SQLException {
+        return statement.executeUpdate();
+    }
 
-            if (rs.next()) {
-                toReturn = rs.getString(column);
-                ps.close();
-                return toReturn;
-            }
-        } catch (SQLException ex) {
-            // TODO
+    public String getString(String table, String column, String gate, Object gate_value) throws SQLException {
+        PreparedStatement ps = connection.prepareStatement("SELECT " + column + " FROM " + table
+                + " WHERE " + gate + "=?;");
+        ps.setObject(1, gate_value);
+
+        ResultSet rs = ps.executeQuery();
+        String toReturn;
+
+        if (rs.next()) {
+            toReturn = rs.getString(column);
+            ps.close();
+            return toReturn;
+        }
+
+        return null;
+    }
+
+    public int getInt(String table, String column, String gate, Object gate_value) throws SQLException {
+        PreparedStatement ps = connection.prepareStatement("SELECT " + column + " FROM " + table
+                + " WHERE " + gate + "=?;");
+        ps.setObject(1, gate_value);
+
+        ResultSet rs = ps.executeQuery();
+        int toReturn;
+
+        if (rs.next()) {
+            toReturn = rs.getInt(column);
+            ps.close();
+            return toReturn;
+        }
+        return 0;
+    }
+
+    public Double getDouble(String table, String column, String gate, Object gate_value) throws SQLException {
+        PreparedStatement ps = connection.prepareStatement("SELECT " + column + " FROM " + table
+                + " WHERE " + gate + "=?;");
+        ps.setObject(1, gate_value);
+
+        ResultSet rs = ps.executeQuery();
+        double toReturn;
+
+        if (rs.next()) {
+            toReturn = rs.getDouble(column);
+            ps.close();
+            return toReturn;
         }
         return null;
     }
 
-    public int getInt(String table, String column, String gate, Object gate_value) {
-        PreparedStatement ps;
-        try {
-            ps = connection.prepareStatement("SELECT " + column + " FROM " + table
-                    + " WHERE " + gate + "=?");
-            ps.setObject(1, gate_value);
+    public long getLong(String table, String column, String gate, Object gate_value) throws SQLException {
+        PreparedStatement ps = connection.prepareStatement("SELECT " + column + " FROM " + table
+                + " WHERE " + gate + "=?;");
+        ps.setObject(1, gate_value);
 
-            ResultSet rs = ps.executeQuery();
-            int toReturn;
+        ResultSet rs = ps.executeQuery();
+        long toReturn;
 
-            if (rs.next()) {
-                toReturn = rs.getInt(column);
-                ps.close();
-                return toReturn;
-            }
-        } catch (SQLException ex) {
-            // TODO
+        if (rs.next()) {
+            toReturn = rs.getLong(column);
+            ps.close();
+            return toReturn;
         }
         return 0;
     }
 
-    public Double getDouble(String table, String column, String gate, Object gate_value) {
-        PreparedStatement ps;
-        try {
-            ps = connection.prepareStatement("SELECT " + column + " FROM " + table
-                    + " WHERE " + gate + "=?");
-            ps.setObject(1, gate_value);
+    public byte getByte(String table, String column, String gate, Object gate_value) throws SQLException {
+        PreparedStatement ps = connection.prepareStatement("SELECT " + column + " FROM " + table
+                + " WHERE " + gate + "=?;");
+        ps.setObject(1, gate_value);
 
-            ResultSet rs = ps.executeQuery();
-            double toReturn;
+        ResultSet rs = ps.executeQuery();
+        byte toReturn;
 
-            if (rs.next()) {
-                toReturn = rs.getDouble(column);
-                ps.close();
-                return toReturn;
-            }
-        } catch (SQLException ex) {
-            // TODO
-        }
-        return null;
-    }
-
-    public long getLong(String table, String column, String gate, Object gate_value) {
-        PreparedStatement ps;
-        try {
-            ps = connection.prepareStatement("SELECT " + column + " FROM " + table
-                    + " WHERE " + gate + "=?");
-            ps.setObject(1, gate_value);
-
-            ResultSet rs = ps.executeQuery();
-            long toReturn;
-
-            if (rs.next()) {
-                toReturn = rs.getLong(column);
-                ps.close();
-                return toReturn;
-            }
-        } catch (SQLException ex) {
-            // TODO
+        if (rs.next()) {
+            toReturn = rs.getByte(column);
+            ps.close();
+            return toReturn;
         }
         return 0;
     }
 
-    public byte getByte(String table, String column, String gate, Object gate_value) {
-        PreparedStatement ps;
-        try {
-            ps = connection.prepareStatement("SELECT " + column + " FROM " + table
-                    + " WHERE " + gate + "=?");
-            ps.setObject(1, gate_value);
+    public Object get(String table, String column, String gate, Object gate_value) throws SQLException {
+        PreparedStatement ps = connection.prepareStatement("SELECT " + column + " FROM " + table
+                + " WHERE " + gate + "=?;");
+        ps.setObject(1, gate_value);
 
-            ResultSet rs = ps.executeQuery();
-            byte toReturn;
+        ResultSet rs = ps.executeQuery();
+        Object toReturn;
 
-            if (rs.next()) {
-                toReturn = rs.getByte(column);
-                ps.close();
-                return toReturn;
-            }
-        } catch (SQLException ex) {
-            // TODO
-        }
-        return 0;
-    }
-
-    public Object get(String table, String column, String gate, Object gate_value) {
-        PreparedStatement ps;
-        try {
-            ps = connection.prepareStatement("SELECT " + column + " FROM " + table
-                    + " WHERE " + gate + "=?");
-            ps.setObject(1, gate_value);
-
-            ResultSet rs = ps.executeQuery();
-            Object toReturn;
-
-            if (rs.next()) {
-                toReturn = rs.getObject(column);
-                ps.close();
-                return toReturn;
-            }
-        } catch(SQLException ex) {
-            // TODO
+        if (rs.next()) {
+            toReturn = rs.getObject(column);
+            ps.close();
+            return toReturn;
         }
         return null;
     }

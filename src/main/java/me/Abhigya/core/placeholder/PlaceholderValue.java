@@ -1,10 +1,10 @@
 package me.Abhigya.core.placeholder;
 
+import com.cryptomorin.xseries.XSound;
 import me.Abhigya.core.main.CoreAPI;
 import me.Abhigya.core.util.ColorUtils;
 import me.Abhigya.core.util.StringUtils;
 import me.Abhigya.core.util.console.ConsoleUtils;
-import me.Abhigya.core.util.sound.SoundManager;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Sound;
@@ -98,7 +98,7 @@ public interface PlaceholderValue<T> {
     }
 
     static PlaceholderValue<Sound> soundValue(String string) {
-        return value(string, SoundManager::match, null);
+        return value(string, (s) -> XSound.matchXSound(s).get().parseSound(), null);
     }
 
     static <T> PlaceholderValue<T> fake(T value) {

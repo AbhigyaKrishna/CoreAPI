@@ -7,6 +7,7 @@ import io.netty.channel.ChannelPromise;
 import me.Abhigya.core.main.CoreAPI;
 import me.Abhigya.core.util.packet.PacketListener.Priority;
 import me.Abhigya.core.util.reflection.bukkit.BukkitReflection;
+import me.Abhigya.core.util.reflection.bukkit.PlayerReflection;
 import me.Abhigya.core.util.reflection.general.FieldReflection;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -134,9 +135,9 @@ public final class PacketChannelHandler {
      */
     private static class PlayerInjectorReflection {
 
-        private static final String PLAYER_CONNECTION_FIELD_NAME = "playerConnection";
-        private static final String NETWORK_MANAGER_FIELD_NAME = "networkManager";
-        private static final String CHANNEL_FIELD_NAME = "channel";
+        private static final String PLAYER_CONNECTION_FIELD_NAME = PlayerReflection.PLAYER_CONNECTION_FIELD_NAME;
+        private static final String NETWORK_MANAGER_FIELD_NAME = PlayerReflection.NETWORK_MANAGER_FIELD_NAME;
+        private static final String CHANNEL_FIELD_NAME = PlayerReflection.CHANNEL_FIELD_NAME;
 
         private static Channel getChannel(final Player player) {
             return (Channel)

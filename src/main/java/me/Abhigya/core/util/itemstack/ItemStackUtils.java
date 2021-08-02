@@ -1,9 +1,9 @@
 package me.Abhigya.core.util.itemstack;
 
+import com.cryptomorin.xseries.XMaterial;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import me.Abhigya.core.util.StringUtils;
-import me.Abhigya.core.util.material.XMaterials;
 import me.Abhigya.core.util.server.Version;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -65,15 +65,15 @@ public class ItemStackUtils {
      * @param amount    Amount of the ItemStack
      * @return  {@link ItemStack}
      */
-    public static ItemStack ofUniversalMaterial(XMaterials material, int amount) {
-        if (material.getMaterial() == null) {
+    public static ItemStack ofUniversalMaterial(XMaterial material, int amount) {
+        if (material.parseMaterial() == null) {
             return null;
         }
 
         if (Version.getServerVersion().isNewer(Version.v1_12_R1)) {
-            return new ItemStack(material.getMaterial());
+            return new ItemStack(material.parseMaterial());
         }
-        return new ItemStack(material.getMaterial(), amount);
+        return new ItemStack(material.parseMaterial(), amount);
     }
 
     /**

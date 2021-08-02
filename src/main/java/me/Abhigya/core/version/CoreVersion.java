@@ -8,7 +8,9 @@ public enum CoreVersion {
     v1_0_1(101),
     v1_1_0(110),
     v1_1_1(111),
-    v1_1_2(112);
+    v1_1_2(112),
+    v1_2_0(120),
+    ;
 
     private final int id;
 

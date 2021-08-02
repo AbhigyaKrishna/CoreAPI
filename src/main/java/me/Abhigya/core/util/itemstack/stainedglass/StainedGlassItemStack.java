@@ -1,8 +1,8 @@
 package me.Abhigya.core.util.itemstack.stainedglass;
 
+import com.cryptomorin.xseries.XMaterial;
 import me.Abhigya.core.util.itemstack.ItemStackUtils;
 import me.Abhigya.core.util.itemstack.custom.CustomItemStack;
-import me.Abhigya.core.util.material.XMaterials;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Material;
 import org.bukkit.Utility;
@@ -129,7 +129,7 @@ public final class StainedGlassItemStack extends CustomItemStack {
         if (COLOR_SET_BY_SHORT) { /* setting color by changing the durability */
             rawSetDurability(color.getShortValue());
         } else { /* setting color by changing the item stack type */
-            super.setType(XMaterials.valueOf((color.name() + "_STAINED_GLASS" + (pane ? "_PANE" : ""))).getMaterial());
+            super.setType(XMaterial.valueOf((color.name() + "_STAINED_GLASS" + (pane ? "_PANE" : ""))).parseMaterial());
         }
     }
 

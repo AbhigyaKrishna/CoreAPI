@@ -1,7 +1,9 @@
 package me.Abhigya.core.util.reflection.bukkit;
 
 import io.netty.channel.Channel;
+import me.Abhigya.core.main.CoreAPI;
 import me.Abhigya.core.util.reflection.general.FieldReflection;
+import me.Abhigya.core.util.server.Version;
 import org.bukkit.entity.Player;
 
 import java.lang.reflect.InvocationTargetException;
@@ -10,6 +12,10 @@ import java.lang.reflect.InvocationTargetException;
  * Class for reflecting {@link Player}
  */
 public class PlayerReflection {
+
+    public static final String PLAYER_CONNECTION_FIELD_NAME = CoreAPI.getInstance().getServerVersion().isNewerEquals(Version.v1_17_R1) ? "b" : "playerConnection";
+    public static final String NETWORK_MANAGER_FIELD_NAME = CoreAPI.getInstance().getServerVersion().isNewerEquals(Version.v1_17_R1) ? "a" : "networkManager";
+    public static final String CHANNEL_FIELD_NAME = CoreAPI.getInstance().getServerVersion().isNewerEquals(Version.v1_17_R1) ? "k" : "channel";
 
     /**
      * Gets the handle ( the represented nms player by the craftbukkit player ) of
@@ -45,7 +51,7 @@ public class PlayerReflection {
      */
     public static Object getPlayerConnection(Player player) throws SecurityException, NoSuchFieldException,
             IllegalArgumentException, IllegalAccessException, InvocationTargetException {
-        return FieldReflection.getValue(BukkitReflection.getHandle(player), "playerConnection");
+        return FieldReflection.getValue(BukkitReflection.getHandle(player), PLAYER_CONNECTION_FIELD_NAME);
     }
 
     /**
@@ -62,7 +68,7 @@ public class PlayerReflection {
      */
     public static Object getNetworkManager(Player player) throws SecurityException, NoSuchFieldException,
             IllegalArgumentException, IllegalAccessException, InvocationTargetException {
-        return FieldReflection.getValue(getPlayerConnection(player), "networkManager");
+        return FieldReflection.getValue(getPlayerConnection(player), NETWORK_MANAGER_FIELD_NAME);
     }
 
     /**
@@ -79,6 +85,6 @@ public class PlayerReflection {
      */
     public static Channel getChannel(Player player) throws SecurityException, NoSuchFieldException,
             IllegalArgumentException, IllegalAccessException, InvocationTargetException {
-        return (Channel) FieldReflection.getValue(getNetworkManager(player), "channel");
+        return (Channel) FieldReflection.getValue(getNetworkManager(player), CHANNEL_FIELD_NAME);
     }
 }

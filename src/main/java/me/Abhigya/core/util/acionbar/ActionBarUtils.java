@@ -1,5 +1,6 @@
 package me.Abhigya.core.util.acionbar;
 
+import me.Abhigya.core.main.CoreAPI;
 import me.Abhigya.core.util.StringUtils;
 import me.Abhigya.core.util.reflection.bukkit.BukkitReflection;
 import me.Abhigya.core.util.reflection.general.ClassReflection;
@@ -29,21 +30,38 @@ public class ActionBarUtils {
      */
     public static void send(Player player, String message) {
         try {
-            Class<?> component_class = ClassReflection.getNmsClass("IChatBaseComponent");
-            Class<?>[] inner_classes = component_class.getClasses();
-            Class<?> chat_serializer = inner_classes.length > 0 ? component_class.getClasses()[0]
-                    : ClassReflection.getNmsClass("ChatSerializer");
-            Class<?> packet_class = ClassReflection.getNmsClass("PacketPlayOutChat");
+            Class<?> component_class, chat_serializer, packet_class;
+            Class<?>[] inner_classes;
+            if (CoreAPI.getInstance().getServerVersion().isNewerEquals(Version.v1_17_R1)) {
+                component_class = Class.forName("net.minecraft.network.chat.IChatBaseComponent");
+                inner_classes = component_class.getClasses();
+                chat_serializer = inner_classes.length > 0 ? component_class.getClasses()[0]
+                        : Class.forName("net.minecraft.network.chat.IChatBaseComponent.ChatSerializer");
+                packet_class = Class.forName("net.minecraft.network.protocol.game.PacketPlayOutChat");
+            }
+            else {
+                component_class = ClassReflection.getNmsClass("IChatBaseComponent");
+                inner_classes = component_class.getClasses();
+                chat_serializer = inner_classes.length > 0 ? component_class.getClasses()[0]
+                        : ClassReflection.getNmsClass("ChatSerializer");
+                packet_class = ClassReflection.getNmsClass("PacketPlayOutChat");
+            }
+
 
             Object component = MethodReflection.get(chat_serializer, "a", String.class).invoke(chat_serializer,
                     "{\"text\":\"" + StringUtils.limit(message, 63) + "\"}");
 
-            Object packet = null;
-            if (Version.getServerVersion().isOlder(Version.v1_12_R1)) {
+            Object packet;
+            if (CoreAPI.getInstance().getServerVersion().isOlder(Version.v1_12_R1)) {
                 packet = ConstructorReflection.newInstance(packet_class, new Class<?>[]{component_class, byte.class},
                         component, (byte) 2);
             } else {
-                Class<?> chat_type_class = ClassReflection.getNmsClass("ChatMessageType");
+                Class<?> chat_type_class;
+                if (CoreAPI.getInstance().getServerVersion().isNewerEquals(Version.v1_17_R1))
+                    chat_type_class = Class.forName("net.minecraft.network.chat.ChatMessageType");
+                else
+                    chat_type_class = ClassReflection.getNmsClass("ChatMessageType");
+
                 packet = ConstructorReflection.newInstance(packet_class,
                         new Class<?>[]{component_class, chat_type_class},
                         component, MethodReflection

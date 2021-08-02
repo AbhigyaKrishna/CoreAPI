@@ -1,7 +1,5 @@
 package me.Abhigya.core.util.tasks;
 
-import lombok.Builder;
-
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -51,7 +49,6 @@ public final class TypedDistributedTask<T> implements Runnable {
      * @param escapeCondition  The escape condition
      * @param distributionSize The distribution size
      */
-    @Builder
     public TypedDistributedTask(final Consumer<T> action, final Predicate<T> escapeCondition, final int distributionSize) {
         this.distributionSize = distributionSize;
         this.action = action;

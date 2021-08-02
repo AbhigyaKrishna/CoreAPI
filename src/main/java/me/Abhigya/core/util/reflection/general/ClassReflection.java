@@ -1,5 +1,6 @@
 package me.Abhigya.core.util.reflection.general;
 
+import me.Abhigya.core.main.CoreAPI;
 import me.Abhigya.core.util.StringUtils;
 import me.Abhigya.core.util.server.Version;
 
@@ -36,7 +37,7 @@ public class ClassReflection {
                 return clazz;
             }
         }
-        throw new ClassNotFoundException("the sub class " + name + " doesn't exist!");
+        throw new ClassNotFoundException("The sub class " + name + " doesn't exist!");
     }
 
     /**
@@ -59,7 +60,7 @@ public class ClassReflection {
             } catch (ClassNotFoundException ignored) {
             }
         }
-        throw new ClassNotFoundException("the sub class " + name + " doesn't exist!");
+        throw new ClassNotFoundException("The sub class " + name + " doesn't exist!");
     }
 
     /**
@@ -87,7 +88,10 @@ public class ClassReflection {
      * @throws ClassNotFoundException if the class doesn't exist
      */
     public static Class<?> getNmsClass(String name) throws ClassNotFoundException {
-        return Class.forName(NMS_CLASSES_PACKAGE + Version.getServerVersion().name() + "." + name);
+        if (CoreAPI.getInstance().getServerVersion().isNewerEquals(Version.v1_17_R1))
+            return Class.forName(NMS_CLASSES_PACKAGE + "." + name);
+        else
+            return Class.forName(NMS_CLASSES_PACKAGE + CoreAPI.getInstance().getServerVersion().name() + "." + name);
     }
 
     /**

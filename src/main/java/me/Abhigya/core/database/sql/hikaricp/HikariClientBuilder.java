@@ -11,6 +11,8 @@ import java.util.Properties;
  */
 public class HikariClientBuilder {
 
+    public static final String LEGACY_DATA_SOURCE_CLASS = "com.mysql.jdbc.Driver";
+
     private HikariConfig config;
     private boolean reconnect;
 
@@ -33,28 +35,7 @@ public class HikariClientBuilder {
         this.config.setJdbcUrl(jdbcUrl);
         this.config.setUsername(username);
         this.config.setPassword(password);
-        this.reconnect = reconnect;
-    }
-
-    /**
-     * Constructs the Hikari Client Builder.
-     * <p>
-     *
-     * @param dataSourceClass The fully qualified class name for JDBC datasource class
-     * @param username        Username
-     * @param password        Password
-     * @param reconnect       <strong>{@code true}</strong> to auto reconnect
-     */
-    public HikariClientBuilder(Class<?> dataSourceClass, String username, String password, boolean reconnect) {
-        this.config = new HikariConfig();
-
-        Validate.notNull(dataSourceClass, "DataSource class cannot be null!");
-        Validate.notNull(username, "Username cannot be null!");
-        Validate.notNull(password, "Password cannot be null!");
-
-        this.config.setDataSourceClassName(dataSourceClass.getName());
-        this.config.setUsername(username);
-        this.config.setPassword(password);
+        this.config.setDataSourceClassName(LEGACY_DATA_SOURCE_CLASS);
         this.reconnect = reconnect;
     }
 
@@ -71,27 +52,29 @@ public class HikariClientBuilder {
     }
 
     /**
-     * Constructs the Hikari Client Builder.
-     * <p>
-     *
-     * @param dataSourceClass The fully qualified class name for JDBC datasource class
-     * @param username        Username
-     * @param password        Password
-     */
-    public HikariClientBuilder(Class<?> dataSourceClass, String username, String password) {
-        this(dataSourceClass, username, password, true);
-    }
-
-    /**
      * Add a property (name/value pair) that will be used to configure the DataSource Driver.
      * <p>
      *
      * @param key   The name of property
      * @param value Value of the property
-     * @return HikariClientBuilder
+     * @return This Object, for chaining
+     * @see HikariConfig#addDataSourceProperty(String, Object)
      */
     public HikariClientBuilder addProperty(String key, String value) {
         this.config.addDataSourceProperty(key, value);
+        return this;
+    }
+
+    /**
+     * Set the fully qualified class name of the JDBC DataSource that will be used create Connections.
+     * <p>
+     *
+     * @param className The fully qualified name of the JDBC DataSource class
+     * @return This Object, for chaining
+     * @see HikariConfig#setDataSourceClassName(String)
+     */
+    public HikariClientBuilder setDataSourceClassName(String className) {
+        this.config.setDataSourceClassName(className);
         return this;
     }
 
@@ -100,7 +83,7 @@ public class HikariClientBuilder {
      * <p>
      *
      * @param property {@link Properties} to set to the driver
-     * @return HikariClientBuilder
+     * @return This Object, for chaining
      */
     public HikariClientBuilder setProperty(Properties property) {
         this.config.setDataSourceProperties(property);
@@ -112,7 +95,7 @@ public class HikariClientBuilder {
      * <p>
      *
      * @param value The desired auto-commit value
-     * @return HikariClientBuilder
+     * @return This Object, for chaining
      * @see HikariConfig#setAutoCommit(boolean)
      */
     public HikariClientBuilder setAutoCommit(boolean value) {
@@ -125,7 +108,7 @@ public class HikariClientBuilder {
      * <p>
      *
      * @param timeout The connection timeout in milliseconds
-     * @return HikariClientBuilder
+     * @return This Object, for chaining
      * @see HikariConfig#setConnectionTimeout(long)
      */
     public HikariClientBuilder setConnectionTimeout(long timeout) {
@@ -138,7 +121,7 @@ public class HikariClientBuilder {
      * <p>
      *
      * @param timeout The idle timeout in milliseconds
-     * @return HikariClientBuilder
+     * @return This Object, for chaining
      * @see HikariConfig#setIdleTimeout(long)
      */
     public HikariClientBuilder setIdleTimeout(long timeout) {
@@ -151,7 +134,7 @@ public class HikariClientBuilder {
      * <p>
      *
      * @param time The interval in milliseconds in which the connection will be tested for aliveness
-     * @return HikariClientBuilder
+     * @return This Object, for chaining
      * @see HikariConfig#setKeepaliveTime(long)
      */
     public HikariClientBuilder setKeepAliveTime(long time) {
@@ -164,7 +147,7 @@ public class HikariClientBuilder {
      * <p>
      *
      * @param time The maximum connection lifetime in the pool
-     * @return HikariClientBuilder
+     * @return This Object, for chaining
      * @see HikariConfig#setMaxLifetime(long)
      */
     public HikariClientBuilder setMaxLifeTime(long time) {
@@ -177,7 +160,7 @@ public class HikariClientBuilder {
      * <p>
      *
      * @param query SQL query string
-     * @return HikariClientBuilder
+     * @return This Object, for chaining
      * @see HikariConfig#setConnectionTestQuery(String)
      */
     public HikariClientBuilder setConnectionTestQuery(String query) {
@@ -190,7 +173,7 @@ public class HikariClientBuilder {
      * <p>
      *
      * @param minIdle The minimum number of idle connections
-     * @return HikariClientBuilder
+     * @return This Object, for chaining
      * @see HikariConfig#setMinimumIdle(int)
      */
     public HikariClientBuilder setMinimumIdle(int minIdle) {
@@ -203,7 +186,7 @@ public class HikariClientBuilder {
      * <p>
      *
      * @param size The maximum number of connections
-     * @return HikariClientBuilder
+     * @return This Object, for chaining
      * @see HikariConfig#setMaximumPoolSize(int)
      */
     public HikariClientBuilder setMaximumPoolSize(int size) {
@@ -216,7 +199,7 @@ public class HikariClientBuilder {
      * <p>
      *
      * @param registry The MetricRegistry instance for use
-     * @return HikariClientBuilder
+     * @return This Object, for chaining
      * @see HikariConfig#setMetricRegistry(Object)
      */
     public HikariClientBuilder setMetricRegistry(Object registry) {
@@ -229,7 +212,7 @@ public class HikariClientBuilder {
      * <p>
      *
      * @param registry The HikariRegistry to be used
-     * @return HikariClientBuilder
+     * @return This Object, for chaining
      * @see HikariConfig#setHealthCheckRegistry(Object)
      */
     public HikariClientBuilder setHealthCheckRegistry(Object registry) {
@@ -242,7 +225,7 @@ public class HikariClientBuilder {
      * <p>
      *
      * @param name The name of connection pool to use
-     * @return HikariClientBuilder
+     * @return This Object, for chaining
      * @see HikariConfig#setPoolName(String)
      */
     public HikariClientBuilder setPoolName(String name) {
@@ -275,7 +258,7 @@ public class HikariClientBuilder {
      * <p>
      *
      * @param config The {@link HikariConfig} to set
-     * @return HikariClientBuilder
+     * @return This Object, for chaining
      */
     public HikariClientBuilder setConfig(HikariConfig config) {
         this.config = config;
@@ -297,7 +280,7 @@ public class HikariClientBuilder {
      * <p>
      *
      * @param reconnect Desired value to use
-     * @return HikariClientBuilder
+     * @return This Object, for chaining
      */
     public HikariClientBuilder setReconnect(boolean reconnect) {
         this.reconnect = reconnect;

@@ -1,5 +1,6 @@
 package me.Abhigya.core.util.reflection.bukkit;
 
+import me.Abhigya.core.main.CoreAPI;
 import me.Abhigya.core.util.math.collision.BoundingBox;
 import me.Abhigya.core.util.reflection.general.ClassReflection;
 import me.Abhigya.core.util.reflection.general.ConstructorReflection;
@@ -38,13 +39,18 @@ public class EntityReflection {
 
             final Field[] fields = nms_bb.getClass().getDeclaredFields();
 
-            final double min_x = (double) FieldReflection.getValue(nms_bb, fields[0].getName());
-            final double min_y = (double) FieldReflection.getValue(nms_bb, fields[1].getName()) - height;
-            final double min_z = (double) FieldReflection.getValue(nms_bb, fields[2].getName());
+            int i = 0;
 
-            final double max_x = (double) FieldReflection.getValue(nms_bb, fields[3].getName());
-            final double max_y = (double) FieldReflection.getValue(nms_bb, fields[4].getName()) - height;
-            final double max_z = (double) FieldReflection.getValue(nms_bb, fields[5].getName());
+            if (CoreAPI.getInstance().getServerVersion().isNewerEquals(Version.v1_17_R1))
+                i = 1;
+
+            final double min_x = (double) FieldReflection.getValue(nms_bb, fields[i++].getName());
+            final double min_y = (double) FieldReflection.getValue(nms_bb, fields[i++].getName()) - height;
+            final double min_z = (double) FieldReflection.getValue(nms_bb, fields[i++].getName());
+
+            final double max_x = (double) FieldReflection.getValue(nms_bb, fields[i++].getName());
+            final double max_y = (double) FieldReflection.getValue(nms_bb, fields[i++].getName()) - height;
+            final double max_z = (double) FieldReflection.getValue(nms_bb, fields[i++].getName());
 
             return new BoundingBox(new Vector(min_x, min_y, min_z), new Vector(max_x, max_y, max_z));
         } catch (Throwable ex) {
@@ -87,8 +93,13 @@ public class EntityReflection {
      */
     public static void setInvisibleTo(Entity entity, Player... targets) {
         try {
-            Object packet = ConstructorReflection.get(ClassReflection.getNmsClass("PacketPlayOutEntityDestroy"), int[].class)
-                    .newInstance(new int[]{entity.getEntityId()});
+            Class<?> packetPlayOutEntityDestroy;
+            if (CoreAPI.getInstance().getServerVersion().isNewerEquals(Version.v1_17_R1))
+                packetPlayOutEntityDestroy = Class.forName("net.minecraft.network.protocol.game.PacketPlayOutEntityDestroy");
+            else
+                packetPlayOutEntityDestroy = ClassReflection.getNmsClass("PacketPlayOutEntityDestroy");
+
+            Object packet = ConstructorReflection.get(packetPlayOutEntityDestroy, int[].class).newInstance(new int[]{entity.getEntityId()});
             for (Player target : targets) {
                 if (target.isOnline()) {
                     BukkitReflection.sendPacket(target, packet);
@@ -109,7 +120,7 @@ public class EntityReflection {
      */
     public static void setAI(LivingEntity entity, boolean ai) {
         try {
-            if (Version.getServerVersion().isOlder(Version.v1_9_R2)) {
+            if (CoreAPI.getInstance().getServerVersion().isOlder(Version.v1_9_R2)) {
                 Class<?> nbt_class = ClassReflection.getNmsClass("NBTTagCompound");
 
                 Object handle = BukkitReflection.getHandle(entity);
@@ -141,7 +152,7 @@ public class EntityReflection {
      */
     public static void setCollidable(LivingEntity entity, boolean collidable) {
         try {
-            if (Version.getServerVersion().isNewerEquals(Version.v1_9_R2)) {
+            if (CoreAPI.getInstance().getServerVersion().isNewerEquals(Version.v1_9_R2)) {
                 MethodReflection.invoke(MethodReflection.get(entity.getClass(), "setCollidable", boolean.class), entity, collidable);
             }
         } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
@@ -161,16 +172,25 @@ public class EntityReflection {
         try {
             Object handle = BukkitReflection.getHandle(entity);
 
-            final double x = FieldReflection.get(handle.getClass(), "locX").getDouble(handle);
-            final double y = FieldReflection.get(handle.getClass(), "locY").getDouble(handle);
-            final double z = FieldReflection.get(handle.getClass(), "locZ").getDouble(handle);
+            String locYaw, locPitch;
+            if (CoreAPI.getInstance().getServerVersion().isNewerEquals(Version.v1_17_R1)) {
+                locYaw = "ay";
+                locPitch = "az";
+            } else {
+                locYaw = "yaw";
+                locPitch = "pitch";
+            }
 
-            final float yaw = FieldReflection.get(handle.getClass(), "yaw").getFloat(handle);
-            final float pitch = FieldReflection.get(handle.getClass(), "pitch").getFloat(handle);
+            final double x = (double) MethodReflection.get(handle.getClass(), "locX").invoke(handle);
+            final double y = (double) MethodReflection.get(handle.getClass(), "locY").invoke(handle);
+            final double z = (double) MethodReflection.get(handle.getClass(), "locZ").invoke(handle);
+
+            final float yaw = FieldReflection.get(handle.getClass(), locYaw).getFloat(handle);
+            final float pitch = FieldReflection.get(handle.getClass(), locPitch).getFloat(handle);
 
             return new Location(entity.getWorld(), x, y, z, yaw, pitch);
-        } catch (IllegalArgumentException | IllegalAccessException
-                | SecurityException | NoSuchFieldException | InvocationTargetException e) {
+        } catch (IllegalArgumentException | IllegalAccessException | SecurityException | NoSuchFieldException |
+                InvocationTargetException | NoSuchMethodException e) {
             e.printStackTrace();
             return null;
         }
@@ -424,7 +444,7 @@ public class EntityReflection {
      * @param stand Armor stand to set
      */
     public static void setInvulnerable(ArmorStand stand, boolean invulnerable) {
-        String field_name = "h";
+        String field_name;
         switch (Version.getServerVersion()) {
             case v1_9_R1:
                 field_name = "by";
@@ -443,6 +463,15 @@ public class EntityReflection {
                 break;
             case v1_14_R1:
                 field_name = "bD";
+                break;
+            case v1_15_R1:
+            case v1_16_R1:
+            case v1_16_R2:
+            case v1_16_R3:
+                field_name = "armorStandInvisible";
+                break;
+            case v1_17_R1:
+                field_name = "ce";
                 break;
             default:
                 field_name = "h";
@@ -472,7 +501,16 @@ public class EntityReflection {
      */
     public static void playNamedSound(Player player, String sound, float volume, float pitch) {
         try {
-            Class<?> category_enum = ClassReflection.getNmsClass("SoundCategory");
+            Class<?> category_enum, packet_play_out_custom_sound_effect;
+            if (CoreAPI.getInstance().getServerVersion().isNewerEquals(Version.v1_17_R1)) {
+                category_enum = Class.forName("net.minecraft.sounds.SoundCategory");
+                packet_play_out_custom_sound_effect = Class.forName("net.minecraft.network.protocol.game.PacketPlayOutCustomSoundEffect");
+            }
+            else {
+                category_enum = ClassReflection.getNmsClass("SoundCategory");
+                packet_play_out_custom_sound_effect = ClassReflection.getNmsClass("PacketPlayOutCustomSoundEffect");
+            }
+
             Object master = MethodReflection.invoke(MethodReflection.get(category_enum, "valueOf", String.class), category_enum, "MASTER");
 
             Location location = player.getEyeLocation();
@@ -481,7 +519,7 @@ public class EntityReflection {
             double z = location.getZ();
 
             Object packet = ConstructorReflection.newInstance(
-                    ClassReflection.getNmsClass("PacketPlayOutCustomSoundEffect"), new Class<?>[]{String.class,
+                    packet_play_out_custom_sound_effect, new Class<?>[]{String.class,
                             category_enum, double.class, double.class, double.class, float.class, float.class},
                     sound, master, x, y, z, volume, pitch);
 
@@ -512,12 +550,26 @@ public class EntityReflection {
         double z = location.getZ();
 
         try {
-            Class<?> category_enum = ClassReflection.getNmsClass("SoundCategory");
+            boolean newest = CoreAPI.getInstance().getServerVersion().isNewerEquals(Version.v1_17_R1);
+            Class<?> category_enum, packet_play_out_custom_sound_effect, human_class, packet_class;
+            if (newest) {
+                category_enum = Class.forName("net.minecraft.sounds.SoundCategory");
+                packet_play_out_custom_sound_effect = Class.forName("net.minecraft.network.protocol.game.PacketPlayOutCustomSoundEffect");
+                human_class = Class.forName("net.minecraft.world.entity.player.EntityHuman");
+                packet_class = Class.forName("net.minecraft.network.protocol.Packet");
+            }
+            else {
+                category_enum = ClassReflection.getNmsClass("SoundCategory");
+                packet_play_out_custom_sound_effect = ClassReflection.getNmsClass("PacketPlayOutCustomSoundEffect");
+                human_class = ClassReflection.getNmsClass("EntityHuman");
+                packet_class = ClassReflection.getNmsClass("Packet");
+            }
+
             Object master = MethodReflection.invoke(MethodReflection.get(category_enum, "valueOf", String.class),
-                    category_enum, "MASTER");
+                    category_enum, newest ? "a" : "MASTER");
 
             Object packet = ConstructorReflection.newInstance(
-                    ClassReflection.getNmsClass("PacketPlayOutCustomSoundEffect"), new Class<?>[]{String.class,
+                    packet_play_out_custom_sound_effect, new Class<?>[]{String.class,
                             category_enum, double.class, double.class, double.class, float.class, float.class},
                     sound, master, x, y, z, volume, pitch);
 
@@ -527,14 +579,21 @@ public class EntityReflection {
             Object player_list = MethodReflection.invoke(MethodReflection.get(minecraft_server.getClass(), "getPlayerList"),
                     minecraft_server);
 
-            Class<?> human_class = ClassReflection.getNmsClass("EntityHuman");
-            Class<?> packet_class = ClassReflection.getNmsClass("Packet");
-
-            int dimension = world_server.getClass().getField("dimension").getInt(world_server);
+            Object dimension;
+            if (CoreAPI.getInstance().getServerVersion().isNewerEquals(Version.v1_16_R1)) {
+                dimension = MethodReflection.get(world_server.getClass().getSuperclass(), "getDimensionKey")
+                        .invoke(world_server);
+            } else if (CoreAPI.getInstance().getServerVersion().isNewerEquals(Version.v1_13_R2)) {
+                Object world_provider = MethodReflection.get(world_server.getClass().getSuperclass(), "getWorldProvider")
+                        .invoke(world_server);
+                dimension = MethodReflection.get(world_provider.getClass(), "getDimensionManager").invoke(world_provider);
+            } else {
+                dimension = world_server.getClass().getField("dimension").getInt(world_server);
+            }
 
             MethodReflection.invoke(
                     MethodReflection.get(player_list.getClass(), "sendPacketNearby", human_class, double.class, double.class,
-                            double.class, double.class, int.class, packet_class),
+                            double.class, double.class, dimension.getClass(), packet_class),
                     player_list, null, x, y, z, (volume > 1.0F ? 16.0F * volume : 16.0D), dimension, packet);
         } catch (SecurityException | NoSuchFieldException | IllegalArgumentException | IllegalAccessException
                 | ClassNotFoundException | InvocationTargetException | NoSuchMethodException | InstantiationException e) {

@@ -1,9 +1,11 @@
 package me.Abhigya.core.util.titles;
 
+import me.Abhigya.core.main.CoreAPI;
 import me.Abhigya.core.util.reflection.bukkit.BukkitReflection;
 import me.Abhigya.core.util.reflection.general.ClassReflection;
 import me.Abhigya.core.util.reflection.general.ConstructorReflection;
 import me.Abhigya.core.util.reflection.general.MethodReflection;
+import me.Abhigya.core.util.server.Version;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -33,6 +35,11 @@ public class TitleUtils {
      */
     public static void send(Player player, String title, String subtitle, int fade_in, int stay, int fade_out) {
         try {
+            if (CoreAPI.getInstance().getServerVersion().isNewerEquals(Version.v1_17_R1)) {
+                player.sendTitle(title, subtitle, fade_in, stay, fade_out);
+                return;
+            }
+
             Class<?> packet_class = ClassReflection.getNmsClass("PacketPlayOutTitle");
             Class<?> component_class = ClassReflection.getNmsClass("IChatBaseComponent");
             Class<?> action_enum = null;
@@ -105,6 +112,11 @@ public class TitleUtils {
     @Deprecated
     public static void reset(Player player) {
         try {
+            if (CoreAPI.getInstance().getServerVersion().isNewerEquals(Version.v1_17_R1)) {
+                TitleUtils.send(player, "", "");
+                return;
+            }
+
             Class<?> packet_class = ClassReflection.getNmsClass("PacketPlayOutTitle");
             Class<?> component_class = ClassReflection.getNmsClass("IChatBaseComponent");
             Class<?> action_enum = null;

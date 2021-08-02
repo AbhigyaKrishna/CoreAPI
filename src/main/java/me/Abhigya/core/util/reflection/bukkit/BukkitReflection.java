@@ -1,8 +1,10 @@
 package me.Abhigya.core.util.reflection.bukkit;
 
+import me.Abhigya.core.main.CoreAPI;
 import me.Abhigya.core.util.reflection.general.ClassReflection;
 import me.Abhigya.core.util.reflection.general.FieldReflection;
 import me.Abhigya.core.util.reflection.general.MethodReflection;
+import me.Abhigya.core.util.server.Version;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
@@ -45,7 +47,12 @@ public class BukkitReflection {
     public static void sendPacket(Player player, Object packet) {
         try {
             Object nms_player = getHandle(player);
-            Object connection = FieldReflection.getValue(nms_player, "playerConnection");
+            Object connection;
+
+            if (CoreAPI.getInstance().getServerVersion().isNewerEquals(Version.v1_17_R1))
+                connection = FieldReflection.getValue(nms_player, "b");
+            else
+                connection = FieldReflection.getValue(nms_player, "playerConnection");
 
             MethodReflection.getAccessible(connection.getClass(), "sendPacket", ClassReflection.getNmsClass("Packet"))
                     .invoke(connection, packet);

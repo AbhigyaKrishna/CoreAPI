@@ -45,6 +45,16 @@ public class PacketEvent {
     }
 
     /**
+     * Returns the name of the packet.
+     * <p>
+     *
+     * @return Name of the packet
+     */
+    public String getPacketName() {
+        return packet.getClass().getSimpleName();
+    }
+
+    /**
      * Gets whether this event has been cancelled.
      * <p>
      *

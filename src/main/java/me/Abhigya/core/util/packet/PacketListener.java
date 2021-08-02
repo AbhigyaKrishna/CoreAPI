@@ -22,10 +22,7 @@ public interface PacketListener {
     public void onSending(final PacketEvent event);
 
     /**
-     * TODO: Description
-     * <p>
-     *
-     * @author AdrianSR / Saturday 14 March, 2020 / 01:45 PM
+     * Enumeration for Packet Event priority.
      */
     public static enum Priority {
 
