@@ -6,9 +6,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPromise;
 import me.Abhigya.core.main.CoreAPI;
 import me.Abhigya.core.util.packet.PacketListener.Priority;
-import me.Abhigya.core.util.reflection.bukkit.BukkitReflection;
 import me.Abhigya.core.util.reflection.bukkit.PlayerReflection;
-import me.Abhigya.core.util.reflection.general.FieldReflection;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -32,6 +30,9 @@ public final class PacketChannelHandler {
     /* initialize channels handler by registering a player injector instance */
     static {
         Bukkit.getPluginManager().registerEvents(new PlayerInjector(), CoreAPI.getInstance());
+    }
+
+    private PacketChannelHandler() {
     }
 
     /**
@@ -105,11 +106,6 @@ public final class PacketChannelHandler {
             Bukkit.getOnlinePlayers().forEach(player -> inject(player));
         }
 
-        @EventHandler(priority = EventPriority.LOWEST)
-        public void onJoin(final PlayerJoinEvent event) {
-            inject(event.getPlayer());
-        }
-
         private static void inject(final Player player) {
             /* unject before injecting */
             unject(player);
@@ -127,6 +123,11 @@ public final class PacketChannelHandler {
                 channel.pipeline().remove("PacketInjector");
             }
         }
+
+        @EventHandler(priority = EventPriority.LOWEST)
+        public void onJoin(final PlayerJoinEvent event) {
+            inject(event.getPlayer());
+        }
     }
 
     /**
@@ -135,20 +136,9 @@ public final class PacketChannelHandler {
      */
     private static class PlayerInjectorReflection {
 
-        private static final String PLAYER_CONNECTION_FIELD_NAME = PlayerReflection.PLAYER_CONNECTION_FIELD_NAME;
-        private static final String NETWORK_MANAGER_FIELD_NAME = PlayerReflection.NETWORK_MANAGER_FIELD_NAME;
-        private static final String CHANNEL_FIELD_NAME = PlayerReflection.CHANNEL_FIELD_NAME;
-
-        private static Channel getChannel(final Player player) {
-            return (Channel)
-                    PlayerInjectorReflection.getChannel(
-                            PlayerInjectorReflection.getNetworkManager(
-                                    PlayerInjectorReflection.getPlayerConnection(player)));
-        }
-
         private static Object getPlayerConnection(final Player player) {
             try {
-                return FieldReflection.getValue(BukkitReflection.getHandle(player), PLAYER_CONNECTION_FIELD_NAME);
+                return PlayerReflection.getPlayerConnection(player);
             } catch (SecurityException | NoSuchFieldException | IllegalArgumentException | IllegalAccessException
                     | InvocationTargetException ex) {
                 ex.printStackTrace();
@@ -156,19 +146,19 @@ public final class PacketChannelHandler {
             }
         }
 
-        private static Object getNetworkManager(final Object player_connection) {
+        private static Object getNetworkManager(final Player player) {
             try {
-                return FieldReflection.getValue(player_connection, NETWORK_MANAGER_FIELD_NAME);
-            } catch (SecurityException | NoSuchFieldException | IllegalArgumentException | IllegalAccessException ex) {
+                return PlayerReflection.getNetworkManager(player);
+            } catch (SecurityException | NoSuchFieldException | IllegalArgumentException | IllegalAccessException | InvocationTargetException ex) {
                 ex.printStackTrace();
                 return null;
             }
         }
 
-        private static Object getChannel(final Object network_manager) {
+        private static Channel getChannel(final Player player) {
             try {
-                return FieldReflection.getValue(network_manager, CHANNEL_FIELD_NAME);
-            } catch (SecurityException | NoSuchFieldException | IllegalArgumentException | IllegalAccessException ex) {
+                return PlayerReflection.getChannel(player);
+            } catch (SecurityException | NoSuchFieldException | IllegalArgumentException | IllegalAccessException | InvocationTargetException ex) {
                 ex.printStackTrace();
                 return null;
             }
@@ -245,9 +235,6 @@ public final class PacketChannelHandler {
             }
             return listeners;
         }
-    }
-
-    private PacketChannelHandler() {
     }
 
 }

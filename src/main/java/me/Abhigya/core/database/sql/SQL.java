@@ -28,7 +28,7 @@ public class SQL {
 
     public void insertData(String columns, String values, String table) throws SQLException {
         PreparedStatement ps = connection.prepareStatement("INSERT INTO "
-                + table + "(" + columns + ") VALUES (" + values + ");");
+                + table + " (" + columns + ") VALUES (" + values + ");");
         ps.executeUpdate();
         ps.close();
     }
@@ -54,8 +54,9 @@ public class SQL {
         ps.setObject(1, value);
 
         ResultSet results = ps.executeQuery();
-        ps.close();
-        return results.next();
+        boolean b = results.next();
+        results.close();
+        return b;
     }
 
     public ResultSet executeQuery(String statement) throws SQLException {
@@ -153,6 +154,38 @@ public class SQL {
             return toReturn;
         }
         return 0;
+    }
+
+    public boolean getBoolean(String table, String column, String gate, Object gate_value) throws SQLException {
+        PreparedStatement ps = connection.prepareStatement("SELECT " + column + " FROM " + table
+                + " WHERE " + gate + "=?;");
+        ps.setObject(1, gate_value);
+
+        ResultSet rs = ps.executeQuery();
+        boolean toReturn;
+
+        if (rs.next()) {
+            toReturn = rs.getBoolean(column);
+            ps.close();
+            return toReturn;
+        }
+        return false;
+    }
+
+    public Array getArray(String table, String column, String gate, Object gate_value) throws SQLException {
+        PreparedStatement ps = connection.prepareStatement("SELECT " + column + " FROM " + table
+                + " WHERE " + gate + "=?;");
+        ps.setObject(1, gate_value);
+
+        ResultSet rs = ps.executeQuery();
+        Array toReturn;
+
+        if (rs.next()) {
+            toReturn = rs.getArray(column);
+            ps.close();
+            return toReturn;
+        }
+        return null;
     }
 
     public Object get(String table, String column, String gate, Object gate_value) throws SQLException {

@@ -90,11 +90,11 @@ public class HikariCP extends SQLDatabase {
     @Override
     public synchronized void connect()
             throws IllegalStateException, SQLException {
-        try {
-            Class.forName(dataSource.getDriverClassName());
-        } catch (ClassNotFoundException ex) {
-            throw new IllegalStateException("Could not connect to HikariCP! The DataSource connection driver is unavailable!");
-        }
+//        try {
+//            Class.forName(dataSource.getDriverClassName());
+//        } catch (ClassNotFoundException ex) {
+//            throw new IllegalStateException("Could not connect to HikariCP! The DataSource connection driver is unavailable!");
+//        }
 
         this.connection = dataSource.getConnection();
     }

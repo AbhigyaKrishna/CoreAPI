@@ -45,6 +45,22 @@ public enum WoolColor {
     }
 
     /**
+     * Returns {@link WoolColor} instance from the given data value.
+     * <p>
+     *
+     * @param value Data value
+     * @return {@link WoolColor} instance
+     */
+    public static WoolColor getFromShort(final short value) {
+        for (WoolColor color : values()) {
+            if (color.getShortValue() == value) {
+                return color;
+            }
+        }
+        return null;
+    }
+
+    /**
      * Returns the data value of the wool color.
      * <p>
      *
@@ -77,22 +93,6 @@ public enum WoolColor {
      */
     public WoolItemStack toItemStack(int amount) {
         return new WoolItemStack(this, amount);
-    }
-
-    /**
-     * Returns {@link WoolColor} instance from the given data value.
-     * <p>
-     *
-     * @param value Data value
-     * @return {@link WoolColor} instance
-     */
-    public static WoolColor getFromShort(final short value) {
-        for (WoolColor color : values()) {
-            if (color.getShortValue() == value) {
-                return color;
-            }
-        }
-        return null;
     }
 
 }

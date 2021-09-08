@@ -23,68 +23,31 @@ import java.util.regex.Pattern;
 public class ColorUtils {
 
     /**
-     * Regular expression for "RGB(255, 0, 0)", integer range 0 - 255
-     */
-    private static final String COLOR_CSS_PATTERN = "[rR][gG][bB][(]" +
-            "[\\s]*[\\d]+[\\s]*[,]" +
-            "[\\s]*[\\d]+[\\s]*[,]" +
-            "[\\s]*[\\d]+[\\s]*" +
-            "[)]";
-
-    /**
-     * Regular expression for "RGB(255.0%, 0.0%, 0.0%)", float range 0.0% -
-     * 100.0%
-     */
-    private static final String COLOR_CSS_PERCENT_PATTERN = "[rR][gG][bB][(]" +
-            "[\\s]*[\\d]+(.\\d+)?[\\s]*[%][\\s]*[,]" +
-            "[\\s]*[\\d]+(.\\d+)?[\\s]*[%][\\s]*[,]" +
-            "[\\s]*[\\d]+(.\\d+)?[\\s]*[%][\\s]*" +
-            "[)]";
-
-    /**
-     * Compiled pattern for CSS absolute pattern: "RGB(255, 0, 0)"
-     */
-    private static Pattern cssAbsolutePattern = Pattern
-            .compile(COLOR_CSS_PATTERN);
-
-    /**
-     * Compiled pattern for CSS relative pattern: "RGB(255%, 0%, 0%)"
-     */
-    private static Pattern cssRelativePattern = Pattern
-            .compile(COLOR_CSS_PERCENT_PATTERN);
-
-    /**
      * Color display preference for HTML style: #RRGGBB.
      * <p>
      * #RRGGBB
      */
     public final static int HTML_FORMAT = 1;
-
     /**
      * Useful constant for Color display preference, display Color as integer.
      */
     public final static int INT_FORMAT = 0;
-
     /**
      * Color display preference for JAVA style: 0xRRGGBB.
      */
     public final static int JAVA_FORMAT = 2;
-
     /**
      * Color display preference for CSS absolute style: RGB(r,g,b).
      */
     public final static int CSS_ABSOLUTE_FORMAT = 3;
-
     /**
      * Color display preference for CSS relative style: RGB(r%,g%,b%).
      */
     public final static int CSS_RELATIVE_FORMAT = 4;
-
     /**
      * Default format for display preference: <code>CSS_ABSOLUTE_FORMAT</code>.
      */
     public final static int DEFAULT_FORMAT = CSS_ABSOLUTE_FORMAT;
-
     public static final Map<String, Color> COLOR_BY_NAME = new HashMap<>(ImmutableMap.<String, Color>builder()
             .put("WHITE", Color.WHITE)
             .put("SILVER", Color.SILVER)
@@ -104,6 +67,33 @@ public class ColorUtils {
             .put("PURPLE", Color.PURPLE)
             .put("ORANGE", Color.ORANGE)
             .build());
+    /**
+     * Regular expression for "RGB(255, 0, 0)", integer range 0 - 255
+     */
+    private static final String COLOR_CSS_PATTERN = "[rR][gG][bB][(]" +
+            "[\\s]*[\\d]+[\\s]*[,]" +
+            "[\\s]*[\\d]+[\\s]*[,]" +
+            "[\\s]*[\\d]+[\\s]*" +
+            "[)]";
+    /**
+     * Regular expression for "RGB(255.0%, 0.0%, 0.0%)", float range 0.0% -
+     * 100.0%
+     */
+    private static final String COLOR_CSS_PERCENT_PATTERN = "[rR][gG][bB][(]" +
+            "[\\s]*[\\d]+(.\\d+)?[\\s]*[%][\\s]*[,]" +
+            "[\\s]*[\\d]+(.\\d+)?[\\s]*[%][\\s]*[,]" +
+            "[\\s]*[\\d]+(.\\d+)?[\\s]*[%][\\s]*" +
+            "[)]";
+    /**
+     * Compiled pattern for CSS absolute pattern: "RGB(255, 0, 0)"
+     */
+    private static Pattern cssAbsolutePattern = Pattern
+            .compile(COLOR_CSS_PATTERN);
+    /**
+     * Compiled pattern for CSS relative pattern: "RGB(255%, 0%, 0%)"
+     */
+    private static Pattern cssRelativePattern = Pattern
+            .compile(COLOR_CSS_PERCENT_PATTERN);
 
     /**
      * Indicates whether the color value is of valid css absolute format:
@@ -421,7 +411,6 @@ public class ColorUtils {
         }
 
 
-
 //		// 2. Is this a predefined color?
 //
 //		int rgbValue = parsePredefinedColor( value );
@@ -451,8 +440,7 @@ public class ColorUtils {
             }
             if (color == null) {
                 throw new IllegalStateException("Invalid color \"" + s + "\", use \"R;G;B\", \"#RRGGBB\" or color value!");
-            }
-            else return color;
+            } else return color;
         } else {
             return Color.fromRGB(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]), Integer.parseInt(parts[2]));
         }

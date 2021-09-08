@@ -5,6 +5,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Path;
 
 /**
  * Class for dealing with images.
@@ -75,6 +77,138 @@ public class ImageUtils {
         g2d.drawImage(srcImage, 0, 0, null);
         g2d.dispose();
         return img;
+    }
+
+    /**
+     * Read the image from the specified resource
+     *
+     * @param image the image resource path
+     * @return the image as string
+     */
+    public static String readImage(InputStream image) {
+        StringBuilder builder = new StringBuilder();
+        try {
+            BufferedImage img = ImageIO.read(image);
+            for (int i = 0; i < img.getHeight(); i++) {
+                for (int j = 0; j < img.getWidth(); j++) {
+                    Color pixel = new Color(img.getRGB(j, i));
+                    double pixelValue = (((pixel.getRed() * 0.30) + (pixel.getBlue() * 0.59) + (pixel
+                            .getGreen() * 0.11)));
+                    builder.append(strChar(pixelValue));
+                }
+            }
+            image.close();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        }
+
+        return builder.toString();
+    }
+
+    /**
+     * Read the image from the specified resource
+     *
+     * @param image the image resource path
+     * @return the image as string
+     */
+    public static String readImage(File image) {
+        StringBuilder builder = new StringBuilder();
+        try {
+            BufferedImage img = ImageIO.read(image);
+            for (int i = 0; i < img.getHeight(); i++) {
+                for (int j = 0; j < img.getWidth(); j++) {
+                    Color pixel = new Color(img.getRGB(j, i));
+                    double pixelValue = (((pixel.getRed() * 0.30) + (pixel.getBlue() * 0.59) + (pixel
+                            .getGreen() * 0.11)));
+                    builder.append(strChar(pixelValue));
+                }
+            }
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        }
+
+        return builder.toString();
+    }
+
+    /**
+     * Read the image from the specified resource
+     *
+     * @param image the image resource path
+     * @return the image as string
+     */
+    public static String readImage(Path image) {
+        StringBuilder builder = new StringBuilder();
+        try {
+            BufferedImage img = ImageIO.read(image.toFile());
+            for (int i = 0; i < img.getHeight(); i++) {
+                for (int j = 0; j < img.getWidth(); j++) {
+                    Color pixel = new Color(img.getRGB(j, i));
+                    double pixelValue = (((pixel.getRed() * 0.30) + (pixel.getBlue() * 0.59) + (pixel
+                            .getGreen() * 0.11)));
+                    builder.append(strChar(pixelValue));
+                }
+            }
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        }
+
+        return builder.toString();
+    }
+
+    /**
+     * Read the image from the specified resource
+     *
+     * @param imagePath the image resource path
+     * @return the image as string
+     */
+    public static String readImage(String imagePath) {
+        StringBuilder builder = new StringBuilder();
+        try {
+            BufferedImage img = ImageIO.read(new File(new File(imagePath).getAbsolutePath().replace("%20", " ")));
+            for (int i = 0; i < img.getHeight(); i++) {
+                for (int j = 0; j < img.getWidth(); j++) {
+                    Color pixel = new Color(img.getRGB(j, i));
+                    double pixelValue = (((pixel.getRed() * 0.30) + (pixel.getBlue() * 0.59) + (pixel
+                            .getGreen() * 0.11)));
+                    builder.append(strChar(pixelValue));
+                }
+            }
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        }
+
+        return builder.toString();
+    }
+
+    /**
+     * Parse a char value to string
+     *
+     * @param g the char value
+     * @return the char string value
+     */
+    private static String strChar(double g) {
+        String str;
+        if (g >= 240) {
+            str = " ";
+        } else if (g >= 210) {
+            str = ".";
+        } else if (g >= 190) {
+            str = "*";
+        } else if (g >= 170) {
+            str = "+";
+        } else if (g >= 120) {
+            str = "^";
+        } else if (g >= 110) {
+            str = "&";
+        } else if (g >= 80) {
+            str = "8";
+        } else if (g >= 60) {
+            str = "#";
+        } else {
+            str = "@";
+        }
+
+        return str;
     }
 
 }

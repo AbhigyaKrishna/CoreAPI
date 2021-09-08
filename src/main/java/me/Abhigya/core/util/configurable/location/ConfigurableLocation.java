@@ -23,57 +23,6 @@ public class ConfigurableLocation extends Location implements Configurable, Init
     public static final String YAW_KEY = "yaw";
     public static final String PITCH_KEY = "pitch";
     public static final String[] CONFIGURABLE_LOCATION_KEYS = {WORLD_UID_KEY, X_KEY, Y_KEY, Z_KEY, YAW_KEY, PITCH_KEY};
-
-    /**
-     * Returns a {@link ConfigurableLocation} loaded from the given {@link ConfigurationSection},
-     * or null if there is no any valid {@link ConfigurableLocation} stored on the given {@link ConfigurationSection}.
-     * <p>
-     * Note that this method checks the given configuration section calling {@link #isConfigurableLocation(ConfigurationSection)}.
-     * <p>
-     *
-     * @param section Section to parse
-     * @return Parsed location
-     */
-    public static ConfigurableLocation of(ConfigurationSection section) {
-        return (isConfigurableLocation(section) ? new ConfigurableLocation().load(section) : null);
-    }
-
-    /**
-     * Return true if and only if there is a valid {@link ConfigurableLocation}
-     * stored on the given {@link ConfigurationSection}
-     * <p>
-     *
-     * @param section {@link ConfigurationSection} where the supposed
-     *                {@link ConfigurableLocation} is stored
-     * @return true if is
-     */
-    public static boolean isConfigurableLocation(ConfigurationSection section) {
-        for (String key : CONFIGURABLE_LOCATION_KEYS) {
-            switch (key) {
-                case WORLD_UID_KEY:
-                    break;
-
-                default:
-                    if (!(section.get(key) instanceof Number)) {
-                        return false;
-                    }
-                    break;
-            }
-        }
-
-        if (section.isString(WORLD_UID_KEY)) {
-            try {
-                // this will thrown an exception if the UUID is invalid.
-                UUID.fromString(section.getString(WORLD_UID_KEY));
-                return true;
-            } catch (IllegalArgumentException ex) {
-                return false;
-            }
-        } else {
-            return false;
-        }
-    }
-
     /**
      * Whether {@link #load(ConfigurationSection)} method has been called.
      */
@@ -123,6 +72,56 @@ public class ConfigurableLocation extends Location implements Configurable, Init
      */
     public ConfigurableLocation(Location copy) {
         this(copy.getWorld(), copy.getX(), copy.getY(), copy.getZ(), copy.getYaw(), copy.getPitch());
+    }
+
+    /**
+     * Returns a {@link ConfigurableLocation} loaded from the given {@link ConfigurationSection},
+     * or null if there is no any valid {@link ConfigurableLocation} stored on the given {@link ConfigurationSection}.
+     * <p>
+     * Note that this method checks the given configuration section calling {@link #isConfigurableLocation(ConfigurationSection)}.
+     * <p>
+     *
+     * @param section Section to parse
+     * @return Parsed location
+     */
+    public static ConfigurableLocation of(ConfigurationSection section) {
+        return (isConfigurableLocation(section) ? new ConfigurableLocation().load(section) : null);
+    }
+
+    /**
+     * Return true if and only if there is a valid {@link ConfigurableLocation}
+     * stored on the given {@link ConfigurationSection}
+     * <p>
+     *
+     * @param section {@link ConfigurationSection} where the supposed
+     *                {@link ConfigurableLocation} is stored
+     * @return true if is
+     */
+    public static boolean isConfigurableLocation(ConfigurationSection section) {
+        for (String key : CONFIGURABLE_LOCATION_KEYS) {
+            switch (key) {
+                case WORLD_UID_KEY:
+                    break;
+
+                default:
+                    if (!(section.get(key) instanceof Number)) {
+                        return false;
+                    }
+                    break;
+            }
+        }
+
+        if (section.isString(WORLD_UID_KEY)) {
+            try {
+                // this will thrown an exception if the UUID is invalid.
+                UUID.fromString(section.getString(WORLD_UID_KEY));
+                return true;
+            } catch (IllegalArgumentException ex) {
+                return false;
+            }
+        } else {
+            return false;
+        }
     }
 
     @Override

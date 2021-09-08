@@ -17,6 +17,35 @@ import java.util.Set;
  */
 public final class Json {
 
+    private final JsonObject handle;
+    private final Json root;
+    private final JsonOptions options;
+
+    /**
+     * Constructs a new instance of {@link Json}.
+     * <p>
+     *
+     * @param handle {@link JsonObject} to handle
+     * @param root   Root Json Object
+     */
+    private Json(JsonObject handle, Json root) {
+        this.handle = handle;
+        this.root = root;
+        this.options = root.getOptions();
+    }
+
+    /**
+     * Constructs a new instance of {@link Json}.
+     * <p>
+     *
+     * @param handle {@link JsonObject} to handle
+     */
+    private Json(JsonObject handle) {
+        this.handle = handle;
+        this.root = this;
+        this.options = new JsonOptions();
+    }
+
     /**
      * Loads a File to Json Object.
      * <p>
@@ -96,35 +125,6 @@ public final class Json {
      */
     public static Json getNew() {
         return new Json(new JsonObject());
-    }
-
-    private final JsonObject handle;
-    private final Json root;
-    private final JsonOptions options;
-
-    /**
-     * Constructs a new instance of {@link Json}.
-     * <p>
-     *
-     * @param handle {@link JsonObject} to handle
-     * @param root   Root Json Object
-     */
-    private Json(JsonObject handle, Json root) {
-        this.handle = handle;
-        this.root = root;
-        this.options = root.getOptions();
-    }
-
-    /**
-     * Constructs a new instance of {@link Json}.
-     * <p>
-     *
-     * @param handle {@link JsonObject} to handle
-     */
-    private Json(JsonObject handle) {
-        this.handle = handle;
-        this.root = this;
-        this.options = new JsonOptions();
     }
 
     /**

@@ -48,6 +48,22 @@ public enum StainedGlassColor {
     }
 
     /**
+     * Returns {@link StainedGlassColor} instance from the given data value.
+     * <p>
+     *
+     * @param value Data value
+     * @return {@link StainedGlassColor} instance
+     */
+    public static StainedGlassColor getFromShort(final short value) {
+        for (StainedGlassColor color : values()) {
+            if (color.getShortValue() == value) {
+                return color;
+            }
+        }
+        return null;
+    }
+
+    /**
      * Returns the data value of the glass color.
      * <p>
      *
@@ -81,22 +97,6 @@ public enum StainedGlassColor {
     @SuppressWarnings("deprecation")
     public ItemStack getColoredPaneGlass() {
         return new ItemStack(Material.valueOf("STAINED_GLASS_PANE"), 1, getShortValue());
-    }
-
-    /**
-     * Returns {@link StainedGlassColor} instance from the given data value.
-     * <p>
-     *
-     * @param value Data value
-     * @return {@link StainedGlassColor} instance
-     */
-    public static StainedGlassColor getFromShort(final short value) {
-        for (StainedGlassColor color : values()) {
-            if (color.getShortValue() == value) {
-                return color;
-            }
-        }
-        return null;
     }
 
 }

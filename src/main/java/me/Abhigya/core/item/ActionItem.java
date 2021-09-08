@@ -11,21 +11,6 @@ import java.util.List;
 public interface ActionItem {
 
     /**
-     * Enumeration for actions defined for an item.
-     */
-    public enum EnumAction {
-
-        LEFT_CLICK,
-        LEFT_CLICK_SNEAKING,
-        LEFT_CLICK_SPRINTING,
-
-        RIGHT_CLICK,
-        RIGHT_CLICK_SNEAKING,
-        RIGHT_CLICK_SPRINTING,
-        ;
-    }
-
-    /**
      * Gets the display name of the Action Item.
      * <p>
      *
@@ -83,5 +68,20 @@ public interface ActionItem {
      * @param event  {@link PlayerInteractEvent} triggered in the action event
      */
     public void onActionPerform(Player player, EnumAction action, PlayerInteractEvent event);
+
+    /**
+     * Enumeration for actions defined for an item.
+     */
+    public enum EnumAction {
+
+        LEFT_CLICK,
+        LEFT_CLICK_SNEAKING,
+        LEFT_CLICK_SPRINTING,
+
+        RIGHT_CLICK,
+        RIGHT_CLICK_SNEAKING,
+        RIGHT_CLICK_SPRINTING,
+        ;
+    }
 
 }

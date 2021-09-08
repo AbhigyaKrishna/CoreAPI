@@ -18,7 +18,7 @@ public class TpsUtils {
      */
     public static double getTicksPerSecond() {
         try {
-            final Class<?> server_class = ClassReflection.getNmsClass("MinecraftServer");
+            final Class<?> server_class = ClassReflection.getNmsClass("MinecraftServer", "");
             final Method server_getter = server_class.getMethod("getServer");
 
             final Object server = server_getter.invoke(null);
@@ -26,7 +26,7 @@ public class TpsUtils {
 
             return tps[0];
         } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
-                | InvocationTargetException | NoSuchFieldException | ClassNotFoundException ex) {
+                | InvocationTargetException | NoSuchFieldException ex) {
             ex.printStackTrace();
         }
         return 0D;

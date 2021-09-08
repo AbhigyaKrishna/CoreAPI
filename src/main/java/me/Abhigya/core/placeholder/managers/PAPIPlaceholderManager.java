@@ -96,7 +96,7 @@ public class PAPIPlaceholderManager extends BasePlaceholderManager {
          * @return Always true since it's an internal class.
          */
         @Override
-        public boolean canRegister(){
+        public boolean canRegister() {
             return true;
         }
     }

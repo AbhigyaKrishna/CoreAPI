@@ -4,6 +4,7 @@ import com.cryptomorin.xseries.XMaterial;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import me.Abhigya.core.util.StringUtils;
+import me.Abhigya.core.util.reflection.general.FieldReflection;
 import me.Abhigya.core.util.server.Version;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -15,7 +16,6 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -47,9 +47,10 @@ public class ItemStackUtils {
     /**
      * Gets the {@link ItemStack} with the given material and amount.
      * <p>
-     * @param material  Material of the ItemStack
-     * @param amount    Amount of the ItemStack
-     * @return  {@link ItemStack}
+     *
+     * @param material Material of the ItemStack
+     * @param amount   Amount of the ItemStack
+     * @return {@link ItemStack}
      */
     public static ItemStack ofMaterial(Material material, int amount) {
         if (Version.getServerVersion().isNewer(Version.v1_12_R1)) {
@@ -61,9 +62,10 @@ public class ItemStackUtils {
     /**
      * Gets the {@link ItemStack} with the given material and amount.
      * <p>
-     * @param material  XMaterial for the ItemStack
-     * @param amount    Amount of the ItemStack
-     * @return  {@link ItemStack}
+     *
+     * @param material XMaterial for the ItemStack
+     * @param amount   Amount of the ItemStack
+     * @return {@link ItemStack}
      */
     public static ItemStack ofUniversalMaterial(XMaterial material, int amount) {
         if (material.parseMaterial() == null) {
@@ -98,7 +100,7 @@ public class ItemStackUtils {
      * <p>
      *
      * @param stack ItemStack to convert
-     * @return  SoulBound ItemStack
+     * @return SoulBound ItemStack
      */
     public static ItemStack addSoulbound(ItemStack stack) {
         if (stack == null) {
@@ -338,6 +340,17 @@ public class ItemStackUtils {
     }
 
     /**
+     * Get the player textured skull {@link ItemStack}.
+     * <p>
+     *
+     * @param texture Texture of the Skull item
+     * @return Skull ItemStack textured with the player skin
+     */
+    public static ItemStack getSkull(final String texture) {
+        return texture != null ? createSkull(texture, "Head") : getSkullMaterial(1);
+    }
+
+    /**
      * Create a Skull ItemStack.
      * <p>
      *
@@ -383,22 +396,15 @@ public class ItemStackUtils {
      */
     private static SkullMeta setSkullMeta(final SkullMeta skullMeta, final String texture) {
         // get profile.
-        GameProfile profile = new GameProfile(UUID.randomUUID(), "HPXHead");
+        GameProfile profile = new GameProfile(UUID.randomUUID(), "CoreHead");
 
         // put textures property.
         profile.getProperties().put("textures", new Property("texture", texture));
 
         // set field.
-        Field profileField = null;
         try {
-            profileField = skullMeta.getClass().getDeclaredField("profile");
-        } catch (NoSuchFieldException | SecurityException e) {
-            e.printStackTrace();
-        }
-        profileField.setAccessible(true);
-        try {
-            profileField.set(skullMeta, profile);
-        } catch (IllegalArgumentException | IllegalAccessException e) {
+            FieldReflection.setValue(skullMeta, "profile", profile);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
             e.printStackTrace();
         }
         return skullMeta;
@@ -411,9 +417,10 @@ public class ItemStackUtils {
      * @param amount Stack amount
      * @return Skull Item Stack
      */
-    @SuppressWarnings("deprecation")
     private static ItemStack getSkullMaterial(int amount) {
-        return new ItemStack(Material.getMaterial("SKULL_ITEM"), amount, (byte) 3);
+        ItemStack item = XMaterial.PLAYER_HEAD.parseItem();
+        item.setAmount(amount);
+        return item;
     }
 
     /**

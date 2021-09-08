@@ -171,7 +171,7 @@ public class LocationUtils {
 
             /* load reflection */
             final Class<?> craft_world_border_class = border.getClass();
-            final Class<?> block_position_class = ClassReflection.getNmsClass("BlockPosition");
+            final Class<?> block_position_class = ClassReflection.getNmsClass("BlockPosition", "core");
             final Constructor<?> block_position_constructor = block_position_class.getConstructor(double.class,
                     double.class, double.class);
 

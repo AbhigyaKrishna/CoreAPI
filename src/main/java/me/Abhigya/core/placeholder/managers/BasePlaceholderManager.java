@@ -13,6 +13,31 @@ public abstract class BasePlaceholderManager implements PlaceholderManager {
 
     public static final Pattern PLACEHOLDER_PATTERN = Pattern.compile("%([^%]+)%");
 
+    public static String exec(Player player, String text, Function<String, Placeholder> finder) {
+        Placeholder found = finder.apply(text);
+
+        if (found != null) {
+            return found.resolve(player, "");
+        }
+
+        int index = text.lastIndexOf('_');
+
+        while (index >= 0) {
+            String id = text.substring(0, index);
+            String arg = text.substring(index + 1);
+            found = finder.apply(id);
+            if (found != null) {
+                try {
+                    return found.resolve(player, arg);
+                } catch (Exception e) {
+                    return null;
+                }
+            }
+            index = text.lastIndexOf('_', index - 1);
+        }
+        return null;
+    }
+
     public boolean hasPlaceholders(String string) {
         return PLACEHOLDER_PATTERN.matcher(string).find();
     }
@@ -37,12 +62,11 @@ public abstract class BasePlaceholderManager implements PlaceholderManager {
         return exec(player, text, this::find);
     }
 
-
     public String apply(Player player, String text, Function<String, Placeholder> finder) {
         Matcher matcher = PLACEHOLDER_PATTERN.matcher(text);
         StringBuffer res = new StringBuffer();
 
-        while(matcher.find()) {
+        while (matcher.find()) {
             String str = matcher.group(1);
             String replacement = exec(player, str, finder);
             if (replacement != null) {
@@ -55,31 +79,5 @@ public abstract class BasePlaceholderManager implements PlaceholderManager {
     }
 
     protected abstract Placeholder find(String id);
-
-
-    public static String exec(Player player, String text, Function<String, Placeholder> finder) {
-        Placeholder found = finder.apply(text);
-
-        if (found != null) {
-            return found.resolve(player, "");
-        }
-
-        int index = text.lastIndexOf('_');
-
-        while (index >= 0) {
-            String id = text.substring(0, index);
-            String arg = text.substring(index + 1);
-            found = finder.apply(id);
-            if(found != null) {
-                try {
-                    return found.resolve(player, arg);
-                } catch (Exception e) {
-                    return null;
-                }
-            }
-            index = text.lastIndexOf('_', index - 1);
-        }
-        return null;
-    }
 
 }

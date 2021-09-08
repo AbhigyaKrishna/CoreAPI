@@ -1,10 +1,10 @@
 package me.Abhigya.core.placeholder.managers;
 
-import me.Abhigya.core.placeholder.managers.customs.PlayerPlaceholder;
-import me.Abhigya.core.placeholder.managers.customs.VaultPlaceholder;
 import me.Abhigya.core.main.CoreAPI;
 import me.Abhigya.core.placeholder.Placeholder;
 import me.Abhigya.core.placeholder.PlaceholderRegistry;
+import me.Abhigya.core.placeholder.managers.customs.PlayerPlaceholder;
+import me.Abhigya.core.placeholder.managers.customs.VaultPlaceholder;
 import org.bukkit.plugin.Plugin;
 
 import java.util.HashMap;
@@ -12,9 +12,8 @@ import java.util.Map;
 
 public class CustomPlaceholderManager extends BasePlaceholderManager {
 
-    private Map<String, Placeholder> placeholders = new HashMap<>();
-
     private final PlaceholderRegistry<?> registry = new CustomPlaceholderRegistry();
+    private Map<String, Placeholder> placeholders = new HashMap<>();
 
     public CustomPlaceholderManager() {
         addDefaults();

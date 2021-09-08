@@ -16,6 +16,9 @@ import java.util.function.Consumer;
  */
 public class PluginUtils {
 
+    private PluginUtils() {
+    }
+
     /**
      * Triggers the consumer function on the given plugin loads.
      * <p>
@@ -69,9 +72,6 @@ public class PluginUtils {
             // Call callback then wait for GC.
             callback.accept(e.getPlugin());
         }
-    }
-
-    private PluginUtils() {
     }
 
 }

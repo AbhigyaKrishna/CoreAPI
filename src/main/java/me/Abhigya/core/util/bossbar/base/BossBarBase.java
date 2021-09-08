@@ -1,7 +1,7 @@
 package me.Abhigya.core.util.bossbar.base;
 
-import org.apache.commons.lang.Validate;
 import me.Abhigya.core.util.bossbar.BossBar;
+import org.apache.commons.lang.Validate;
 
 /**
  * {@link BossBar} base class.

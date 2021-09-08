@@ -16,6 +16,23 @@ import java.util.List;
  */
 public final class ItemMetaBuilder {
 
+    private final Material material;
+    private final ItemMeta result;
+
+    /**
+     * Constructs the ItemMetaBuilder.
+     * <p>
+     *
+     * @param material Material for getting ItemMeta
+     */
+    public ItemMetaBuilder(Material material) {
+        this.material = MaterialUtils.getRightMaterial(material);
+        this.result = Bukkit.getItemFactory().getItemMeta(this.material);
+        if (this.result == null) {
+            throw new IllegalArgumentException("Unsupported Material: " + material.name());
+        }
+    }
+
     /**
      * Returns the instance of {@link ItemMetaBuilder} for the given ItemStack.
      * <p>
@@ -48,23 +65,6 @@ public final class ItemMetaBuilder {
 
         }
         return builder;
-    }
-
-    private final Material material;
-    private final ItemMeta result;
-
-    /**
-     * Constructs the ItemMetaBuilder.
-     * <p>
-     *
-     * @param material Material for getting ItemMeta
-     */
-    public ItemMetaBuilder(Material material) {
-        this.material = MaterialUtils.getRightMaterial(material);
-        this.result = Bukkit.getItemFactory().getItemMeta(this.material);
-        if (this.result == null) {
-            throw new IllegalArgumentException("Unsupported Material: " + material.name());
-        }
     }
 
     /**

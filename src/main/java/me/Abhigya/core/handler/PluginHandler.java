@@ -24,20 +24,6 @@ public abstract class PluginHandler implements Listener {
      * Map for storing handler instances.
      */
     protected static final Map<Class<? extends PluginHandler>, PluginHandler> HANDLER_INSTANCES = new HashMap<>();
-
-    /**
-     * This method provides fast access to the plugin handler that has provided the
-     * given class.
-     * <p>
-     *
-     * @param <T>   Class that extends PluginHandler
-     * @param clazz Class desired
-     * @return Instance of the plugin handle that provided the class
-     */
-    public static <T extends PluginHandler> PluginHandler getPluginHandler(Class<T> clazz) {
-        return HANDLER_INSTANCES.get(clazz);
-    }
-
     /**
      * The handling plugin
      */
@@ -56,6 +42,19 @@ public abstract class PluginHandler implements Listener {
 
         this.plugin = plugin;
         PluginHandler.HANDLER_INSTANCES.put(getClass(), this);
+    }
+
+    /**
+     * This method provides fast access to the plugin handler that has provided the
+     * given class.
+     * <p>
+     *
+     * @param <T>   Class that extends PluginHandler
+     * @param clazz Class desired
+     * @return Instance of the plugin handle that provided the class
+     */
+    public static <T extends PluginHandler> PluginHandler getPluginHandler(Class<T> clazz) {
+        return HANDLER_INSTANCES.get(clazz);
     }
 
     /**

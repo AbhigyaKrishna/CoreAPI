@@ -3,5 +3,5 @@ version: ${project.version}
 main: me.Abhigya.core.main.CoreAPI
 api-version: 1.16
 author: Abhigya
-softdepend: [Vault, PlaceHolderAPI, Luckperms, PermissionsEx, PowerfulPerms]
+softdepend: [Vault, PlaceHolderAPI]
 load: STARTUP

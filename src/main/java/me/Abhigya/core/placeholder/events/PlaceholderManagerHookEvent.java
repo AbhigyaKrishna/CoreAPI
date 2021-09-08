@@ -10,20 +10,20 @@ public class PlaceholderManagerHookEvent extends Event {
 
     private PlaceholderManager placeholderManager = null;
 
+    public static HandlerList getHandlerList() {
+        return handlers;
+    }
+
     @Override
     public HandlerList getHandlers() {
         return handlers;
     }
 
-    public static HandlerList getHandlerList() {
-        return handlers;
+    public PlaceholderManager getPlaceholderManager() {
+        return placeholderManager;
     }
 
     public void setPlaceholderManager(PlaceholderManager placeholderManager) {
         this.placeholderManager = placeholderManager;
-    }
-
-    public PlaceholderManager getPlaceholderManager() {
-        return placeholderManager;
     }
 }

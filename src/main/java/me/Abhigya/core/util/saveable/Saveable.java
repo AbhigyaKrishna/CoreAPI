@@ -39,12 +39,12 @@ public interface Saveable {
      * @return Total done changes in the provided section after saving.
      */
     @SuppressWarnings("unchecked")
-    public default int saveEntries(ConfigurationSection section) {
+    default int saveEntries(ConfigurationSection section) {
         Validate.notNull(section, "The section cannot be null!");
 
         List<Field> entries = new ArrayList<>();
         int count = 0;
-        Class<?> clazz = getClass();
+        Class<?> clazz = this.getClass();
 
         // finding out entries
         Class<? extends Saveable> current = clazz.asSubclass(Saveable.class);

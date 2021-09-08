@@ -7,6 +7,7 @@ public interface PlaceholderManager {
 
     /**
      * Returns a read-only registry that can read the manager's placeholders
+     *
      * @return the registry accessing the manager's placeholders
      */
     PlaceholderRegistry<?> getRegistry();

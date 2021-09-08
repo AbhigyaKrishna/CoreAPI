@@ -54,10 +54,10 @@ public class BukkitReflection {
             else
                 connection = FieldReflection.getValue(nms_player, "playerConnection");
 
-            MethodReflection.getAccessible(connection.getClass(), "sendPacket", ClassReflection.getNmsClass("Packet"))
+            MethodReflection.getAccessible(connection.getClass(), "sendPacket", ClassReflection.getNmsClass("Packet", "network.protocol"))
                     .invoke(connection, packet);
         } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException
-                | SecurityException | ClassNotFoundException | NoSuchFieldException e) {
+                | SecurityException | NoSuchFieldException e) {
             e.printStackTrace();
         }
     }
@@ -70,12 +70,12 @@ public class BukkitReflection {
      */
     public static void setMotd(String motd) {
         try {
-            Class<?> server_class = ClassReflection.getNmsClass("MinecraftServer");
+            Class<?> server_class = ClassReflection.getNmsClass("MinecraftServer", "");
             Object server = MethodReflection.invokeAccessible(MethodReflection.get(server_class, "getServer"), server_class);
 
             MethodReflection.invokeAccessible(MethodReflection.get(server_class, "setMotd", String.class), server, motd);
-        } catch (ClassNotFoundException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
-                | NoSuchMethodException | SecurityException e) {
+        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException
+                | SecurityException e) {
             e.printStackTrace();
         }
     }

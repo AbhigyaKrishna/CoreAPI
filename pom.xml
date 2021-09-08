@@ -6,7 +6,7 @@
 
     <groupId>me.Abhigya</groupId>
     <artifactId>CoreAPI</artifactId>
-    <version>1.2.0</version>
+    <version>1.2.1</version>
     <packaging>jar</packaging>
 
     <name>CoreAPI</name>
@@ -33,7 +33,11 @@
                         </relocation>
                         <relocation>
                             <pattern>de.slikey.effectlib</pattern>
-                            <shadedPattern>me.Abhigya.core.particle</shadedPattern>
+                            <shadedPattern>me.Abhigya.core.particle.effectlib</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>xyz.xenondevs.particle</pattern>
+                            <shadedPattern>me.Abhigya.core.particle.particlelib</shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>com.cryptomorin.xseries</pattern>
@@ -92,7 +96,7 @@
             <url>https://oss.sonatype.org/content/groups/public/</url>
         </repository>
 
-        <!-- Vault -->
+        <!-- Jitpack -->
         <repository>
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
@@ -104,13 +108,7 @@
             <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
         </repository>
 
-        <!-- PermissionsEx -->
-        <repository>
-            <id>pex-repo</id>
-            <url>http://pex-repo.aoeu.xyz</url>
-        </repository>
-
-        <!-- Effect Lib -->
+        <!-- Maven Central -->
         <repository>
             <id>Maven Central</id>
             <url>https://repo1.maven.org/maven2/</url>
@@ -138,6 +136,13 @@
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
             <version>1.15</version>
+        </dependency>
+
+        <!-- Jetbrains Annotation -->
+        <dependency>
+            <groupId>com.intellij</groupId>
+            <artifactId>annotations</artifactId>
+            <version>9.0.4</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.mongodb/mongo-java-driver -->
@@ -175,32 +180,8 @@
         <dependency>
             <groupId>me.clip</groupId>
             <artifactId>placeholderapi</artifactId>
-            <version>2.10.9</version>
+            <version>2.10.10</version>
             <scope>provided</scope>
-        </dependency>
-
-        <!-- LuckPerms -->
-        <dependency>
-            <groupId>net.luckperms</groupId>
-            <artifactId>api</artifactId>
-            <version>5.3</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <!-- PermissionsEx -->
-        <dependency>
-            <groupId>ru.tehkode</groupId>
-            <artifactId>PermissionsEx</artifactId>
-            <version>1.23.5-SNAPSHOT</version>
-        </dependency>
-
-        <!-- Powerful Perms -->
-        <dependency>
-            <groupId>com.github.gustav9797.PowerfulPerms</groupId>
-            <artifactId>PowerfulPermsAPI</artifactId>
-            <version>4.5.2</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/libs/PowerfulPerms-4.5.2.jar</systemPath>
         </dependency>
 
         <!-- Effect Lib -->
@@ -211,11 +192,33 @@
             <scope>compile</scope>
         </dependency>
 
+        <!-- Particle Lib -->
+        <dependency>
+            <groupId>xyz.xenondevs</groupId>
+            <artifactId>particle</artifactId>
+            <version>1.6.4</version>
+        </dependency>
+
         <!-- XSeries -->
         <dependency>
             <groupId>com.github.cryptomorin</groupId>
             <artifactId>XSeries</artifactId>
-            <version>8.3.0</version>
+            <version>8.4.0</version>
+        </dependency>
+
+        <!-- Packet Events -->
+<!--        <dependency>-->
+<!--            <groupId>com.github.retrooper</groupId>-->
+<!--            <artifactId>packetevents</artifactId>-->
+<!--            <version>1.8-pre-17</version>-->
+<!--            <scope>compile</scope>-->
+<!--        </dependency>-->
+
+        <!-- Reflections -->
+        <dependency>
+            <groupId>net.oneandone.reflections8</groupId>
+            <artifactId>reflections8</artifactId>
+            <version>0.11.5</version>
         </dependency>
 
         <!-- NMS Spigots -->

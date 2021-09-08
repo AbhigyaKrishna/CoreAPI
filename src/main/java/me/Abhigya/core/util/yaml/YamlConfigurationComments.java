@@ -30,6 +30,9 @@ public class YamlConfigurationComments extends YamlConfiguration {
 
     protected static final String LINE_SEPARATOR = "\n";
     protected static final String VALUE_INDICATOR = ":";
+    private final DumperOptions yaml_options = new DumperOptions();
+    private final Representer yaml_representer = new YamlRepresenter();
+    private final Yaml yaml = new Yaml(new YamlConstructor(), yaml_representer, yaml_options);
 
     /**
      * Creates a new {@link YamlConfigurationComments}, loading from the given
@@ -83,10 +86,6 @@ public class YamlConfigurationComments extends YamlConfiguration {
         }
         return config;
     }
-
-    private final DumperOptions yaml_options = new DumperOptions();
-    private final Representer yaml_representer = new YamlRepresenter();
-    private final Yaml yaml = new Yaml(new YamlConstructor(), yaml_representer, yaml_options);
 
     @Override
     public String saveToString() {

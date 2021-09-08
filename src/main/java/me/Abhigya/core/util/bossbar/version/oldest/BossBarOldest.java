@@ -45,6 +45,10 @@ public abstract class BossBarOldest extends BossBarBase implements Listener {
      */
     protected volatile double progress = DEFAULT_PROGRESS;
     /**
+     * the update executor
+     */
+    protected volatile BukkitTask update_executor;
+    /**
      * the bar's visibility status
      */
     private volatile boolean visible = true;
@@ -52,12 +56,17 @@ public abstract class BossBarOldest extends BossBarBase implements Listener {
      * flag to determine if the bar has been destroyed because of the player was offline
      */
     private volatile boolean offline = false;
+    public BossBarOldest(String title, double progress, Player player) {
+        Validate.isTrue(player.isOnline(), "the player must be online!");
 
-    /**
-     * the update executor
-     */
-    protected volatile BukkitTask update_executor;
-    /**
+        this.player = new UUIDPlayer(player);
+
+        this.setTitle(title);
+        this.setProgress(progress);
+        this.create();
+
+        Bukkit.getPluginManager().registerEvents(this, CoreAPI.getInstance());
+    }    /**
      * the bar's updater command
      */
     protected final Runnable update_command = () -> {
@@ -83,18 +92,6 @@ public abstract class BossBarOldest extends BossBarBase implements Listener {
             this.destroy();
         }
     };
-
-    public BossBarOldest(String title, double progress, Player player) {
-        Validate.isTrue(player.isOnline(), "the player must be online!");
-
-        this.player = new UUIDPlayer(player);
-
-        this.setTitle(title);
-        this.setProgress(progress);
-        this.create();
-
-        Bukkit.getPluginManager().registerEvents(this, CoreAPI.getInstance());
-    }
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onTeleport(final PlayerTeleportEvent event) {
@@ -279,4 +276,6 @@ public abstract class BossBarOldest extends BossBarBase implements Listener {
 
         return getPlayer().getLocation().add(0.0D, 3.0D, 0.0D).add(direction);
     }
+
+
 }

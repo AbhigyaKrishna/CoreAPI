@@ -93,11 +93,7 @@ public class EntityReflection {
      */
     public static void setInvisibleTo(Entity entity, Player... targets) {
         try {
-            Class<?> packetPlayOutEntityDestroy;
-            if (CoreAPI.getInstance().getServerVersion().isNewerEquals(Version.v1_17_R1))
-                packetPlayOutEntityDestroy = Class.forName("net.minecraft.network.protocol.game.PacketPlayOutEntityDestroy");
-            else
-                packetPlayOutEntityDestroy = ClassReflection.getNmsClass("PacketPlayOutEntityDestroy");
+            Class<?> packetPlayOutEntityDestroy = ClassReflection.getNmsClass("PacketPlayOutEntityDestroy", "network.protocol.game");
 
             Object packet = ConstructorReflection.get(packetPlayOutEntityDestroy, int[].class).newInstance(new int[]{entity.getEntityId()});
             for (Player target : targets) {
@@ -106,7 +102,7 @@ public class EntityReflection {
                 }
             }
         } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
-                | NoSuchMethodException | SecurityException | ClassNotFoundException e) {
+                | NoSuchMethodException | SecurityException e) {
             e.printStackTrace();
         }
     }
@@ -121,7 +117,7 @@ public class EntityReflection {
     public static void setAI(LivingEntity entity, boolean ai) {
         try {
             if (CoreAPI.getInstance().getServerVersion().isOlder(Version.v1_9_R2)) {
-                Class<?> nbt_class = ClassReflection.getNmsClass("NBTTagCompound");
+                Class<?> nbt_class = ClassReflection.getNmsClass("NBTTagCompound", "");
 
                 Object handle = BukkitReflection.getHandle(entity);
                 Object ntb = ConstructorReflection.newInstance(nbt_class, new Class<?>[0]);
@@ -138,7 +134,7 @@ public class EntityReflection {
                 MethodReflection.invoke(MethodReflection.get(entity.getClass(), "setAI", boolean.class), entity, ai);
             }
         } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException
-                | SecurityException | ClassNotFoundException | InstantiationException ex) {
+                | SecurityException | InstantiationException ex) {
             ex.printStackTrace();
         }
     }
@@ -392,7 +388,7 @@ public class EntityReflection {
             Object handle = BukkitReflection.getHandle(entity);
 
             if (Version.getServerVersion().isOlderEquals(Version.v1_9_R2)) {
-                Class<?> damage_class = ClassReflection.getNmsClass("DamageSource");
+                Class<?> damage_class = ClassReflection.getNmsClass("DamageSource", "");
                 Object generic_damage = FieldReflection.getValue(damage_class, "GENERIC");
                 Method getter = MethodReflection.get(handle.getClass(), "isInvulnerable", damage_class);
 
@@ -401,7 +397,7 @@ public class EntityReflection {
                 return (boolean) MethodReflection.invoke(MethodReflection.get(entity.getClass(), "isInvulnerable"), entity);
             }
         } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
-                | InvocationTargetException | ClassNotFoundException | NoSuchFieldException e) {
+                | InvocationTargetException | NoSuchFieldException e) {
             e.printStackTrace();
             return false;
         }
@@ -422,7 +418,7 @@ public class EntityReflection {
             Object handle = BukkitReflection.getHandle(entity);
 
             if (Version.getServerVersion().isOlderEquals(Version.v1_9_R2)) {
-                Class<?> nms_entity_class = ClassReflection.getNmsClass("Entity");
+                Class<?> nms_entity_class = ClassReflection.getNmsClass("Entity", "");
                 Field field = FieldReflection.getAccessible(nms_entity_class, "invulnerable");
 
                 field.set(handle, invulnerable);
@@ -431,7 +427,7 @@ public class EntityReflection {
                         entity, invulnerable);
             }
         } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException
-                | SecurityException | NoSuchFieldException | ClassNotFoundException e) {
+                | SecurityException | NoSuchFieldException e) {
             e.printStackTrace();
         }
     }
@@ -501,15 +497,8 @@ public class EntityReflection {
      */
     public static void playNamedSound(Player player, String sound, float volume, float pitch) {
         try {
-            Class<?> category_enum, packet_play_out_custom_sound_effect;
-            if (CoreAPI.getInstance().getServerVersion().isNewerEquals(Version.v1_17_R1)) {
-                category_enum = Class.forName("net.minecraft.sounds.SoundCategory");
-                packet_play_out_custom_sound_effect = Class.forName("net.minecraft.network.protocol.game.PacketPlayOutCustomSoundEffect");
-            }
-            else {
-                category_enum = ClassReflection.getNmsClass("SoundCategory");
-                packet_play_out_custom_sound_effect = ClassReflection.getNmsClass("PacketPlayOutCustomSoundEffect");
-            }
+            Class<?> category_enum = ClassReflection.getNmsClass("SoundCategory", "sounds");
+            Class<?> packet_play_out_custom_sound_effect = ClassReflection.getNmsClass("PacketPlayOutCustomSoundEffect", "network.protocol.game");
 
             Object master = MethodReflection.invoke(MethodReflection.get(category_enum, "valueOf", String.class), category_enum, "MASTER");
 
@@ -524,8 +513,8 @@ public class EntityReflection {
                     sound, master, x, y, z, volume, pitch);
 
             BukkitReflection.sendPacket(player, packet);
-        } catch (ClassNotFoundException | IllegalAccessException | IllegalArgumentException
-                | InvocationTargetException | NoSuchMethodException | SecurityException | InstantiationException e) {
+        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
+                | NoSuchMethodException | SecurityException | InstantiationException e) {
             e.printStackTrace();
         }
     }
@@ -551,19 +540,10 @@ public class EntityReflection {
 
         try {
             boolean newest = CoreAPI.getInstance().getServerVersion().isNewerEquals(Version.v1_17_R1);
-            Class<?> category_enum, packet_play_out_custom_sound_effect, human_class, packet_class;
-            if (newest) {
-                category_enum = Class.forName("net.minecraft.sounds.SoundCategory");
-                packet_play_out_custom_sound_effect = Class.forName("net.minecraft.network.protocol.game.PacketPlayOutCustomSoundEffect");
-                human_class = Class.forName("net.minecraft.world.entity.player.EntityHuman");
-                packet_class = Class.forName("net.minecraft.network.protocol.Packet");
-            }
-            else {
-                category_enum = ClassReflection.getNmsClass("SoundCategory");
-                packet_play_out_custom_sound_effect = ClassReflection.getNmsClass("PacketPlayOutCustomSoundEffect");
-                human_class = ClassReflection.getNmsClass("EntityHuman");
-                packet_class = ClassReflection.getNmsClass("Packet");
-            }
+            Class<?> category_enum = ClassReflection.getNmsClass("SoundCategory", "sounds");
+            Class<?> packet_play_out_custom_sound_effect = ClassReflection.getNmsClass("PacketPlayOutCustomSoundEffect", "network.protocol.game");
+            Class<?> human_class = ClassReflection.getNmsClass("EntityHuman", "world.entity.player");
+            Class<?> packet_class = ClassReflection.getNmsClass("Packet", "network.protocol");
 
             Object master = MethodReflection.invoke(MethodReflection.get(category_enum, "valueOf", String.class),
                     category_enum, newest ? "a" : "MASTER");
@@ -596,7 +576,7 @@ public class EntityReflection {
                             double.class, double.class, dimension.getClass(), packet_class),
                     player_list, null, x, y, z, (volume > 1.0F ? 16.0F * volume : 16.0D), dimension, packet);
         } catch (SecurityException | NoSuchFieldException | IllegalArgumentException | IllegalAccessException
-                | ClassNotFoundException | InvocationTargetException | NoSuchMethodException | InstantiationException e) {
+                | InvocationTargetException | NoSuchMethodException | InstantiationException e) {
             e.printStackTrace();
         }
     }

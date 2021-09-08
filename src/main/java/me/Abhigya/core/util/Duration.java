@@ -34,6 +34,16 @@ public class Duration {
     }
 
     /**
+     * Construct duration from milliseconds.
+     * <p>
+     *
+     * @param millis Duration in milliseconds.
+     */
+    public Duration(long millis) {
+        this(millis, TimeUnit.MILLISECONDS);
+    }
+
+    /**
      * Returns a new {@link Duration}
      * that has been created using the given
      * time unit.
@@ -145,16 +155,6 @@ public class Duration {
      */
     public static Duration ofDays(long days) {
         return new Duration(days, TimeUnit.DAYS);
-    }
-
-    /**
-     * Construct duration from milliseconds.
-     * <p>
-     *
-     * @param millis Duration in milliseconds.
-     */
-    public Duration(long millis) {
-        this(millis, TimeUnit.MILLISECONDS);
     }
 
     /**

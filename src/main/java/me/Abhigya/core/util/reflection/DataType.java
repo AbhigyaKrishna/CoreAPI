@@ -21,8 +21,6 @@ public enum DataType {
     BOOLEAN(boolean.class, Boolean.class);
 
     private static final Map<Class<?>, DataType> CLASS_MAP = new HashMap<Class<?>, DataType>();
-    private final Class<?> primitive;
-    private final Class<?> reference;
 
     // Initialize map for quick class lookup
     static {
@@ -31,6 +29,9 @@ public enum DataType {
             CLASS_MAP.put(type.reference, type);
         }
     }
+
+    private final Class<?> primitive;
+    private final Class<?> reference;
 
     /**
      * Construct a new data type
@@ -42,49 +43,6 @@ public enum DataType {
     private DataType(Class<?> primitive, Class<?> reference) {
         this.primitive = primitive;
         this.reference = reference;
-    }
-
-    /**
-     * Returns the primitive class of this data type
-     * <p>
-     *
-     * @return The primitive class
-     */
-    public Class<?> getPrimitive() {
-        return primitive;
-    }
-
-    /**
-     * Returns the reference class of this data type
-     * <p>
-     *
-     * @return The reference class
-     */
-    public Class<?> getReference() {
-        return reference;
-    }
-
-    /**
-     * Returns true if the given Object is
-     * a valid instance of this data type.
-     * <p>
-     *
-     * @param obj Object to check
-     * @return true if the given Object is
-     * a valid instance of this data type
-     */
-    public boolean isInstance(Object obj) {
-        return obj != null && (obj.getClass().equals(getPrimitive()) || obj.getClass().equals(getReference()));
-    }
-
-    /**
-     * Gets whether this represents a number data type.
-     * <p>
-     *
-     * @return Whether this represents a number data type
-     */
-    public boolean isNumber() {
-        return Number.class.isAssignableFrom(reference);
     }
 
     /**
@@ -207,5 +165,48 @@ public enum DataType {
             return false;
         }
         return true;
+    }
+
+    /**
+     * Returns the primitive class of this data type
+     * <p>
+     *
+     * @return The primitive class
+     */
+    public Class<?> getPrimitive() {
+        return primitive;
+    }
+
+    /**
+     * Returns the reference class of this data type
+     * <p>
+     *
+     * @return The reference class
+     */
+    public Class<?> getReference() {
+        return reference;
+    }
+
+    /**
+     * Returns true if the given Object is
+     * a valid instance of this data type.
+     * <p>
+     *
+     * @param obj Object to check
+     * @return true if the given Object is
+     * a valid instance of this data type
+     */
+    public boolean isInstance(Object obj) {
+        return obj != null && (obj.getClass().equals(getPrimitive()) || obj.getClass().equals(getReference()));
+    }
+
+    /**
+     * Gets whether this represents a number data type.
+     * <p>
+     *
+     * @return Whether this represents a number data type
+     */
+    public boolean isNumber() {
+        return Number.class.isAssignableFrom(reference);
     }
 }

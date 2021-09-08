@@ -31,7 +31,9 @@ public class ConfigurableItemStack implements Configurable {
     public static final String DATA_KEY = "data";
     public static final String ENCHANTS_SECTION = "enchantments";
     public static final String ENCHANT_SUBSECTION_PREFIX = "enchantment-";
-
+    @LoadableCollectionEntry(subsection = ENCHANTS_SECTION)
+    @SaveableCollectionEntry(subsection = ENCHANTS_SECTION, subsectionprefix = ENCHANT_SUBSECTION_PREFIX)
+    public final Set<ConfigurableEnchantment> enchants = new HashSet<>();
     public @SaveableEntry(key = TYPE_KEY)
     String type;
     public @SaveableEntry(key = SIZE_KEY)
@@ -42,10 +44,6 @@ public class ConfigurableItemStack implements Configurable {
     List<String> lore;
     public @SaveableEntry(key = DATA_KEY)
     short data;
-
-    @LoadableCollectionEntry(subsection = ENCHANTS_SECTION)
-    @SaveableCollectionEntry(subsection = ENCHANTS_SECTION, subsectionprefix = ENCHANT_SUBSECTION_PREFIX)
-    public final Set<ConfigurableEnchantment> enchants = new HashSet<>();
 
     /**
      * Construct a new uninitialized {@link ConfigurableItemStack}.

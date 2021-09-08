@@ -375,6 +375,7 @@ public class MongoDocument {
 
     /**
      * Gets the {@link DBCollection} registered in this class.
+     *
      * @return The collection registered in this class
      */
     public DBCollection getCollection() {

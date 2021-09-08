@@ -1,5 +1,7 @@
 package me.Abhigya.core.util.tasks;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -43,6 +45,36 @@ public final class WorkloadThread implements Runnable {
      */
     public void add(Workload workload) {
         deque.add(workload);
+    }
+
+    /**
+     * Returns the current queue of the thread;
+     * <p>
+     *
+     * @return Collection of {@link Workload}
+     */
+    public Collection<Workload> getDeque() {
+        return Collections.unmodifiableCollection(deque);
+    }
+
+    /**
+     * Returns the work timeout nanos
+     * <p>
+     *
+     * @return Work timeout in nanos
+     */
+    public long getMaxNanosPerTick() {
+        return maxNanosPerTick;
+    }
+
+    /**
+     * Returns the Work Thread id
+     * <p>
+     *
+     * @return Work Thread id
+     */
+    public long getWorkThreadId() {
+        return workThreadId;
     }
 
     @Override

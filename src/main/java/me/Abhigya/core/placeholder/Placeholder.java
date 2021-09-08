@@ -11,10 +11,6 @@ import java.util.function.Supplier;
  */
 public interface Placeholder {
 
-    String getId();
-
-    String resolve(Player player, String arg);
-
     static Placeholder of(String id, String obj) {
         return new Placeholder() {
             @Override
@@ -86,5 +82,9 @@ public interface Placeholder {
     static Placeholder of(BiFunction<Player, String, String> obj) {
         return of(null, obj);
     }
+
+    String getId();
+
+    String resolve(Player player, String arg);
 
 }

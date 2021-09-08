@@ -1,0 +1,155 @@
+package me.Abhigya.core.util.hologram;
+
+import me.Abhigya.core.handler.PluginHandler;
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.player.*;
+import org.bukkit.event.world.ChunkLoadEvent;
+import org.bukkit.event.world.ChunkUnloadEvent;
+import org.bukkit.plugin.Plugin;
+
+import java.util.Collections;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+public class HologramFactory extends PluginHandler {
+
+    private final Map<String, Hologram> holograms;
+
+    public HologramFactory(Plugin plugin) {
+        super(plugin);
+        this.holograms = new ConcurrentHashMap<>();
+        this.register();
+    }
+
+    public Hologram createHologram(String id, Location location, String... lines) {
+        if (this.hasHologram(id))
+            return null;
+
+        Hologram hologram = new DefaultHologram(location, lines);
+        this.holograms.put(id, hologram);
+        return hologram;
+    }
+
+    public Hologram getHologram(String id) {
+        if (this.holograms.containsKey(id))
+            return  this.holograms.get(id);
+
+        return null;
+    }
+
+    public boolean hasHologram(String id) {
+        return this.holograms.containsKey(id);
+    }
+
+    public void removeHologram(String id) {
+        if (this.hasHologram(id)) {
+            this.holograms.get(id).destroy();
+            this.holograms.remove(id);
+        }
+    }
+
+    @EventHandler
+    private void handlePlayerTeleport(PlayerTeleportEvent event) {
+        for (Hologram hologram : this.holograms.values()) {
+            if (hologram.isSpawned()) {
+                if (hologram.getLocation().getWorld().getName().equals(event.getTo().getWorld().getName())) {
+                    if (hologram.canSee(event.getPlayer()))
+                        hologram.spawn(Collections.singleton(event.getPlayer()));
+                }
+            }
+        }
+    }
+
+    @EventHandler
+    private void handlePlayerWorldChange(PlayerChangedWorldEvent event) {
+        for (Hologram hologram : this.holograms.values()) {
+            if (hologram.isSpawned()) {
+                if (hologram.getLocation().getWorld().getName().equals(event.getPlayer().getWorld().getName())) {
+                    if (hologram.canSee(event.getPlayer()))
+                        hologram.spawn(Collections.singleton(event.getPlayer()));
+                }
+            }
+        }
+    }
+
+    @EventHandler
+    private void handleChunkUnload(ChunkUnloadEvent event) {
+        for (Hologram hologram : this.holograms.values()) {
+            if (hologram.isSpawned()) {
+                if (hologram.getLocation().getChunk().equals(event.getChunk())) {
+                    hologram.destroy(hologram.getViewers());
+                }
+            }
+        }
+    }
+
+    @EventHandler
+    private void handleChunkLoad(ChunkLoadEvent event) {
+        for (Hologram hologram : this.holograms.values()) {
+            if (hologram.isSpawned()) {
+                if (hologram.getLocation().getChunk().equals(event.getChunk())) {
+                    for (Player player : event.getWorld().getPlayers()) {
+                        if (hologram.canSee(player))
+                            hologram.spawn();
+                    }
+                }
+            }
+        }
+    }
+
+    @EventHandler
+    private void handlePlayerLeave(PlayerQuitEvent event) {
+        for (Hologram hologram : this.holograms.values()) {
+            if (hologram.isSpawned()) {
+                if (hologram.getLocation().getWorld().getName().equals(event.getPlayer().getWorld().getName())) {
+                    if (hologram.canSee(event.getPlayer()))
+                        hologram.destroy(Collections.singleton(event.getPlayer()));
+                }
+            }
+        }
+    }
+
+    @EventHandler
+    private void handlePlayerJoin(PlayerJoinEvent event) {
+        for (Hologram hologram : this.holograms.values()) {
+            if (hologram.isSpawned()) {
+                if (hologram.getLocation().getWorld().getName().equals(event.getPlayer().getWorld().getName())) {
+                    if (hologram.getHidden().contains(event.getPlayer()))
+                        continue;
+
+                    hologram.spawn(Collections.singleton(event.getPlayer()));
+                }
+            }
+        }
+    }
+
+    @EventHandler
+    private void handlePlayerDeath(PlayerRespawnEvent event) {
+        for (Hologram hologram : this.holograms.values()) {
+            if (hologram.isSpawned()) {
+                if (hologram.getLocation().getWorld().getName().equals(event.getPlayer().getWorld().getName())) {
+                    if (hologram.canSee(event.getPlayer()))
+                        hologram.spawn(Collections.singleton(event.getPlayer()));
+                }
+            }
+        }
+    }
+
+    @Override
+    public void register() {
+        super.register();
+    }
+
+    @Override
+    public void unregister() {
+        super.unregister();
+    }
+
+    @Override
+    protected boolean isAllowMultipleInstances() {
+        return false;
+    }
+
+}

@@ -59,7 +59,7 @@ public class ConsoleUtils {
      * <p>
      *
      * @param message Content of the message.
-     * @param alias  Plugin sender alias.
+     * @param alias   Plugin sender alias.
      */
     public static void sendPluginMessage(String message, String alias) {
         sendMessage("[" + alias + "] " + message);

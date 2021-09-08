@@ -1,6 +1,7 @@
 package me.Abhigya.core.plugin;
 
 import org.apache.commons.lang.Validate;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 
 import java.util.function.Function;
@@ -39,9 +40,10 @@ public abstract class PluginDependence implements Function<Plugin, Boolean> {
      * The name of the depending plugin
      */
     protected final String name;
+    protected final boolean enabled;
 
     /**
-     * Construct the plugin dependence. Note the the plugin {@code name} is
+     * Construct the plugin dependence. Note the plugin {@code name} is
      * case-sensitive.
      * <p>
      *
@@ -50,6 +52,7 @@ public abstract class PluginDependence implements Function<Plugin, Boolean> {
     public PluginDependence(final String name) {
         Validate.notNull(name, "the name cannot be null!");
         this.name = name;
+        this.enabled = Bukkit.getPluginManager().isPluginEnabled(name);
     }
 
     /**
@@ -62,4 +65,13 @@ public abstract class PluginDependence implements Function<Plugin, Boolean> {
         return name;
     }
 
+    /**
+     * Returns if the plugin found enable and hooked.
+     * <p>
+     *
+     * @return {@code true} if the plugin is enabled, false otherwise
+     */
+    public boolean isEnabled() {
+        return enabled;
+    }
 }

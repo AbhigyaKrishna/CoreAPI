@@ -10,7 +10,7 @@ import org.bukkit.util.Vector;
  */
 public class IntersectionUtils {
 
-//	private final static Vector v0 = new Vector();
+    //	private final static Vector v0 = new Vector();
 //	private final static Vector v1 = new Vector();
     private final static Vector v2 = new Vector();
 

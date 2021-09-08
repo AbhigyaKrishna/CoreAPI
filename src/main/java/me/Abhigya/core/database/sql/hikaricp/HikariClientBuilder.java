@@ -11,8 +11,6 @@ import java.util.Properties;
  */
 public class HikariClientBuilder {
 
-    public static final String LEGACY_DATA_SOURCE_CLASS = "com.mysql.jdbc.Driver";
-
     private HikariConfig config;
     private boolean reconnect;
 
@@ -35,7 +33,6 @@ public class HikariClientBuilder {
         this.config.setJdbcUrl(jdbcUrl);
         this.config.setUsername(username);
         this.config.setPassword(password);
-        this.config.setDataSourceClassName(LEGACY_DATA_SOURCE_CLASS);
         this.reconnect = reconnect;
     }
 

@@ -30,22 +30,11 @@ public class ActionBarUtils {
      */
     public static void send(Player player, String message) {
         try {
-            Class<?> component_class, chat_serializer, packet_class;
-            Class<?>[] inner_classes;
-            if (CoreAPI.getInstance().getServerVersion().isNewerEquals(Version.v1_17_R1)) {
-                component_class = Class.forName("net.minecraft.network.chat.IChatBaseComponent");
-                inner_classes = component_class.getClasses();
-                chat_serializer = inner_classes.length > 0 ? component_class.getClasses()[0]
-                        : Class.forName("net.minecraft.network.chat.IChatBaseComponent.ChatSerializer");
-                packet_class = Class.forName("net.minecraft.network.protocol.game.PacketPlayOutChat");
-            }
-            else {
-                component_class = ClassReflection.getNmsClass("IChatBaseComponent");
-                inner_classes = component_class.getClasses();
-                chat_serializer = inner_classes.length > 0 ? component_class.getClasses()[0]
-                        : ClassReflection.getNmsClass("ChatSerializer");
-                packet_class = ClassReflection.getNmsClass("PacketPlayOutChat");
-            }
+            Class<?> component_class = ClassReflection.getNmsClass("IChatBaseComponent", "network.chat");
+            Class<?>[] inner_classes = component_class.getClasses();
+            Class<?> chat_serializer = inner_classes.length > 0 ? component_class.getClasses()[0]
+                    : ClassReflection.getNmsClass("ChatSerializer", "network.chat.IChatBaseComponent");
+            Class<?> packet_class = ClassReflection.getNmsClass("PacketPlayOutChat", "network.protocol.game");
 
 
             Object component = MethodReflection.get(chat_serializer, "a", String.class).invoke(chat_serializer,
@@ -56,11 +45,7 @@ public class ActionBarUtils {
                 packet = ConstructorReflection.newInstance(packet_class, new Class<?>[]{component_class, byte.class},
                         component, (byte) 2);
             } else {
-                Class<?> chat_type_class;
-                if (CoreAPI.getInstance().getServerVersion().isNewerEquals(Version.v1_17_R1))
-                    chat_type_class = Class.forName("net.minecraft.network.chat.ChatMessageType");
-                else
-                    chat_type_class = ClassReflection.getNmsClass("ChatMessageType");
+                Class<?> chat_type_class = ClassReflection.getNmsClass("ChatMessageType", "network.chat");
 
                 packet = ConstructorReflection.newInstance(packet_class,
                         new Class<?>[]{component_class, chat_type_class},
@@ -69,8 +54,8 @@ public class ActionBarUtils {
             }
 
             BukkitReflection.sendPacket(player, packet);
-        } catch (ClassNotFoundException | NoSuchMethodException | SecurityException | IllegalAccessException
-                | IllegalArgumentException | InvocationTargetException | InstantiationException e) {
+        } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException |
+                InvocationTargetException | InstantiationException e) {
             e.printStackTrace();
         }
     }

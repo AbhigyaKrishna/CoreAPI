@@ -24,16 +24,6 @@ public enum WriteType {
     }
 
     /**
-     * Returns the primitive class.
-     * <p>
-     *
-     * @return Primitive classes
-     */
-    public Class<?>[] getPrimitiveClasses() {
-        return primitive_classes;
-    }
-
-    /**
      * Returns the write type of the given data.
      * <p>
      *
@@ -57,6 +47,16 @@ public enum WriteType {
             }
         }
         return null;
+    }
+
+    /**
+     * Returns the primitive class.
+     * <p>
+     *
+     * @return Primitive classes
+     */
+    public Class<?>[] getPrimitiveClasses() {
+        return primitive_classes;
     }
 
 }

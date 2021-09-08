@@ -199,20 +199,20 @@ public abstract class BossBar {
     public abstract Player getPlayer();
 
     /**
-     * Set if the boss bar is displayed to attached player.
-     * <p>
-     *
-     * @param visible Visible status
-     */
-    public abstract void setVisible(boolean visible);
-
-    /**
      * Return if the boss bar is displayed to attached player.
      * <p>
      *
      * @return Visible status
      */
     public abstract boolean isVisible();
+
+    /**
+     * Set if the boss bar is displayed to attached player.
+     * <p>
+     *
+     * @param visible Visible status
+     */
+    public abstract void setVisible(boolean visible);
 
     /**
      * Shows the previously hidden boss bar to all attached player

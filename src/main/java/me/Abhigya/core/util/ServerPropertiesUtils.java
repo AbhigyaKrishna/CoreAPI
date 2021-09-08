@@ -18,13 +18,13 @@ public class ServerPropertiesUtils {
         Properties properties = null;
         try {
             Object server = MethodReflection.invoke(MethodReflection.getAccessible(
-                    ClassReflection.getNmsClass("MinecraftServer"), "getServer"), (Object) null);
+                    ClassReflection.getNmsClass("MinecraftServer", ""), "getServer"), (Object) null);
             Object property_manager = FieldReflection.getValue(server, "propertyManager");
 
             // then getting properties.
             properties = FieldReflection.getValue(property_manager, "properties");
         } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
-                | NoSuchMethodException | SecurityException | ClassNotFoundException | NoSuchFieldException ex) {
+                | NoSuchMethodException | SecurityException | NoSuchFieldException ex) {
             ex.printStackTrace();
         }
 
@@ -35,9 +35,9 @@ public class ServerPropertiesUtils {
      * Get property from server.properties file with String type
      * <p>
      *
-     * @param key   Keyword to get the value
+     * @param key           Keyword to get the value
      * @param default_value Default value if not found
-     * @return  Value of the key
+     * @return Value of the key
      */
     public static String getStringProperty(String key, String default_value) {
         try {
@@ -51,9 +51,9 @@ public class ServerPropertiesUtils {
      * Get property from server.properties file with Integer type
      * <p>
      *
-     * @param key   Keyword to get the value
+     * @param key           Keyword to get the value
      * @param default_value Default value if not found
-     * @return  Value of the key
+     * @return Value of the key
      */
     public static int getIntProperty(String key, int default_value) {
         try {
@@ -67,9 +67,9 @@ public class ServerPropertiesUtils {
      * Get property from server.properties file with Long type
      * <p>
      *
-     * @param key   Keyword to get the value
+     * @param key           Keyword to get the value
      * @param default_value Default value if not found
-     * @return  Value of the key
+     * @return Value of the key
      */
     public static long getLongProperty(String key, long default_value) {
         try {
@@ -83,9 +83,9 @@ public class ServerPropertiesUtils {
      * Get property from server.properties file with Boolean type
      * <p>
      *
-     * @param key   Keyword to get the value
+     * @param key           Keyword to get the value
      * @param default_value Default value if not found
-     * @return  Value of the key
+     * @return Value of the key
      */
     public static boolean getBooleanProperty(String key, boolean default_value) {
         try {

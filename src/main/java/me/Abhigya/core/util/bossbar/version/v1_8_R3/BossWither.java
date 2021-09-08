@@ -19,10 +19,6 @@ public class BossWither extends EntityWither {
         BossTypeRegistering.register(BossWither.class, "BossWither", 64);
     }
 
-    public static BossWither getNewInstance(org.bukkit.World world) {
-        return new BossWither(world);
-    }
-
     protected final org.bukkit.World bukkit_world;
 
     protected BossWither(org.bukkit.World world) {
@@ -59,6 +55,10 @@ public class BossWither extends EntityWither {
                 return Float.MIN_VALUE;
             }
         };
+    }
+
+    public static BossWither getNewInstance(org.bukkit.World world) {
+        return new BossWither(world);
     }
 
     @Override

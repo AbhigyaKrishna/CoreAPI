@@ -3,11 +3,15 @@ package me.Abhigya.core.util.reflection.general;
 import me.Abhigya.core.main.CoreAPI;
 import me.Abhigya.core.util.StringUtils;
 import me.Abhigya.core.util.server.Version;
+import org.reflections8.Reflections;
+import org.reflections8.scanners.SubTypesScanner;
+import org.reflections8.util.ClasspathHelper;
+import org.reflections8.util.ConfigurationBuilder;
+import org.reflections8.util.FilterBuilder;
 
 import java.io.File;
-import java.io.IOException;
-import java.net.URL;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
@@ -18,6 +22,8 @@ public class ClassReflection {
 
     public static final String CRAFT_CLASSES_PACKAGE = "org.bukkit.craftbukkit.";
     public static final String NMS_CLASSES_PACKAGE = "net.minecraft.server.";
+
+    private static final Map<String, Class<?>> CACHED_CLASSES = new ConcurrentHashMap<>();
 
     /**
      * Gets the member sub class with the provided name that is hold by the provided
@@ -72,26 +78,64 @@ public class ClassReflection {
      * @param package_name Name of the sub-package or null if the class is not
      *                     within a sub-package
      * @return Class with the provided name
-     * @throws ClassNotFoundException if the class doesn't exist
      */
-    public static Class<?> getCraftClass(String name, String package_name) throws ClassNotFoundException {
-        return Class.forName(CRAFT_CLASSES_PACKAGE + Version.getServerVersion().name() + "."
-                + (StringUtils.isBlank(package_name) ? "" : package_name.toLowerCase() + ".") + name);
+    public static Class<?> getCraftClass(String name, String package_name) {
+        try {
+            String id = "craft-" + (StringUtils.isBlank(package_name) ? "" : package_name.toLowerCase() + ".") + name;
+            if (CACHED_CLASSES.containsKey(id))
+                return CACHED_CLASSES.get(id);
+
+            Class<?> clazz = Class.forName(CRAFT_CLASSES_PACKAGE + Version.getServerVersion().name() + "."
+                    + (StringUtils.isBlank(package_name) ? "" : package_name.toLowerCase() + ".") + name);
+            CACHED_CLASSES.put(id, clazz);
+            return clazz;
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     /**
      * Gets a class within the minecraft server ({@value #NMS_CLASSES_PACKAGE}) package.
      * <p>
      *
-     * @param name Name of the class to get
+     * @param name       Name of the class to get
+     * @param v17Package Package name/path after 'net.minecraft.'
      * @return Class with the provided name
-     * @throws ClassNotFoundException if the class doesn't exist
      */
-    public static Class<?> getNmsClass(String name) throws ClassNotFoundException {
-        if (CoreAPI.getInstance().getServerVersion().isNewerEquals(Version.v1_17_R1))
-            return Class.forName(NMS_CLASSES_PACKAGE + "." + name);
-        else
-            return Class.forName(NMS_CLASSES_PACKAGE + CoreAPI.getInstance().getServerVersion().name() + "." + name);
+    public static Class<?> getNmsClass(String name, String v17Package) {
+        try {
+            if (CACHED_CLASSES.containsKey(name))
+                return CACHED_CLASSES.get(name);
+
+            Class<?> clazz;
+            if (CoreAPI.getInstance().getServerVersion().isNewerEquals(Version.v1_17_R1))
+                clazz = Class.forName("net.minecraft." +
+                        (StringUtils.isBlank(v17Package) ? "" : v17Package.toLowerCase() + ".") + name);
+            else
+                clazz = Class.forName(NMS_CLASSES_PACKAGE + CoreAPI.getInstance().getServerVersion().name() + "." + name);
+
+            CACHED_CLASSES.put(name, clazz);
+            return clazz;
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static boolean nmsClassExist(String name, String v17Package) {
+        try {
+            Class<?> clazz;
+            if (CoreAPI.getInstance().getServerVersion().isNewerEquals(Version.v1_17_R1))
+                clazz = Class.forName("net.minecraft." +
+                        (StringUtils.isBlank(v17Package) ? "" : v17Package.toLowerCase() + ".") + name);
+            else
+                clazz = Class.forName(NMS_CLASSES_PACKAGE + CoreAPI.getInstance().getServerVersion().name() + "." + name);
+            CACHED_CLASSES.put(name, clazz);
+            return true;
+        } catch (ClassNotFoundException e) {
+            return false;
+        }
     }
 
     /**
@@ -101,25 +145,23 @@ public class ClassReflection {
      *
      * @param packageName Base package
      * @return The classes
-     * @throws ClassNotFoundException
-     * @throws IOException
      */
-    public static Class<?>[] getClasses(String packageName)
-            throws ClassNotFoundException, IOException {
-        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        assert classLoader != null;
-        String path = packageName.replace('.', '/');
-        Enumeration<URL> resources = classLoader.getResources(path);
-        List<File> dirs = new ArrayList<File>();
-        while (resources.hasMoreElements()) {
-            URL resource = resources.nextElement();
-            dirs.add(new File(resource.getFile()));
-        }
-        ArrayList<Class<?>> classes = new ArrayList<Class<?>>();
-        for (File directory : dirs) {
-            classes.addAll(findClasses(directory, packageName));
-        }
-        return classes.toArray(new Class[classes.size()]);
+    public static Set<Class<?>> getClasses(String packageName) {
+//        Reflections ref = new Reflections(new ConfigurationBuilder()
+//                .setScanners(new SubTypesScanner(false))
+//                .setUrls(ClasspathHelper.forClassLoader(ClasspathHelper.contextClassLoader(), ClasspathHelper.staticClassLoader()))
+//                .filterInputsBy(new FilterBuilder().include(FilterBuilder.prefix(packageName))));
+//        return ref.getSubTypesOf(Object.class);
+        return getClasses(packageName, Object.class);
+    }
+
+    public static <T> Set<Class<? extends T>> getClasses(String packageName, Class<T> inherit) {
+//        Reflections ref = new Reflections(new ConfigurationBuilder()
+//                .setScanners(new SubTypesScanner(false))
+//                .setUrls(ClasspathHelper.forPackage(packageName))
+//                .filterInputsBy(new FilterBuilder().includePackage(packageName)));
+        Reflections ref = new Reflections(packageName);
+        return ref.getSubTypesOf(inherit);
     }
 
     /**
@@ -131,8 +173,9 @@ public class ClassReflection {
      * @return The classes
      * @throws ClassNotFoundException
      */
+    @Deprecated
     public static List<Class<?>> findClasses(File directory, String packageName) throws ClassNotFoundException {
-        List<Class<?>> classes = new ArrayList<Class<?>>();
+        List<Class<?>> classes = new ArrayList<>();
         if (!directory.exists()) {
             return classes;
         }
@@ -159,6 +202,7 @@ public class ClassReflection {
      *                    .jar
      * @return Set with the name of the classes
      */
+    @Deprecated
     public static Set<String> getClassNames(File jarFile, String packageName) {
         Set<String> names = new HashSet<>();
         try {
@@ -189,6 +233,7 @@ public class ClassReflection {
      *                    .jar
      * @return Set with the scanned classes
      */
+    @Deprecated
     public static Set<Class<?>> getClasses(File jarFile, String packageName) {
         Set<Class<?>> classes = new HashSet<Class<?>>();
         getClassNames(jarFile, packageName).forEach(class_name -> {

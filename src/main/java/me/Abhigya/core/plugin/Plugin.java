@@ -2,7 +2,6 @@ package me.Abhigya.core.plugin;
 
 import me.Abhigya.core.metrics.MetricsAdaptor;
 import me.Abhigya.core.util.console.ConsoleUtils;
-import me.Abhigya.core.util.lang.PluginInternalLanguageEnumContainer;
 import me.Abhigya.core.util.reflection.general.ClassReflection;
 import me.Abhigya.core.version.CoreVersion;
 import org.apache.commons.io.FileUtils;
@@ -109,6 +108,7 @@ public abstract class Plugin extends JavaPlugin {
      * This method might return <strong>{@code null}</strong> if no metrics is
      * required.
      * <p>
+     *
      * @return The required metrics adaptor, or null if not required.
      */
     public abstract MetricsAdaptor getMetrics();
@@ -124,27 +124,6 @@ public abstract class Plugin extends JavaPlugin {
      * @see PluginDependence
      */
     public abstract PluginDependence[] getDependences();
-
-    /**
-     * Returns the internal language enum container of this {@link Plugin}, or null if not implemented.
-     * <p>
-     * The items of the given container will be loaded from the .lang resources
-     * that should be found at the given resources package. {@link #getInternalLanguageResourcesPackage()}.
-     * <p>
-     *
-     * @return The language container of this {@link Plugin}, or null if not implemented.
-     */
-    public abstract Class<? extends Enum<? extends PluginInternalLanguageEnumContainer>> getInternalLanguageContainer();
-
-    /**
-     * Returns the package that stores this plugin internal language files (.lang
-     * files), or <strong>null</strong> if not implemented.
-     * <p>
-     *
-     * @return The package that stores this plugin internal language files (.lang
-     * files), or <strong>null</strong> if not implemented.
-     */
-    public abstract String getInternalLanguageResourcesPackage();
 
     /**
      * This method should setups the configuration.
@@ -265,15 +244,14 @@ public abstract class Plugin extends JavaPlugin {
      * @throws IllegalAccessException    exception to handle
      * @throws InstantiationException    exception to handle
      */
-    protected void setUpListenersPackage(String packaje)
-            throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        for (Class<?> clazz : ClassReflection.getClasses(getFile(), packaje)) {
+    protected void setUpListenersPackage(String packaje) throws InvocationTargetException, InstantiationException,
+            IllegalAccessException {
+        for (Class<? extends Listener> clazz : ClassReflection.getClasses(packaje, Listener.class)) {
             if (Modifier.isAbstract(clazz.getModifiers())
                     || !Listener.class.isAssignableFrom(clazz)) {
                 continue;
             }
 
-//			try {
             Constructor<?> constructor;
             try {
                 constructor = clazz.getConstructor(getClass());
@@ -282,11 +260,6 @@ public abstract class Plugin extends JavaPlugin {
             }
 
             constructor.newInstance(this);
-//			} catch (Throwable ex) {
-//				ConsoleUtil.sendPluginMessage(ChatColor.YELLOW,
-//						"couldn't load listener " + clazz.getSimpleName(), this );
-//				ex.printStackTrace();
-//			}
         }
     }
 

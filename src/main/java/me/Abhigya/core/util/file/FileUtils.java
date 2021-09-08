@@ -3,6 +3,7 @@ package me.Abhigya.core.util.file;
 import org.apache.commons.lang.Validate;
 
 import java.io.File;
+import java.nio.file.Files;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -56,6 +57,31 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
         return elements.stream()
                 .map((e) -> e.length())
                 .reduce(length, (accumulator, _item) -> accumulator + _item);
+    }
+
+    /**
+     * Get the file type
+     * <p>
+     *
+     * @param file File to get type of
+     * @return File type
+     */
+    public static String getFileType(File file) {
+        try {
+            String mimetype = Files.probeContentType(file.toPath());
+
+            if (mimetype != null) {
+                if (mimetype.contains("/")) {
+                    return mimetype.split("/")[0];
+                } else {
+                    return mimetype;
+                }
+            }
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        }
+
+        return "";
     }
 
 }

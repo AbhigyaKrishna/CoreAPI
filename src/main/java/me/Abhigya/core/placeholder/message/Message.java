@@ -7,7 +7,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.block.Sign;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.yaml.snakeyaml.nodes.*;
+import org.yaml.snakeyaml.nodes.Node;
+import org.yaml.snakeyaml.nodes.ScalarNode;
+import org.yaml.snakeyaml.nodes.SequenceNode;
+import org.yaml.snakeyaml.nodes.Tag;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -26,17 +29,54 @@ public class Message {
     public Message(Node node) {
         checkTag(node, Arrays.asList(Tag.STR, Tag.SEQ));
         if (node.getTag() == Tag.STR) {
-            String messageStr = ((ScalarNode)node).getValue();
+            String messageStr = ((ScalarNode) node).getValue();
             lines = Collections.singletonList(PlaceholderValue.stringValue(messageStr));
         } else {// node.getTag() == Tag.SEQ
             lines = ((SequenceNode) node).getValue().stream()
                     .map(lineNode -> {
                         checkTag(lineNode, Tag.STR);
-                        return PlaceholderValue.stringValue(((ScalarNode)lineNode).getValue());
+                        return PlaceholderValue.stringValue(((ScalarNode) lineNode).getValue());
                     })
                     .collect(Collectors.toList());
         }
     }
+
+    public static Message fromConfig(Object obj) {
+        if (obj == null) return null;
+        if (obj instanceof Collection) {
+            return new Message(
+                    ((Collection<?>) obj).stream()
+                            .map(o -> PlaceholderValue.stringValue(o.toString()))
+                            .collect(Collectors.toList())
+            );
+        } else {
+            return new Message(Collections.singletonList(PlaceholderValue.stringValue(obj.toString())));
+        }
+    }
+
+    public static Message fromText(List<String> lines) {
+        return new Message(lines.stream().map(PlaceholderValue::fake).collect(Collectors.toList()));
+    }
+
+    public static Message fromText(String... lines) {
+        return fromText(Arrays.asList(lines));
+    }
+
+    public static void checkTag(Node node, Tag expected) {
+        if (node.getTag() != expected) {
+            throw new IllegalStateException("Wrong type: found " + node.getTag() + ", expected: " +
+                    Arrays.stream(new Tag[]{expected}).map(Tag::getValue).collect(Collectors.joining(", ")));
+        }
+    }
+
+    public static void checkTag(Node node, Collection<Tag> expected) {
+        if (!expected.contains(node.getTag())) {
+            throw new IllegalStateException("Wrong type: found " + node.getTag() + ", expected: " +
+                    Arrays.stream(expected.toArray(new Tag[0])).map(Tag::getValue).collect(Collectors.joining(", ")));
+        }
+    }
+
+    //--------------FILTER
 
     public List<String> get(Player player) {
         return lines.stream().map(p -> p.resolve(player)).collect(Collectors.toList());
@@ -59,6 +99,9 @@ public class Message {
         ));
     }
 
+
+    //--------------SEND
+
     public List<String> get(Player player, String k1, String v1, String k2, String v2, String k3, String v3) {
         return get(player, PlaceholderRegistry.wrap(
                 k1, v1,
@@ -66,8 +109,6 @@ public class Message {
                 k3, v3
         ));
     }
-
-    //--------------FILTER
 
     public Message filter(PlaceholderRegistry<?> reg) {
         return new Message(
@@ -98,16 +139,13 @@ public class Message {
         ));
     }
 
-
-    //--------------SEND
-
     public void send(Player player) {
-        for(PlaceholderValue<String> message : lines)
+        for (PlaceholderValue<String> message : lines)
             player.sendMessage(StringUtils.translateAlternateColorCodes(message.resolve(player)));
     }
 
     public void send(Player player, PlaceholderRegistry<?> placeholders) {
-        for(PlaceholderValue<String> message : lines)
+        for (PlaceholderValue<String> message : lines)
             player.sendMessage(StringUtils.translateAlternateColorCodes(message.resolve(player, placeholders)));
     }
 
@@ -132,14 +170,13 @@ public class Message {
         ));
     }
 
-
     public void send(CommandSender sender) {
-        for(PlaceholderValue<String> message : lines)
+        for (PlaceholderValue<String> message : lines)
             sender.sendMessage(StringUtils.translateAlternateColorCodes(message.resolve(null)));
     }
 
     public void send(CommandSender sender, PlaceholderRegistry<?> placeholders) {
-        for(PlaceholderValue<String> message : lines)
+        for (PlaceholderValue<String> message : lines)
             sender.sendMessage(StringUtils.translateAlternateColorCodes(message.resolve(null, placeholders)));
     }
 
@@ -166,14 +203,14 @@ public class Message {
 
     //--------------BROADCAST
     public void broadcast(Iterable<? extends Player> players) {
-        for(Player player : players)
-            for(PlaceholderValue<String> message : lines)
+        for (Player player : players)
+            for (PlaceholderValue<String> message : lines)
                 player.sendMessage(message.resolve(player));
     }
 
     public void broadcast(Iterable<? extends Player> players, PlaceholderRegistry<?> placeholders) {
-        for(Player player : players)
-            for(PlaceholderValue<String> message : lines)
+        for (Player player : players)
+            for (PlaceholderValue<String> message : lines)
                 player.sendMessage(message.resolve(player, placeholders));
     }
 
@@ -197,7 +234,6 @@ public class Message {
                 k3, v3
         ));
     }
-
 
     public void broadcast() {
         broadcast(Bukkit.getOnlinePlayers());
@@ -238,42 +274,6 @@ public class Message {
             sign.setLine(i, "");
         }
         sign.update();
-    }
-
-
-    public static Message fromConfig(Object obj) {
-        if(obj == null) return null;
-        if(obj instanceof Collection) {
-            return new Message(
-                    ((Collection<?>) obj).stream()
-                            .map(o -> PlaceholderValue.stringValue(o.toString()))
-                            .collect(Collectors.toList())
-            );
-        } else {
-            return new Message(Collections.singletonList(PlaceholderValue.stringValue(obj.toString())));
-        }
-    }
-
-    public static Message fromText(List<String> lines) {
-        return new Message(lines.stream().map(PlaceholderValue::fake).collect(Collectors.toList()));
-    }
-
-    public static Message fromText(String... lines) {
-        return fromText(Arrays.asList(lines));
-    }
-
-    public static void checkTag(Node node, Tag expected) {
-        if (node.getTag() != expected) {
-            throw new IllegalStateException("Wrong type: found " + node.getTag() + ", expected: " +
-                    Arrays.stream(new Tag[]{expected}).map(Tag::getValue).collect(Collectors.joining(", ")));
-        }
-    }
-
-    public static void checkTag(Node node, Collection<Tag> expected) {
-        if (!expected.contains(node.getTag())) {
-            throw new IllegalStateException("Wrong type: found " + node.getTag() + ", expected: " +
-                    Arrays.stream(expected.toArray(new Tag[0])).map(Tag::getValue).collect(Collectors.joining(", ")));
-        }
     }
 
     public List<PlaceholderValue<String>> getLines() {

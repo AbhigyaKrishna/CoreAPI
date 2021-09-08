@@ -1,7 +1,6 @@
 package me.Abhigya.core.plugin;
 
 import me.Abhigya.core.metrics.MetricsAdaptor;
-import me.Abhigya.core.util.lang.PluginInternalLanguageEnumContainer;
 import me.Abhigya.core.version.CoreVersion;
 
 /**
@@ -22,16 +21,6 @@ public abstract class PluginAdapter extends Plugin {
 
     @Override
     public PluginDependence[] getDependences() {
-        return null;
-    }
-
-    @Override
-    public Class<? extends Enum<? extends PluginInternalLanguageEnumContainer>> getInternalLanguageContainer() {
-        return null;
-    }
-
-    @Override
-    public String getInternalLanguageResourcesPackage() {
         return null;
     }
 

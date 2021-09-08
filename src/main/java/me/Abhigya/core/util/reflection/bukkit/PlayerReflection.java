@@ -15,7 +15,6 @@ public class PlayerReflection {
 
     public static final String PLAYER_CONNECTION_FIELD_NAME = CoreAPI.getInstance().getServerVersion().isNewerEquals(Version.v1_17_R1) ? "b" : "playerConnection";
     public static final String NETWORK_MANAGER_FIELD_NAME = CoreAPI.getInstance().getServerVersion().isNewerEquals(Version.v1_17_R1) ? "a" : "networkManager";
-    public static final String CHANNEL_FIELD_NAME = CoreAPI.getInstance().getServerVersion().isNewerEquals(Version.v1_17_R1) ? "k" : "channel";
 
     /**
      * Gets the handle ( the represented nms player by the craftbukkit player ) of
@@ -85,6 +84,16 @@ public class PlayerReflection {
      */
     public static Channel getChannel(Player player) throws SecurityException, NoSuchFieldException,
             IllegalArgumentException, IllegalAccessException, InvocationTargetException {
-        return (Channel) FieldReflection.getValue(getNetworkManager(player), CHANNEL_FIELD_NAME);
+        String channelField;
+        switch (CoreAPI.getInstance().getServerVersion()) {
+            case v1_8_R1:
+                channelField = "i";
+            case v1_8_R2:
+            case v1_17_R1:
+                channelField = "k";
+            default:
+                channelField = "channel";
+        }
+        return (Channel) FieldReflection.getValue(getNetworkManager(player), channelField);
     }
 }

@@ -15,43 +15,6 @@ import java.util.function.Function;
 
 public interface PlaceholderValue<T> {
 
-    /**
-     * Removes placeholders from the value and parses it
-     * using the local placeholders in addition to the normal ones.
-     * <p>
-     *
-     * @param player Player that executes the placeholders
-     * @param local  Placeholders to add to the default ones
-     * @return Parsed value without placeholders
-     */
-    T resolve(Player player, PlaceholderRegistry local);
-
-    /**
-     * Removes placeholders from the value and parses it.
-     * <p>
-     *
-     * @param player Player that executes the placeholders
-     * @return Parsed value without placeholders
-     */
-    default T resolve(Player player) {
-        return resolve(player, PlaceholderUtil.getRegistry());
-    }
-
-    /**
-     * @return true only if no real placeholders need to be resolved (a.k.a this is a fake PlaceholderValue)
-     */
-    default boolean hasPlaceholders() {
-        return true;
-    }
-
-    default <N> PlaceholderValue<N> map(Function<T, N> mapper) {
-        return (p, l) -> mapper.apply(resolve(p, l));
-    }
-
-
-    String toString();
-
-
     static PlaceholderValue<Byte> byteValue(String string) {
         return value(string, Byte::parseByte, (byte) -1);
     }
@@ -120,6 +83,41 @@ public interface PlaceholderValue<T> {
         }
         return new FalsePlaceholderValue<>(parsed);
     }
+
+    /**
+     * Removes placeholders from the value and parses it
+     * using the local placeholders in addition to the normal ones.
+     * <p>
+     *
+     * @param player Player that executes the placeholders
+     * @param local  Placeholders to add to the default ones
+     * @return Parsed value without placeholders
+     */
+    T resolve(Player player, PlaceholderRegistry local);
+
+    /**
+     * Removes placeholders from the value and parses it.
+     * <p>
+     *
+     * @param player Player that executes the placeholders
+     * @return Parsed value without placeholders
+     */
+    default T resolve(Player player) {
+        return resolve(player, PlaceholderUtil.getRegistry());
+    }
+
+    /**
+     * @return true only if no real placeholders need to be resolved (a.k.a this is a fake PlaceholderValue)
+     */
+    default boolean hasPlaceholders() {
+        return true;
+    }
+
+    default <N> PlaceholderValue<N> map(Function<T, N> mapper) {
+        return (p, l) -> mapper.apply(resolve(p, l));
+    }
+
+    String toString();
 
     class FalsePlaceholderValue<T> implements PlaceholderValue<T> {
         private final T value;

@@ -10,6 +10,7 @@ public enum CoreVersion {
     v1_1_1(111),
     v1_1_2(112),
     v1_2_0(120),
+    v1_2_1(121),
     ;
 
     private final int id;

@@ -14,16 +14,12 @@ import java.lang.reflect.Method;
 @SuppressWarnings("deprecation")
 public class MaterialUtils {
 
-    public static Class<?> CRAFT_MAGIC_NUMBERS_CLASS;
+    public static final Class<?> CRAFT_MAGIC_NUMBERS_CLASS;
     public static Method FROM_LEGACY_DATA_PRIORITY;
 
     /* initialize util fields */
     static {
-        try {
-            CRAFT_MAGIC_NUMBERS_CLASS = ClassReflection.getCraftClass("CraftMagicNumbers", "util");
-        } catch (ClassNotFoundException e1) {
-            e1.printStackTrace();
-        }
+        CRAFT_MAGIC_NUMBERS_CLASS = ClassReflection.getCraftClass("CraftMagicNumbers", "util");
 
         try {
             FROM_LEGACY_DATA_PRIORITY = CRAFT_MAGIC_NUMBERS_CLASS.getMethod("fromLegacy", MaterialData.class,

@@ -1,8 +1,8 @@
 package me.Abhigya.core.placeholder;
 
 import me.Abhigya.core.main.CoreAPI;
-import me.Abhigya.core.placeholder.managers.CustomPlaceholderManager;
 import me.Abhigya.core.placeholder.events.PlaceholderManagerHookEvent;
+import me.Abhigya.core.placeholder.managers.CustomPlaceholderManager;
 import me.Abhigya.core.placeholder.managers.PAPIPlaceholderManager;
 import me.Abhigya.core.util.PluginUtils;
 import me.Abhigya.core.util.console.ConsoleUtils;
@@ -67,18 +67,18 @@ public final class PlaceholderUtil {
         else return null;
     }
 
-    public static void tryHook() {
+    public static void tryHook(Plugin plugin) {
         PlaceholderManagerHookEvent event = new PlaceholderManagerHookEvent();
         Bukkit.getPluginManager().callEvent(event);
         if (event.getPlaceholderManager() != null) {
             manager = event.getPlaceholderManager();
-            ConsoleUtils.sendPluginMessage(ChatColor.GREEN, "Successfully hooked with custom PlaceholderManager", CoreAPI.getInstance());
+            ConsoleUtils.sendPluginMessage(ChatColor.GREEN, "Successfully hooked with custom PlaceholderManager", plugin);
         } else if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
             manager = new PAPIPlaceholderManager();
-            ConsoleUtils.sendPluginMessage(ChatColor.GREEN, "Successfully hooked into PlaceholderAPI", CoreAPI.getInstance());
+            ConsoleUtils.sendPluginMessage(ChatColor.GREEN, "Successfully hooked into PlaceholderAPI", plugin);
         } else {
             manager = new CustomPlaceholderManager();
-            ConsoleUtils.sendPluginMessage(ChatColor.YELLOW, "Cannot find PlaceholderAPI, using internal system.", CoreAPI.getInstance());
+            ConsoleUtils.sendPluginMessage(ChatColor.YELLOW, "Cannot find PlaceholderAPI, using internal system.", plugin);
             fallback = true;
             PluginUtils.onPluginLoaded("PlaceholderAPI", PlaceholderUtil::onPapiEnable);
         }
@@ -86,7 +86,7 @@ public final class PlaceholderUtil {
 
     public static void onPapiEnable(Plugin plugin) {
         if (!fallback) return; // Another manager has been registered (and it is not a fallback)
-        ConsoleUtils.sendPluginMessage(ChatColor.YELLOW, "Late hooking into PlaceholderAPI", CoreAPI.getInstance());
+        ConsoleUtils.sendMessage(ChatColor.YELLOW + "Late hooking into PlaceholderAPI");
         manager = new PAPIPlaceholderManager();
     }
 
@@ -119,11 +119,11 @@ public final class PlaceholderUtil {
         return manager.getRegistry();
     }
 
-    public static void setManager(PlaceholderManager manager) {
-        PlaceholderUtil.manager = manager;
-    }
-
     public static PlaceholderManager getManager() {
         return manager;
+    }
+
+    public static void setManager(PlaceholderManager manager) {
+        PlaceholderUtil.manager = manager;
     }
 }

@@ -40,20 +40,20 @@ public class TitleUtils {
                 return;
             }
 
-            Class<?> packet_class = ClassReflection.getNmsClass("PacketPlayOutTitle");
-            Class<?> component_class = ClassReflection.getNmsClass("IChatBaseComponent");
+            Class<?> packet_class = ClassReflection.getNmsClass("PacketPlayOutTitle", "");
+            Class<?> component_class = ClassReflection.getNmsClass("IChatBaseComponent", "");
             Class<?> action_enum = null;
             try {
                 action_enum = ClassReflection.getSubClass(packet_class, "EnumTitleAction");
             } catch (ClassNotFoundException ex) {
-                action_enum = ClassReflection.getNmsClass("EnumTitleAction");
+                action_enum = ClassReflection.getNmsClass("EnumTitleAction", "");
             }
 
             Class<?> serializer_class = null;
             try {
                 serializer_class = ClassReflection.getSubClass(component_class, "ChatSerializer");
             } catch (ClassNotFoundException ex) {
-                serializer_class = ClassReflection.getNmsClass("ChatSerializer");
+                serializer_class = ClassReflection.getNmsClass("ChatSerializer", "");
             }
 
             Method a = MethodReflection.get(serializer_class, "a", String.class);
@@ -78,8 +78,8 @@ public class TitleUtils {
             if (subtitle != null) {
                 BukkitReflection.sendPacket(player, packet2);
             } // sending subtitle packet
-        } catch (ClassNotFoundException | NoSuchMethodException | SecurityException | InstantiationException
-                | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+        } catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException |
+                IllegalArgumentException | InvocationTargetException ex) {
             ex.printStackTrace();
         }
     }
@@ -117,13 +117,13 @@ public class TitleUtils {
                 return;
             }
 
-            Class<?> packet_class = ClassReflection.getNmsClass("PacketPlayOutTitle");
-            Class<?> component_class = ClassReflection.getNmsClass("IChatBaseComponent");
+            Class<?> packet_class = ClassReflection.getNmsClass("PacketPlayOutTitle", "");
+            Class<?> component_class = ClassReflection.getNmsClass("IChatBaseComponent", "");
             Class<?> action_enum = null;
             try {
                 action_enum = ClassReflection.getSubClass(packet_class, "EnumTitleAction");
             } catch (ClassNotFoundException ex) {
-                action_enum = ClassReflection.getNmsClass("EnumTitleAction");
+                action_enum = ClassReflection.getNmsClass("EnumTitleAction", "");
             }
 
             Object action = MethodReflection.get(action_enum, "valueOf", String.class).invoke(action_enum, "RESET");
@@ -131,8 +131,8 @@ public class TitleUtils {
                     .newInstance(action, null);
 
             BukkitReflection.sendPacket(player, packet);
-        } catch (ClassNotFoundException | NoSuchMethodException | SecurityException | InstantiationException
-                | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+        } catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException |
+                IllegalArgumentException | InvocationTargetException ex) {
             ex.printStackTrace();
         }
     }

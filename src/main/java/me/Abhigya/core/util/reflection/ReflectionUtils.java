@@ -3,11 +3,7 @@ package me.Abhigya.core.util.reflection;
 import me.Abhigya.core.util.reflection.bukkit.BukkitReflection;
 import me.Abhigya.core.util.reflection.bukkit.EntityReflection;
 import me.Abhigya.core.util.reflection.bukkit.PlayerReflection;
-import me.Abhigya.core.util.reflection.general.ClassReflection;
-import me.Abhigya.core.util.reflection.general.ConstructorReflection;
-import me.Abhigya.core.util.reflection.general.EnumReflection;
-import me.Abhigya.core.util.reflection.general.FieldReflection;
-import me.Abhigya.core.util.reflection.general.MethodReflection;
+import me.Abhigya.core.util.reflection.general.*;
 
 /**
  * Class for dealing with reflecting

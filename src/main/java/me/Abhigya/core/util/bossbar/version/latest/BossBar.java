@@ -107,15 +107,15 @@ public class BossBar extends BossBarBase implements Listener {
     }
 
     @Override
+    public double getProgress() {
+        return this.handle.getProgress();
+    }
+
+    @Override
     public void setProgress(double progress) {
         this.checkProgress(progress);
         this.handle.setProgress(progress);
         this.aliveCheck();
-    }
-
-    @Override
-    public double getProgress() {
-        return this.handle.getProgress();
     }
 
     @Override
@@ -124,14 +124,14 @@ public class BossBar extends BossBarBase implements Listener {
     }
 
     @Override
-    public void setVisible(boolean visible) {
-        this.handle.setVisible(visible);
-        this.aliveCheck();
+    public boolean isVisible() {
+        return this.handle.isVisible();
     }
 
     @Override
-    public boolean isVisible() {
-        return this.handle.isVisible();
+    public void setVisible(boolean visible) {
+        this.handle.setVisible(visible);
+        this.aliveCheck();
     }
 
     @EventHandler(priority = EventPriority.MONITOR)

@@ -10,6 +10,20 @@ import java.lang.reflect.Method;
  */
 public class Writable {
 
+    private final Object to_write;
+    private final WriteType type;
+    /**
+     * Constructs the writable object.
+     * <p>
+     *
+     * @param to_write Object to write
+     * @param type     Write type
+     */
+    public Writable(Object to_write, WriteType type) {
+        this.to_write = to_write;
+        this.type = type;
+    }
+
     /**
      * Writes values to message.
      * <p>
@@ -27,21 +41,6 @@ public class Writable {
             return new Writable(to_write, type);
         }
         return null;
-    }
-
-    private final Object to_write;
-    private final WriteType type;
-
-    /**
-     * Constructs the writable object.
-     * <p>
-     *
-     * @param to_write Object to write
-     * @param type     Write type
-     */
-    public Writable(Object to_write, WriteType type) {
-        this.to_write = to_write;
-        this.type = type;
     }
 
     /**
