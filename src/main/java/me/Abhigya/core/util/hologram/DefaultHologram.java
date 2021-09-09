@@ -27,7 +27,7 @@ public class DefaultHologram implements Hologram {
     private final List<String> lines = Collections.synchronizedList(new ArrayList<>());
     private final Map<Integer, ItemStack> items = new ConcurrentHashMap<>();
 
-    private final Map<Integer, List<Integer>> entities = new ConcurrentHashMap<>();
+    private final Map<Integer, Map<Integer, Object>> entities = new ConcurrentHashMap<>();
     private final Set<Player> hidden = Collections.newSetFromMap(new ConcurrentHashMap<>());
     private final Set<Player> shown = Collections.newSetFromMap(new ConcurrentHashMap<>());
 
@@ -100,27 +100,30 @@ public class DefaultHologram implements Hologram {
     @Override
     public void teleport(Location newLocation) {
         this.location = newLocation;
-        for (List<Integer> l : entities.values()) {
-            for (int id : l) {
+        for (Map<Integer, Object> l : entities.values()) {
+            for (Map.Entry<Integer, Object> stand : l.entrySet()) {
                 try {
-                    Object packetPlayOutEntityTeleport = ReflectionCache.PACKET_PLAY_OUT_ENTITY_TELEPORT.newInstance();
-                    FieldReflection.setValue(packetPlayOutEntityTeleport, "a", id);
-                    if (CoreAPI.getInstance().getServerVersion().isOlderEquals(Version.v1_8_R3)) {
-                        FieldReflection.setValue(packetPlayOutEntityTeleport, "b", (int) (this.location.getX() * 32D));
-                        FieldReflection.setValue(packetPlayOutEntityTeleport, "c", (int) (this.location.getY() * 32D));
-                        FieldReflection.setValue(packetPlayOutEntityTeleport, "d", (int) (this.location.getZ() * 32D));
-                    } else {
-                        FieldReflection.setValue(packetPlayOutEntityTeleport, "b", this.location.getX());
-                        FieldReflection.setValue(packetPlayOutEntityTeleport, "c", this.location.getY());
-                        FieldReflection.setValue(packetPlayOutEntityTeleport, "d", this.location.getZ());
-                        FieldReflection.setValue(packetPlayOutEntityTeleport, "g", true);
-                    }
-                    FieldReflection.setValue(packetPlayOutEntityTeleport, "e", (byte) (int) (this.location.getYaw() * 256F / 360F));
-                    FieldReflection.setValue(packetPlayOutEntityTeleport, "f", (byte) (int) (this.location.getPitch() * 256F / 360F));
+//                    Object packetPlayOutEntityTeleport = ReflectionCache.PACKET_PLAY_OUT_ENTITY_TELEPORT.newInstance();
+//                    FieldReflection.setValue(packetPlayOutEntityTeleport, "a", id);
+//                    if (CoreAPI.getInstance().getServerVersion().isOlderEquals(Version.v1_8_R3)) {
+//                        FieldReflection.setValue(packetPlayOutEntityTeleport, "b", (int) (this.location.getX() * 32D));
+//                        FieldReflection.setValue(packetPlayOutEntityTeleport, "c", (int) (this.location.getY() * 32D));
+//                        FieldReflection.setValue(packetPlayOutEntityTeleport, "d", (int) (this.location.getZ() * 32D));
+//                    } else {
+//                        FieldReflection.setValue(packetPlayOutEntityTeleport, "b", this.location.getX());
+//                        FieldReflection.setValue(packetPlayOutEntityTeleport, "c", this.location.getY());
+//                        FieldReflection.setValue(packetPlayOutEntityTeleport, "d", this.location.getZ());
+//                        FieldReflection.setValue(packetPlayOutEntityTeleport, "g", true);
+//                    }
+//                    FieldReflection.setValue(packetPlayOutEntityTeleport, "e", (byte) (int) (this.location.getYaw() * 256F / 360F));
+//                    FieldReflection.setValue(packetPlayOutEntityTeleport, "f", (byte) (int) (this.location.getPitch() * 256F / 360F));
+                    ReflectionCache.SET_LOCATION.invoke(stand.getValue(), this.location.getX(), this.location.getY(), this.location.getZ(),
+                            this.location.getYaw(), this.location.getPitch());
+                    Object packetPlayOutEntityTeleport = ReflectionCache.PACKET_PLAY_OUT_ENTITY_TELEPORT_CONSTRUCTOR.newInstance(stand.getValue());
                     for (Player player : this.shown) {
                         BukkitReflection.sendPacket(player, packetPlayOutEntityTeleport);
                     }
-                } catch (InstantiationException | IllegalAccessException | NoSuchFieldException e) {
+                } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
                     e.printStackTrace();
                 }
             }
@@ -134,8 +137,8 @@ public class DefaultHologram implements Hologram {
      *                stand to
      */
     public void hide(Player... players) {
-        for (List<Integer> l : entities.values()) {
-            for (int id : l) {
+        for (Map<Integer, Object> l : entities.values()) {
+            for (int id : l.keySet()) {
                 try {
                     Object packetPlayOutEntityDestroy = ReflectionCache.PACKET_PLAY_OUT_ENTITY_DESTROY_CONSTRUCTOR.newInstance((Object) new int[]{id});
                     for (Player player : players) {
@@ -279,7 +282,7 @@ public class DefaultHologram implements Hologram {
             return;
 
         try {
-            for (int id : this.entities.get(index)) {
+            for (int id : this.entities.get(index).keySet()) {
                 Object packetPlayOutEntityHeadRotation = ReflectionCache.PACKET_PLAY_OUT_ENTITY_HEAD_ROTATION.newInstance();
                 FieldReflection.setValue(packetPlayOutEntityHeadRotation, "a", id);
                 FieldReflection.setValue(packetPlayOutEntityHeadRotation, "b", (byte) ((yaw * 256.0F) / 360.0F));
@@ -306,14 +309,30 @@ public class DefaultHologram implements Hologram {
 
     @Override
     public void destroy(Collection<? extends Player> players) {
-        for (List<Integer> l : entities.values()) {
-            for (int id : l) {
+        for (Map<Integer, Object> l : entities.values()) {
+            for (int id : l.keySet()) {
                 try {
                     Object packetPlayOutEntityDestroy = ReflectionCache.PACKET_PLAY_OUT_ENTITY_DESTROY_CONSTRUCTOR.newInstance((Object) new int[]{id});
                     for (Player player : players) {
                         BukkitReflection.sendPacket(player, packetPlayOutEntityDestroy);
                         this.shown.remove(player);
                         this.hidden.remove(player);
+                    }
+                } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    @Override
+    public void safeDestroy(Player... players) {
+        for (Map<Integer, Object> l : entities.values()) {
+            for (int id : l.keySet()) {
+                try {
+                    Object packetPlayOutEntityDestroy = ReflectionCache.PACKET_PLAY_OUT_ENTITY_DESTROY_CONSTRUCTOR.newInstance((Object) new int[]{id});
+                    for (Player player : players) {
+                        BukkitReflection.sendPacket(player, packetPlayOutEntityDestroy);
                     }
                 } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
                     e.printStackTrace();
@@ -480,11 +499,11 @@ public class DefaultHologram implements Hologram {
             Object temp_id = ReflectionCache.GET_ID.invoke(stand);
             if (temp_id != null) {
                 int id = (int) temp_id;
-                List<Integer> l = this.entities.getOrDefault(index, null);
+                Map<Integer, Object> l = this.entities.getOrDefault(index, null);
                 if (l == null)
-                    l = new ArrayList<>();
+                    l = new ConcurrentHashMap<>();
 
-                l.add(id);
+                l.put(id, stand);
                 this.entities.put(index, l);
 
                 Object packetPlayOutSpawnEntity = ReflectionCache.PACKET_PLAY_OUT_SPAWN_ENTITY_LIVING_CONSTRUCTOR.newInstance(stand);
@@ -543,11 +562,11 @@ public class DefaultHologram implements Hologram {
             Object temp_id = ReflectionCache.GET_ID.invoke(stand);
             if (temp_id != null) {
                 int id = (int) temp_id;
-                List<Integer> l = this.entities.getOrDefault(index, null);
+                Map<Integer, Object> l = this.entities.getOrDefault(index, null);
                 if (l == null)
-                    l = new ArrayList<>();
+                    l = new ConcurrentHashMap<>();
 
-                l.add(id);
+                l.put(id, stand);
                 this.entities.put(index, l);
 
                 Object packetPlayOutSpawnEntityLiving = ReflectionCache.PACKET_PLAY_OUT_SPAWN_ENTITY_LIVING_CONSTRUCTOR.newInstance(stand);

@@ -105,6 +105,8 @@ public interface Hologram {
 
     void destroy(Collection<? extends Player> players);
 
+    void safeDestroy(Player... players);
+
     /**
      * Get this persistent hologram with the specified configuration
      *
