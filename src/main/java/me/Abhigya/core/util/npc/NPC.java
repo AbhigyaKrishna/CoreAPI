@@ -9,6 +9,10 @@ import java.util.UUID;
 
 public interface NPC {
 
+    NPC show(Player player);
+
+    NPC show(Player... player);
+
     NPC setLocation(Location location);
 
     NPC setLocation(Location location, float yaw, float pitch);
@@ -21,21 +25,7 @@ public interface NPC {
 
     NPC setPlayerLines(List<String> lines, Player player);
 
-    NPC setPlayerLines(List<String> lines, Player player, boolean sendUpdatePackets);
-
-    NPC setPlayerLines(List<String> lines, List<UUID> players, boolean sendUpdatePackets);
-
-    NPC setPlayerLines(List<String> lines, UUID playerUUID);
-
     NPC removePlayerLines(Player player);
-
-    NPC removePlayerLines(Player player, boolean sendUpdatePackets);
-
-    NPC removePlayerLines(List<UUID> playerUUIDs, boolean sendUpdatePackets);
-
-    NPC removePlayerLines(UUID uuid);
-
-    NPC removePlayerLines(UUID uuid, boolean sendUpdatePackets);
 
     NPC crouch();
 
@@ -75,8 +65,12 @@ public interface NPC {
 
     NPC setBoots(ItemStack boots);
 
+    NPC addClickAction(NPCClickAction action);
+
     List<UUID> getPlayersLookingAt();
 
-    net.jitse.npclib.api.NPC getLibNPC();
+    List<UUID> getShown();
+
+    me.Abhigya.core.util.npc.npclib.api.NPC getLibNPC();
 }
 

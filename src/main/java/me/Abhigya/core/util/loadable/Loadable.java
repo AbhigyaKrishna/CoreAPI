@@ -14,6 +14,7 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Represents the classes that can be loaded from a {@link ConfigurationSection}.
@@ -154,9 +155,9 @@ public interface Loadable extends Validable {
                     }
                 }
             } else if (entry.isAnnotationPresent(LoadableCollectionEntry.class)) {
-                if (!Collection.class.isAssignableFrom(entry.getType())) {
+                if (!Collection.class.isAssignableFrom(entry.getType()) || !Map.class.isAssignableFrom(entry.getType())) {
                     throw new UnsupportedOperationException("The loadable collection entry '" + entry.getName()
-                            + "' is not a valid instance of '" + Collection.class.getName() + "'!");
+                            + "' is not a valid instance of '" + Collection.class.getName() + "' or '" + Map.class.getName() + "'!");
                 }
 
                 Object value = null;
@@ -164,7 +165,7 @@ public interface Loadable extends Validable {
                     value = FieldReflection.getValue(this, entry.getName());
                 } catch (SecurityException | NoSuchFieldException | IllegalArgumentException
                         | IllegalAccessException e1) {
-                    throw new IllegalStateException("cannot get the value of the field '" + entry.getName() + "'");
+                    throw new IllegalStateException("Cannot get the value of the field '" + entry.getName() + "'");
                 }
 
                 if (value == null) {
@@ -172,45 +173,86 @@ public interface Loadable extends Validable {
                             "The loadable collection entry '" + entry.getName() + "' must be already initialized!");
                 }
 
-                Collection<Loadable> collection = ((Collection<Loadable>) value);
-                LoadableCollectionEntry options = entry.getAnnotation(LoadableCollectionEntry.class);
-                if (!Loadable.class.isAssignableFrom(FieldReflection.getParameterizedTypesClasses(entry)[0])) {
-                    throw new UnsupportedOperationException("The elements type of the loadable collection entry '"
-                            + entry.getName() + "' must be of the type '" + Loadable.class.getName() + "'!");
-                }
-
-                Class<? extends Loadable> element_type = (Class<? extends Loadable>) FieldReflection
-                        .getParameterizedTypesClasses(entry)[0];
-                Constructor<?> uninitialized_constructor = null;
-                try {
-                    uninitialized_constructor = element_type.getConstructor();
-                    if (uninitialized_constructor == null) {
-                        throw new UnsupportedOperationException("A new instance of '" + element_type.getSimpleName()
-                                + "' couldn't be created, because there is not an empty constructor within that class!");
-                    }
-                    uninitialized_constructor.setAccessible(true);
-                } catch (NoSuchMethodException | SecurityException e) {
-                    /* ignore */
-                }
-
-                sub_section = !StringUtils.isBlank(options.subsection())
-                        ? section.getConfigurationSection(options.subsection())
-                        : null;
-                for (String key : (sub_section != null ? sub_section : section).getKeys(false)) {
-                    ConfigurationSection element_section = (sub_section != null ? sub_section : section)
-                            .getConfigurationSection(key);
-                    if (element_section == null) {
-                        continue;
+                if (Collection.class.isAssignableFrom(entry.getType())) {
+                    Collection<Loadable> collection = ((Collection<Loadable>) value);
+                    LoadableCollectionEntry options = entry.getAnnotation(LoadableCollectionEntry.class);
+                    if (!Loadable.class.isAssignableFrom(FieldReflection.getParameterizedTypesClasses(entry)[0])) {
+                        throw new UnsupportedOperationException("The elements type of the loadable collection entry '"
+                                + entry.getName() + "' must be of the type '" + Loadable.class.getName() + "'!");
                     }
 
+                    Class<? extends Loadable> element_type = (Class<? extends Loadable>) FieldReflection
+                            .getParameterizedTypesClasses(entry)[0];
+                    Constructor<?> uninitialized_constructor = null;
                     try {
-                        collection.add(((Loadable) uninitialized_constructor.newInstance()).load(element_section)); // don't skip invalids
+                        uninitialized_constructor = element_type.getConstructor();
+                        if (uninitialized_constructor == null) {
+                            throw new UnsupportedOperationException("A new instance of '" + element_type.getSimpleName()
+                                    + "' couldn't be created, because there is not an empty constructor within that class!");
+                        }
+                        uninitialized_constructor.setAccessible(true);
+                    } catch (NoSuchMethodException | SecurityException e) {
+                        /* ignore */
+                    }
+
+                    sub_section = !StringUtils.isBlank(options.subsection())
+                            ? section.getConfigurationSection(options.subsection())
+                            : null;
+                    for (String key : (sub_section != null ? sub_section : section).getKeys(false)) {
+                        ConfigurationSection element_section = (sub_section != null ? sub_section : section)
+                                .getConfigurationSection(key);
+                        if (element_section == null) {
+                            continue;
+                        }
+
+                        try {
+                            collection.add(((Loadable) uninitialized_constructor.newInstance()).load(element_section)); // don't skip invalids
 //						Loadable element = ((Loadable) uninitialized_constructor.newInstance()).load(element_section);
 //						if (element.isValid()) { // skip invalids
 //							collection.add(element);
 //						}
-                    } catch (Throwable t) {
+                        } catch (Throwable t) {
+                            /* ignore */
+                        }
+                    }
+                } else if (Map.class.isAssignableFrom(entry.getType())) {
+                    Map<String, Loadable> map = (Map<String, Loadable>) value;
+                    LoadableCollectionEntry options = entry.getAnnotation(LoadableCollectionEntry.class);
+                    Class<?>[] arr = FieldReflection.getParameterizedTypesClasses(entry);
+                    if (!String.class.isAssignableFrom(arr[0]) || !Loadable.class.isAssignableFrom(arr[1])) {
+                        throw new UnsupportedOperationException("The key and value elements type of the loadable collection entry '"
+                                + entry.getName() + "' must be of the type '" + String.class.getName() + "' and '" + Loadable.class.getName() + "'!");
+                    }
+
+                    Class<? extends Loadable> element_type = (Class<? extends Loadable>) arr[1];
+                    Constructor<?> uninitialized_constructor = null;
+                    try {
+                        uninitialized_constructor = element_type.getConstructor();
+                        if (uninitialized_constructor == null) {
+                            throw new UnsupportedOperationException("A new instance of '" + element_type.getSimpleName()
+                                    + "' couldn't be created, because there is not an empty constructor within that class!");
+                        }
+                        uninitialized_constructor.setAccessible(true);
+                    } catch (NoSuchMethodException | SecurityException e) {
                         /* ignore */
+                    }
+
+                    sub_section = !StringUtils.isBlank(options.subsection())
+                            ? section.getConfigurationSection(options.subsection())
+                            : null;
+
+                    for (String key : (sub_section != null ? sub_section : section).getKeys(false)) {
+                        ConfigurationSection element_section = (sub_section != null ? sub_section : section)
+                                .getConfigurationSection(key);
+                        if (element_section == null) {
+                            continue;
+                        }
+
+                        try {
+                            map.put(key, ((Loadable) uninitialized_constructor.newInstance()).load(element_section));
+                        } catch (Throwable t) {
+                            /* ignore */
+                        }
                     }
                 }
             }

@@ -43,10 +43,6 @@
                             <pattern>com.cryptomorin.xseries</pattern>
                             <shadedPattern>me.Abhigya.core.util.xseries</shadedPattern>
                         </relocation>
-                        <relocation>
-                            <pattern>net.jitse.npclib</pattern>
-                            <shadedPattern>me.Abhigya.core.util.npc.npclib</shadedPattern>
-                        </relocation>
                     </relocations>
                     <filters>
                         <filter>
@@ -169,14 +165,6 @@
             <groupId>org.bstats</groupId>
             <artifactId>bstats-bukkit</artifactId>
             <version>2.2.1</version>
-            <scope>compile</scope>
-        </dependency>
-
-        <!-- NPC lib -->
-        <dependency>
-            <groupId>net.jitse</groupId>
-            <artifactId>npclib-api</artifactId>
-            <version>2.11.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
 

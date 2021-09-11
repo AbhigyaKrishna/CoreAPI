@@ -1,10 +1,10 @@
 package me.Abhigya.core.util.npc;
 
 import me.Abhigya.core.util.tasks.WorkloadThread;
-import net.jitse.npclib.api.skin.MineSkinFetcher;
-import net.jitse.npclib.api.skin.Skin;
-import net.jitse.npclib.api.state.NPCSlot;
-import net.jitse.npclib.api.state.NPCState;
+import me.Abhigya.core.util.npc.npclib.api.skin.MineSkinFetcher;
+import me.Abhigya.core.util.npc.npclib.api.skin.Skin;
+import me.Abhigya.core.util.npc.npclib.api.state.NPCSlot;
+import me.Abhigya.core.util.npc.npclib.api.state.NPCState;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -15,162 +15,145 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class PacketNPC implements NPC {
 
-    net.jitse.npclib.api.NPC npc;
-    NPCManager manager;
+    private final me.Abhigya.core.util.npc.npclib.api.NPC npc;
+    private final NPCManager manager;
+    private final List<UUID> shown;
     private List<UUID> playersLookingAt;
+    private List<NPCClickAction> actions;
     private WorkloadThread thread;
     private double lookingDistance;
 
-    public PacketNPC(NPCManager manager, List<String> linesAboveNPC, List<UUID> uuidOfPlayersToShowNPC, Location location, WorkloadThread thread) {
+    public PacketNPC(NPCManager manager, List<String> linesAboveNPC, Location location, WorkloadThread thread) {
         this.manager = manager;
         this.thread = thread;
-        playersLookingAt = new ArrayList<>();
+        this.shown = new ArrayList<>();
+        this.playersLookingAt = new ArrayList<>();
+        this.actions = new ArrayList<>();
         if (linesAboveNPC == null) {
-            npc = manager.getNPCLib().createNPC();
+            this.npc = manager.getNPCLib().createNPC();
             return;
         }
         if (linesAboveNPC.size() == 0) {
-            npc = manager.getNPCLib().createNPC();
+            this.npc = manager.getNPCLib().createNPC();
             return;
         }
-        npc = manager.getNPCLib().createNPC(linesAboveNPC);
-        npc.setLocation(location);
-        npc.create();
-        uuidOfPlayersToShowNPC.forEach(uuid -> {
-            npc.show(Bukkit.getPlayer(uuid));
-        });
+        this.npc = manager.getNPCLib().createNPC(linesAboveNPC);
+        this.npc.setLocation(location);
+        this.npc.create();
+    }
+
+    public PacketNPC show(Player player) {
+        this.npc.show(player);
+        this.shown.add(player.getUniqueId());
+        return this;
+    }
+
+    public PacketNPC show(Player... players) {
+        for (Player player : players) {
+            this.npc.show(player);
+            this.shown.add(player.getUniqueId());
+        }
+        return this;
+    }
+
+    public PacketNPC show() {
+        if (this.npc.getLocation().getWorld() != null) {
+            for (Player player : this.npc.getLocation().getWorld().getPlayers()) {
+                this.npc.show(player);
+                this.shown.add(player.getUniqueId());
+            }
+        }
+
+        return this;
     }
 
     public PacketNPC setLocation(Location location) {
-        npc.setLocation(location);
+        this.npc.setLocation(location);
         return this;
     }
 
     public PacketNPC setLocation(Location location, float yaw, float pitch) {
-        npc.setLocation(new Location(location.getWorld(), location.getX(), location.getY(), location.getZ(), yaw, pitch));
+        this.npc.setLocation(new Location(location.getWorld(), location.getX(), location.getY(), location.getZ(), yaw, pitch));
         return this;
     }
 
     public PacketNPC setYaw(float yaw) {
-        Location location = npc.getLocation().clone();
-        npc.setLocation(new Location(location.getWorld(), location.getX(), location.getY(), location.getZ(), yaw, location.getPitch()));
+        Location location = this.npc.getLocation().clone();
+        this.npc.setLocation(new Location(location.getWorld(), location.getX(), location.getY(), location.getZ(), yaw, location.getPitch()));
         return this;
     }
 
     public PacketNPC setPitch(float pitch) {
-        Location location = npc.getLocation().clone();
-        npc.setLocation(new Location(location.getWorld(), location.getX(), location.getY(), location.getZ(), location.getYaw(), pitch));
+        Location location = this.npc.getLocation().clone();
+        this.npc.setLocation(new Location(location.getWorld(), location.getX(), location.getY(), location.getZ(), location.getYaw(), pitch));
         return this;
     }
 
     public PacketNPC setPlayerLine(String line, Player player) {
-        npc.setPlayerLines(Arrays.asList(line), player, true);
+        this.npc.setText(player, Collections.singletonList(line));
         return this;
     }
 
     public PacketNPC setPlayerLines(List<String> lines, Player player) {
-        npc.setPlayerLines(lines, player, true);
-        return this;
-    }
-
-    public PacketNPC setPlayerLines(List<String> lines, Player player, boolean sendUpdatePackets) {
-        npc.setPlayerLines(lines, player, true);
-        return this;
-    }
-
-    public PacketNPC setPlayerLines(List<String> lines, List<UUID> players, boolean sendUpdatePackets) {
-        players.forEach(player -> {
-            setPlayerLines(lines, Bukkit.getPlayer(player), sendUpdatePackets);
-        });
-        return this;
-    }
-
-    public PacketNPC setPlayerLines(List<String> lines, UUID playerUUID) {
-        setPlayerLines(lines, Bukkit.getPlayer(playerUUID), true);
+        this.npc.setText(player, lines);
         return this;
     }
 
     public PacketNPC removePlayerLines(Player player) {
-        npc.removePlayerLines(player, true);
-        return this;
-    }
-
-    public PacketNPC removePlayerLines(Player player, boolean sendUpdatePackets) {
-        npc.removePlayerLines(player, true);
-        return this;
-    }
-
-    public PacketNPC removePlayerLines(List<UUID> playerUUIDs, boolean sendUpdatePackets) {
-        playerUUIDs.forEach(uuid -> {
-            npc.removePlayerLines(Bukkit.getPlayer(uuid), sendUpdatePackets);
-        });
-        return this;
-    }
-
-    public PacketNPC removePlayerLines(UUID uuid) {
-        npc.removePlayerLines(Bukkit.getPlayer(uuid), true);
-        return this;
-    }
-
-    public PacketNPC removePlayerLines(UUID uuid, boolean sendUpdatePackets) {
-        npc.removePlayerLines(Bukkit.getPlayer(uuid), sendUpdatePackets);
+        this.npc.removeText(player);
         return this;
     }
 
     public PacketNPC crouch() {
-        npc.toggleState(NPCState.CROUCHED);
+        this.npc.toggleState(NPCState.CROUCHED);
         return this;
     }
 
     public PacketNPC invis() {
-        npc.toggleState(NPCState.INVISIBLE);
+        this.npc.toggleState(NPCState.INVISIBLE);
         return this;
     }
 
     public PacketNPC setOnFire() {
-        npc.toggleState(NPCState.ON_FIRE);
+        this.npc.toggleState(NPCState.ON_FIRE);
         return this;
     }
 
     public PacketNPC lookAtLocation(Location location) {
-        npc.lookAt(location);
+        this.npc.lookAt(location);
         return this;
     }
 
     public PacketNPC startLookingAtPlayer(UUID playerUUID) {
-        checkThread();
-        playersLookingAt.add(playerUUID);
+        this.checkThread();
+        this.playersLookingAt.add(playerUUID);
         return this;
     }
 
     public PacketNPC startLookingAtPlayer(Player player) {
-        checkThread();
-        playersLookingAt.add(player.getUniqueId());
+        this.checkThread();
+        this.playersLookingAt.add(player.getUniqueId());
         return this;
     }
 
     public PacketNPC startLookingAtPlayer(List<UUID> playerUUIDs) {
-        checkThread();
-        playerUUIDs.forEach(uuid -> {
-            playersLookingAt.add(uuid);
-        });
+        this.checkThread();
+        this.playersLookingAt.addAll(playerUUIDs);
         return this;
     }
 
     public PacketNPC stopLookingAtPlayer(UUID playerUUID) {
-        playersLookingAt.remove(playerUUID);
+        this.playersLookingAt.remove(playerUUID);
         return this;
     }
 
     public PacketNPC stopLookingAtPlayer(Player player) {
-        playersLookingAt.remove(player.getUniqueId());
+        this.playersLookingAt.remove(player.getUniqueId());
         return this;
     }
 
     public PacketNPC stopLookingAtPlayer(List<UUID> playerUUIDs) {
-        playerUUIDs.forEach(uuid -> {
-            playersLookingAt.remove(uuid);
-        });
+        playerUUIDs.forEach(uuid -> this.playersLookingAt.remove(uuid));
         return this;
     }
 
@@ -180,65 +163,65 @@ public class PacketNPC implements NPC {
     }
 
     public double getLookingDistance() {
-        double distance = this.lookingDistance;
-        return distance;
+        return this.lookingDistance;
     }
 
-    private List<UUID> getAllPlayerUUIDs() {
-        List<UUID> uuids = new ArrayList<>();
-        Bukkit.getOnlinePlayers().forEach(player -> {
-            uuids.add(player.getUniqueId());
+    public PacketNPC setSkin(int skinID) {
+        MineSkinFetcher.fetchSkinFromIdAsync(skinID, skinData -> {
+            this.npc.updateSkin(new Skin(skinData.getValue(), skinData.getSignature()));
         });
-        return uuids;
-    }
-
-    public PacketNPC setSkin(int skinIdFromMineSkin) {
-        npc.updateSkin(getSkin(skinIdFromMineSkin));
         return this;
     }
 
     public PacketNPC setItemInHand(ItemStack itemInHand) {
-        setItemInHand(itemInHand, true);
+        this.setItemInHand(itemInHand, true);
         return this;
     }
 
     public PacketNPC setItemInHand(ItemStack itemInHand, boolean mainHand) {
         if (mainHand) {
-            npc.setItem(NPCSlot.MAINHAND, itemInHand);
+            this.npc.setItem(NPCSlot.MAINHAND, itemInHand);
         }
         return this;
     }
 
     public PacketNPC setHelemt(ItemStack helemt) {
-        npc.setItem(NPCSlot.HELMET, helemt);
+        this.npc.setItem(NPCSlot.HELMET, helemt);
         return this;
     }
 
     public PacketNPC setChestPlate(ItemStack chestPlate) {
-        npc.setItem(NPCSlot.CHESTPLATE, chestPlate);
+        this.npc.setItem(NPCSlot.CHESTPLATE, chestPlate);
         return this;
     }
 
     public PacketNPC setLeggings(ItemStack leggings) {
-        npc.setItem(NPCSlot.LEGGINGS, leggings);
+        this.npc.setItem(NPCSlot.LEGGINGS, leggings);
         return this;
     }
 
     public PacketNPC setBoots(ItemStack boots) {
-        npc.setItem(NPCSlot.BOOTS, boots);
+        this.npc.setItem(NPCSlot.BOOTS, boots);
         return this;
     }
 
-    private Skin getSkin(int skinID) {
-        AtomicReference<Skin> skin = null;
-        MineSkinFetcher.fetchSkinFromIdAsync(skinID, skinData -> {
-            skin.set(skinData);
-        });
-        return skin.get();
+    @Override
+    public NPC addClickAction(NPCClickAction action) {
+        this.actions.add(action);
+        return this;
+    }
+
+    protected void onInteract(Player player, NPCManager.ClickType clickType) {
+        this.actions.forEach(a -> a.onInteract(this, player, clickType));
     }
 
     public List<UUID> getPlayersLookingAt() {
-        return Collections.unmodifiableList(playersLookingAt);
+        return Collections.unmodifiableList(this.playersLookingAt);
+    }
+
+    @Override
+    public List<UUID> getShown() {
+        return Collections.unmodifiableList(this.shown);
     }
 
     private void checkThread() {
@@ -247,7 +230,7 @@ public class PacketNPC implements NPC {
         }
     }
 
-    public net.jitse.npclib.api.NPC getLibNPC() {
+    public me.Abhigya.core.util.npc.npclib.api.NPC getLibNPC() {
         return npc;
     }
 
