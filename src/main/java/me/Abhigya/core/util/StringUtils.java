@@ -399,10 +399,34 @@ public class StringUtils extends org.apache.commons.lang.StringUtils {
      * @param completedColor    Color of completed bars
      * @param notCompletedColor Default color of bars
      * @return Progress bar for the given data
+     * @deprecated Better method mentioned in seeAlso
+     * @see StringUtils#getProgressBar(double, double, int, String, ChatColor, ChatColor)
      */
+    @Deprecated
     public static String getProgressBar(int current, int max, int totalBars, char symbol, ChatColor completedColor,
                                         ChatColor notCompletedColor) {
         float percent = (float) current / max;
+        int progressBars = (int) (totalBars * percent);
+
+        return Strings.repeat("" + completedColor + symbol, progressBars)
+                + Strings.repeat("" + notCompletedColor + symbol, totalBars - progressBars);
+    }
+
+    /**
+     * Get a string progress bar for your given data,
+     * <p>
+     *
+     * @param current           The current progress
+     * @param max               Max progress for progress bar
+     * @param totalBars         Number of individual bars in the progress bar
+     * @param symbol            Symbol of the bars in progress bar
+     * @param completedColor    Color of completed bars
+     * @param notCompletedColor Default color of bars
+     * @return Progress bar for the given data
+     */
+    public static String getProgressBar(double current, double max, int totalBars, String symbol, ChatColor completedColor,
+                                        ChatColor notCompletedColor) {
+        float percent = (float) ((float) current/max);
         int progressBars = (int) (totalBars * percent);
 
         return Strings.repeat("" + completedColor + symbol, progressBars)
