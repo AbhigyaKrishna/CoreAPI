@@ -33,54 +33,54 @@ public class TitleUtils {
      * @param stay     Time in ticks for titles to stay. Defaults to 70.
      * @param fade_out Time in ticks for titles to fade out. Defaults to 20.
      */
-    public static void send(Player player, String title, String subtitle, int fade_in, int stay, int fade_out) {
+    public static void send( Player player, String title, String subtitle, int fade_in, int stay, int fade_out ) {
         try {
-            if (CoreAPI.getInstance().getServerVersion().isNewerEquals(Version.v1_17_R1)) {
-                player.sendTitle(title, subtitle, fade_in, stay, fade_out);
+            if ( CoreAPI.getInstance( ).getServerVersion( ).isNewerEquals( Version.v1_17_R1 ) ) {
+                player.sendTitle( title, subtitle, fade_in, stay, fade_out );
                 return;
             }
 
-            Class<?> packet_class = ClassReflection.getNmsClass("PacketPlayOutTitle", "");
-            Class<?> component_class = ClassReflection.getNmsClass("IChatBaseComponent", "");
-            Class<?> action_enum = null;
+            Class< ? > packet_class = ClassReflection.getNmsClass( "PacketPlayOutTitle", "" );
+            Class< ? > component_class = ClassReflection.getNmsClass( "IChatBaseComponent", "" );
+            Class< ? > action_enum = null;
             try {
-                action_enum = ClassReflection.getSubClass(packet_class, "EnumTitleAction");
-            } catch (ClassNotFoundException ex) {
-                action_enum = ClassReflection.getNmsClass("EnumTitleAction", "");
+                action_enum = ClassReflection.getSubClass( packet_class, "EnumTitleAction" );
+            } catch ( ClassNotFoundException ex ) {
+                action_enum = ClassReflection.getNmsClass( "EnumTitleAction", "" );
             }
 
-            Class<?> serializer_class = null;
+            Class< ? > serializer_class = null;
             try {
-                serializer_class = ClassReflection.getSubClass(component_class, "ChatSerializer");
-            } catch (ClassNotFoundException ex) {
-                serializer_class = ClassReflection.getNmsClass("ChatSerializer", "");
+                serializer_class = ClassReflection.getSubClass( component_class, "ChatSerializer" );
+            } catch ( ClassNotFoundException ex ) {
+                serializer_class = ClassReflection.getNmsClass( "ChatSerializer", "" );
             }
 
-            Method a = MethodReflection.get(serializer_class, "a", String.class);
-            Object component0 = a.invoke(serializer_class, "{\"text\":\"" + title + "\"}");
-            Object component1 = a.invoke(serializer_class, "{\"text\":\"" + subtitle + "\"}");
+            Method a = MethodReflection.get( serializer_class, "a", String.class );
+            Object component0 = a.invoke( serializer_class, "{\"text\":\"" + title + "\"}" );
+            Object component1 = a.invoke( serializer_class, "{\"text\":\"" + subtitle + "\"}" );
 
-            Method value_of = MethodReflection.get(action_enum, "valueOf", String.class);
-            Object action0 = value_of.invoke(action_enum, "TITLE");
-            Object action1 = value_of.invoke(action_enum, "SUBTITLE");
+            Method value_of = MethodReflection.get( action_enum, "valueOf", String.class );
+            Object action0 = value_of.invoke( action_enum, "TITLE" );
+            Object action1 = value_of.invoke( action_enum, "SUBTITLE" );
 
-            Object packet0 = ConstructorReflection.get(packet_class, int.class, int.class, int.class)
-                    .newInstance(fade_in, stay, fade_out); // times packet construction
-            Object packet1 = ConstructorReflection.get(packet_class, action_enum, component_class)
-                    .newInstance(action0, component0);
-            Object packet2 = ConstructorReflection.get(packet_class, action_enum, component_class)
-                    .newInstance(action1, component1);
+            Object packet0 = ConstructorReflection.get( packet_class, int.class, int.class, int.class )
+                    .newInstance( fade_in, stay, fade_out ); // times packet construction
+            Object packet1 = ConstructorReflection.get( packet_class, action_enum, component_class )
+                    .newInstance( action0, component0 );
+            Object packet2 = ConstructorReflection.get( packet_class, action_enum, component_class )
+                    .newInstance( action1, component1 );
 
-            BukkitReflection.sendPacket(player, packet0); // sending times packet
-            if (title != null) {
-                BukkitReflection.sendPacket(player, packet1);
+            BukkitReflection.sendPacket( player, packet0 ); // sending times packet
+            if ( title != null ) {
+                BukkitReflection.sendPacket( player, packet1 );
             } // sending title packet
-            if (subtitle != null) {
-                BukkitReflection.sendPacket(player, packet2);
+            if ( subtitle != null ) {
+                BukkitReflection.sendPacket( player, packet2 );
             } // sending subtitle packet
-        } catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException |
-                IllegalArgumentException | InvocationTargetException ex) {
-            ex.printStackTrace();
+        } catch ( NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException |
+                IllegalArgumentException | InvocationTargetException ex ) {
+            ex.printStackTrace( );
         }
     }
 
@@ -97,8 +97,8 @@ public class TitleUtils {
      * @param title    Title text
      * @param subtitle Subtitle text
      */
-    public static void send(Player player, String title, String subtitle) {
-        TitleUtils.send(player, title, subtitle, 10, 70, 20);
+    public static void send( Player player, String title, String subtitle ) {
+        TitleUtils.send( player, title, subtitle, 10, 70, 20 );
     }
 
     /**
@@ -110,30 +110,30 @@ public class TitleUtils {
      * @deprecated It seems it is not working anymore.
      */
     @Deprecated
-    public static void reset(Player player) {
+    public static void reset( Player player ) {
         try {
-            if (CoreAPI.getInstance().getServerVersion().isNewerEquals(Version.v1_17_R1)) {
-                TitleUtils.send(player, "", "");
+            if ( CoreAPI.getInstance( ).getServerVersion( ).isNewerEquals( Version.v1_17_R1 ) ) {
+                TitleUtils.send( player, "", "" );
                 return;
             }
 
-            Class<?> packet_class = ClassReflection.getNmsClass("PacketPlayOutTitle", "");
-            Class<?> component_class = ClassReflection.getNmsClass("IChatBaseComponent", "");
-            Class<?> action_enum = null;
+            Class< ? > packet_class = ClassReflection.getNmsClass( "PacketPlayOutTitle", "" );
+            Class< ? > component_class = ClassReflection.getNmsClass( "IChatBaseComponent", "" );
+            Class< ? > action_enum = null;
             try {
-                action_enum = ClassReflection.getSubClass(packet_class, "EnumTitleAction");
-            } catch (ClassNotFoundException ex) {
-                action_enum = ClassReflection.getNmsClass("EnumTitleAction", "");
+                action_enum = ClassReflection.getSubClass( packet_class, "EnumTitleAction" );
+            } catch ( ClassNotFoundException ex ) {
+                action_enum = ClassReflection.getNmsClass( "EnumTitleAction", "" );
             }
 
-            Object action = MethodReflection.get(action_enum, "valueOf", String.class).invoke(action_enum, "RESET");
-            Object packet = ConstructorReflection.get(packet_class, action_enum, component_class)
-                    .newInstance(action, null);
+            Object action = MethodReflection.get( action_enum, "valueOf", String.class ).invoke( action_enum, "RESET" );
+            Object packet = ConstructorReflection.get( packet_class, action_enum, component_class )
+                    .newInstance( action, null );
 
-            BukkitReflection.sendPacket(player, packet);
-        } catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException |
-                IllegalArgumentException | InvocationTargetException ex) {
-            ex.printStackTrace();
+            BukkitReflection.sendPacket( player, packet );
+        } catch ( NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException |
+                IllegalArgumentException | InvocationTargetException ex ) {
+            ex.printStackTrace( );
         }
     }
 
@@ -148,8 +148,8 @@ public class TitleUtils {
      * @param fade_out Time in ticks for titles to fade out. Defaults to 20.
      * @see #send(Player, String, String, int, int, int)
      */
-    public static void broadcast(String title, String subtitle, int fade_in, int stay, int fade_out) {
-        Bukkit.getOnlinePlayers().forEach(player -> TitleUtils.send(player, title, subtitle, fade_in, stay, fade_out));
+    public static void broadcast( String title, String subtitle, int fade_in, int stay, int fade_out ) {
+        Bukkit.getOnlinePlayers( ).forEach( player -> TitleUtils.send( player, title, subtitle, fade_in, stay, fade_out ) );
     }
 
     /**
@@ -160,8 +160,8 @@ public class TitleUtils {
      * @param subtitle Subtitle text
      * @see #send(Player, String, String)
      */
-    public static void broadcast(String title, String subtitle) {
-        TitleUtils.broadcast(title, subtitle, 10, 70, 20);
+    public static void broadcast( String title, String subtitle ) {
+        TitleUtils.broadcast( title, subtitle, 10, 70, 20 );
     }
 
     /**
@@ -171,8 +171,8 @@ public class TitleUtils {
      * @deprecated It seems it is not working anymore.
      */
     @Deprecated
-    public static void broadcastReset() {
-        Bukkit.getOnlinePlayers().forEach(TitleUtils::reset);
+    public static void broadcastReset( ) {
+        Bukkit.getOnlinePlayers( ).forEach( TitleUtils::reset );
     }
 
 }

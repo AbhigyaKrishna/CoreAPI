@@ -16,7 +16,7 @@ public interface CommandArgument {
      *
      * @return Argument's name
      */
-    public String getName();
+    public String getName( );
 
     /**
      * Gets the usage of this argument.
@@ -24,7 +24,7 @@ public interface CommandArgument {
      *
      * @return Argument's usage
      */
-    public String getUsage();
+    public String getUsage( );
 
     /**
      * Executes this argument. Note that the {@code subargs} array might exclude the
@@ -37,7 +37,7 @@ public interface CommandArgument {
      * @param subargs Passed command arguments, excluding this
      * @return true if the argument was successful, otherwise false
      */
-    public boolean execute(CommandSender sender, Command command, String label, String[] subargs);
+    public boolean execute( CommandSender sender, Command command, String label, String[] subargs );
 
     /**
      * Executes this argument. Note that the {@code subargs} array might exclude the
@@ -52,6 +52,6 @@ public interface CommandArgument {
      * @return List of possible completions for the final argument, or null to
      * default to the command executor.
      */
-    public List<String> tab(CommandSender sender, Command command, String alias, String[] subargs);
+    public List< String > tab( CommandSender sender, Command command, String alias, String[] subargs );
 
 }

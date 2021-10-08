@@ -16,7 +16,7 @@ public interface Vector extends ConfigurationSerializable {
     /**
      * A "close to zero" float epsilon value for use
      */
-    public static final float FLOAT_EPSILON = Float.intBitsToFloat(0x34000000);
+    public static final float FLOAT_EPSILON = Float.intBitsToFloat( 0x34000000 );
 
     /**
      * Gets the magnitude of the Vector, defined as sqrt ( x^2 + y^2 + z^2 ). The
@@ -31,7 +31,7 @@ public interface Vector extends ConfigurationSerializable {
      *
      * @return Magnitude
      */
-    public float length();
+    public float length( );
 
     /**
      * Gets the magnitude of the vector squared.
@@ -39,7 +39,7 @@ public interface Vector extends ConfigurationSerializable {
      *
      * @return Magnitude
      */
-    public float lengthSquared();
+    public float lengthSquared( );
 
     /**
      * Gets the unit equivalent of this vector. ( a Vector with length of 1 ).
@@ -47,7 +47,7 @@ public interface Vector extends ConfigurationSerializable {
      *
      * @return Created unit vector from this
      */
-    public Vector normalize();
+    public Vector normalize( );
 
     /**
      * Gets the 2D equivalent of this vector.
@@ -56,7 +56,7 @@ public interface Vector extends ConfigurationSerializable {
      * @return Equivalent, or the same vector if called from an instance of the
      * same class.
      */
-    public Vector2D toVector2D();
+    public Vector2D toVector2D( );
 
     /**
      * Gets the 3D equivalent of this vector.
@@ -69,7 +69,7 @@ public interface Vector extends ConfigurationSerializable {
      * @return Equivalent, or the same vector if called from an instance of the
      * same class.
      */
-    public Vector3D toVector3D();
+    public Vector3D toVector3D( );
 
     /**
      * Gets the Bukkit equivalent of this vector.
@@ -81,7 +81,7 @@ public interface Vector extends ConfigurationSerializable {
      *
      * @return The equivalent
      */
-    public org.bukkit.util.Vector toBukkit();
+    public org.bukkit.util.Vector toBukkit( );
 
     /**
      * Gets a Location version of this Vector.
@@ -96,7 +96,7 @@ public interface Vector extends ConfigurationSerializable {
      * @param pitch Desired pitch
      * @return Location
      */
-    public Location toLocation(final World world, final float yaw, final float pitch);
+    public Location toLocation( final World world, final float yaw, final float pitch );
 
     /**
      * Gets a Location version of this Vector with yaw and pitch being 0.
@@ -109,6 +109,6 @@ public interface Vector extends ConfigurationSerializable {
      * @param world World to link the location to
      * @return Location
      */
-    public Location toLocation(final World world);
+    public Location toLocation( final World world );
 
 }

@@ -17,15 +17,15 @@ public class ServerPropertiesUtils {
     static {
         Properties properties = null;
         try {
-            Object server = MethodReflection.invoke(MethodReflection.getAccessible(
-                    ClassReflection.getNmsClass("MinecraftServer", ""), "getServer"), (Object) null);
-            Object property_manager = FieldReflection.getValue(server, "propertyManager");
+            Object server = MethodReflection.invoke( MethodReflection.getAccessible(
+                    ClassReflection.getNmsClass( "MinecraftServer", "" ), "getServer" ), (Object) null );
+            Object property_manager = FieldReflection.getValue( server, "propertyManager" );
 
             // then getting properties.
-            properties = FieldReflection.getValue(property_manager, "properties");
-        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
-                | NoSuchMethodException | SecurityException | NoSuchFieldException ex) {
-            ex.printStackTrace();
+            properties = FieldReflection.getValue( property_manager, "properties" );
+        } catch ( IllegalAccessException | IllegalArgumentException | InvocationTargetException
+                | NoSuchMethodException | SecurityException | NoSuchFieldException ex ) {
+            ex.printStackTrace( );
         }
 
         PROPERTIES = properties;
@@ -39,10 +39,10 @@ public class ServerPropertiesUtils {
      * @param default_value Default value if not found
      * @return Value of the key
      */
-    public static String getStringProperty(String key, String default_value) {
+    public static String getStringProperty( String key, String default_value ) {
         try {
-            return PROPERTIES.getProperty(key, default_value);
-        } catch (Throwable ex) {
+            return PROPERTIES.getProperty( key, default_value );
+        } catch ( Throwable ex ) {
             return default_value;
         }
     }
@@ -55,10 +55,10 @@ public class ServerPropertiesUtils {
      * @param default_value Default value if not found
      * @return Value of the key
      */
-    public static int getIntProperty(String key, int default_value) {
+    public static int getIntProperty( String key, int default_value ) {
         try {
-            return Integer.parseInt(PROPERTIES.getProperty(key, String.valueOf(default_value)));
-        } catch (Throwable ex) {
+            return Integer.parseInt( PROPERTIES.getProperty( key, String.valueOf( default_value ) ) );
+        } catch ( Throwable ex ) {
             return default_value;
         }
     }
@@ -71,10 +71,10 @@ public class ServerPropertiesUtils {
      * @param default_value Default value if not found
      * @return Value of the key
      */
-    public static long getLongProperty(String key, long default_value) {
+    public static long getLongProperty( String key, long default_value ) {
         try {
-            return Long.parseLong(PROPERTIES.getProperty(key, String.valueOf(default_value)));
-        } catch (Throwable ex) {
+            return Long.parseLong( PROPERTIES.getProperty( key, String.valueOf( default_value ) ) );
+        } catch ( Throwable ex ) {
             return default_value;
         }
     }
@@ -87,11 +87,12 @@ public class ServerPropertiesUtils {
      * @param default_value Default value if not found
      * @return Value of the key
      */
-    public static boolean getBooleanProperty(String key, boolean default_value) {
+    public static boolean getBooleanProperty( String key, boolean default_value ) {
         try {
-            return Boolean.parseBoolean(PROPERTIES.getProperty(key, String.valueOf(default_value)));
-        } catch (Throwable ex) {
+            return Boolean.parseBoolean( PROPERTIES.getProperty( key, String.valueOf( default_value ) ) );
+        } catch ( Throwable ex ) {
             return default_value;
         }
     }
+
 }

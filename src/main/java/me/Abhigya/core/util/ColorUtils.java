@@ -48,25 +48,25 @@ public class ColorUtils {
      * Default format for display preference: <code>CSS_ABSOLUTE_FORMAT</code>.
      */
     public final static int DEFAULT_FORMAT = CSS_ABSOLUTE_FORMAT;
-    public static final Map<String, Color> COLOR_BY_NAME = new HashMap<>(ImmutableMap.<String, Color>builder()
-            .put("WHITE", Color.WHITE)
-            .put("SILVER", Color.SILVER)
-            .put("GRAY", Color.GRAY)
-            .put("BLACK", Color.BLACK)
-            .put("RED", Color.RED)
-            .put("MAROON", Color.MAROON)
-            .put("YELLOW", Color.YELLOW)
-            .put("OLIVE", Color.OLIVE)
-            .put("LIME", Color.LIME)
-            .put("GREEN", Color.GREEN)
-            .put("AQUA", Color.AQUA)
-            .put("TEAL", Color.TEAL)
-            .put("BLUE", Color.BLUE)
-            .put("NAVY", Color.NAVY)
-            .put("FUCHSIA", Color.FUCHSIA)
-            .put("PURPLE", Color.PURPLE)
-            .put("ORANGE", Color.ORANGE)
-            .build());
+    public static final Map< String, Color > COLOR_BY_NAME = new HashMap<>( ImmutableMap.< String, Color >builder( )
+            .put( "WHITE", Color.WHITE )
+            .put( "SILVER", Color.SILVER )
+            .put( "GRAY", Color.GRAY )
+            .put( "BLACK", Color.BLACK )
+            .put( "RED", Color.RED )
+            .put( "MAROON", Color.MAROON )
+            .put( "YELLOW", Color.YELLOW )
+            .put( "OLIVE", Color.OLIVE )
+            .put( "LIME", Color.LIME )
+            .put( "GREEN", Color.GREEN )
+            .put( "AQUA", Color.AQUA )
+            .put( "TEAL", Color.TEAL )
+            .put( "BLUE", Color.BLUE )
+            .put( "NAVY", Color.NAVY )
+            .put( "FUCHSIA", Color.FUCHSIA )
+            .put( "PURPLE", Color.PURPLE )
+            .put( "ORANGE", Color.ORANGE )
+            .build( ) );
     /**
      * Regular expression for "RGB(255, 0, 0)", integer range 0 - 255
      */
@@ -88,12 +88,12 @@ public class ColorUtils {
      * Compiled pattern for CSS absolute pattern: "RGB(255, 0, 0)"
      */
     private static Pattern cssAbsolutePattern = Pattern
-            .compile(COLOR_CSS_PATTERN);
+            .compile( COLOR_CSS_PATTERN );
     /**
      * Compiled pattern for CSS relative pattern: "RGB(255%, 0%, 0%)"
      */
     private static Pattern cssRelativePattern = Pattern
-            .compile(COLOR_CSS_PERCENT_PATTERN);
+            .compile( COLOR_CSS_PERCENT_PATTERN );
 
     /**
      * Indicates whether the color value is of valid css absolute format:
@@ -112,8 +112,8 @@ public class ColorUtils {
      * @return <code>true</code> if the color value is in a valid css absolute
      * color representation
      */
-    public static boolean isCssAbsolute(String value) {
-        return cssAbsolutePattern.matcher(value).matches();
+    public static boolean isCssAbsolute( String value ) {
+        return cssAbsolutePattern.matcher( value ).matches( );
     }
 
     /**
@@ -133,8 +133,8 @@ public class ColorUtils {
      * @return <code>true</code> if the color value is in a valid css relative.
      * color representation
      */
-    public static boolean isCssRelative(String value) {
-        return cssRelativePattern.matcher(value).matches();
+    public static boolean isCssRelative( String value ) {
+        return cssRelativePattern.matcher( value ).matches( );
     }
 
     /**
@@ -167,22 +167,22 @@ public class ColorUtils {
      * @see ColorUtils#CSS_RELATIVE_FORMAT
      * @see ColorUtils#DEFAULT_FORMAT
      */
-    public static String format(int rgbValue, int rgbFormat) {
-        String rgbText = StringUtils.toRgbText(rgbValue).toUpperCase();
+    public static String format( int rgbValue, int rgbFormat ) {
+        String rgbText = StringUtils.toRgbText( rgbValue ).toUpperCase( );
 
-        switch (rgbFormat) {
+        switch ( rgbFormat ) {
             case ColorUtils.INT_FORMAT:
-                return String.valueOf(rgbValue);
+                return String.valueOf( rgbValue );
             case ColorUtils.HTML_FORMAT:
                 return rgbText;
             case ColorUtils.JAVA_FORMAT:
-                return rgbText.replaceFirst("#", "0x");
+                return rgbText.replaceFirst( "#", "0x" );
             case ColorUtils.CSS_ABSOLUTE_FORMAT:
-                return hexToRGB(rgbText, true);
+                return hexToRGB( rgbText, true );
             case ColorUtils.CSS_RELATIVE_FORMAT:
-                return hexToRGB(rgbText, false);
+                return hexToRGB( rgbText, false );
             default:
-                return hexToRGB(rgbText, true);
+                return hexToRGB( rgbText, true );
         }
     }
 
@@ -209,11 +209,11 @@ public class ColorUtils {
      * @see #parseColor(String)
      * @see #format(int, int)
      */
-    public static String format(String value, int rgbFormat) {
-        int rgbValue = parseColor(value);
+    public static String format( String value, int rgbFormat ) {
+        int rgbValue = parseColor( value );
 
-        if (rgbValue != -1)
-            return format(rgbValue, rgbFormat);
+        if ( rgbValue != -1 )
+            return format( rgbValue, rgbFormat );
 
         return null;
     }
@@ -229,40 +229,40 @@ public class ColorUtils {
      *                   relative format, e.g, RGB(100.0%,0%,0%).
      * @return Formatted css relative or absolute color format.
      */
-    private static String hexToRGB(String hexColor, boolean isAbsolute) {
-        assert hexColor.length() == 7;
+    private static String hexToRGB( String hexColor, boolean isAbsolute ) {
+        assert hexColor.length( ) == 7;
 
         // convert from "#FF0000" to "RGB(255, 0, 0)" or to "RGB(100.0%, 0%, 0%)"
-        String r = hexColor.substring(1, 3);
-        String g = hexColor.substring(3, 5);
-        String b = hexColor.substring(5, 7);
+        String r = hexColor.substring( 1, 3 );
+        String g = hexColor.substring( 3, 5 );
+        String b = hexColor.substring( 5, 7 );
 
-        r = Integer.valueOf(r, 16).toString();
-        g = Integer.valueOf(g, 16).toString();
-        b = Integer.valueOf(b, 16).toString();
+        r = Integer.valueOf( r, 16 ).toString( );
+        g = Integer.valueOf( g, 16 ).toString( );
+        b = Integer.valueOf( b, 16 ).toString( );
 
-        StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new StringBuilder( );
 
-        if (isAbsolute) {
-            sb.append("RGB(").append(r).append(",");
-            sb.append(g).append(",");
-            sb.append(b).append(")");
+        if ( isAbsolute ) {
+            sb.append( "RGB(" ).append( r ).append( "," );
+            sb.append( g ).append( "," );
+            sb.append( b ).append( ")" );
         } else {
-            int r_iValue = Integer.valueOf(r).intValue();
-            int g_iValue = Integer.valueOf(g).intValue();
-            int b_iValue = Integer.valueOf(b).intValue();
+            int r_iValue = Integer.valueOf( r ).intValue( );
+            int g_iValue = Integer.valueOf( g ).intValue( );
+            int b_iValue = Integer.valueOf( b ).intValue( );
 
             // round to 1 digit after the comma
-            float r_fValue = ((int) (r_iValue * 10 * 100 / 255f + 0.5f)) / 10.0f;
-            float g_fValue = ((int) (g_iValue * 10 * 100 / 255f + 0.5f)) / 10.0f;
-            float b_fValue = ((int) (b_iValue * 10 * 100 / 255f + 0.5f)) / 10.0f;
+            float r_fValue = ( (int) ( r_iValue * 10 * 100 / 255f + 0.5f ) ) / 10.0f;
+            float g_fValue = ( (int) ( g_iValue * 10 * 100 / 255f + 0.5f ) ) / 10.0f;
+            float b_fValue = ( (int) ( b_iValue * 10 * 100 / 255f + 0.5f ) ) / 10.0f;
 
-            sb.append("RGB(").append(String.valueOf(r_fValue)).append("%,");
-            sb.append(String.valueOf(g_fValue)).append("%,");
-            sb.append(String.valueOf(b_fValue)).append("%)");
+            sb.append( "RGB(" ).append( String.valueOf( r_fValue ) ).append( "%," );
+            sb.append( String.valueOf( g_fValue ) ).append( "%," );
+            sb.append( String.valueOf( b_fValue ) ).append( "%)" );
         }
 
-        return sb.toString();
+        return sb.toString( );
     }
 
     /**
@@ -278,63 +278,63 @@ public class ColorUtils {
      * @see #isCssAbsolute(String)
      * @see #isCssRelative(String)
      */
-    private static int parseRGBColor(String rgbColor) {
+    private static int parseRGBColor( String rgbColor ) {
         // not valid, return -1.
 
-        if (!isCssAbsolute(rgbColor) && !isCssRelative(rgbColor))
+        if ( !isCssAbsolute( rgbColor ) && !isCssRelative( rgbColor ) )
             return -1;
 
         boolean hasPercentage = false;
 
-        int start = rgbColor.indexOf('(');
-        int end = rgbColor.indexOf(')');
+        int start = rgbColor.indexOf( '(' );
+        int end = rgbColor.indexOf( ')' );
 
         // Cut from "rgb(255,0,0)" to "255, 0, 0", rgb(100%,100%,100%) to "100%,100%,100%"
-        String subStr1 = rgbColor.substring(start + 1, end).trim();
+        String subStr1 = rgbColor.substring( start + 1, end ).trim( );
 
-        if (subStr1.indexOf('%') != -1) {
+        if ( subStr1.indexOf( '%' ) != -1 ) {
             // get rid of '%'
-            subStr1 = subStr1.replace('%', ' ');
+            subStr1 = subStr1.replace( '%', ' ' );
             hasPercentage = true;
         }
 
         // Split into 3 strings, we got {255,0,0}
-        String[] numbers = subStr1.split(","); //$NON-NLS-1$
+        String[] numbers = subStr1.split( "," ); //$NON-NLS-1$
 
         // #FF0000
-        StringBuilder colorValue = new StringBuilder("#"); //$NON-NLS-1$
+        StringBuilder colorValue = new StringBuilder( "#" ); //$NON-NLS-1$
 
         // parse String(base 10) into String(base 16)
 
-        for (int i = 0; i < 3; i++) {
+        for ( int i = 0; i < 3; i++ ) {
             int intValue = 0;
 
-            String number = numbers[i].trim();
+            String number = numbers[i].trim( );
 
-            if (hasPercentage) {
-                float value = Float.parseFloat(number);
+            if ( hasPercentage ) {
+                float value = Float.parseFloat( number );
 
-                if (value > 100.0f)
+                if ( value > 100.0f )
                     value = 100.0f;
 
                 // 100.0% => 255, 0.0% => 0
-                intValue = (int) (value * 255.0f / 100.0f + 0.5f);
+                intValue = (int) ( value * 255.0f / 100.0f + 0.5f );
             } else {
-                intValue = Integer.parseInt(number);
+                intValue = Integer.parseInt( number );
 
                 // e,g. clip "300" to "255"
-                if (intValue > 255)
+                if ( intValue > 255 )
                     intValue = 255;
             }
 
             // Fill "f" to "0f"
-            String strValue = "0" + Integer.toHexString(intValue); //$NON-NLS-1$
-            strValue = strValue.substring(strValue.length() - 2);
+            String strValue = "0" + Integer.toHexString( intValue ); //$NON-NLS-1$
+            strValue = strValue.substring( strValue.length( ) - 2 );
 
-            colorValue.append(strValue);
+            colorValue.append( strValue );
         }
 
-        return Integer.decode(colorValue.toString()).intValue();
+        return Integer.decode( colorValue.toString( ) ).intValue( );
 
     }
 
@@ -380,31 +380,31 @@ public class ColorUtils {
      * valid integer format, return value will be clipped to 0 ~
      * 0xFFFFFF
      */
-    public static int parseColor(String value) {
-        if (StringUtils.isBlank(value))
+    public static int parseColor( String value ) {
+        if ( StringUtils.isBlank( value ) )
             return -1;
 
         // 1. Is the value a hexadecimal number or decimal number. It can be
         // six-digit form (#rrggbb) or three-digit form (#rgb) or java style
         // as (0xRRGGBB )
-        int first = value.charAt(0);
+        int first = value.charAt( 0 );
 
-        if (first == '#' || (first >= '0' && first <= '9')) {
-            if (first == '#' && value.length() == 4) {
+        if ( first == '#' || ( first >= '0' && first <= '9' ) ) {
+            if ( first == '#' && value.length( ) == 4 ) {
                 // #RGB
-                char[] rgb_chars = value.toCharArray();
-                char[] rrggbb_chars = {'#', rgb_chars[1], rgb_chars[1],
-                        rgb_chars[2], rgb_chars[2], rgb_chars[3], rgb_chars[3]};
+                char[] rgb_chars = value.toCharArray( );
+                char[] rrggbb_chars = { '#', rgb_chars[1], rgb_chars[1],
+                        rgb_chars[2], rgb_chars[2], rgb_chars[3], rgb_chars[3] };
 
-                value = String.valueOf(rrggbb_chars);
+                value = String.valueOf( rrggbb_chars );
             }
 
             try {
-                int retValue = Integer.decode(value).intValue();
+                int retValue = Integer.decode( value ).intValue( );
 
-                return Math.min(retValue, 0xFFFFFF);
+                return Math.min( retValue, 0xFFFFFF );
 
-            } catch (NumberFormatException e) {
+            } catch ( NumberFormatException e ) {
                 return -1;
             }
 
@@ -419,30 +419,30 @@ public class ColorUtils {
 
         // 3. CSS absolute or relative format: {rgb(r,g,b)} or {rgb(r%,g%,b%)}
 
-        if (isCssAbsolute(value) || isCssRelative(value))
-            return parseRGBColor(value);
+        if ( isCssAbsolute( value ) || isCssRelative( value ) )
+            return parseRGBColor( value );
 
         return -1;
     }
 
-    public static Color parseToBukkitColor(String s) {
-        String[] parts = s.split(";");
-        if (parts.length != 3) {
+    public static Color parseToBukkitColor( String s ) {
+        String[] parts = s.split( ";" );
+        if ( parts.length != 3 ) {
             Color color;
-            if (s.charAt(0) == '#' && s.length() >= 7) {//Hex color
+            if ( s.charAt( 0 ) == '#' && s.length( ) >= 7 ) {//Hex color
                 try {
-                    color = Color.fromRGB(Integer.parseUnsignedInt(s.substring(1, 7), 16));
-                } catch (IllegalArgumentException e) {
+                    color = Color.fromRGB( Integer.parseUnsignedInt( s.substring( 1, 7 ), 16 ) );
+                } catch ( IllegalArgumentException e ) {
                     color = null;
                 }
             } else {
-                color = COLOR_BY_NAME.get(s.toUpperCase());
+                color = COLOR_BY_NAME.get( s.toUpperCase( ) );
             }
-            if (color == null) {
-                throw new IllegalStateException("Invalid color \"" + s + "\", use \"R;G;B\", \"#RRGGBB\" or color value!");
+            if ( color == null ) {
+                throw new IllegalStateException( "Invalid color \"" + s + "\", use \"R;G;B\", \"#RRGGBB\" or color value!" );
             } else return color;
         } else {
-            return Color.fromRGB(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]), Integer.parseInt(parts[2]));
+            return Color.fromRGB( Integer.parseInt( parts[0] ), Integer.parseInt( parts[1] ), Integer.parseInt( parts[2] ) );
         }
     }
 
@@ -456,15 +456,15 @@ public class ColorUtils {
      * @return Array containing Red, Blue, Green separately. Return
      * <code>null</code> if the value is not in (0~0xFFFFFF).
      */
-    public static int[] getRGBs(int rgbValue) {
-        if (rgbValue > 0xFFFFFF || rgbValue < 0)
+    public static int[] getRGBs( int rgbValue ) {
+        if ( rgbValue > 0xFFFFFF || rgbValue < 0 )
             return null;
 
         int r = rgbValue >> 16;
-        int g = (rgbValue >> 8) & 0xFF;
+        int g = ( rgbValue >> 8 ) & 0xFF;
         int b = rgbValue & 0xFF;
 
-        return new int[]{r, g, b};
+        return new int[]{ r, g, b };
     }
 
     /**
@@ -476,9 +476,9 @@ public class ColorUtils {
      * @return Array containing Red, Blue, Green separately. Return
      * <code>null</code> if the given color value is not parsable.
      */
-    public static int[] getRGBs(String colorValue) {
-        int rgb = parseColor(colorValue);
-        return rgb == -1 ? null : getRGBs(rgb);
+    public static int[] getRGBs( String colorValue ) {
+        int rgb = parseColor( colorValue );
+        return rgb == -1 ? null : getRGBs( rgb );
     }
 
     /**
@@ -492,12 +492,13 @@ public class ColorUtils {
      * @param b Blue value.
      * @return Integer color value of the given color factors.
      */
-    public static int formRGB(int r, int g, int b) {
+    public static int formRGB( int r, int g, int b ) {
         // clip to 0 ~ 0xFF
-        r = r > 0xFF ? 0xFF : Math.max(r, 0);
-        g = g > 0xFF ? 0xFF : Math.max(g, 0);
-        b = b > 0xFF ? 0xFF : Math.max(b, 0);
+        r = r > 0xFF ? 0xFF : Math.max( r, 0 );
+        g = g > 0xFF ? 0xFF : Math.max( g, 0 );
+        b = b > 0xFF ? 0xFF : Math.max( b, 0 );
 
-        return (r << 16) + (g << 8) + b;
+        return ( r << 16 ) + ( g << 8 ) + b;
     }
+
 }

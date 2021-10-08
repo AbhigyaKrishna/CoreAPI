@@ -28,8 +28,8 @@ public class DirectionUtils {
      * @param angle the angle to normalize.
      * @return the normalized angle.
      */
-    public static float normalize(float angle) {
-        return (angle + 360F) % 360F;
+    public static float normalize( float angle ) {
+        return ( angle + 360F ) % 360F;
     }
 
     /**
@@ -39,11 +39,11 @@ public class DirectionUtils {
      * @param angle the angle to normalize.
      * @return the normalized angle.
      */
-    public static float normalize2(float angle) {
-        angle = normalize(angle);
+    public static float normalize2( float angle ) {
+        angle = normalize( angle );
         return angle >= 180F
-                ? (angle - 360F)
-                : (angle < -180F ? (angle + 360F) : angle);
+                ? ( angle - 360F )
+                : ( angle < -180F ? ( angle + 360F ) : angle );
     }
 
     /**
@@ -53,8 +53,8 @@ public class DirectionUtils {
      * @param yaw the yaw angle.
      * @return the {@link BlockFace} equivalent of the provided yaw angle.
      */
-    public static BlockFace getBlockFace(float yaw) {
-        return FACES_90[(int) Math.floor(normalize(yaw) / 90F) % 4];
+    public static BlockFace getBlockFace( float yaw ) {
+        return FACES_90[(int) Math.floor( normalize( yaw ) / 90F ) % 4];
     }
 
     /**
@@ -74,8 +74,8 @@ public class DirectionUtils {
      * @param blockface Desired block face
      * @return Equivalent yaw angle of the provided {@link BlockFace}
      */
-    public static float getYaw(BlockFace blockface) {
-        switch (blockface) {
+    public static float getYaw( BlockFace blockface ) {
+        switch ( blockface ) {
             case SOUTH:
                 return 0F;
             case WEST:
@@ -103,24 +103,24 @@ public class DirectionUtils {
      * @param to   Position to
      * @return Euler angles of the result direction vector
      */
-    public static float[] lookAt(Vector from, Vector to) {
-        final double dx = (to.getX() - from.getX());
-        final double dy = (to.getY() - from.getY());
-        final double dz = (to.getZ() - from.getZ());
+    public static float[] lookAt( Vector from, Vector to ) {
+        final double dx = ( to.getX( ) - from.getX( ) );
+        final double dy = ( to.getY( ) - from.getY( ) );
+        final double dz = ( to.getZ( ) - from.getZ( ) );
 
-        final double dst_xz = Math.sqrt(NumberConversions.square(dx) + NumberConversions.square(dz));
-        final double dst_y = Math.sqrt(NumberConversions.square(dst_xz) + NumberConversions.square(dy));
+        final double dst_xz = Math.sqrt( NumberConversions.square( dx ) + NumberConversions.square( dz ) );
+        final double dst_y = Math.sqrt( NumberConversions.square( dst_xz ) + NumberConversions.square( dy ) );
 
-        double yaw = Math.toDegrees(Math.acos(dx / dst_xz));
-        double pitch = Math.toDegrees(Math.acos(dy / dst_y)) - 90D;
+        double yaw = Math.toDegrees( Math.acos( dx / dst_xz ) );
+        double pitch = Math.toDegrees( Math.acos( dy / dst_y ) ) - 90D;
 
-        if (dz < 0D) {
-            yaw += Math.abs(180D - yaw) * 2D;
+        if ( dz < 0D ) {
+            yaw += Math.abs( 180D - yaw ) * 2D;
         }
 
         yaw -= 90D;
         pitch -= 90D;
-        return new float[]{(float) yaw, (float) pitch};
+        return new float[]{ (float) yaw, (float) pitch };
     }
 
     /**
@@ -138,8 +138,8 @@ public class DirectionUtils {
      * @return Euler angles of the result direction vector
      * @see DirectionUtils#lookAt(Vector, Vector)
      */
-    public static float[] lookAt(Location from, Location to) {
-        return lookAt(from.toVector(), to.toVector());
+    public static float[] lookAt( Location from, Location to ) {
+        return lookAt( from.toVector( ), to.toVector( ) );
     }
 
     /**
@@ -156,8 +156,8 @@ public class DirectionUtils {
      * @param to   Position to
      * @return Euler angles of the result direction vector
      */
-    public static float[] lookAt2(Vector from, Vector to) {
-        return getEulerAngles(to.clone().subtract(from).normalize());
+    public static float[] lookAt2( Vector from, Vector to ) {
+        return getEulerAngles( to.clone( ).subtract( from ).normalize( ) );
     }
 
     /**
@@ -175,8 +175,8 @@ public class DirectionUtils {
      * @return Euler angles of the result direction vector
      * @see DirectionUtils#lookAt2(Vector, Vector)
      */
-    public static float[] lookAt2(Location from, Location to) {
-        return lookAt2(from.toVector(), to.toVector());
+    public static float[] lookAt2( Location from, Location to ) {
+        return lookAt2( from.toVector( ), to.toVector( ) );
     }
 
     /**
@@ -189,18 +189,18 @@ public class DirectionUtils {
      * @return Vector pointing the direction represented by the specified euler
      * angles.
      */
-    public static Vector getDirection(float yaw, float pitch) {
-        Vector vector = new Vector();
+    public static Vector getDirection( float yaw, float pitch ) {
+        Vector vector = new Vector( );
 
         double rotX = yaw;
         double rotY = pitch;
 
-        vector.setY(-Math.sin(Math.toRadians(rotY)));
+        vector.setY( -Math.sin( Math.toRadians( rotY ) ) );
 
-        double xz = Math.cos(Math.toRadians(rotY));
+        double xz = Math.cos( Math.toRadians( rotY ) );
 
-        vector.setX(-xz * Math.sin(Math.toRadians(rotX)));
-        vector.setZ(xz * Math.cos(Math.toRadians(rotX)));
+        vector.setX( -xz * Math.sin( Math.toRadians( rotX ) ) );
+        vector.setZ( xz * Math.cos( Math.toRadians( rotX ) ) );
         return vector;
     }
 
@@ -216,28 +216,28 @@ public class DirectionUtils {
      * @param direction Direction vector
      * @return Yaw and pitch angles within an array
      */
-    public static float[] getEulerAngles(Vector direction) {
+    public static float[] getEulerAngles( Vector direction ) {
         float yaw = 0F;
         float pitch = 0F;
 
         final double _2PI = 2 * Math.PI;
-        final double x = direction.getX();
-        final double z = direction.getZ();
+        final double x = direction.getX( );
+        final double z = direction.getZ( );
 
-        if (x == 0 && z == 0) {
-            pitch = direction.getY() > 0 ? -90 : 90;
-            return new float[]{yaw, pitch};
+        if ( x == 0 && z == 0 ) {
+            pitch = direction.getY( ) > 0 ? -90 : 90;
+            return new float[]{ yaw, pitch };
         }
 
-        double theta = Math.atan2(-x, z);
-        yaw = (float) Math.toDegrees((theta + _2PI) % _2PI);
+        double theta = Math.atan2( -x, z );
+        yaw = (float) Math.toDegrees( ( theta + _2PI ) % _2PI );
 
-        double x2 = NumberConversions.square(x);
-        double z2 = NumberConversions.square(z);
-        double xz = Math.sqrt(x2 + z2);
+        double x2 = NumberConversions.square( x );
+        double z2 = NumberConversions.square( z );
+        double xz = Math.sqrt( x2 + z2 );
 
-        pitch = (float) Math.toDegrees(Math.atan(-direction.getY() / xz));
-        return new float[]{yaw, pitch};
+        pitch = (float) Math.toDegrees( Math.atan( -direction.getY( ) / xz ) );
+        return new float[]{ yaw, pitch };
     }
 
     /**
@@ -249,12 +249,12 @@ public class DirectionUtils {
      * @param numBlocks Number of blocks
      * @return Left Block
      */
-    public static Block getLeft(Block block, BlockFace direction, int numBlocks) {
-        BlockFace bf = getLeftFace(direction);
+    public static Block getLeft( Block block, BlockFace direction, int numBlocks ) {
+        BlockFace bf = getLeftFace( direction );
         return block.getRelative(
-                bf.getModX() * numBlocks,
-                bf.getModY() * numBlocks,
-                bf.getModZ() * numBlocks);
+                bf.getModX( ) * numBlocks,
+                bf.getModY( ) * numBlocks,
+                bf.getModZ( ) * numBlocks );
     }
 
     /**
@@ -266,12 +266,12 @@ public class DirectionUtils {
      * @param numBlocks Number of blocks
      * @return Right Block
      */
-    public static Block getRight(Block block, BlockFace direction, int numBlocks) {
-        BlockFace bf = getRightFace(direction);
+    public static Block getRight( Block block, BlockFace direction, int numBlocks ) {
+        BlockFace bf = getRightFace( direction );
         return block.getRelative(
-                bf.getModX() * numBlocks,
-                bf.getModY() * numBlocks,
-                bf.getModZ() * numBlocks);
+                bf.getModX( ) * numBlocks,
+                bf.getModY( ) * numBlocks,
+                bf.getModZ( ) * numBlocks );
     }
 
     /**
@@ -281,8 +281,8 @@ public class DirectionUtils {
      * @param direction Base BlockFace
      * @return Right BlockFace
      */
-    public static BlockFace getRightFace(BlockFace direction) {
-        return getLeftFace(direction).getOppositeFace();
+    public static BlockFace getRightFace( BlockFace direction ) {
+        return getLeftFace( direction ).getOppositeFace( );
     }
 
     /**
@@ -291,8 +291,8 @@ public class DirectionUtils {
      * @param direction Base BlockFace
      * @return Left BlockFace
      */
-    public static BlockFace getLeftFace(BlockFace direction) {
-        switch (direction) {
+    public static BlockFace getLeftFace( BlockFace direction ) {
+        switch ( direction ) {
             case SOUTH:
                 return BlockFace.EAST;
             case EAST:

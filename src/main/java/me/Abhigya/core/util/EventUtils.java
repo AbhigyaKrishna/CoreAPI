@@ -15,8 +15,8 @@ public class EventUtils {
      * @return <code>true</code> if right click else false
      * @see Action
      */
-    public static boolean isRightClick(Action action) {
-        return action != null && (action.name().contains("RIGHT_"));
+    public static boolean isRightClick( Action action ) {
+        return action != null && ( action.name( ).contains( "RIGHT_" ) );
     }
 
     /**
@@ -27,8 +27,8 @@ public class EventUtils {
      * @return <code>true</code> if left click else false
      * @see Action
      */
-    public static boolean isLeftClick(Action action) {
-        return action != null && (action.name().contains("LEFT_"));
+    public static boolean isLeftClick( Action action ) {
+        return action != null && ( action.name( ).contains( "LEFT_" ) );
     }
 
     /**
@@ -39,8 +39,8 @@ public class EventUtils {
      * @return <code>true</code> if clicking block else false
      * @see Action
      */
-    public static boolean isClickingBlock(Action action) {
-        return action != null && (action.name().contains("_BLOCK"));
+    public static boolean isClickingBlock( Action action ) {
+        return action != null && ( action.name( ).contains( "_BLOCK" ) );
     }
 
     /**
@@ -51,7 +51,8 @@ public class EventUtils {
      * @return <code>true</code> if clicking air else false
      * @see Action
      */
-    public static boolean isClickingAir(Action action) {
-        return action != null && (action.name().contains("_AIR"));
+    public static boolean isClickingAir( Action action ) {
+        return action != null && ( action.name( ).contains( "_AIR" ) );
     }
+
 }

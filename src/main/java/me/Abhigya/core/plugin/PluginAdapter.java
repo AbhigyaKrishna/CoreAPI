@@ -10,37 +10,37 @@ import me.Abhigya.core.version.CoreVersion;
 public abstract class PluginAdapter extends Plugin {
 
     @Override
-    public CoreVersion getRequiredCoreVersion() {
+    public CoreVersion getRequiredCoreVersion( ) {
         return null;
     }
 
     @Override
-    public MetricsAdaptor getMetrics() {
+    public MetricsAdaptor getMetrics( ) {
         return null;
     }
 
     @Override
-    public PluginDependence[] getDependences() {
+    public PluginDependence[] getDependences( ) {
         return null;
     }
 
     @Override
-    protected boolean setUpConfig() {
+    protected boolean setUpConfig( ) {
         return true;
     }
 
     @Override
-    protected boolean setUpHandlers() {
+    protected boolean setUpHandlers( ) {
         return true;
     }
 
     @Override
-    protected boolean setUpCommands() {
+    protected boolean setUpCommands( ) {
         return true;
     }
 
     @Override
-    protected boolean setUpListeners() {
+    protected boolean setUpListeners( ) {
         return true;
     }
 

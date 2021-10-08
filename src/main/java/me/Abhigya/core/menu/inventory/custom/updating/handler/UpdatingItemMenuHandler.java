@@ -21,8 +21,8 @@ public class UpdatingItemMenuHandler extends ItemMenuHandler {
      * @param menu   Updating item menu
      * @param plugin Plugin instance for the menu
      */
-    public UpdatingItemMenuHandler(ItemMenu menu, Plugin plugin) {
-        super(menu, plugin);
+    public UpdatingItemMenuHandler( ItemMenu menu, Plugin plugin ) {
+        super( menu, plugin );
     }
 
     /**
@@ -31,14 +31,14 @@ public class UpdatingItemMenuHandler extends ItemMenuHandler {
      *
      * @return true if updating, else false
      */
-    public boolean isUpdating() {
-        return updater_task != null && Bukkit.getScheduler().isCurrentlyRunning(updater_task.getTaskId());
+    public boolean isUpdating( ) {
+        return updater_task != null && Bukkit.getScheduler( ).isCurrentlyRunning( updater_task.getTaskId( ) );
     }
 
     @Override
-    public void unregisterListener() {
-        super.unregisterListener();
-        stopUpdating();
+    public void unregisterListener( ) {
+        super.unregisterListener( );
+        stopUpdating( );
     }
 
     /**
@@ -48,19 +48,19 @@ public class UpdatingItemMenuHandler extends ItemMenuHandler {
      * @param start_delay Start delay before updating menu
      * @param ticks       Ticks invterval between updating menu
      */
-    public void startUpdating(int start_delay, int ticks) {
-        stopUpdating();
-        this.updater_task = SchedulerUtils.runTaskTimer(() -> {
-            this.menu.updateOnlinePlayers();
-        }, start_delay, ticks, plugin);
+    public void startUpdating( int start_delay, int ticks ) {
+        stopUpdating( );
+        this.updater_task = SchedulerUtils.runTaskTimer( ( ) -> {
+            this.menu.updateOnlinePlayers( );
+        }, start_delay, ticks, plugin );
     }
 
     /**
      * Stops updating menu
      */
-    public void stopUpdating() {
-        if (updater_task != null) {
-            updater_task.cancel();
+    public void stopUpdating( ) {
+        if ( updater_task != null ) {
+            updater_task.cancel( );
             updater_task = null;
         }
     }

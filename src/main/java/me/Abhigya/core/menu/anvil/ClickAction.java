@@ -10,6 +10,6 @@ public interface ClickAction {
      *
      * @param action {@link AnvilItemClickAction}
      */
-    void onClick(AnvilItemClickAction action);
+    void onClick( AnvilItemClickAction action );
 
 }

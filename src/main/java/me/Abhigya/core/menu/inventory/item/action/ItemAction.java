@@ -13,7 +13,7 @@ public interface ItemAction {
      *
      * @return {@link ItemActionPriority}
      */
-    public ItemActionPriority getPriority();
+    public ItemActionPriority getPriority( );
 
     /**
      * Click action on the item.
@@ -21,6 +21,6 @@ public interface ItemAction {
      *
      * @param action {@link ItemClickAction} on the Item
      */
-    public void onClick(ItemClickAction action);
+    public void onClick( ItemClickAction action );
 
 }

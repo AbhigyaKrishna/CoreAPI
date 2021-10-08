@@ -6,7 +6,7 @@ package me.Abhigya.core.commands;
 public abstract class CommandHelpArgument implements CommandArgument {
 
     @Override
-    public final String getName() {
+    public final String getName( ) {
         return "help";
     }
 

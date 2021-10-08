@@ -43,24 +43,24 @@ public class MessagingUtils {
      *                                   to the definition of the specified class, field, method
      *                                   or constructor
      */
-    public static void sendPluginMessage(Plugin plugin, Writable... arguments) throws IOException, IllegalAccessException,
+    public static void sendPluginMessage( Plugin plugin, Writable... arguments ) throws IOException, IllegalAccessException,
             IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
         /* do not send empty arguments */
-        if (arguments == null || arguments.length == 0) {
+        if ( arguments == null || arguments.length == 0 ) {
             return;
         }
 
         /* make streams and write arguments */
-        final ByteArrayOutputStream array_stream = new ByteArrayOutputStream();
-        final DataOutputStream out_stream = new DataOutputStream(array_stream);
-        for (Writable argument : arguments) {
-            if (argument != null && argument.getObjectToWrite() != null && argument.getWriteType() != null) {
-                argument.writeTo(out_stream);
+        final ByteArrayOutputStream array_stream = new ByteArrayOutputStream( );
+        final DataOutputStream out_stream = new DataOutputStream( array_stream );
+        for ( Writable argument : arguments ) {
+            if ( argument != null && argument.getObjectToWrite( ) != null && argument.getWriteType( ) != null ) {
+                argument.writeTo( out_stream );
             }
         }
 
         /* send */
-        Bukkit.getServer().sendPluginMessage(plugin, MESSAGING_CHANNEL, array_stream.toByteArray());
+        Bukkit.getServer( ).sendPluginMessage( plugin, MESSAGING_CHANNEL, array_stream.toByteArray( ) );
     }
 
     /**
@@ -80,24 +80,24 @@ public class MessagingUtils {
      *                                   to the definition of the specified class, field, method
      *                                   or constructor
      */
-    public static void sendPluginMessage(Plugin plugin, Written written) throws IOException, IllegalAccessException,
+    public static void sendPluginMessage( Plugin plugin, Written written ) throws IOException, IllegalAccessException,
             IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
         /* donnot send empty arguments */
-        if (written == null || written.getWritables().isEmpty()) {
+        if ( written == null || written.getWritables( ).isEmpty( ) ) {
             return;
         }
 
         /* make streams and write arguments */
-        final ByteArrayOutputStream array_stream = new ByteArrayOutputStream();
-        final DataOutputStream out_stream = new DataOutputStream(array_stream);
-        for (Writable argument : written.getWritables()) {
-            if (argument != null && argument.getObjectToWrite() != null && argument.getWriteType() != null) {
-                argument.writeTo(out_stream);
+        final ByteArrayOutputStream array_stream = new ByteArrayOutputStream( );
+        final DataOutputStream out_stream = new DataOutputStream( array_stream );
+        for ( Writable argument : written.getWritables( ) ) {
+            if ( argument != null && argument.getObjectToWrite( ) != null && argument.getWriteType( ) != null ) {
+                argument.writeTo( out_stream );
             }
         }
 
         /* send */
-        Bukkit.getServer().sendPluginMessage(plugin, MESSAGING_CHANNEL, array_stream.toByteArray());
+        Bukkit.getServer( ).sendPluginMessage( plugin, MESSAGING_CHANNEL, array_stream.toByteArray( ) );
     }
 
     /**
@@ -119,25 +119,25 @@ public class MessagingUtils {
      *                                   to the definition of the specified class, field, method
      *                                   or constructor
      */
-    public static void sendPluginMessage(Plugin plugin, Player player, Writable... arguments)
+    public static void sendPluginMessage( Plugin plugin, Player player, Writable... arguments )
             throws IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException,
             NoSuchMethodException, SecurityException {
         /* donnot send empty arguments */
-        if (player == null || arguments == null || arguments.length == 0) {
+        if ( player == null || arguments == null || arguments.length == 0 ) {
             return;
         }
 
         /* make streams and write arguments */
-        final ByteArrayOutputStream array_stream = new ByteArrayOutputStream();
-        final DataOutputStream out_stream = new DataOutputStream(array_stream);
-        for (Writable argument : arguments) {
-            if (argument != null && argument.getObjectToWrite() != null && argument.getWriteType() != null) {
-                argument.writeTo(out_stream);
+        final ByteArrayOutputStream array_stream = new ByteArrayOutputStream( );
+        final DataOutputStream out_stream = new DataOutputStream( array_stream );
+        for ( Writable argument : arguments ) {
+            if ( argument != null && argument.getObjectToWrite( ) != null && argument.getWriteType( ) != null ) {
+                argument.writeTo( out_stream );
             }
         }
 
         /* send */
-        player.sendPluginMessage(plugin, MESSAGING_CHANNEL, array_stream.toByteArray());
+        player.sendPluginMessage( plugin, MESSAGING_CHANNEL, array_stream.toByteArray( ) );
     }
 
     /**
@@ -158,25 +158,25 @@ public class MessagingUtils {
      *                                   to the definition of the specified class, field, method
      *                                   or constructor
      */
-    public static void sendPluginMessage(Plugin plugin, Player player, Written written)
+    public static void sendPluginMessage( Plugin plugin, Player player, Written written )
             throws IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException,
             NoSuchMethodException, SecurityException {
         /* donnot send empty arguments */
-        if (player == null || written == null || written.getWritables().isEmpty()) {
+        if ( player == null || written == null || written.getWritables( ).isEmpty( ) ) {
             return;
         }
 
         /* make streams and write arguments */
-        final ByteArrayOutputStream array_stream = new ByteArrayOutputStream();
-        final DataOutputStream out_stream = new DataOutputStream(array_stream);
-        for (Writable argument : written.getWritables()) {
-            if (argument != null && argument.getObjectToWrite() != null && argument.getWriteType() != null) {
-                argument.writeTo(out_stream);
+        final ByteArrayOutputStream array_stream = new ByteArrayOutputStream( );
+        final DataOutputStream out_stream = new DataOutputStream( array_stream );
+        for ( Writable argument : written.getWritables( ) ) {
+            if ( argument != null && argument.getObjectToWrite( ) != null && argument.getWriteType( ) != null ) {
+                argument.writeTo( out_stream );
             }
         }
 
         /* send */
-        player.sendPluginMessage(plugin, MESSAGING_CHANNEL, array_stream.toByteArray());
+        player.sendPluginMessage( plugin, MESSAGING_CHANNEL, array_stream.toByteArray( ) );
     }
 
 }

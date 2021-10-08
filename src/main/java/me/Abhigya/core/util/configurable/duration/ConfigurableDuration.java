@@ -24,8 +24,8 @@ public class ConfigurableDuration extends Duration implements Configurable {
      * initialized after constructing by using the method
      * {@link ConfigurableDuration#load(ConfigurationSection)}.
      */
-    public ConfigurableDuration() { // uninitialized
-        this(-1L, null);
+    public ConfigurableDuration( ) { // uninitialized
+        this( -1L, null );
     }
 
     /**
@@ -35,8 +35,8 @@ public class ConfigurableDuration extends Duration implements Configurable {
      * @param duration Duration
      * @param unit     Time unit
      */
-    public ConfigurableDuration(long duration, TimeUnit unit) {
-        super(duration, unit);
+    public ConfigurableDuration( long duration, TimeUnit unit ) {
+        super( duration, unit );
     }
 
     /**
@@ -45,8 +45,8 @@ public class ConfigurableDuration extends Duration implements Configurable {
      *
      * @param millis Duration in milliseconds
      */
-    public ConfigurableDuration(long millis) {
-        this(millis, TimeUnit.MILLISECONDS);
+    public ConfigurableDuration( long millis ) {
+        this( millis, TimeUnit.MILLISECONDS );
     }
 
     /**
@@ -55,31 +55,31 @@ public class ConfigurableDuration extends Duration implements Configurable {
      *
      * @param copy {@link Duration} to copy
      */
-    public ConfigurableDuration(Duration copy) {
-        this(copy.getDuration(), copy.getUnit());
+    public ConfigurableDuration( Duration copy ) {
+        this( copy.getDuration( ), copy.getUnit( ) );
     }
 
     @Override
-    public ConfigurableDuration load(ConfigurationSection section) {
-        this.duration = section.getLong(DURATION_KEY, -1L);
-        this.unit = EnumReflection.getEnumConstant(TimeUnit.class, section.getString(UNIT_KEY, null));
+    public ConfigurableDuration load( ConfigurationSection section ) {
+        this.duration = section.getLong( DURATION_KEY, -1L );
+        this.unit = EnumReflection.getEnumConstant( TimeUnit.class, section.getString( UNIT_KEY, null ) );
         return this;
     }
 
     @Override
-    public boolean isValid() {
-        return this.getDuration() > -1L && this.getUnit() != null;
+    public boolean isValid( ) {
+        return this.getDuration( ) > -1L && this.getUnit( ) != null;
     }
 
     @Override
-    public boolean isInvalid() {
-        return !this.isValid();
+    public boolean isInvalid( ) {
+        return !this.isValid( );
     }
 
     @Override
-    public int save(ConfigurationSection section) {
-        return (YamlUtils.setNotEqual(section, DURATION_KEY, getDuration()) ? 1 : 0)
-                + (YamlUtils.setNotEqual(section, UNIT_KEY, getUnit().name()) ? 1 : 0);
+    public int save( ConfigurationSection section ) {
+        return ( YamlUtils.setNotEqual( section, DURATION_KEY, getDuration( ) ) ? 1 : 0 )
+                + ( YamlUtils.setNotEqual( section, UNIT_KEY, getUnit( ).name( ) ) ? 1 : 0 );
     }
 
 }

@@ -2,70 +2,79 @@ package me.Abhigya.core.util.reflection.resolver.wrapper;
 
 import java.lang.reflect.Field;
 
-public class FieldWrapper<R> extends WrapperAbstract {
+public class FieldWrapper< R > extends WrapperAbstract {
 
     private final Field field;
 
-    public FieldWrapper(Field field) {
+    public FieldWrapper( Field field ) {
         this.field = field;
     }
 
     @Override
-    public boolean exists() {
+    public boolean exists( ) {
         return this.field != null;
     }
 
-    public String getName() {
-        return this.field.getName();
+    public String getName( ) {
+        return this.field.getName( );
     }
 
-    public R get(Object object) {
+    public R get( Object object ) {
         try {
-            return (R) this.field.get(object);
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
+            return (R) this.field.get( object );
+        } catch ( IllegalAccessException e ) {
+            throw new RuntimeException( e );
         }
     }
 
-    public R getSilent(Object object) {
+    public R getSilent( Object object ) {
         try {
-            return (R) this.field.get(object);
-        } catch (IllegalAccessException ignored) {}
+            return (R) this.field.get( object );
+        } catch ( IllegalAccessException ignored ) {
+        }
         return null;
     }
 
-    public void set(Object object, R value) {
+    public void set( Object object, R value ) {
         try {
-            this.field.set(object, value);
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
+            this.field.set( object, value );
+        } catch ( IllegalAccessException e ) {
+            throw new RuntimeException( e );
         }
     }
 
-    public void setSilent(Object object, R value) {
+    public void setSilent( Object object, R value ) {
         try {
-            this.field.set(object, value);
-        } catch (IllegalAccessException ignored) {}
+            this.field.set( object, value );
+        } catch ( IllegalAccessException ignored ) {
+        }
     }
 
-    public Field getField() {
+    public Field getField( ) {
         return field;
     }
 
     @Override
-    public boolean equals(Object object) {
-        if (this == object) { return true; }
-        if (object == null || getClass() != object.getClass()) { return false; }
+    public boolean equals( Object object ) {
+        if ( this == object ) {
+            return true;
+        }
+        if ( object == null || getClass( ) != object.getClass( ) ) {
+            return false;
+        }
 
-        FieldWrapper<?> that = (FieldWrapper<?>) object;
+        FieldWrapper< ? > that = (FieldWrapper< ? >) object;
 
-        if (field != null ? !field.equals(that.field) : that.field != null) { return false; }
+        if ( field != null ? !field.equals( that.field ) : that.field != null ) {
+            return false;
+        }
 
         return true;
     }
 
     @Override
-    public int hashCode() {
-        return field != null ? field.hashCode() : 0;
+    public int hashCode( ) {
+        return field != null ? field.hashCode( ) : 0;
     }
+
 }

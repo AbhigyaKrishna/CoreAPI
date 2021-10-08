@@ -20,9 +20,9 @@ public class GameRuleMetadata extends FixedMetadataValue {
      * @param type          {@link GameRuleType} type
      * @param value         Value of GameRule
      */
-    public GameRuleMetadata(Plugin owning_plugin, GameRuleType type, Object value) {
-        super(owning_plugin, value);
-        Validate.isTrue(type.isSameDataType(value));
+    public GameRuleMetadata( Plugin owning_plugin, GameRuleType type, Object value ) {
+        super( owning_plugin, value );
+        Validate.isTrue( type.isSameDataType( value ) );
         this.type = type;
     }
 
@@ -32,7 +32,7 @@ public class GameRuleMetadata extends FixedMetadataValue {
      *
      * @return {@link GameRuleType}
      */
-    public GameRuleType getType() {
+    public GameRuleType getType( ) {
         return type;
     }
 
@@ -42,9 +42,9 @@ public class GameRuleMetadata extends FixedMetadataValue {
      *
      * @return Int meta data
      */
-    public int asInt() {
-        validateNumericValue();
-        return NumberConversions.toInt(value());
+    public int asInt( ) {
+        validateNumericValue( );
+        return NumberConversions.toInt( value( ) );
     }
 
     /**
@@ -53,9 +53,9 @@ public class GameRuleMetadata extends FixedMetadataValue {
      *
      * @return Float meta data
      */
-    public float asFloat() {
-        validateNumericValue();
-        return NumberConversions.toFloat(value());
+    public float asFloat( ) {
+        validateNumericValue( );
+        return NumberConversions.toFloat( value( ) );
     }
 
     /**
@@ -64,9 +64,9 @@ public class GameRuleMetadata extends FixedMetadataValue {
      *
      * @return Double meta data
      */
-    public double asDouble() {
-        validateNumericValue();
-        return NumberConversions.toDouble(value());
+    public double asDouble( ) {
+        validateNumericValue( );
+        return NumberConversions.toDouble( value( ) );
     }
 
     /**
@@ -75,9 +75,9 @@ public class GameRuleMetadata extends FixedMetadataValue {
      *
      * @return Long meta data
      */
-    public long asLong() {
-        validateNumericValue();
-        return NumberConversions.toLong(value());
+    public long asLong( ) {
+        validateNumericValue( );
+        return NumberConversions.toLong( value( ) );
     }
 
     /**
@@ -86,9 +86,9 @@ public class GameRuleMetadata extends FixedMetadataValue {
      *
      * @return Short meta data
      */
-    public short asShort() {
-        validateNumericValue();
-        return NumberConversions.toShort(value());
+    public short asShort( ) {
+        validateNumericValue( );
+        return NumberConversions.toShort( value( ) );
     }
 
     /**
@@ -97,9 +97,9 @@ public class GameRuleMetadata extends FixedMetadataValue {
      *
      * @return Byte meta data
      */
-    public byte asByte() {
-        validateNumericValue();
-        return NumberConversions.toByte(value());
+    public byte asByte( ) {
+        validateNumericValue( );
+        return NumberConversions.toByte( value( ) );
     }
 
     /**
@@ -108,16 +108,17 @@ public class GameRuleMetadata extends FixedMetadataValue {
      *
      * @return Boolean meta data
      */
-    public boolean asBoolean() {
-        validateBooleanValue();
-        return (Boolean) value();
+    public boolean asBoolean( ) {
+        validateBooleanValue( );
+        return (Boolean) value( );
     }
 
-    protected void validateNumericValue() {
-        Validate.isTrue((getType().isNumericalValue() && value() instanceof Number), "wrong value type!");
+    protected void validateNumericValue( ) {
+        Validate.isTrue( ( getType( ).isNumericalValue( ) && value( ) instanceof Number ), "wrong value type!" );
     }
 
-    protected void validateBooleanValue() {
-        Validate.isTrue((getType().isBooleanValue() && value() instanceof Boolean), "wrong value type!");
+    protected void validateBooleanValue( ) {
+        Validate.isTrue( ( getType( ).isBooleanValue( ) && value( ) instanceof Boolean ), "wrong value type!" );
     }
+
 }

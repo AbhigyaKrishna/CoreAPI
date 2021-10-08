@@ -22,8 +22,8 @@ public class GameRuleDisableDaylightCycle extends GameRule {
      * worlds. With the default final time
      * {@link GameRuleDisableDaylightCycle#DEFAULT_FINAL_TIME}
      */
-    public GameRuleDisableDaylightCycle() {
-        this(GameRuleDisableDaylightCycle.DEFAULT_FINAL_TIME);
+    public GameRuleDisableDaylightCycle( ) {
+        this( GameRuleDisableDaylightCycle.DEFAULT_FINAL_TIME );
     }
 
     /**
@@ -33,15 +33,16 @@ public class GameRuleDisableDaylightCycle extends GameRule {
      *
      * @param permanent_time Permanent time for the world
      */
-    public GameRuleDisableDaylightCycle(long permanent_time) {
-        super(GameRuleType.DAYLIGHT_CYCLE, false);
+    public GameRuleDisableDaylightCycle( long permanent_time ) {
+        super( GameRuleType.DAYLIGHT_CYCLE, false );
         this.permanent_time = permanent_time;
     }
 
     @Override
-    public World apply(World world) {
-        super.apply(world);
-        world.setTime(permanent_time);
+    public World apply( World world ) {
+        super.apply( world );
+        world.setTime( permanent_time );
         return world;
     }
+
 }

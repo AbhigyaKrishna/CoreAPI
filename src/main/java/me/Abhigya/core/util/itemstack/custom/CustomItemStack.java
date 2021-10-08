@@ -20,8 +20,8 @@ public class CustomItemStack extends ItemStack {
      *
      * @return true if it has display name, else false
      */
-    public boolean hasDisplayName() {
-        return this.getItemMeta().hasDisplayName();
+    public boolean hasDisplayName( ) {
+        return this.getItemMeta( ).hasDisplayName( );
     }
 
     /**
@@ -30,8 +30,8 @@ public class CustomItemStack extends ItemStack {
      *
      * @return Display name of this item
      */
-    public String getDisplayName() {
-        return this.getItemMeta().getDisplayName();
+    public String getDisplayName( ) {
+        return this.getItemMeta( ).getDisplayName( );
     }
 
     /**
@@ -41,8 +41,8 @@ public class CustomItemStack extends ItemStack {
      * @param name Display name
      * @return This Object, for chaining
      */
-    public CustomItemStack setDisplayName(String name) {
-        this.getItemMeta().setDisplayName(name);
+    public CustomItemStack setDisplayName( String name ) {
+        this.getItemMeta( ).setDisplayName( name );
         return this;
     }
 
@@ -52,8 +52,8 @@ public class CustomItemStack extends ItemStack {
      *
      * @return true if it has lore, else false
      */
-    public boolean hasLore() {
-        return this.getItemMeta().hasLore();
+    public boolean hasLore( ) {
+        return this.getItemMeta( ).hasLore( );
     }
 
     /**
@@ -62,8 +62,8 @@ public class CustomItemStack extends ItemStack {
      *
      * @return Lore of this item
      */
-    public List<String> getLore() {
-        return this.getItemMeta().getLore();
+    public List< String > getLore( ) {
+        return this.getItemMeta( ).getLore( );
     }
 
     /**
@@ -73,8 +73,8 @@ public class CustomItemStack extends ItemStack {
      * @param lore Lore
      * @return This Object, for chaining
      */
-    public CustomItemStack setLore(List<String> lore) {
-        this.getItemMeta().setLore(lore);
+    public CustomItemStack setLore( List< String > lore ) {
+        this.getItemMeta( ).setLore( lore );
         return this;
     }
 
@@ -85,8 +85,8 @@ public class CustomItemStack extends ItemStack {
      * @param lore Lore
      * @return This Object, for chaining
      */
-    public CustomItemStack setLore(String[] lore) {
-        return this.setLore(Arrays.asList(lore));
+    public CustomItemStack setLore( String[] lore ) {
+        return this.setLore( Arrays.asList( lore ) );
     }
 
     /**
@@ -95,8 +95,8 @@ public class CustomItemStack extends ItemStack {
      *
      * @return true if it has enchantments, else false
      */
-    public boolean hasEnchants() {
-        return this.getItemMeta().hasEnchants();
+    public boolean hasEnchants( ) {
+        return this.getItemMeta( ).hasEnchants( );
     }
 
     /**
@@ -105,8 +105,8 @@ public class CustomItemStack extends ItemStack {
      *
      * @return true if it has the given enchantment, else false
      */
-    public boolean hasEnchant(Enchantment ench) {
-        return this.getItemMeta().hasEnchant(ench);
+    public boolean hasEnchant( Enchantment ench ) {
+        return this.getItemMeta( ).hasEnchant( ench );
     }
 
     /**
@@ -115,8 +115,8 @@ public class CustomItemStack extends ItemStack {
      *
      * @return Enchantments level
      */
-    public int getEnchantLevel(Enchantment ench) {
-        return this.getItemMeta().getEnchantLevel(ench);
+    public int getEnchantLevel( Enchantment ench ) {
+        return this.getItemMeta( ).getEnchantLevel( ench );
     }
 
     /**
@@ -125,8 +125,8 @@ public class CustomItemStack extends ItemStack {
      *
      * @return Enchantments of this item
      */
-    public Map<Enchantment, Integer> getEnchants() {
-        return this.getItemMeta().getEnchants();
+    public Map< Enchantment, Integer > getEnchants( ) {
+        return this.getItemMeta( ).getEnchants( );
     }
 
     /**
@@ -138,8 +138,8 @@ public class CustomItemStack extends ItemStack {
      * @param ignoreLevelRestriction Whether to ignore max level cap
      * @return true if added successfully, else false
      */
-    public boolean addEnchant(Enchantment ench, int level, boolean ignoreLevelRestriction) {
-        return this.getItemMeta().addEnchant(ench, level, ignoreLevelRestriction);
+    public boolean addEnchant( Enchantment ench, int level, boolean ignoreLevelRestriction ) {
+        return this.getItemMeta( ).addEnchant( ench, level, ignoreLevelRestriction );
     }
 
     /**
@@ -149,8 +149,8 @@ public class CustomItemStack extends ItemStack {
      * @param ench Enchantment
      * @return true if removed successfully, else false
      */
-    public boolean removeEnchant(Enchantment ench) {
-        return this.getItemMeta().removeEnchant(ench);
+    public boolean removeEnchant( Enchantment ench ) {
+        return this.getItemMeta( ).removeEnchant( ench );
     }
 
     /**
@@ -161,8 +161,8 @@ public class CustomItemStack extends ItemStack {
      * @param ench Enchantment to check for conflict
      * @return true if there is conflicting enchantment, else false
      */
-    public boolean hasConflictingEnchant(Enchantment ench) {
-        return this.getItemMeta().hasConflictingEnchant(ench);
+    public boolean hasConflictingEnchant( Enchantment ench ) {
+        return this.getItemMeta( ).hasConflictingEnchant( ench );
     }
 
     /**
@@ -172,8 +172,8 @@ public class CustomItemStack extends ItemStack {
      * @param itemFlags ItemFlag to add
      * @return This Object, for chaining
      */
-    public CustomItemStack addItemFlags(ItemFlag... itemFlags) {
-        this.getItemMeta().addItemFlags(itemFlags);
+    public CustomItemStack addItemFlags( ItemFlag... itemFlags ) {
+        this.getItemMeta( ).addItemFlags( itemFlags );
         return this;
     }
 
@@ -184,8 +184,8 @@ public class CustomItemStack extends ItemStack {
      * @param itemFlags ItemFlag to remove
      * @return This Object, for chaining
      */
-    public CustomItemStack removeItemFlags(ItemFlag... itemFlags) {
-        this.getItemMeta().removeItemFlags(itemFlags);
+    public CustomItemStack removeItemFlags( ItemFlag... itemFlags ) {
+        this.getItemMeta( ).removeItemFlags( itemFlags );
         return this;
     }
 
@@ -195,8 +195,8 @@ public class CustomItemStack extends ItemStack {
      *
      * @return ItemFlag of this item
      */
-    public Set<ItemFlag> getItemFlags() {
-        return this.getItemMeta().getItemFlags();
+    public Set< ItemFlag > getItemFlags( ) {
+        return this.getItemMeta( ).getItemFlags( );
     }
 
     /**
@@ -206,8 +206,8 @@ public class CustomItemStack extends ItemStack {
      * @param flag ItemFlag to check
      * @return true if present, else false
      */
-    public boolean hasItemFlag(ItemFlag flag) {
-        return this.getItemMeta().hasItemFlag(flag);
+    public boolean hasItemFlag( ItemFlag flag ) {
+        return this.getItemMeta( ).hasItemFlag( flag );
     }
 
 }

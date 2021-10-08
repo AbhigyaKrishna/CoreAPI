@@ -11,7 +11,7 @@ public interface Validable {
      *
      * @return true if valid
      */
-    public boolean isValid();
+    public boolean isValid( );
 
     /**
      * Gets whether this Object represents an invalid instance.
@@ -19,5 +19,6 @@ public interface Validable {
      *
      * @return true if invalid
      */
-    public boolean isInvalid();
+    public boolean isInvalid( );
+
 }

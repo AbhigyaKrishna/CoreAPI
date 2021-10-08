@@ -6,7 +6,7 @@ import java.util.concurrent.atomic.AtomicLong;
  * An abstract implementation for {@link ConditionalScheduleWorkload} and,
  * computes the workload the given number times.
  */
-public abstract class FixedScheduleWorkload extends ConditionalScheduleWorkload<AtomicLong> {
+public abstract class FixedScheduleWorkload extends ConditionalScheduleWorkload< AtomicLong > {
 
     /**
      * Constructs the class.
@@ -14,8 +14,8 @@ public abstract class FixedScheduleWorkload extends ConditionalScheduleWorkload<
      *
      * @param numberOfExecutions Number of executions
      */
-    protected FixedScheduleWorkload(final AtomicLong numberOfExecutions) {
-        super(numberOfExecutions);
+    protected FixedScheduleWorkload( final AtomicLong numberOfExecutions ) {
+        super( numberOfExecutions );
     }
 
     /**
@@ -24,12 +24,13 @@ public abstract class FixedScheduleWorkload extends ConditionalScheduleWorkload<
      *
      * @param numberOfExecutions Number of executions
      */
-    protected FixedScheduleWorkload(final long numberOfExecutions) {
-        this(new AtomicLong(numberOfExecutions));
+    protected FixedScheduleWorkload( final long numberOfExecutions ) {
+        this( new AtomicLong( numberOfExecutions ) );
     }
 
     @Override
-    public final boolean test(final AtomicLong atomicInteger) {
-        return atomicInteger.decrementAndGet() > 0L;
+    public final boolean test( final AtomicLong atomicInteger ) {
+        return atomicInteger.decrementAndGet( ) > 0L;
     }
+
 }

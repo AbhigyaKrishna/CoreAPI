@@ -18,9 +18,9 @@ import org.bukkit.inventory.ItemStack;
 public class CloseMenuActionItem extends ActionItem {
 
     @Deprecated // Compatibility with server versions <= 1.8
-    public static final ItemStack DEFAULT_ICON = EnumReflection.getEnumConstant(Material.class, "BARRIER") != null
-            ? new SafeItemStack(Material.BARRIER)
-            : new StainedGlassItemStack(StainedGlassColor.RED, true);
+    public static final ItemStack DEFAULT_ICON = EnumReflection.getEnumConstant( Material.class, "BARRIER" ) != null
+            ? new SafeItemStack( Material.BARRIER )
+            : new StainedGlassItemStack( StainedGlassColor.RED, true );
 
     /**
      * Constructs the Close Menu Action Item.
@@ -28,8 +28,8 @@ public class CloseMenuActionItem extends ActionItem {
      *
      * @param lore Lore of the Item
      */
-    public CloseMenuActionItem(String... lore) {
-        this(ChatColor.RED + "Close", lore);
+    public CloseMenuActionItem( String... lore ) {
+        this( ChatColor.RED + "Close", lore );
     }
 
     /**
@@ -39,8 +39,8 @@ public class CloseMenuActionItem extends ActionItem {
      * @param name Name of the Item
      * @param lore Lore of the Item
      */
-    public CloseMenuActionItem(String name, String... lore) {
-        this(name, DEFAULT_ICON, lore);
+    public CloseMenuActionItem( String name, String... lore ) {
+        this( name, DEFAULT_ICON, lore );
     }
 
     /**
@@ -51,20 +51,20 @@ public class CloseMenuActionItem extends ActionItem {
      * @param icon ItemStack icon of the Item
      * @param lore Lore of the Item
      */
-    public CloseMenuActionItem(String name, ItemStack icon, String... lore) {
-        super(name, icon, lore);
-        addAction(new ItemAction() {
+    public CloseMenuActionItem( String name, ItemStack icon, String... lore ) {
+        super( name, icon, lore );
+        addAction( new ItemAction( ) {
 
             @Override
-            public ItemActionPriority getPriority() {
+            public ItemActionPriority getPriority( ) {
                 return ItemActionPriority.LOW;
             }
 
             @Override
-            public void onClick(ItemClickAction action) {
-                action.setClose(true);
+            public void onClick( ItemClickAction action ) {
+                action.setClose( true );
             }
-        });
+        } );
     }
 
 }

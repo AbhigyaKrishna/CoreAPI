@@ -12,6 +12,7 @@ public class Writable {
 
     private final Object to_write;
     private final WriteType type;
+
     /**
      * Constructs the writable object.
      * <p>
@@ -19,7 +20,7 @@ public class Writable {
      * @param to_write Object to write
      * @param type     Write type
      */
-    public Writable(Object to_write, WriteType type) {
+    public Writable( Object to_write, WriteType type ) {
         this.to_write = to_write;
         this.type = type;
     }
@@ -31,14 +32,14 @@ public class Writable {
      * @param to_write Object value to write
      * @return {@link Writable} object
      */
-    public static Writable of(Object to_write) {
-        if (to_write instanceof String) {
-            throw new UnsupportedOperationException("The class of the object to write is not compatible with this operation!");
+    public static Writable of( Object to_write ) {
+        if ( to_write instanceof String ) {
+            throw new UnsupportedOperationException( "The class of the object to write is not compatible with this operation!" );
         }
 
-        WriteType type = WriteType.of(to_write);
-        if (type != null) {
-            return new Writable(to_write, type);
+        WriteType type = WriteType.of( to_write );
+        if ( type != null ) {
+            return new Writable( to_write, type );
         }
         return null;
     }
@@ -49,7 +50,7 @@ public class Writable {
      *
      * @return Object to write
      */
-    public Object getObjectToWrite() {
+    public Object getObjectToWrite( ) {
         return to_write;
     }
 
@@ -59,7 +60,7 @@ public class Writable {
      *
      * @return {@link WriteType}
      */
-    public WriteType getWriteType() {
+    public WriteType getWriteType( ) {
         return type;
     }
 
@@ -79,37 +80,37 @@ public class Writable {
      *                                   to the definition of the specified class, field, method
      *                                   or constructor
      */
-    public void writeTo(DataOutput data) throws IOException, IllegalAccessException, IllegalArgumentException,
+    public void writeTo( DataOutput data ) throws IOException, IllegalAccessException, IllegalArgumentException,
             InvocationTargetException, NoSuchMethodException, SecurityException {
         /* cannot write when the object to write is null or the write type is null */
-        if (to_write == null || type == null) {
-            throw new IllegalArgumentException("The WriteType or the object to write is null!");
+        if ( to_write == null || type == null ) {
+            throw new IllegalArgumentException( "The WriteType or the object to write is null!" );
         }
 
         /* check instance of object to write */
-        for (int x = 0; x < type.getPrimitiveClasses().length; x++) {
-            Class<?> type_pr_classes = type.getPrimitiveClasses()[x];
-            if (type_pr_classes.equals(to_write.getClass())) {
+        for ( int x = 0; x < type.getPrimitiveClasses( ).length; x++ ) {
+            Class< ? > type_pr_classes = type.getPrimitiveClasses( )[x];
+            if ( type_pr_classes.equals( to_write.getClass( ) ) ) {
                 break;
-            } else if ((x + 1) == type.getPrimitiveClasses().length) {
-                throw new IllegalArgumentException("The WriteType does not match with the class of the object to write!");
+            } else if ( ( x + 1 ) == type.getPrimitiveClasses( ).length ) {
+                throw new IllegalArgumentException( "The WriteType does not match with the class of the object to write!" );
             }
         }
 
-        switch (type) {
+        switch ( type ) {
             case UTF:
-                data.writeUTF((String) to_write);
+                data.writeUTF( (String) to_write );
                 break;
             default:
-                for (Class<?> type_pr_classes : type.getPrimitiveClasses()) {
+                for ( Class< ? > type_pr_classes : type.getPrimitiveClasses( ) ) {
                     try {
                         final String write_method_name = "write"
-                                + (type.name().substring(0, 1) + type.name().toLowerCase().substring(1));
-                        final Method write = data.getClass().getMethod(write_method_name, type_pr_classes);
-                        write.invoke(data, to_write);
+                                + ( type.name( ).substring( 0, 1 ) + type.name( ).toLowerCase( ).substring( 1 ) );
+                        final Method write = data.getClass( ).getMethod( write_method_name, type_pr_classes );
+                        write.invoke( data, to_write );
                         break;
-                    } catch (Throwable t) {
-                        t.printStackTrace();
+                    } catch ( Throwable t ) {
+                        t.printStackTrace( );
                         continue;
                     }
                 }

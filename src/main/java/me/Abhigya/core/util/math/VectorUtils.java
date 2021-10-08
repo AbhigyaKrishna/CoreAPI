@@ -13,12 +13,12 @@ public class VectorUtils {
      *
      * @return New random unit vector.
      */
-    public static Vector getRandomVector() {
-        double x = Math.random() * 2 - 1;
-        double y = Math.random() * 2 - 1;
-        double z = Math.random() * 2 - 1;
+    public static Vector getRandomVector( ) {
+        double x = Math.random( ) * 2 - 1;
+        double y = Math.random( ) * 2 - 1;
+        double z = Math.random( ) * 2 - 1;
 
-        return new Vector(x, y, z).normalize();
+        return new Vector( x, y, z ).normalize( );
     }
 
     /**
@@ -27,13 +27,13 @@ public class VectorUtils {
      *
      * @return Random vector.
      */
-    public static Vector getRandomCircleVector() {
-        double rnd = Math.random() * 2 * Math.PI;
+    public static Vector getRandomCircleVector( ) {
+        double rnd = Math.random( ) * 2 * Math.PI;
 
-        double x = Math.cos(rnd);
-        double z = Math.sin(rnd);
+        double x = Math.cos( rnd );
+        double z = Math.sin( rnd );
 
-        return new Vector(x, 0, z);
+        return new Vector( x, 0, z );
     }
 
     /**
@@ -44,13 +44,13 @@ public class VectorUtils {
      * @param angle How much to rotate
      * @return The starting vector rotated
      */
-    public static final Vector rotateAroundAxisX(Vector v, double angle) {
+    public static final Vector rotateAroundAxisX( Vector v, double angle ) {
         double y, z, cos, sin;
-        cos = Math.cos(angle);
-        sin = Math.sin(angle);
-        y = v.getY() * cos - v.getZ() * sin;
-        z = v.getY() * sin + v.getZ() * cos;
-        return v.setY(y).setZ(z);
+        cos = Math.cos( angle );
+        sin = Math.sin( angle );
+        y = v.getY( ) * cos - v.getZ( ) * sin;
+        z = v.getY( ) * sin + v.getZ( ) * cos;
+        return v.setY( y ).setZ( z );
     }
 
     /**
@@ -61,13 +61,13 @@ public class VectorUtils {
      * @param angle How much to rotate
      * @return The starting vector rotated
      */
-    public static final Vector rotateAroundAxisY(Vector v, double angle) {
+    public static final Vector rotateAroundAxisY( Vector v, double angle ) {
         double x, z, cos, sin;
-        cos = Math.cos(angle);
-        sin = Math.sin(angle);
-        x = v.getX() * cos + v.getZ() * sin;
-        z = v.getX() * -sin + v.getZ() * cos;
-        return v.setX(x).setZ(z);
+        cos = Math.cos( angle );
+        sin = Math.sin( angle );
+        x = v.getX( ) * cos + v.getZ( ) * sin;
+        z = v.getX( ) * -sin + v.getZ( ) * cos;
+        return v.setX( x ).setZ( z );
     }
 
     /**
@@ -78,13 +78,13 @@ public class VectorUtils {
      * @param angle How much to rotate
      * @return The starting vector rotated
      */
-    public static final Vector rotateAroundAxisZ(Vector v, double angle) {
+    public static final Vector rotateAroundAxisZ( Vector v, double angle ) {
         double x, y, cos, sin;
-        cos = Math.cos(angle);
-        sin = Math.sin(angle);
-        x = v.getX() * cos - v.getY() * sin;
-        y = v.getX() * sin + v.getY() * cos;
-        return v.setX(x).setY(y);
+        cos = Math.cos( angle );
+        sin = Math.sin( angle );
+        x = v.getX( ) * cos - v.getY( ) * sin;
+        y = v.getX( ) * sin + v.getY( ) * cos;
+        return v.setX( x ).setY( y );
     }
 
     /**
@@ -97,10 +97,10 @@ public class VectorUtils {
      * @param angleZ The change angle on Z
      * @return The starting vector rotated
      */
-    public static final Vector rotateVector(Vector v, double angleX, double angleY, double angleZ) {
-        rotateAroundAxisX(v, angleX);
-        rotateAroundAxisY(v, angleY);
-        rotateAroundAxisZ(v, angleZ);
+    public static final Vector rotateVector( Vector v, double angleX, double angleY, double angleZ ) {
+        rotateAroundAxisX( v, angleX );
+        rotateAroundAxisY( v, angleY );
+        rotateAroundAxisZ( v, angleZ );
         return v;
     }
 
@@ -113,35 +113,35 @@ public class VectorUtils {
      * @param pitchDegrees The pitch offset in degrees
      * @return The starting vector rotated
      */
-    public static final Vector rotateVector(Vector vector, float yawDegrees, float pitchDegrees) {
+    public static final Vector rotateVector( Vector vector, float yawDegrees, float pitchDegrees ) {
         // get radians.
-        double yaw = Math.toRadians(-yawDegrees);
-        double pitch = Math.toRadians(-pitchDegrees);
+        double yaw = Math.toRadians( -yawDegrees );
+        double pitch = Math.toRadians( -pitchDegrees );
 
         // get yaw/pitch sine and cosine.
-        double cosYaw = Math.cos(yaw);
-        double cosPitch = Math.cos(pitch);
-        double sinYaw = Math.sin(yaw);
-        double sinPitch = Math.sin(pitch);
+        double cosYaw = Math.cos( yaw );
+        double cosPitch = Math.cos( pitch );
+        double sinYaw = Math.sin( yaw );
+        double sinPitch = Math.sin( pitch );
 
         // axis.
         double initialX, initialY, initialZ;
         double x, y, z;
 
         // Z_axis rotation (Pitch)
-        initialX = vector.getX();
-        initialY = vector.getY();
+        initialX = vector.getX( );
+        initialY = vector.getY( );
         x = initialX * cosPitch - initialY * sinPitch;
         y = initialX * sinPitch + initialY * cosPitch;
 
         // Y_axis rotation (Yaw)
-        initialZ = vector.getZ();
+        initialZ = vector.getZ( );
         initialX = x;
         z = initialZ * cosYaw - initialX * sinYaw;
         x = initialZ * sinYaw + initialX * cosYaw;
 
         // return a new vector with calculated axis.
-        return new Vector(x, y, z);
+        return new Vector( x, y, z );
     }
 
 }

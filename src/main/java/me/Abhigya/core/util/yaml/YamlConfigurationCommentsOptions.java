@@ -16,41 +16,41 @@ public class YamlConfigurationCommentsOptions extends YamlConfigurationOptions {
 
     public static final String PATH_COMMENT_PREFIX = "## ";
 
-    private final Map<String, Map<String, String>> comments;
+    private final Map< String, Map< String, String > > comments;
     private boolean copy_comments;
 
-    protected YamlConfigurationCommentsOptions(YamlConfigurationComments configuration) {
-        super(configuration);
-        this.comments = new HashMap<>();
+    protected YamlConfigurationCommentsOptions( YamlConfigurationComments configuration ) {
+        super( configuration );
+        this.comments = new HashMap<>( );
         this.copy_comments = true;
     }
 
     @Override
-    public YamlConfigurationComments configuration() {
-        return (YamlConfigurationComments) super.configuration();
+    public YamlConfigurationComments configuration( ) {
+        return (YamlConfigurationComments) super.configuration( );
     }
 
     @Override
-    public YamlConfigurationCommentsOptions copyDefaults(boolean value) {
-        super.copyDefaults(value);
+    public YamlConfigurationCommentsOptions copyDefaults( boolean value ) {
+        super.copyDefaults( value );
         return this;
     }
 
     @Override
-    public YamlConfigurationCommentsOptions pathSeparator(char value) {
-        super.pathSeparator(value);
+    public YamlConfigurationCommentsOptions pathSeparator( char value ) {
+        super.pathSeparator( value );
         return this;
     }
 
     @Override
-    public YamlConfigurationCommentsOptions header(String value) {
-        super.header(value);
+    public YamlConfigurationCommentsOptions header( String value ) {
+        super.header( value );
         return this;
     }
 
     @Override
-    public YamlConfigurationCommentsOptions copyHeader(boolean value) {
-        super.copyHeader(value);
+    public YamlConfigurationCommentsOptions copyHeader( boolean value ) {
+        super.copyHeader( value );
         return this;
     }
 
@@ -72,24 +72,24 @@ public class YamlConfigurationCommentsOptions extends YamlConfigurationOptions {
      * @param comment The comment
      * @return This object, for chaining
      */
-    public YamlConfigurationCommentsOptions comment(ConfigurationSection section, String path, String comment) {
-        Validate.notNull(section, "The section cannot be null");
-        Validate.isTrue(!StringUtils.isBlank(path), "Cannot comment an empty path");
-        Validate.isTrue(!path.contains(String.valueOf(pathSeparator())),
-                "The path cannot contains references to sub-sections (path separator '" + pathSeparator()
-                        + "' found)!");
+    public YamlConfigurationCommentsOptions comment( ConfigurationSection section, String path, String comment ) {
+        Validate.notNull( section, "The section cannot be null" );
+        Validate.isTrue( !StringUtils.isBlank( path ), "Cannot comment an empty path" );
+        Validate.isTrue( !path.contains( String.valueOf( pathSeparator( ) ) ),
+                "The path cannot contains references to sub-sections (path separator '" + pathSeparator( )
+                        + "' found)!" );
 
-        Map<String, String> sc_comments = comments.get(section.getCurrentPath());
+        Map< String, String > sc_comments = comments.get( section.getCurrentPath( ) );
 
-        if (sc_comments == null) {
-            comments.put(section.getCurrentPath(), sc_comments = new HashMap<String, String>());
+        if ( sc_comments == null ) {
+            comments.put( section.getCurrentPath( ), sc_comments = new HashMap< String, String >( ) );
         }
 
-        if (StringUtils.isNotBlank(comment)) {
-            sc_comments.put(path, comment);
+        if ( StringUtils.isNotBlank( comment ) ) {
+            sc_comments.put( path, comment );
         } else { // if the comment is blank, is the equivalent to use the
             // method: removeComment()
-            sc_comments.remove(path);
+            sc_comments.remove( path );
         }
         return this;
     }
@@ -110,20 +110,20 @@ public class YamlConfigurationCommentsOptions extends YamlConfigurationOptions {
      * @param comment Text of the comment.
      * @return Object, for chaining.
      */
-    public YamlConfigurationCommentsOptions comment(String path, String comment) {
-        Validate.isTrue(!StringUtils.isBlank(path), "Cannot comment an empty path");
+    public YamlConfigurationCommentsOptions comment( String path, String comment ) {
+        Validate.isTrue( !StringUtils.isBlank( path ), "Cannot comment an empty path" );
 
-        int index = path.lastIndexOf(pathSeparator());
-        if (index == -1) {
+        int index = path.lastIndexOf( pathSeparator( ) );
+        if ( index == -1 ) {
             // we're commenting a section that is at the root.
-            return comment(configuration(), path, comment);
+            return comment( configuration( ), path, comment );
         } else {
             // we're commenting something that is within a sub configuration
             // section.
-            String parent_path = path.substring(0, index);
-            String path_name = path.substring(index + 1);
+            String parent_path = path.substring( 0, index );
+            String path_name = path.substring( index + 1 );
 
-            return comment(configuration().getConfigurationSection(parent_path), path_name, comment);
+            return comment( configuration( ).getConfigurationSection( parent_path ), path_name, comment );
         }
     }
 
@@ -135,9 +135,9 @@ public class YamlConfigurationCommentsOptions extends YamlConfigurationOptions {
      * @param path    Path of the set object.
      * @return true if commented.
      */
-    public boolean isCommented(ConfigurationSection section, String path) {
-        boolean a = comments.get(section.getCurrentPath()) != null;
-        boolean b = a && comments.get(section.getCurrentPath()).containsKey(path);
+    public boolean isCommented( ConfigurationSection section, String path ) {
+        boolean a = comments.get( section.getCurrentPath( ) ) != null;
+        boolean b = a && comments.get( section.getCurrentPath( ) ).containsKey( path );
 
 //		System.out.println ( ">>>> isCommented: path = " + path );
 //		System.out.println ( ">>>> isCommented: a = " + a );
@@ -164,10 +164,10 @@ public class YamlConfigurationCommentsOptions extends YamlConfigurationOptions {
      * @param path    Path of the set object.
      * @return Comment of the given path or null if not commented.
      */
-    public String getComment(ConfigurationSection section, String path) {
-        Map<String, String> parent = comments.get(section.getCurrentPath());
+    public String getComment( ConfigurationSection section, String path ) {
+        Map< String, String > parent = comments.get( section.getCurrentPath( ) );
 
-        return parent != null ? parent.get(path) : null;
+        return parent != null ? parent.get( path ) : null;
 //		return isCommented ( section , path ) ? comments.get ( section.getCurrentPath ( ) ).get ( path ) : null;
     }
 
@@ -181,8 +181,8 @@ public class YamlConfigurationCommentsOptions extends YamlConfigurationOptions {
      * @return All the comments of all the path of all the
      * {@link ConfigurationSection}.
      */
-    public Map<String, Map<String, String>> getComments() {
-        return Collections.unmodifiableMap(comments);
+    public Map< String, Map< String, String > > getComments( ) {
+        return Collections.unmodifiableMap( comments );
     }
 
     /**
@@ -192,7 +192,7 @@ public class YamlConfigurationCommentsOptions extends YamlConfigurationOptions {
      *
      * @return true if the comments are enabled.
      */
-    public boolean copyComments() {
+    public boolean copyComments( ) {
         return this.copy_comments;
     }
 
@@ -204,8 +204,9 @@ public class YamlConfigurationCommentsOptions extends YamlConfigurationOptions {
      * @param copy true to enable the comments.
      * @return This object, for chaining.
      */
-    public YamlConfigurationCommentsOptions copyComments(boolean copy) {
+    public YamlConfigurationCommentsOptions copyComments( boolean copy ) {
         this.copy_comments = copy;
         return this;
     }
+
 }

@@ -17,8 +17,8 @@ public class VoidActionItem extends Item {
      * @param icon ItemStack Icon of the Item
      * @param lore Lore of the Item
      */
-    public VoidActionItem(String name, ItemStack icon, String... lore) {
-        super(name, icon, lore);
+    public VoidActionItem( String name, ItemStack icon, String... lore ) {
+        super( name, icon, lore );
     }
 
     /**
@@ -28,7 +28,7 @@ public class VoidActionItem extends Item {
      * @param action {@link ItemClickAction} for the Item
      */
     @Override
-    public final void onClick(ItemClickAction action) {
+    public final void onClick( ItemClickAction action ) {
         /* do nothing */
     }
 

@@ -44,8 +44,8 @@
                             <shadedPattern>me.Abhigya.core.util.xseries</shadedPattern>
                         </relocation>
                         <relocation>
-                            <pattern>net.jitse.npclib</pattern>
-                            <shadedPattern>me.Abhigya.core.util.npc.npclib</shadedPattern>
+                            <pattern>io.github.retrooper.packetevents</pattern>
+                            <shadedPattern>me.Abhigya.core.util.packet.packetevents</shadedPattern>
                         </relocation>
                     </relocations>
                     <filters>
@@ -67,7 +67,7 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
+            <!--<plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>3.3.0</version>
@@ -79,7 +79,7 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
+            </plugin>-->
         </plugins>
         <resources>
             <resource>
@@ -172,14 +172,6 @@
             <scope>compile</scope>
         </dependency>
 
-        <!-- NPC lib -->
-        <dependency>
-            <groupId>net.jitse</groupId>
-            <artifactId>npclib-api</artifactId>
-            <version>2.11.1-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
-
         <!-- Vault -->
         <dependency>
             <groupId>com.github.MilkBowl</groupId>
@@ -219,12 +211,12 @@
         </dependency>
 
         <!-- Packet Events -->
-<!--        <dependency>-->
-<!--            <groupId>com.github.retrooper</groupId>-->
-<!--            <artifactId>packetevents</artifactId>-->
-<!--            <version>1.8-pre-17</version>-->
-<!--            <scope>compile</scope>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>com.github.retrooper</groupId>
+            <artifactId>packetevents</artifactId>
+            <version>1.8-pre-18</version>
+            <scope>compile</scope>
+        </dependency>
 
         <!-- Reflections -->
         <dependency>

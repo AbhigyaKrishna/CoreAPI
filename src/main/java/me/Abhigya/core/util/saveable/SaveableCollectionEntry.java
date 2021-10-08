@@ -7,8 +7,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.FIELD)
+@Retention( RetentionPolicy.RUNTIME )
+@Target( ElementType.FIELD )
 public @interface SaveableCollectionEntry {
 
     /**
@@ -18,7 +18,7 @@ public @interface SaveableCollectionEntry {
      *
      * @return Name of the sub-section where this will be saved.
      */
-    String subsection();
+    String subsection( );
 
     /**
      * Gets the prefix for the name of sub-section where this will be saved.
@@ -26,6 +26,6 @@ public @interface SaveableCollectionEntry {
      *
      * @return Prefix for the name of sub-section where this will be saved.
      */
-    String subsectionprefix() default StringUtils.EMPTY;
+    String subsectionprefix( ) default StringUtils.EMPTY;
 
 }

@@ -56,142 +56,143 @@ public abstract class BossBarOldest extends BossBarBase implements Listener {
      * flag to determine if the bar has been destroyed because of the player was offline
      */
     private volatile boolean offline = false;
-    public BossBarOldest(String title, double progress, Player player) {
-        Validate.isTrue(player.isOnline(), "the player must be online!");
 
-        this.player = new UUIDPlayer(player);
+    public BossBarOldest( String title, double progress, Player player ) {
+        Validate.isTrue( player.isOnline( ), "the player must be online!" );
 
-        this.setTitle(title);
-        this.setProgress(progress);
-        this.create();
+        this.player = new UUIDPlayer( player );
 
-        Bukkit.getPluginManager().registerEvents(this, CoreAPI.getInstance());
+        this.setTitle( title );
+        this.setProgress( progress );
+        this.create( );
+
+        Bukkit.getPluginManager( ).registerEvents( this, CoreAPI.getInstance( ) );
+    }
+
+    @EventHandler( priority = EventPriority.MONITOR )
+    public void onTeleport( final PlayerTeleportEvent event ) {
+        Bukkit.getScheduler( ).runTaskLater( CoreAPI.getInstance( ), new Runnable( ) {
+            @Override
+            public void run( ) {
+                Player player = event.getPlayer( );
+
+                if ( player.getUniqueId( ).equals( BossBarOldest.this.player.getUniqueId( ) )
+                        && !offline && isVisible( ) ) {
+                    BossBarOldest.this.create( );
+                }
+            }
+        }, 10L );
     }    /**
      * the bar's updater command
      */
-    protected final Runnable update_command = () -> {
-        if (isVisible()) {
-            Player player = getPlayer();
+    protected final Runnable update_command = ( ) -> {
+        if ( isVisible( ) ) {
+            Player player = getPlayer( );
 
-            if (player == null || !player.isOnline()) {
-                if (!offline) {
-                    this.destroy();
+            if ( player == null || !player.isOnline( ) ) {
+                if ( !offline ) {
+                    this.destroy( );
                     this.offline = true;
                 }
             } else {
-                if (offline) {
-                    this.create();
+                if ( offline ) {
+                    this.create( );
                     this.offline = false;
                 }
             }
 
-            if (!offline) {
-                this.update();
+            if ( !offline ) {
+                this.update( );
             }
         } else {
-            this.destroy();
+            this.destroy( );
         }
     };
 
-    @EventHandler(priority = EventPriority.MONITOR)
-    public void onTeleport(final PlayerTeleportEvent event) {
-        Bukkit.getScheduler().runTaskLater(CoreAPI.getInstance(), new Runnable() {
+    @EventHandler( priority = EventPriority.MONITOR )
+    public void onRespawn( final PlayerRespawnEvent event ) {
+        Bukkit.getScheduler( ).runTaskLater( CoreAPI.getInstance( ), new Runnable( ) {
             @Override
-            public void run() {
-                Player player = event.getPlayer();
+            public void run( ) {
+                Player player = event.getPlayer( );
 
-                if (player.getUniqueId().equals(BossBarOldest.this.player.getUniqueId())
-                        && !offline && isVisible()) {
-                    BossBarOldest.this.create();
+                if ( player.getUniqueId( ).equals( BossBarOldest.this.player.getUniqueId( ) )
+                        && !offline && isVisible( ) ) {
+                    BossBarOldest.this.create( );
                 }
             }
-        }, 10L);
-    }
-
-    @EventHandler(priority = EventPriority.MONITOR)
-    public void onRespawn(final PlayerRespawnEvent event) {
-        Bukkit.getScheduler().runTaskLater(CoreAPI.getInstance(), new Runnable() {
-            @Override
-            public void run() {
-                Player player = event.getPlayer();
-
-                if (player.getUniqueId().equals(BossBarOldest.this.player.getUniqueId())
-                        && !offline && isVisible()) {
-                    BossBarOldest.this.create();
-                }
-            }
-        }, 10L);
+        }, 10L );
     }
 
     /**
      * Creates the bar.
      */
-    protected synchronized void create() {
-        disposeExecutors();
+    protected synchronized void create( ) {
+        disposeExecutors( );
 
-        update_executor = Bukkit.getScheduler().runTaskTimerAsynchronously(CoreAPI.getInstance(),
-                update_command, 0L, 0L);
+        update_executor = Bukkit.getScheduler( ).runTaskTimerAsynchronously( CoreAPI.getInstance( ),
+                update_command, 0L, 0L );
     }
 
     /**
      * Updates the title and the progress of the bar.
      */
-    protected synchronized void update() {
-        throw new UnsupportedOperationException("not implemented yet");
+    protected synchronized void update( ) {
+        throw new UnsupportedOperationException( "not implemented yet" );
     }
 
     /**
      * Destroys the bar.
      */
-    protected synchronized void destroy() {
-        disposeExecutors();
+    protected synchronized void destroy( ) {
+        disposeExecutors( );
     }
 
     /**
      * Disposes the {@link #update_executor}.
      */
-    protected synchronized void disposeExecutors() {
-        if (update_executor != null) {
-            update_executor.cancel();
+    protected synchronized void disposeExecutors( ) {
+        if ( update_executor != null ) {
+            update_executor.cancel( );
             update_executor = null;
         }
     }
 
     @Override
-    public synchronized String getTitle() {
+    public synchronized String getTitle( ) {
         return this.title;
     }
 
     @Override
-    public synchronized void setTitle(String title) {
-        this.checkTitle(title);
+    public synchronized void setTitle( String title ) {
+        this.checkTitle( title );
         this.title = title;
 
-        aliveCheck();
+        aliveCheck( );
     }
 
     @Override
-    public synchronized double getProgress() {
+    public synchronized double getProgress( ) {
         return this.progress;
     }
 
     @Override
-    public synchronized void setProgress(double progress) {
-        this.checkProgress(progress);
+    public synchronized void setProgress( double progress ) {
+        this.checkProgress( progress );
         this.progress = progress;
 
-        aliveCheck();
+        aliveCheck( );
     }
 
     /**
      * Re-starts the updater when the player reconnects.
      */
-    protected synchronized void aliveCheck() {
-        if (offline) {
-            Player player = getPlayer();
+    protected synchronized void aliveCheck( ) {
+        if ( offline ) {
+            Player player = getPlayer( );
 
-            if (player != null && player.isOnline()) {
-                create();
+            if ( player != null && player.isOnline( ) ) {
+                create( );
 
                 offline = false;
             }
@@ -199,17 +200,17 @@ public abstract class BossBarOldest extends BossBarBase implements Listener {
     }
 
     @Override
-    public final synchronized boolean isVisible() {
+    public final synchronized boolean isVisible( ) {
         return this.visible;
     }
 
     @Override
-    public final synchronized void setVisible(boolean visible) {
-        if (visible != this.visible) {
-            if (visible) {
-                this.create();
+    public final synchronized void setVisible( boolean visible ) {
+        if ( visible != this.visible ) {
+            if ( visible ) {
+                this.create( );
             } else {
-                this.destroy();
+                this.destroy( );
             }
 
             this.visible = visible;
@@ -217,38 +218,38 @@ public abstract class BossBarOldest extends BossBarBase implements Listener {
     }
 
     @Override
-    public final Player getPlayer() {
-        return player.get();
+    public final Player getPlayer( ) {
+        return player.get( );
     }
 
     @Override
-    public final BarColor getColor() {
+    public final BarColor getColor( ) {
         return BarColor.PINK;
     }
 
     @Override
-    public final void setColor(BarColor color) {
+    public final void setColor( BarColor color ) {
     }
 
     @Override
-    public final BarStyle getStyle() {
+    public final BarStyle getStyle( ) {
         return BarStyle.SOLID;
     }
 
     @Override
-    public final void setStyle(BarStyle style) {
+    public final void setStyle( BarStyle style ) {
     }
 
     @Override
-    public final void removeFlag(BarFlag flag) {
+    public final void removeFlag( BarFlag flag ) {
     }
 
     @Override
-    public final void addFlag(BarFlag flag) {
+    public final void addFlag( BarFlag flag ) {
     }
 
     @Override
-    public final boolean hasFlag(BarFlag flag) {
+    public final boolean hasFlag( BarFlag flag ) {
         return false;
     }
 
@@ -258,8 +259,8 @@ public abstract class BossBarOldest extends BossBarBase implements Listener {
      *
      * @param title Title to check
      */
-    protected void checkTitle(String title) {
-        Validate.notNull(title, "the title cannot be null!");
+    protected void checkTitle( String title ) {
+        Validate.notNull( title, "the title cannot be null!" );
     }
 
     /**
@@ -268,14 +269,16 @@ public abstract class BossBarOldest extends BossBarBase implements Listener {
      *
      * @return Location for the handle entity
      */
-    protected Location calculateHandleLocation() {
-        Vector direction = getPlayer().getLocation().getDirection().multiply(20D);
-        direction = VectorUtils.rotateAroundAxisY(direction, Math.toRadians(15.0D));
-        direction = VectorUtils.rotateAroundAxisX(direction, Math.toRadians(15.0D));
-        direction = VectorUtils.rotateAroundAxisZ(direction, Math.toRadians(15.0D));
+    protected Location calculateHandleLocation( ) {
+        Vector direction = getPlayer( ).getLocation( ).getDirection( ).multiply( 20D );
+        direction = VectorUtils.rotateAroundAxisY( direction, Math.toRadians( 15.0D ) );
+        direction = VectorUtils.rotateAroundAxisX( direction, Math.toRadians( 15.0D ) );
+        direction = VectorUtils.rotateAroundAxisZ( direction, Math.toRadians( 15.0D ) );
 
-        return getPlayer().getLocation().add(0.0D, 3.0D, 0.0D).add(direction);
+        return getPlayer( ).getLocation( ).add( 0.0D, 3.0D, 0.0D ).add( direction );
     }
+
+
 
 
 }

@@ -16,15 +16,15 @@ import java.lang.reflect.Method;
  * Represents the item stacks whose type
  * is wool, and allows to change its color easily.
  */
-@SuppressWarnings("deprecation")
+@SuppressWarnings( "deprecation" )
 public class WoolItemStack extends CustomItemStack {
 
     public static final WoolColor DEFAULT_COLOR = WoolColor.WHITE;
-    public static final Material WOOL_ITEM_STACK_TYPE = Material.valueOf("WOOL");
+    public static final Material WOOL_ITEM_STACK_TYPE = Material.valueOf( "WOOL" );
 
     @Utility
-    public WoolItemStack() {
-        this(DEFAULT_COLOR);
+    public WoolItemStack( ) {
+        this( DEFAULT_COLOR );
     }
 
     /**
@@ -33,8 +33,8 @@ public class WoolItemStack extends CustomItemStack {
      *
      * @param color Color that this wool item stack will have
      */
-    public WoolItemStack(WoolColor color) {
-        this(color, 1);
+    public WoolItemStack( WoolColor color ) {
+        this( color, 1 );
     }
 
     /**
@@ -44,13 +44,13 @@ public class WoolItemStack extends CustomItemStack {
      * @param color  Color that this wool item stack will have
      * @param amount Stack size
      */
-    public WoolItemStack(WoolColor color, int amount) {
-        Validate.notNull(color, "Color cannot be null");
+    public WoolItemStack( WoolColor color, int amount ) {
+        Validate.notNull( color, "Color cannot be null" );
 
         /* initialize */
-        super.setType(WOOL_ITEM_STACK_TYPE);
-        this.setAmount(amount);
-        this.setColor(color);
+        super.setType( WOOL_ITEM_STACK_TYPE );
+        this.setAmount( amount );
+        this.setColor( color );
     }
 
     /**
@@ -61,31 +61,31 @@ public class WoolItemStack extends CustomItemStack {
      * @throws IllegalArgumentException if the specified stack is null or
      *                                  returns an item meta not created by the item factory
      */
-    public WoolItemStack(final WoolItemStack stack) throws IllegalArgumentException {
-        Validate.notNull(stack, "Cannot copy null stack");
-        this.setAmount(stack.getAmount());
-        if (ItemStackUtils.AVAILABLE_DURABILITY_FIELD) {
-            super.setDurability(stack.getDurability());
+    public WoolItemStack( final WoolItemStack stack ) throws IllegalArgumentException {
+        Validate.notNull( stack, "Cannot copy null stack" );
+        this.setAmount( stack.getAmount( ) );
+        if ( ItemStackUtils.AVAILABLE_DURABILITY_FIELD ) {
+            super.setDurability( stack.getDurability( ) );
         }
 
-        super.setData(stack.getData());
-        if (stack.hasItemMeta()) {
-            setItemMeta0(stack.getItemMeta(), WOOL_ITEM_STACK_TYPE);
+        super.setData( stack.getData( ) );
+        if ( stack.hasItemMeta( ) ) {
+            setItemMeta0( stack.getItemMeta( ), WOOL_ITEM_STACK_TYPE );
         }
     }
 
     @Override
-    public void setType(Material material) {
+    public void setType( Material material ) {
         /* ignore */
     }
 
     @Override
-    public void setData(MaterialData data) {
+    public void setData( MaterialData data ) {
         /* ignore */
     }
 
     @Override
-    public void setDurability(short durability) {
+    public void setDurability( short durability ) {
         /* ignore */
     }
 
@@ -95,16 +95,16 @@ public class WoolItemStack extends CustomItemStack {
      *
      * @param color New color
      */
-    public void setColor(WoolColor color) {
-        Validate.notNull(color, "Color cannot be null");
+    public void setColor( WoolColor color ) {
+        Validate.notNull( color, "Color cannot be null" );
 
-        Material wool_material = EnumReflection.getEnumConstant(Material.class, color.name() + "_WOOL");
-        if (wool_material == null) {
+        Material wool_material = EnumReflection.getEnumConstant( Material.class, color.name( ) + "_WOOL" );
+        if ( wool_material == null ) {
             // we are setting color by changing the durability-
-            rawSetDurability(color.getShortValue());
+            rawSetDurability( color.getShortValue( ) );
         } else {
             // we are setting the color by changing the type.
-            super.setType(wool_material);
+            super.setType( wool_material );
         }
     }
 
@@ -112,23 +112,23 @@ public class WoolItemStack extends CustomItemStack {
      * The durability of the wool item stack
      * cannot be changed manually.
      */
-    private void rawSetDurability(short durability) {
-        if (ItemStackUtils.AVAILABLE_DURABILITY_FIELD) {
-            super.setDurability(durability);
+    private void rawSetDurability( short durability ) {
+        if ( ItemStackUtils.AVAILABLE_DURABILITY_FIELD ) {
+            super.setDurability( durability );
         }
     }
 
     /**
      * Cannot be overridden, so it's safe for constructor call
      */
-    private void setItemMeta0(ItemMeta itemMeta, Material material) {
+    private void setItemMeta0( ItemMeta itemMeta, Material material ) {
         try {
-            Method method = this.getClass().getDeclaredMethod("setItemMeta0", ItemMeta.class, Material.class);
-            method.setAccessible(true);
-            method.invoke(this, itemMeta, material);
-        } catch (NoSuchMethodException | SecurityException | IllegalAccessException
-                | IllegalArgumentException | InvocationTargetException e) {
-            e.printStackTrace();
+            Method method = this.getClass( ).getDeclaredMethod( "setItemMeta0", ItemMeta.class, Material.class );
+            method.setAccessible( true );
+            method.invoke( this, itemMeta, material );
+        } catch ( NoSuchMethodException | SecurityException | IllegalAccessException
+                | IllegalArgumentException | InvocationTargetException e ) {
+            e.printStackTrace( );
         }
     }
 

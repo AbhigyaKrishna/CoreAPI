@@ -12,7 +12,7 @@ public class JsonOptions {
     /**
      * Constructs the {@link JsonOptions}.
      */
-    public JsonOptions() {
+    public JsonOptions( ) {
         this.html_safe = false;
         this.indent = null;
         this.serialize_nulls = true;
@@ -24,7 +24,7 @@ public class JsonOptions {
      *
      * @return Html safe option
      */
-    public boolean htmlSafe() {
+    public boolean htmlSafe( ) {
         return html_safe;
     }
 
@@ -35,7 +35,7 @@ public class JsonOptions {
      * @param html_safe Option value
      * @return This Object, for chaining
      */
-    public JsonOptions htmlSafe(boolean html_safe) {
+    public JsonOptions htmlSafe( boolean html_safe ) {
         this.html_safe = html_safe;
         return this;
     }
@@ -46,8 +46,8 @@ public class JsonOptions {
      *
      * @return Indent of Json
      */
-    public String indent() {
-        return (indent == null ? new String() : indent);
+    public String indent( ) {
+        return ( indent == null ? new String( ) : indent );
     }
 
     /**
@@ -57,8 +57,8 @@ public class JsonOptions {
      * @param indent Indent to set
      * @return This Object, for chaining
      */
-    public JsonOptions indent(String indent) {
-        this.indent = ((indent != null && indent.length() == 0) ? null : indent);
+    public JsonOptions indent( String indent ) {
+        this.indent = ( ( indent != null && indent.length( ) == 0 ) ? null : indent );
         return this;
     }
 
@@ -68,7 +68,7 @@ public class JsonOptions {
      *
      * @return Serialize Nulls
      */
-    public boolean serializeNulls() {
+    public boolean serializeNulls( ) {
         return serialize_nulls;
     }
 
@@ -79,7 +79,7 @@ public class JsonOptions {
      * @param serialize_nulls Option value
      * @return This Object, for chaining
      */
-    public JsonOptions serializeNulls(boolean serialize_nulls) {
+    public JsonOptions serializeNulls( boolean serialize_nulls ) {
         this.serialize_nulls = serialize_nulls;
         return this;
     }

@@ -19,7 +19,7 @@ public class PacketEvent {
      * @param player the player sending-receiving the packet.
      * @param packet the packet.
      */
-    public PacketEvent(final Player player, final Object packet) {
+    public PacketEvent( final Player player, final Object packet ) {
         this.player = player;
         this.packet = packet;
     }
@@ -30,7 +30,7 @@ public class PacketEvent {
      *
      * @return the player.
      */
-    public Player getPlayer() {
+    public Player getPlayer( ) {
         return player;
     }
 
@@ -40,7 +40,7 @@ public class PacketEvent {
      *
      * @return the packet.
      */
-    public Object getPacket() {
+    public Object getPacket( ) {
         return packet;
     }
 
@@ -50,8 +50,8 @@ public class PacketEvent {
      *
      * @return Name of the packet
      */
-    public String getPacketName() {
-        return packet.getClass().getSimpleName();
+    public String getPacketName( ) {
+        return packet.getClass( ).getSimpleName( );
     }
 
     /**
@@ -60,7 +60,7 @@ public class PacketEvent {
      *
      * @return true if cancelled.
      */
-    public boolean isCancelled() {
+    public boolean isCancelled( ) {
         return cancelled;
     }
 
@@ -70,7 +70,7 @@ public class PacketEvent {
      *
      * @param flag true to cancel.
      */
-    public void setCancelled(boolean flag) {
+    public void setCancelled( boolean flag ) {
         this.cancelled = flag;
     }
 

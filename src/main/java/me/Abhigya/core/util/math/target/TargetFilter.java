@@ -15,6 +15,6 @@ public interface TargetFilter {
      * @return <code>true</code> if and only if the <code>entity</code> is the
      * desired one.
      */
-    public boolean accept(Entity entity);
+    public boolean accept( Entity entity );
 
 }

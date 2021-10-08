@@ -15,8 +15,8 @@ public class ConsoleUtils {
      *
      * @param message Message to send.
      */
-    public static void sendMessage(String message) {
-        Bukkit.getConsoleSender().sendMessage(message);
+    public static void sendMessage( String message ) {
+        Bukkit.getConsoleSender( ).sendMessage( message );
     }
 
     /**
@@ -27,8 +27,8 @@ public class ConsoleUtils {
      * @param message Content of the message.
      * @param plugin  Plugin sender.
      */
-    public static void sendPluginMessage(ChatColor color, String message, Plugin plugin) {
-        sendMessage(color + "[" + plugin.getName() + "] " + message);
+    public static void sendPluginMessage( ChatColor color, String message, Plugin plugin ) {
+        sendMessage( color + "[" + plugin.getName( ) + "] " + message );
     }
 
     /**
@@ -38,8 +38,8 @@ public class ConsoleUtils {
      * @param message Content of the message.
      * @param plugin  Plugin sender.
      */
-    public static void sendPluginMessage(String message, Plugin plugin) {
-        sendMessage("[" + plugin.getName() + "] " + message);
+    public static void sendPluginMessage( String message, Plugin plugin ) {
+        sendMessage( "[" + plugin.getName( ) + "] " + message );
     }
 
     /**
@@ -50,8 +50,8 @@ public class ConsoleUtils {
      * @param message Content of the message.
      * @param alias   Plugin sender alias.
      */
-    public static void sendPluginMessage(ChatColor color, String message, String alias) {
-        sendMessage(color + "[" + alias + "] " + message);
+    public static void sendPluginMessage( ChatColor color, String message, String alias ) {
+        sendMessage( color + "[" + alias + "] " + message );
     }
 
     /**
@@ -61,8 +61,8 @@ public class ConsoleUtils {
      * @param message Content of the message.
      * @param alias   Plugin sender alias.
      */
-    public static void sendPluginMessage(String message, String alias) {
-        sendMessage("[" + alias + "] " + message);
+    public static void sendPluginMessage( String message, String alias ) {
+        sendMessage( "[" + alias + "] " + message );
     }
 
 }

@@ -33,38 +33,38 @@ public class TargetUtils {
      * @param filter Filter
      * @return Target entity or null
      */
-    public static Entity getTarget(Ray ray, World world, double range, TargetFilter filter) {
-        Map<Double, Entity> map = new HashMap<>();
-        List<Double> keys = new ArrayList<>();
-        for (Entity entity : world.getEntities()) {
-            if (!entity.isValid()) {
+    public static Entity getTarget( Ray ray, World world, double range, TargetFilter filter ) {
+        Map< Double, Entity > map = new HashMap<>( );
+        List< Double > keys = new ArrayList<>( );
+        for ( Entity entity : world.getEntities( ) ) {
+            if ( !entity.isValid( ) ) {
                 continue;
             }
 
             /* checking range */
-            final double distance = entity.getLocation().toVector().distance(ray.getOrigin());
-            if (distance > range) {
+            final double distance = entity.getLocation( ).toVector( ).distance( ray.getOrigin( ) );
+            if ( distance > range ) {
                 continue;
             }
 
             /* checking ray-bounds intersection */
-            final BoundingBox bounds = EntityReflection.getBoundingBox(entity);
-            if (!IntersectionUtils.intersectRayBoundsFast(ray, bounds)
-                    && !IntersectionUtils.intersectRayBounds(ray, bounds, null)) {
+            final BoundingBox bounds = EntityReflection.getBoundingBox( entity );
+            if ( !IntersectionUtils.intersectRayBoundsFast( ray, bounds )
+                    && !IntersectionUtils.intersectRayBounds( ray, bounds, null ) ) {
                 continue;
             }
 
-            map.put(distance, entity);
-            keys.add(distance);
+            map.put( distance, entity );
+            keys.add( distance );
         }
 
         /* ordered by distance */
-        Collections.sort(keys);
+        Collections.sort( keys );
 
         /* iteration from closest -> most far */
-        for (double key : keys) {
-            Entity target = map.get(key);
-            if (filter == null || filter.accept(target)) {
+        for ( double key : keys ) {
+            Entity target = map.get( key );
+            if ( filter == null || filter.accept( target ) ) {
                 return target;
             }
         }
@@ -92,8 +92,8 @@ public class TargetUtils {
      * @see TargetFilterClass
      * @see TargetUtils#getTarget(Ray, World, double, TargetFilter)
      */
-    public static <T extends Entity> T getTarget(Ray ray, World world, double range, Class<T> clazz) {
-        return clazz.cast(getTarget(ray, world, range, new TargetFilterClass<T>(clazz)));
+    public static < T extends Entity > T getTarget( Ray ray, World world, double range, Class< T > clazz ) {
+        return clazz.cast( getTarget( ray, world, range, new TargetFilterClass< T >( clazz ) ) );
     }
 
     /**
@@ -116,8 +116,8 @@ public class TargetUtils {
      * @see TargetFilterType
      * @see TargetUtils#getTarget(Ray, World, double, TargetFilter)
      */
-    public static Entity getTarget(Ray ray, World world, double range, EntityType type) {
-        return getTarget(ray, world, range, new TargetFilterType(type));
+    public static Entity getTarget( Ray ray, World world, double range, EntityType type ) {
+        return getTarget( ray, world, range, new TargetFilterType( type ) );
     }
 
     /**
@@ -138,9 +138,9 @@ public class TargetUtils {
      * @return Target entity or null
      * @see TargetUtils#getTarget(Ray, World, double, TargetFilter)
      */
-    public static Entity getTarget(Player player, double range, TargetFilter filter) {
-        return getTarget(new Ray(player.getLocation()), player.getWorld(), range,
-                new TargetFilterMultiplexer(new TargetFilterSelf(player), filter));
+    public static Entity getTarget( Player player, double range, TargetFilter filter ) {
+        return getTarget( new Ray( player.getLocation( ) ), player.getWorld( ), range,
+                new TargetFilterMultiplexer( new TargetFilterSelf( player ), filter ) );
     }
 
     /**
@@ -163,8 +163,8 @@ public class TargetUtils {
      * @see TargetFilterClass
      * @see TargetUtils#getTarget(Ray, World, double, TargetFilter)
      */
-    public static <T extends Entity> T getTarget(Player player, double range, Class<T> clazz) {
-        return clazz.cast(getTarget(player, range, new TargetFilterClass<T>(clazz)));
+    public static < T extends Entity > T getTarget( Player player, double range, Class< T > clazz ) {
+        return clazz.cast( getTarget( player, range, new TargetFilterClass< T >( clazz ) ) );
     }
 
     /**
@@ -186,8 +186,8 @@ public class TargetUtils {
      * @see TargetFilterType
      * @see TargetUtils#getTarget(Ray, World, double, TargetFilter)
      */
-    public static Entity getTarget(Player player, double range, EntityType type) {
-        return getTarget(player, range, new TargetFilterType(type));
+    public static Entity getTarget( Player player, double range, EntityType type ) {
+        return getTarget( player, range, new TargetFilterType( type ) );
     }
 
     /**
@@ -207,8 +207,8 @@ public class TargetUtils {
      * @return Target player or null
      * @see TargetUtils#getTarget(Player, double, EntityType)
      */
-    public static Player getTargetPlayer(Player player, double range) {
-        return (Player) getTarget(player, range, EntityType.PLAYER);
+    public static Player getTargetPlayer( Player player, double range ) {
+        return (Player) getTarget( player, range, EntityType.PLAYER );
     }
 
     /**
@@ -228,14 +228,15 @@ public class TargetUtils {
          *
          * @param self Self player
          */
-        public TargetFilterSelf(Player self) {
+        public TargetFilterSelf( Player self ) {
             this.self = self;
         }
 
         @Override
-        public boolean accept(Entity entity) {
-            return !(entity instanceof Player) || !entity.getUniqueId().equals(self.getUniqueId());
+        public boolean accept( Entity entity ) {
+            return !( entity instanceof Player ) || !entity.getUniqueId( ).equals( self.getUniqueId( ) );
         }
+
     }
 
     /**
@@ -255,19 +256,20 @@ public class TargetUtils {
          *
          * @param filters Filters children
          */
-        public TargetFilterMultiplexer(TargetFilter... filters) {
+        public TargetFilterMultiplexer( TargetFilter... filters ) {
             this.filters = filters;
         }
 
         @Override
-        public boolean accept(Entity entity) {
-            for (TargetFilter filter : filters) {
-                if (!filter.accept(entity)) {
+        public boolean accept( Entity entity ) {
+            for ( TargetFilter filter : filters ) {
+                if ( !filter.accept( entity ) ) {
                     return false;
                 }
             }
             return true;
         }
+
     }
 
 }

@@ -28,35 +28,35 @@ public class ActionBarUtils {
      * @param player  Player that will receive the message.
      * @param message Message to send.
      */
-    public static void send(Player player, String message) {
+    public static void send( Player player, String message ) {
         try {
-            Class<?> component_class = ClassReflection.getNmsClass("IChatBaseComponent", "network.chat");
-            Class<?>[] inner_classes = component_class.getClasses();
-            Class<?> chat_serializer = inner_classes.length > 0 ? component_class.getClasses()[0]
-                    : ClassReflection.getNmsClass("ChatSerializer", "network.chat.IChatBaseComponent");
-            Class<?> packet_class = ClassReflection.getNmsClass("PacketPlayOutChat", "network.protocol.game");
+            Class< ? > component_class = ClassReflection.getNmsClass( "IChatBaseComponent", "network.chat" );
+            Class< ? >[] inner_classes = component_class.getClasses( );
+            Class< ? > chat_serializer = inner_classes.length > 0 ? component_class.getClasses( )[0]
+                    : ClassReflection.getNmsClass( "ChatSerializer", "network.chat.IChatBaseComponent" );
+            Class< ? > packet_class = ClassReflection.getNmsClass( "PacketPlayOutChat", "network.protocol.game" );
 
 
-            Object component = MethodReflection.get(chat_serializer, "a", String.class).invoke(chat_serializer,
-                    "{\"text\":\"" + StringUtils.limit(message, 63) + "\"}");
+            Object component = MethodReflection.get( chat_serializer, "a", String.class ).invoke( chat_serializer,
+                    "{\"text\":\"" + StringUtils.limit( message, 63 ) + "\"}" );
 
             Object packet;
-            if (CoreAPI.getInstance().getServerVersion().isOlder(Version.v1_12_R1)) {
-                packet = ConstructorReflection.newInstance(packet_class, new Class<?>[]{component_class, byte.class},
-                        component, (byte) 2);
+            if ( CoreAPI.getInstance( ).getServerVersion( ).isOlder( Version.v1_12_R1 ) ) {
+                packet = ConstructorReflection.newInstance( packet_class, new Class< ? >[]{ component_class, byte.class },
+                        component, (byte) 2 );
             } else {
-                Class<?> chat_type_class = ClassReflection.getNmsClass("ChatMessageType", "network.chat");
+                Class< ? > chat_type_class = ClassReflection.getNmsClass( "ChatMessageType", "network.chat" );
 
-                packet = ConstructorReflection.newInstance(packet_class,
-                        new Class<?>[]{component_class, chat_type_class},
+                packet = ConstructorReflection.newInstance( packet_class,
+                        new Class< ? >[]{ component_class, chat_type_class },
                         component, MethodReflection
-                                .get(chat_type_class, "valueOf", String.class).invoke(chat_type_class, "GAME_INFO"));
+                                .get( chat_type_class, "valueOf", String.class ).invoke( chat_type_class, "GAME_INFO" ) );
             }
 
-            BukkitReflection.sendPacket(player, packet);
-        } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException |
-                InvocationTargetException | InstantiationException e) {
-            e.printStackTrace();
+            BukkitReflection.sendPacket( player, packet );
+        } catch ( NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException |
+                InvocationTargetException | InstantiationException e ) {
+            e.printStackTrace( );
         }
     }
 
@@ -68,8 +68,8 @@ public class ActionBarUtils {
      * @param message Message to send.
      * @see #send(Player, String)
      */
-    public static void broadcast(final String message) {
-        Bukkit.getOnlinePlayers().forEach(player -> ActionBarUtils.send(player, message));
+    public static void broadcast( final String message ) {
+        Bukkit.getOnlinePlayers( ).forEach( player -> ActionBarUtils.send( player, message ) );
     }
 
 }

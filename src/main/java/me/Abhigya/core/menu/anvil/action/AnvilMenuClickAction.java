@@ -15,15 +15,15 @@ public class AnvilMenuClickAction {
     protected final ClickType click_type;
     protected final InventoryAction action;
     protected final InventoryType.SlotType slot_type;
-    protected ItemStack current;
     protected final int raw_slot;
+    protected ItemStack current;
     protected int hotbar_key;
 
-    public AnvilMenuClickAction(AnvilMenu menu, InventoryClickEvent event) {
-        this(menu, event.getView(), event.getClick(), event.getAction(), event.getSlotType(), event.getCurrentItem(), event.getRawSlot(), event.getHotbarButton());
+    public AnvilMenuClickAction( AnvilMenu menu, InventoryClickEvent event ) {
+        this( menu, event.getView( ), event.getClick( ), event.getAction( ), event.getSlotType( ), event.getCurrentItem( ), event.getRawSlot( ), event.getHotbarButton( ) );
     }
 
-    public AnvilMenuClickAction(AnvilMenu menu, InventoryView view, ClickType click_type, InventoryAction action, InventoryType.SlotType slot_type, ItemStack current, int raw_slot, int hotbar_key) {
+    public AnvilMenuClickAction( AnvilMenu menu, InventoryView view, ClickType click_type, InventoryAction action, InventoryType.SlotType slot_type, ItemStack current, int raw_slot, int hotbar_key ) {
         this.menu = menu;
         this.inventory_view = view;
         this.click_type = click_type;
@@ -34,51 +34,52 @@ public class AnvilMenuClickAction {
         this.hotbar_key = hotbar_key;
     }
 
-    public AnvilMenu getMenu() {
+    public AnvilMenu getMenu( ) {
         return menu;
     }
 
-    public InventoryView getInventoryView() {
+    public InventoryView getInventoryView( ) {
         return inventory_view;
     }
 
-    public ClickType getClickType() {
+    public ClickType getClickType( ) {
         return click_type;
     }
 
-    public InventoryAction getAction() {
+    public InventoryAction getAction( ) {
         return action;
     }
 
-    public InventoryType.SlotType getSlot_type() {
+    public InventoryType.SlotType getSlot_type( ) {
         return slot_type;
     }
 
-    public ItemStack getCursor() {
-        return this.getInventoryView().getCursor();
+    public ItemStack getCursor( ) {
+        return this.getInventoryView( ).getCursor( );
     }
 
-    public ItemStack getCurrent() {
+    public ItemStack getCurrent( ) {
         return current;
     }
 
-    public int getRaw_slot() {
+    public int getRaw_slot( ) {
         return raw_slot;
     }
 
-    public int getHotbarKey() {
+    public int getHotbarKey( ) {
         return hotbar_key;
     }
 
-    public boolean isRightClick() {
-        return this.getClickType().isRightClick();
+    public boolean isRightClick( ) {
+        return this.getClickType( ).isRightClick( );
     }
 
-    public boolean isLeftClick() {
-        return this.getClickType().isLeftClick();
+    public boolean isLeftClick( ) {
+        return this.getClickType( ).isLeftClick( );
     }
 
-    public boolean isShiftClick() {
-        return this.getClickType().isShiftClick();
+    public boolean isShiftClick( ) {
+        return this.getClickType( ).isShiftClick( );
     }
+
 }

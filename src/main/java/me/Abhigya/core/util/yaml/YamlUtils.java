@@ -31,12 +31,12 @@ public class YamlUtils {
      * @param value   Value to set the path to
      * @return true if set successfully, else false
      */
-    public static boolean setNotSet(ConfigurationSection section, String path, Object value) {
-        if (section.isSet(path)) {
+    public static boolean setNotSet( ConfigurationSection section, String path, Object value ) {
+        if ( section.isSet( path ) ) {
             return false;
         }
 
-        section.set(path, value);
+        section.set( path, value );
         return true;
     }
 
@@ -58,14 +58,14 @@ public class YamlUtils {
      * @param value   Value to set the path to
      * @return true if set successfully, else false
      */
-    public static boolean setNotEqual(ConfigurationSection section, String path, Object value) {
-        if (setNotSet(section, path, value)) {
+    public static boolean setNotEqual( ConfigurationSection section, String path, Object value ) {
+        if ( setNotSet( section, path, value ) ) {
             return true;
-        } else if (Objects.equals(value, section.get(path))) {
+        } else if ( Objects.equals( value, section.get( path ) ) ) {
             return false;
         }
 
-        section.set(path, value);
+        section.set( path, value );
         return true;
     }
 
@@ -79,10 +79,10 @@ public class YamlUtils {
      * @param name    Name for the section
      * @return Newly created section, or the already existing section
      */
-    public static ConfigurationSection createNotExisting(ConfigurationSection section, String name) {
-        return section.isConfigurationSection(name)
-                ? section.getConfigurationSection(name)
-                : section.createSection(name);
+    public static ConfigurationSection createNotExisting( ConfigurationSection section, String name ) {
+        return section.isConfigurationSection( name )
+                ? section.getConfigurationSection( name )
+                : section.createSection( name );
     }
 
     /**
@@ -94,11 +94,11 @@ public class YamlUtils {
      *                stored
      * @return Sub-sections of the desired section
      */
-    public static Set<ConfigurationSection> getSubSections(ConfigurationSection section) {
-        Set<ConfigurationSection> sections = new HashSet<>();
-        section.getKeys(false).stream()
-                .filter(key -> section.isConfigurationSection(key))
-                .forEach(key -> sections.add(section.getConfigurationSection(key)));
+    public static Set< ConfigurationSection > getSubSections( ConfigurationSection section ) {
+        Set< ConfigurationSection > sections = new HashSet<>( );
+        section.getKeys( false ).stream( )
+                .filter( key -> section.isConfigurationSection( key ) )
+                .forEach( key -> sections.add( section.getConfigurationSection( key ) ) );
         return sections;
     }
 
@@ -112,8 +112,8 @@ public class YamlUtils {
      * @param alt_char       Path separator to use instead the current one
      * @return Key containing the new path separator
      */
-    public static String alternatePathSeparator(String key, char path_separator, char alt_char) {
-        return key.replace(path_separator, alt_char);
+    public static String alternatePathSeparator( String key, char path_separator, char alt_char ) {
+        return key.replace( path_separator, alt_char );
     }
 
     /**
@@ -125,8 +125,8 @@ public class YamlUtils {
      * @param alt_char Path separator to use instead the common one
      * @return Key containing the new path separator
      */
-    public static String alternatePathSeparator(String key, char alt_char) {
-        return alternatePathSeparator(key, '.', alt_char);
+    public static String alternatePathSeparator( String key, char alt_char ) {
+        return alternatePathSeparator( key, '.', alt_char );
     }
 
 }

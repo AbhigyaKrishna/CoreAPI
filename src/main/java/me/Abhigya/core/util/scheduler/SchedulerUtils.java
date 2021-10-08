@@ -31,8 +31,8 @@ public class SchedulerUtils {
      * @param plugin Plugin that owns the task
      * @return Task id number (-1 if scheduling failed)
      */
-    public static int scheduleSyncDelayedTask(Runnable task, long delay, Plugin plugin) {
-        return getScheduler().scheduleSyncDelayedTask(plugin, task, delay);
+    public static int scheduleSyncDelayedTask( Runnable task, long delay, Plugin plugin ) {
+        return getScheduler( ).scheduleSyncDelayedTask( plugin, task, delay );
     }
 
     /**
@@ -45,8 +45,8 @@ public class SchedulerUtils {
      * @param plugin Plugin that owns the task
      * @return Task id number (-1 if scheduling failed)
      */
-    public static int scheduleSyncDelayedTask(Runnable task, Plugin plugin) {
-        return getScheduler().scheduleSyncDelayedTask(plugin, task);
+    public static int scheduleSyncDelayedTask( Runnable task, Plugin plugin ) {
+        return getScheduler( ).scheduleSyncDelayedTask( plugin, task );
     }
 
     /**
@@ -61,8 +61,8 @@ public class SchedulerUtils {
      * @param plugin Plugin that owns the task
      * @return Task id number (-1 if scheduling failed)
      */
-    public static int scheduleSyncRepeatingTask(Runnable task, long delay, long period, Plugin plugin) {
-        return getScheduler().scheduleSyncRepeatingTask(plugin, task, delay, period);
+    public static int scheduleSyncRepeatingTask( Runnable task, long delay, long period, Plugin plugin ) {
+        return getScheduler( ).scheduleSyncRepeatingTask( plugin, task, delay, period );
     }
 
     /**
@@ -79,8 +79,8 @@ public class SchedulerUtils {
      * @param plugin Plugin that owns the task
      * @return Future Future object related to the task
      */
-    public static <T> Future<T> callSyncMethod(Callable<T> task, Plugin plugin) {
-        return getScheduler().callSyncMethod(plugin, task);
+    public static < T > Future< T > callSyncMethod( Callable< T > task, Plugin plugin ) {
+        return getScheduler( ).callSyncMethod( plugin, task );
     }
 
     /**
@@ -89,8 +89,8 @@ public class SchedulerUtils {
      *
      * @param id Id number of task to be removed
      */
-    public static void cancelTask(int id) {
-        getScheduler().cancelTask(id);
+    public static void cancelTask( int id ) {
+        getScheduler( ).cancelTask( id );
     }
 
     /**
@@ -99,8 +99,8 @@ public class SchedulerUtils {
      *
      * @param plugin Owner of tasks to be removed
      */
-    public static void cancelTasks(Plugin plugin) {
-        getScheduler().cancelTasks(plugin);
+    public static void cancelTasks( Plugin plugin ) {
+        getScheduler( ).cancelTasks( plugin );
     }
 
     /**
@@ -117,8 +117,8 @@ public class SchedulerUtils {
      * @param id The task to check.
      * @return If the task is currently running.
      */
-    public static boolean isCurrentlyRunning(int id) {
-        return getScheduler().isCurrentlyRunning(id);
+    public static boolean isCurrentlyRunning( int id ) {
+        return getScheduler( ).isCurrentlyRunning( id );
     }
 
     /**
@@ -132,8 +132,8 @@ public class SchedulerUtils {
      * @param id The task to check.
      * @return If the task is queued to be run.
      */
-    public static boolean isQueued(int id) {
-        return getScheduler().isQueued(id);
+    public static boolean isQueued( int id ) {
+        return getScheduler( ).isQueued( id );
     }
 
     /**
@@ -144,8 +144,8 @@ public class SchedulerUtils {
      *
      * @return Active workers
      */
-    public static List<BukkitWorker> getActiveWorkers() {
-        return getScheduler().getActiveWorkers();
+    public static List< BukkitWorker > getActiveWorkers( ) {
+        return getScheduler( ).getActiveWorkers( );
     }
 
     /**
@@ -155,8 +155,8 @@ public class SchedulerUtils {
      *
      * @return Active workers
      */
-    public static List<BukkitTask> getPendingTasks() {
-        return getScheduler().getPendingTasks();
+    public static List< BukkitTask > getPendingTasks( ) {
+        return getScheduler( ).getPendingTasks( );
     }
 
     /**
@@ -169,8 +169,8 @@ public class SchedulerUtils {
      * @throws IllegalArgumentException if plugin is null
      * @throws IllegalArgumentException if task is null
      */
-    public static BukkitTask runTask(Runnable task, Plugin plugin) throws IllegalArgumentException {
-        return getScheduler().runTask(plugin, task);
+    public static BukkitTask runTask( Runnable task, Plugin plugin ) throws IllegalArgumentException {
+        return getScheduler( ).runTask( plugin, task );
     }
 
     /**
@@ -182,8 +182,8 @@ public class SchedulerUtils {
      * @throws IllegalArgumentException if plugin is null
      * @throws IllegalArgumentException if task is null
      */
-    public static void runTask(Consumer<BukkitTask> task, Plugin plugin) throws IllegalArgumentException {
-        getScheduler().runTask(plugin, task);
+    public static void runTask( Consumer< BukkitTask > task, Plugin plugin ) throws IllegalArgumentException {
+        getScheduler( ).runTask( plugin, task );
     }
 
     /**
@@ -199,8 +199,8 @@ public class SchedulerUtils {
      * @throws IllegalArgumentException if plugin is null
      * @throws IllegalArgumentException if task is null
      */
-    public static BukkitTask runTaskAsynchronously(Runnable task, Plugin plugin) throws IllegalArgumentException {
-        return getScheduler().runTaskAsynchronously(plugin, task);
+    public static BukkitTask runTaskAsynchronously( Runnable task, Plugin plugin ) throws IllegalArgumentException {
+        return getScheduler( ).runTaskAsynchronously( plugin, task );
     }
 
     /**
@@ -215,8 +215,8 @@ public class SchedulerUtils {
      * @throws IllegalArgumentException if plugin is null
      * @throws IllegalArgumentException if task is null
      */
-    public static void runTaskAsynchronously(Consumer<BukkitTask> task, Plugin plugin) throws IllegalArgumentException {
-        getScheduler().runTaskAsynchronously(plugin, task);
+    public static void runTaskAsynchronously( Consumer< BukkitTask > task, Plugin plugin ) throws IllegalArgumentException {
+        getScheduler( ).runTaskAsynchronously( plugin, task );
     }
 
     /**
@@ -230,8 +230,8 @@ public class SchedulerUtils {
      * @throws IllegalArgumentException if plugin is null
      * @throws IllegalArgumentException if task is null
      */
-    public static BukkitTask runTaskLater(Runnable task, long delay, Plugin plugin) throws IllegalArgumentException {
-        return getScheduler().runTaskLater(plugin, task, delay);
+    public static BukkitTask runTaskLater( Runnable task, long delay, Plugin plugin ) throws IllegalArgumentException {
+        return getScheduler( ).runTaskLater( plugin, task, delay );
     }
 
     /**
@@ -244,8 +244,8 @@ public class SchedulerUtils {
      * @throws IllegalArgumentException if plugin is null
      * @throws IllegalArgumentException if task is null
      */
-    public static void runTaskLater(Consumer<BukkitTask> task, long delay, Plugin plugin) throws IllegalArgumentException {
-        getScheduler().runTaskLater(plugin, task, delay);
+    public static void runTaskLater( Consumer< BukkitTask > task, long delay, Plugin plugin ) throws IllegalArgumentException {
+        getScheduler( ).runTaskLater( plugin, task, delay );
     }
 
     /**
@@ -263,8 +263,8 @@ public class SchedulerUtils {
      * @throws IllegalArgumentException if plugin is null
      * @throws IllegalArgumentException if task is null
      */
-    public static BukkitTask runTaskLaterAsynchronously(Runnable task, long delay, Plugin plugin) throws IllegalArgumentException {
-        return getScheduler().runTaskLaterAsynchronously(plugin, task, delay);
+    public static BukkitTask runTaskLaterAsynchronously( Runnable task, long delay, Plugin plugin ) throws IllegalArgumentException {
+        return getScheduler( ).runTaskLaterAsynchronously( plugin, task, delay );
     }
 
     /**
@@ -281,8 +281,8 @@ public class SchedulerUtils {
      * @throws IllegalArgumentException if plugin is null
      * @throws IllegalArgumentException if task is null
      */
-    public static void runTaskLaterAsynchronously(Consumer<BukkitTask> task, long delay, Plugin plugin) throws IllegalArgumentException {
-        getScheduler().runTaskLaterAsynchronously(plugin, task, delay);
+    public static void runTaskLaterAsynchronously( Consumer< BukkitTask > task, long delay, Plugin plugin ) throws IllegalArgumentException {
+        getScheduler( ).runTaskLaterAsynchronously( plugin, task, delay );
     }
 
     /**
@@ -298,8 +298,8 @@ public class SchedulerUtils {
      * @throws IllegalArgumentException if plugin is null
      * @throws IllegalArgumentException if task is null
      */
-    public static BukkitTask runTaskTimer(Runnable task, long delay, long period, Plugin plugin) throws IllegalArgumentException {
-        return getScheduler().runTaskTimer(plugin, task, delay, period);
+    public static BukkitTask runTaskTimer( Runnable task, long delay, long period, Plugin plugin ) throws IllegalArgumentException {
+        return getScheduler( ).runTaskTimer( plugin, task, delay, period );
     }
 
     /**
@@ -314,8 +314,8 @@ public class SchedulerUtils {
      * @throws IllegalArgumentException if plugin is null
      * @throws IllegalArgumentException if task is null
      */
-    public static void runTaskTimer(Consumer<BukkitTask> task, long delay, long period, Plugin plugin) throws IllegalArgumentException {
-        getScheduler().runTaskTimer(plugin, task, delay, period);
+    public static void runTaskTimer( Consumer< BukkitTask > task, long delay, long period, Plugin plugin ) throws IllegalArgumentException {
+        getScheduler( ).runTaskTimer( plugin, task, delay, period );
     }
 
     /**
@@ -334,8 +334,8 @@ public class SchedulerUtils {
      * @throws IllegalArgumentException if plugin is null
      * @throws IllegalArgumentException if task is null
      */
-    public static BukkitTask runTaskTimerAsynchronously(Runnable task, long delay, long period, Plugin plugin) throws IllegalArgumentException {
-        return getScheduler().runTaskTimerAsynchronously(plugin, task, delay, period);
+    public static BukkitTask runTaskTimerAsynchronously( Runnable task, long delay, long period, Plugin plugin ) throws IllegalArgumentException {
+        return getScheduler( ).runTaskTimerAsynchronously( plugin, task, delay, period );
     }
 
     /**
@@ -353,8 +353,8 @@ public class SchedulerUtils {
      * @throws IllegalArgumentException if plugin is null
      * @throws IllegalArgumentException if task is null
      */
-    public static void runTaskTimerAsynchronously(Consumer<BukkitTask> task, long delay, long period, Plugin plugin) throws IllegalArgumentException {
-        getScheduler().runTaskTimerAsynchronously(plugin, task, delay, period);
+    public static void runTaskTimerAsynchronously( Consumer< BukkitTask > task, long delay, long period, Plugin plugin ) throws IllegalArgumentException {
+        getScheduler( ).runTaskTimerAsynchronously( plugin, task, delay, period );
     }
 
     /**
@@ -363,8 +363,8 @@ public class SchedulerUtils {
      *
      * @return Scheduling service for this server
      */
-    public static BukkitScheduler getScheduler() {
-        return Bukkit.getScheduler();
+    public static BukkitScheduler getScheduler( ) {
+        return Bukkit.getScheduler( );
     }
 
 }

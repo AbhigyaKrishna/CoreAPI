@@ -18,7 +18,7 @@ public class Balance {
      * @param economy {@code Vault} {@link Economy}
      * @param player  Player
      */
-    public Balance(Economy economy, OfflinePlayer player) {
+    public Balance( Economy economy, OfflinePlayer player ) {
         this.economy = economy;
         this.player = player;
     }
@@ -29,10 +29,10 @@ public class Balance {
      *
      * @param player Player
      */
-    public Balance(OfflinePlayer player) {
-        this(EconomyManager.getEconomy(), player);
-        if (economy == null)
-            throw new IllegalStateException("Cannot find economy, vault not found (?)");
+    public Balance( OfflinePlayer player ) {
+        this( EconomyManager.getEconomy( ), player );
+        if ( economy == null )
+            throw new IllegalStateException( "Cannot find economy, vault not found (?)" );
     }
 
     /**
@@ -41,8 +41,8 @@ public class Balance {
      *
      * @return Balance of player
      */
-    public double get() {
-        return economy.getBalance(player);
+    public double get( ) {
+        return economy.getBalance( player );
     }
 
     /**
@@ -51,8 +51,8 @@ public class Balance {
      *
      * @return Formatted value of player balance
      */
-    public String getFormatted() {
-        return economy.format(get());
+    public String getFormatted( ) {
+        return economy.format( get( ) );
     }
 
     /**
@@ -61,8 +61,8 @@ public class Balance {
      *
      * @param money Amount to add
      */
-    public void give(double money) {
-        economy.depositPlayer(player, money);
+    public void give( double money ) {
+        economy.depositPlayer( player, money );
     }
 
     /**
@@ -72,8 +72,8 @@ public class Balance {
      * @param money Amount to subtract
      * @return Whether the transaction was successful
      */
-    public boolean take(double money) {
-        return economy.withdrawPlayer(player, money).transactionSuccess();
+    public boolean take( double money ) {
+        return economy.withdrawPlayer( player, money ).transactionSuccess( );
     }
 
     /**
@@ -86,8 +86,8 @@ public class Balance {
      * @param money Amount to check
      * @return {@code true} if the player has the given amount, false otherwise
      */
-    public boolean has(double money) {
-        return economy.has(player, money);
+    public boolean has( double money ) {
+        return economy.has( player, money );
     }
 
 }

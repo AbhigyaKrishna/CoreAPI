@@ -8,20 +8,20 @@ import org.bukkit.entity.Player;
 public class VaultPlaceholder implements Placeholder {
 
     @Override
-    public String getId() {
+    public String getId( ) {
         return "vault";
     }
 
     @Override
-    public String resolve(Player player, String id) {
-        Balance economy = EconomyManager.get(player);
-        double balance = economy == null ? 0 : economy.get();
+    public String resolve( Player player, String id ) {
+        Balance economy = EconomyManager.get( player );
+        double balance = economy == null ? 0 : economy.get( );
 
-        switch (id) {
+        switch ( id ) {
             case "eco_balance":
-                return String.valueOf(balance);
+                return String.valueOf( balance );
             case "eco_balance_fixed":
-                return String.valueOf((long) balance);
+                return String.valueOf( (long) balance );
         }
 
         return null;

@@ -18,8 +18,8 @@ public class FilenameUtils extends org.apache.commons.io.FilenameUtils {
      * @param file File to get
      * @return Name of the file excluding its extension
      */
-    public static String getBaseName(File file) {
-        return getBaseName(file.getName());
+    public static String getBaseName( File file ) {
+        return getBaseName( file.getName( ) );
     }
 
     /**
@@ -31,15 +31,15 @@ public class FilenameUtils extends org.apache.commons.io.FilenameUtils {
      * @return Names of all the elements within the directory and its
      * sub-directories
      */
-    public static Set<String> getElementNames(File directory) {
-        Validate.isTrue(directory.isDirectory(), "the provided file is not a valid directory!");
+    public static Set< String > getElementNames( File directory ) {
+        Validate.isTrue( directory.isDirectory( ), "the provided file is not a valid directory!" );
 
-        final Set<String> elements = new HashSet<>();
-        for (File file : directory.listFiles()) {
-            if (file.isDirectory()) {
-                elements.addAll(getElementNames(file)); // recursive.
+        final Set< String > elements = new HashSet<>( );
+        for ( File file : directory.listFiles( ) ) {
+            if ( file.isDirectory( ) ) {
+                elements.addAll( getElementNames( file ) ); // recursive.
             } else {
-                elements.add(getBaseName(file.getName()));
+                elements.add( getBaseName( file.getName( ) ) );
             }
         }
         return elements;

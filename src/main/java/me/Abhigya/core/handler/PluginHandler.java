@@ -23,7 +23,7 @@ public abstract class PluginHandler implements Listener {
     /**
      * Map for storing handler instances.
      */
-    protected static final Map<Class<? extends PluginHandler>, PluginHandler> HANDLER_INSTANCES = new HashMap<>();
+    protected static final Map< Class< ? extends PluginHandler >, PluginHandler > HANDLER_INSTANCES = new HashMap<>( );
     /**
      * The handling plugin
      */
@@ -35,13 +35,13 @@ public abstract class PluginHandler implements Listener {
      *
      * @param plugin The plugin to handle.
      */
-    public PluginHandler(Plugin plugin) {
-        if (!isAllowMultipleInstances() && HANDLER_INSTANCES.containsKey(getClass())) {
-            throw new IllegalStateException("Cannot create more than one instance of this handler!");
+    public PluginHandler( Plugin plugin ) {
+        if ( !isAllowMultipleInstances( ) && HANDLER_INSTANCES.containsKey( getClass( ) ) ) {
+            throw new IllegalStateException( "Cannot create more than one instance of this handler!" );
         }
 
         this.plugin = plugin;
-        PluginHandler.HANDLER_INSTANCES.put(getClass(), this);
+        PluginHandler.HANDLER_INSTANCES.put( getClass( ), this );
     }
 
     /**
@@ -53,8 +53,8 @@ public abstract class PluginHandler implements Listener {
      * @param clazz Class desired
      * @return Instance of the plugin handle that provided the class
      */
-    public static <T extends PluginHandler> PluginHandler getPluginHandler(Class<T> clazz) {
-        return HANDLER_INSTANCES.get(clazz);
+    public static < T extends PluginHandler > PluginHandler getPluginHandler( Class< T > clazz ) {
+        return HANDLER_INSTANCES.get( clazz );
     }
 
     /**
@@ -63,7 +63,7 @@ public abstract class PluginHandler implements Listener {
      *
      * @return The handling plugin.
      */
-    public Plugin getPlugin() {
+    public Plugin getPlugin( ) {
         return plugin;
     }
 
@@ -76,21 +76,21 @@ public abstract class PluginHandler implements Listener {
      *
      * @return true to allow more than one instance
      */
-    protected abstract boolean isAllowMultipleInstances();
+    protected abstract boolean isAllowMultipleInstances( );
 
     /**
      * Registers events in this class.
      */
-    protected void register() {
-        HandlerList.unregisterAll(this);
-        Bukkit.getPluginManager().registerEvents(this, plugin);
+    protected void register( ) {
+        HandlerList.unregisterAll( this );
+        Bukkit.getPluginManager( ).registerEvents( this, plugin );
     }
 
     /**
      * Unregisters events in this class.
      */
-    protected void unregister() {
-        HandlerList.unregisterAll(this);
+    protected void unregister( ) {
+        HandlerList.unregisterAll( this );
     }
 
 }

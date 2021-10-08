@@ -28,10 +28,10 @@ public final class Json {
      * @param handle {@link JsonObject} to handle
      * @param root   Root Json Object
      */
-    private Json(JsonObject handle, Json root) {
+    private Json( JsonObject handle, Json root ) {
         this.handle = handle;
         this.root = root;
-        this.options = root.getOptions();
+        this.options = root.getOptions( );
     }
 
     /**
@@ -40,10 +40,10 @@ public final class Json {
      *
      * @param handle {@link JsonObject} to handle
      */
-    private Json(JsonObject handle) {
+    private Json( JsonObject handle ) {
         this.handle = handle;
         this.root = this;
-        this.options = new JsonOptions();
+        this.options = new JsonOptions( );
     }
 
     /**
@@ -55,18 +55,18 @@ public final class Json {
      * @return This class instance
      * @throws MalformedJsonException if the json file is corrupted or cannot be parsed
      */
-    public static Json load(File json_file, boolean check_encrypted) throws MalformedJsonException {
+    public static Json load( File json_file, boolean check_encrypted ) throws MalformedJsonException {
         try {
-            StringBuilder contents = new StringBuilder();
-            BufferedReader reader = new BufferedReader(new FileReader(json_file));
-            reader.lines().forEach(line -> {
-                contents.append(line + StringUtils.LINE_SEPARATOR);
-            });
+            StringBuilder contents = new StringBuilder( );
+            BufferedReader reader = new BufferedReader( new FileReader( json_file ) );
+            reader.lines( ).forEach( line -> {
+                contents.append( line + StringUtils.LINE_SEPARATOR );
+            } );
 
-            reader.close();
-            return loadFromString(contents.toString(), check_encrypted);
-        } catch (IOException e) {
-            throw new MalformedJsonException(e);
+            reader.close( );
+            return loadFromString( contents.toString( ), check_encrypted );
+        } catch ( IOException e ) {
+            throw new MalformedJsonException( e );
         }
     }
 
@@ -78,8 +78,8 @@ public final class Json {
      * @return This class instance
      * @throws MalformedJsonException if the json file is corrupted or cannot be parsed
      */
-    public static Json load(File json_file) throws MalformedJsonException {
-        return load(json_file, true);
+    public static Json load( File json_file ) throws MalformedJsonException {
+        return load( json_file, true );
     }
 
     /**
@@ -90,20 +90,20 @@ public final class Json {
      * @param check_encrypted Whether to check encryption
      * @return This class instance
      */
-    public static Json loadFromString(String contents, boolean check_encrypted) {
-        if (check_encrypted) {
-            if (StringEscapeUtils.escapeJava(StringUtils.deleteWhitespace(contents))
-                    .equals(StringUtils.deleteWhitespace(contents))) {  // if encrypted
-                contents = new String(Base64.decodeBase64(contents)); // decode!
+    public static Json loadFromString( String contents, boolean check_encrypted ) {
+        if ( check_encrypted ) {
+            if ( StringEscapeUtils.escapeJava( StringUtils.deleteWhitespace( contents ) )
+                    .equals( StringUtils.deleteWhitespace( contents ) ) ) {  // if encrypted
+                contents = new String( Base64.decodeBase64( contents ) ); // decode!
             }
         }
 
-        JsonParser parser = new JsonParser();
-        JsonElement element = parser.parse(contents);
-        if (!element.isJsonObject()) {
-            throw new JsonSyntaxException("Illegal syntax!");
+        JsonParser parser = new JsonParser( );
+        JsonElement element = parser.parse( contents );
+        if ( !element.isJsonObject( ) ) {
+            throw new JsonSyntaxException( "Illegal syntax!" );
         }
-        return new Json(element.getAsJsonObject());
+        return new Json( element.getAsJsonObject( ) );
     }
 
     /**
@@ -113,8 +113,8 @@ public final class Json {
      * @param contents String to parse to Json
      * @return This class instance
      */
-    public static Json loadFromString(String contents) {
-        return loadFromString(contents, true);
+    public static Json loadFromString( String contents ) {
+        return loadFromString( contents, true );
     }
 
     /**
@@ -123,8 +123,8 @@ public final class Json {
      *
      * @return This class instance
      */
-    public static Json getNew() {
-        return new Json(new JsonObject());
+    public static Json getNew( ) {
+        return new Json( new JsonObject( ) );
     }
 
     /**
@@ -133,7 +133,7 @@ public final class Json {
      *
      * @return The handle {@link JsonObject}
      */
-    public JsonObject getHandle() {
+    public JsonObject getHandle( ) {
         return handle;
     }
 
@@ -143,7 +143,7 @@ public final class Json {
      *
      * @return The root {@link Json}
      */
-    public Json getRoot() {
+    public Json getRoot( ) {
         return root;
     }
 
@@ -153,7 +153,7 @@ public final class Json {
      *
      * @return {@link JsonOptions}
      */
-    public JsonOptions getOptions() {
+    public JsonOptions getOptions( ) {
         return options;
     }
 
@@ -164,16 +164,16 @@ public final class Json {
      * @param name Key of the Json Object
      * @return The new Json Object
      */
-    public Json createObject(String name) {
-        JsonElement present = handle.get(name);
-        if (present != null) {
-            if (!present.isJsonObject()) {
+    public Json createObject( String name ) {
+        JsonElement present = handle.get( name );
+        if ( present != null ) {
+            if ( !present.isJsonObject( ) ) {
                 return null;
             }
         } else {
-            handle.add(name, (present = new JsonObject()));
+            handle.add( name, ( present = new JsonObject( ) ) );
         }
-        return new Json(present.getAsJsonObject(), this);
+        return new Json( present.getAsJsonObject( ), this );
     }
 
     /**
@@ -183,8 +183,8 @@ public final class Json {
      * @param property Key of the element
      * @param value    Value of the element
      */
-    public void add(String property, JsonElement value) {
-        getHandle().add(property, value);
+    public void add( String property, JsonElement value ) {
+        getHandle( ).add( property, value );
     }
 
     /**
@@ -194,8 +194,8 @@ public final class Json {
      * @param property Key of the element
      * @return Json Element removed
      */
-    public JsonElement remove(String property) {
-        return getHandle().remove(property);
+    public JsonElement remove( String property ) {
+        return getHandle( ).remove( property );
     }
 
     /**
@@ -205,8 +205,8 @@ public final class Json {
      * @param property Property key
      * @param value    String Value of the property
      */
-    public void addProperty(String property, String value) {
-        getHandle().addProperty(property, value);
+    public void addProperty( String property, String value ) {
+        getHandle( ).addProperty( property, value );
     }
 
     /**
@@ -216,8 +216,8 @@ public final class Json {
      * @param property Property key
      * @param value    Number Value of the property
      */
-    public void addProperty(String property, Number value) {
-        getHandle().addProperty(property, value);
+    public void addProperty( String property, Number value ) {
+        getHandle( ).addProperty( property, value );
     }
 
     /**
@@ -227,8 +227,8 @@ public final class Json {
      * @param property Property key
      * @param value    Boolean Value of the property
      */
-    public void addProperty(String property, Boolean value) {
-        getHandle().addProperty(property, value);
+    public void addProperty( String property, Boolean value ) {
+        getHandle( ).addProperty( property, value );
     }
 
     /**
@@ -238,8 +238,8 @@ public final class Json {
      * @param property Property key
      * @param value    Character Value of the property
      */
-    public void addProperty(String property, Character value) {
-        getHandle().addProperty(property, value);
+    public void addProperty( String property, Character value ) {
+        getHandle( ).addProperty( property, value );
     }
 
     /**
@@ -248,8 +248,8 @@ public final class Json {
      *
      * @return Entry set of the Json Object
      */
-    public Set<Map.Entry<String, JsonElement>> entrySet() {
-        return getHandle().entrySet();
+    public Set< Map.Entry< String, JsonElement > > entrySet( ) {
+        return getHandle( ).entrySet( );
     }
 
     /**
@@ -259,8 +259,8 @@ public final class Json {
      * @param memberName Key of the element
      * @return true if present, false otherwise
      */
-    public boolean has(String memberName) {
-        return getHandle().has(memberName);
+    public boolean has( String memberName ) {
+        return getHandle( ).has( memberName );
     }
 
     /**
@@ -270,8 +270,8 @@ public final class Json {
      * @param memberName Key of the element
      * @return {@link JsonElement} for the given key
      */
-    public JsonElement get(String memberName) {
-        return getHandle().get(memberName);
+    public JsonElement get( String memberName ) {
+        return getHandle( ).get( memberName );
     }
 
     /**
@@ -281,8 +281,8 @@ public final class Json {
      * @param memberName Key of the element
      * @return {@link JsonPrimitive} for the given key
      */
-    public JsonPrimitive getAsJsonPrimitive(String memberName) {
-        return getHandle().getAsJsonPrimitive(memberName);
+    public JsonPrimitive getAsJsonPrimitive( String memberName ) {
+        return getHandle( ).getAsJsonPrimitive( memberName );
     }
 
     /**
@@ -292,8 +292,8 @@ public final class Json {
      * @param memberName Key of the element
      * @return {@link JsonArray} for the given key
      */
-    public JsonArray getAsJsonArray(String memberName) {
-        return getHandle().getAsJsonArray(memberName);
+    public JsonArray getAsJsonArray( String memberName ) {
+        return getHandle( ).getAsJsonArray( memberName );
     }
 
     /**
@@ -303,8 +303,8 @@ public final class Json {
      * @param memberName Key of the element
      * @return {@link JsonObject} for the given key
      */
-    public JsonObject getAsJsonObject(String memberName) {
-        return getHandle().getAsJsonObject(memberName);
+    public JsonObject getAsJsonObject( String memberName ) {
+        return getHandle( ).getAsJsonObject( memberName );
     }
 
     /**
@@ -314,8 +314,8 @@ public final class Json {
      * @param memberName Key of the element
      * @return {@link Json} for the given key
      */
-    public Json getAsJson(String memberName) {
-        return new Json(getAsJsonObject(memberName), this);
+    public Json getAsJson( String memberName ) {
+        return new Json( getAsJsonObject( memberName ), this );
     }
 
     /**
@@ -326,15 +326,15 @@ public final class Json {
      * @param encrypt   Whether to encrypt data
      * @throws IOException thrown while performing I/O
      */
-    public void save(File json_file, boolean encrypt) throws IOException {
-        String contents = toString();
-        if (encrypt) { // encrypting!
-            contents = Base64.encodeBase64String(contents.getBytes());
+    public void save( File json_file, boolean encrypt ) throws IOException {
+        String contents = toString( );
+        if ( encrypt ) { // encrypting!
+            contents = Base64.encodeBase64String( contents.getBytes( ) );
         }
 
-        FileWriter writer = new FileWriter(json_file);
-        writer.append(contents);
-        writer.close();
+        FileWriter writer = new FileWriter( json_file );
+        writer.append( contents );
+        writer.close( );
     }
 
     /**
@@ -344,8 +344,8 @@ public final class Json {
      * @param json_file File to save to
      * @throws IOException thrown while performing I/O
      */
-    public void save(File json_file) throws IOException {
-        save(json_file, false);
+    public void save( File json_file ) throws IOException {
+        save( json_file, false );
     }
 
     /**
@@ -355,30 +355,30 @@ public final class Json {
      * @return Json to string
      */
     @Override
-    public String toString() {
+    public String toString( ) {
         try {
-            StringWriter string_writer = new StringWriter();
-            JsonWriter json_writer = new JsonWriter(string_writer);
-            json_writer.setLenient(true);
-            json_writer.setHtmlSafe(getOptions().htmlSafe());
-            json_writer.setIndent(getOptions().indent());
-            json_writer.setSerializeNulls(getOptions().serializeNulls());
+            StringWriter string_writer = new StringWriter( );
+            JsonWriter json_writer = new JsonWriter( string_writer );
+            json_writer.setLenient( true );
+            json_writer.setHtmlSafe( getOptions( ).htmlSafe( ) );
+            json_writer.setIndent( getOptions( ).indent( ) );
+            json_writer.setSerializeNulls( getOptions( ).serializeNulls( ) );
 
-            Streams.write(getHandle(), json_writer);
-            return string_writer.toString();
-        } catch (IOException e) {
-            throw new AssertionError(e);
+            Streams.write( getHandle( ), json_writer );
+            return string_writer.toString( );
+        } catch ( IOException e ) {
+            throw new AssertionError( e );
         }
     }
 
     @Override
-    public boolean equals(Object obj) {
-        return getHandle().equals(obj);
+    public boolean equals( Object obj ) {
+        return getHandle( ).equals( obj );
     }
 
     @Override
-    public int hashCode() {
-        return getHandle().hashCode();
+    public int hashCode( ) {
+        return getHandle( ).hashCode( );
     }
 
 }

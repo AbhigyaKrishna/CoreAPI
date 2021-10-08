@@ -11,7 +11,7 @@ public class Duration {
     /**
      * Represents the zero in the {@link Duration}
      */
-    public static final Duration ZERO = new Duration(0L, TimeUnit.NANOSECONDS);
+    public static final Duration ZERO = new Duration( 0L, TimeUnit.NANOSECONDS );
 
     protected long duration;
     protected TimeUnit unit;
@@ -23,8 +23,8 @@ public class Duration {
      * @param duration Duration
      * @param unit     Time unit
      */
-    public Duration(long duration, TimeUnit unit) {
-        if (duration <= 0L || unit == null) {
+    public Duration( long duration, TimeUnit unit ) {
+        if ( duration <= 0L || unit == null ) {
             this.duration = 0L;
             this.unit = TimeUnit.NANOSECONDS;
         } else {
@@ -39,8 +39,8 @@ public class Duration {
      *
      * @param millis Duration in milliseconds.
      */
-    public Duration(long millis) {
-        this(millis, TimeUnit.MILLISECONDS);
+    public Duration( long millis ) {
+        this( millis, TimeUnit.MILLISECONDS );
     }
 
     /**
@@ -53,24 +53,24 @@ public class Duration {
      * @param duration the time
      * @return {@link Duration} in the given unit
      */
-    public static Duration of(TimeUnit unit, long duration) {
-        switch (unit) {
+    public static Duration of( TimeUnit unit, long duration ) {
+        switch ( unit ) {
             case DAYS:
-                return ofDays(duration);
+                return ofDays( duration );
             case HOURS:
-                return ofHours(duration);
+                return ofHours( duration );
             case MICROSECONDS:
-                return ofMicroseconds(duration);
+                return ofMicroseconds( duration );
             case MILLISECONDS:
-                return ofMilliseconds(duration);
+                return ofMilliseconds( duration );
             case MINUTES:
-                return ofMinutes(duration);
+                return ofMinutes( duration );
             case NANOSECONDS:
-                return ofNanos(duration);
+                return ofNanos( duration );
             case SECONDS:
-                return ofSeconds(duration);
+                return ofSeconds( duration );
         }
-        return of(TimeUnit.NANOSECONDS, 0L);
+        return of( TimeUnit.NANOSECONDS, 0L );
     }
 
     /**
@@ -81,8 +81,8 @@ public class Duration {
      * @param nanos The nanoseconds
      * @return {@link Duration} in nanoseconds
      */
-    public static Duration ofNanos(long nanos) {
-        return new Duration(nanos, TimeUnit.NANOSECONDS);
+    public static Duration ofNanos( long nanos ) {
+        return new Duration( nanos, TimeUnit.NANOSECONDS );
     }
 
     /**
@@ -93,8 +93,8 @@ public class Duration {
      * @param micros The microseconds
      * @return {@link Duration} in microseconds
      */
-    public static Duration ofMicroseconds(long micros) {
-        return new Duration(micros, TimeUnit.MICROSECONDS);
+    public static Duration ofMicroseconds( long micros ) {
+        return new Duration( micros, TimeUnit.MICROSECONDS );
     }
 
     /**
@@ -105,8 +105,8 @@ public class Duration {
      * @param millis The milliseconds
      * @return {@link Duration} in milliseconds
      */
-    public static Duration ofMilliseconds(long millis) {
-        return new Duration(millis, TimeUnit.MILLISECONDS);
+    public static Duration ofMilliseconds( long millis ) {
+        return new Duration( millis, TimeUnit.MILLISECONDS );
     }
 
     /**
@@ -117,8 +117,8 @@ public class Duration {
      * @param seconds The seconds
      * @return {@link Duration} in milliseconds
      */
-    public static Duration ofSeconds(long seconds) {
-        return new Duration(seconds, TimeUnit.SECONDS);
+    public static Duration ofSeconds( long seconds ) {
+        return new Duration( seconds, TimeUnit.SECONDS );
     }
 
     /**
@@ -129,8 +129,8 @@ public class Duration {
      * @param minutes The minutes
      * @return {@link Duration} in minutes
      */
-    public static Duration ofMinutes(long minutes) {
-        return new Duration(minutes, TimeUnit.MINUTES);
+    public static Duration ofMinutes( long minutes ) {
+        return new Duration( minutes, TimeUnit.MINUTES );
     }
 
     /**
@@ -141,8 +141,8 @@ public class Duration {
      * @param hours The hours
      * @return {@link Duration} in hours
      */
-    public static Duration ofHours(long hours) {
-        return new Duration(hours, TimeUnit.HOURS);
+    public static Duration ofHours( long hours ) {
+        return new Duration( hours, TimeUnit.HOURS );
     }
 
     /**
@@ -153,8 +153,8 @@ public class Duration {
      * @param days The days
      * @return {@link Duration} in days
      */
-    public static Duration ofDays(long days) {
-        return new Duration(days, TimeUnit.DAYS);
+    public static Duration ofDays( long days ) {
+        return new Duration( days, TimeUnit.DAYS );
     }
 
     /**
@@ -163,7 +163,7 @@ public class Duration {
      *
      * @return Original duration
      */
-    public long getDuration() {
+    public long getDuration( ) {
         return duration;
     }
 
@@ -173,7 +173,7 @@ public class Duration {
      *
      * @return Time unit
      */
-    public TimeUnit getUnit() {
+    public TimeUnit getUnit( ) {
         return unit;
     }
 
@@ -184,8 +184,8 @@ public class Duration {
      *
      * @return Duration in nanoseconds
      */
-    public long toNanos() {
-        return unit.toNanos(duration);
+    public long toNanos( ) {
+        return unit.toNanos( duration );
     }
 
     /**
@@ -195,8 +195,8 @@ public class Duration {
      *
      * @return Duration in microseconds
      */
-    public long toMicros() {
-        return unit.toMicros(duration);
+    public long toMicros( ) {
+        return unit.toMicros( duration );
     }
 
     /**
@@ -206,8 +206,8 @@ public class Duration {
      *
      * @return Duration in milliseconds
      */
-    public long toMillis() {
-        return unit.toMillis(duration);
+    public long toMillis( ) {
+        return unit.toMillis( duration );
     }
 
     /**
@@ -217,8 +217,8 @@ public class Duration {
      *
      * @return Duration in seconds
      */
-    public long toSeconds() {
-        return unit.toSeconds(duration);
+    public long toSeconds( ) {
+        return unit.toSeconds( duration );
     }
 
     /**
@@ -228,8 +228,8 @@ public class Duration {
      *
      * @return Duration in minutes
      */
-    public long toMinutes() {
-        return unit.toMinutes(duration);
+    public long toMinutes( ) {
+        return unit.toMinutes( duration );
     }
 
     /**
@@ -239,8 +239,8 @@ public class Duration {
      *
      * @return Duration in hours
      */
-    public long toHours() {
-        return unit.toHours(duration);
+    public long toHours( ) {
+        return unit.toHours( duration );
     }
 
     /**
@@ -250,8 +250,8 @@ public class Duration {
      *
      * @return Duration in days
      */
-    public long toDays() {
-        return unit.toDays(duration);
+    public long toDays( ) {
+        return unit.toDays( duration );
     }
 
     /**
@@ -260,25 +260,25 @@ public class Duration {
      *
      * @return true if duration is zero, else false
      */
-    public boolean isZero() {
-        return ZERO.equals(this);
+    public boolean isZero( ) {
+        return ZERO.equals( this );
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode( ) {
         final int prime = 31;
         int result = 1;
-        result = prime * result + (int) (duration ^ (duration >>> 32));
-        result = prime * result + ((unit == null) ? 0 : unit.hashCode());
+        result = prime * result + (int) ( duration ^ ( duration >>> 32 ) );
+        result = prime * result + ( ( unit == null ) ? 0 : unit.hashCode( ) );
         return result;
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (obj == this) {
+    public boolean equals( Object obj ) {
+        if ( obj == this ) {
             return true;
         } else {
-            if (obj instanceof Duration) {
+            if ( obj instanceof Duration ) {
                 Duration other = (Duration) obj;
                 return other.duration == duration
                         && unit == other.unit;
@@ -286,4 +286,5 @@ public class Duration {
             return false;
         }
     }
+
 }

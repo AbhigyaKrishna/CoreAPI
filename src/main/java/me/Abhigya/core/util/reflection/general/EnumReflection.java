@@ -24,11 +24,12 @@ public class EnumReflection {
      * @return Enum constant of the specified enum type with the specified name,
      * or null if doesn't exist
      */
-    public static <T extends Enum<T>> T getEnumConstant(Class<T> clazz, String name) {
+    public static < T extends Enum< T > > T getEnumConstant( Class< T > clazz, String name ) {
         try {
-            return Enum.valueOf(clazz, name);
-        } catch (IllegalArgumentException ex) {
+            return Enum.valueOf( clazz, name );
+        } catch ( IllegalArgumentException ex ) {
             return null;
         }
     }
+
 }

@@ -8,4 +8,5 @@ import me.Abhigya.core.util.saveable.Saveable;
  * {@link Loadable} interface, and saved by {@link Saveable} interface.
  */
 public interface Configurable extends Loadable, Saveable {
+
 }

@@ -59,13 +59,13 @@ public class MySQL extends SQLDatabase {
      * @param reconnect <strong>{@code true}</strong> to auto reconnect
      * @param ssl       <strong>{@code true}</strong> to use SSL
      */
-    public MySQL(String host, int port, String database, String username, String password, boolean reconnect, boolean ssl) {
-        super(DatabaseType.MYSQL);
+    public MySQL( String host, int port, String database, String username, String password, boolean reconnect, boolean ssl ) {
+        super( DatabaseType.MYSQL );
 
-        Validate.isTrue(!StringUtils.isBlank(host), "The host cannot be null or empty!");
-        Validate.isTrue(!StringUtils.isBlank(database), "The database cannot be null or empty!");
-        Validate.notNull(username, "The username cannot be null!");
-        Validate.notNull(password, "The password cannot be null!");
+        Validate.isTrue( !StringUtils.isBlank( host ), "The host cannot be null or empty!" );
+        Validate.isTrue( !StringUtils.isBlank( database ), "The database cannot be null or empty!" );
+        Validate.notNull( username, "The username cannot be null!" );
+        Validate.notNull( password, "The password cannot be null!" );
 
         this.host = host;
         this.port = port;
@@ -87,8 +87,8 @@ public class MySQL extends SQLDatabase {
      * @param password  User password
      * @param reconnect <strong>{@code true}</strong> to auto reconnect
      */
-    public MySQL(String host, int port, String database, String username, String password, boolean reconnect) {
-        this(host, port, database, username, password, reconnect, true);
+    public MySQL( String host, int port, String database, String username, String password, boolean reconnect ) {
+        this( host, port, database, username, password, reconnect, true );
     }
 
     /**
@@ -98,10 +98,10 @@ public class MySQL extends SQLDatabase {
      * @return true if connected.
      */
     @Override
-    public boolean isConnected() {
+    public boolean isConnected( ) {
         try {
-            return this.connection != null && !this.connection.isClosed();
-        } catch (SQLException e) {
+            return this.connection != null && !this.connection.isClosed( );
+        } catch ( SQLException e ) {
             return false;
         }
     }
@@ -134,13 +134,13 @@ public class MySQL extends SQLDatabase {
      * @throws SQLException          if a database access error occurs.
      */
     @Override
-    public Connection getConnection()
+    public Connection getConnection( )
             throws SQLTimeoutException, IllegalStateException, SQLException {
-        if (!isConnected() && reconnect) {
+        if ( !isConnected( ) && reconnect ) {
             this.lost_connections++;
-            this.connect();
+            this.connect( );
         }
-        return this.isConnected() ? this.connection : null;
+        return this.isConnected( ) ? this.connection : null;
     }
 
     /**
@@ -151,7 +151,7 @@ public class MySQL extends SQLDatabase {
      * <strong>{@code -1}</strong> if the auto-reconnection is disabled.
      */
     @Override
-    public int getLostConnections() {
+    public int getLostConnections( ) {
         return reconnect ? lost_connections : -1;
     }
 
@@ -166,17 +166,17 @@ public class MySQL extends SQLDatabase {
      *                               cancel the current database connection attempt.
      */
     @Override
-    public synchronized void connect()
+    public synchronized void connect( )
             throws IllegalStateException, SQLException, SQLTimeoutException {
         try {
-            Class.forName(DRIVER_CLASS);
-        } catch (ClassNotFoundException ex) {
-            throw new IllegalStateException("Could not connect to MySQL! The JDBC driver is unavailable!");
+            Class.forName( DRIVER_CLASS );
+        } catch ( ClassNotFoundException ex ) {
+            throw new IllegalStateException( "Could not connect to MySQL! The JDBC driver is unavailable!" );
         }
 
         this.connection = DriverManager.getConnection(
-                String.format(URL_FORMAT, host, port, database, String.valueOf(reconnect), String.valueOf(ssl)),
-                username, password);
+                String.format( URL_FORMAT, host, port, database, String.valueOf( reconnect ), String.valueOf( ssl ) ),
+                username, password );
     }
 
     /**
@@ -189,12 +189,12 @@ public class MySQL extends SQLDatabase {
      * @throws SQLException          if a database access error occurs.
      */
     @Override
-    public void disconnect() throws SQLException {
-        if (!isConnected()) {
-            throw new IllegalStateException("Not connected!");
+    public void disconnect( ) throws SQLException {
+        if ( !isConnected( ) ) {
+            throw new IllegalStateException( "Not connected!" );
         }
 
-        this.connection.close();
+        this.connection.close( );
         this.connection = null;
     }
 

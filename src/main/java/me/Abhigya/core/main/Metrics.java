@@ -6,12 +6,13 @@ import org.bstats.charts.SingleLineChart;
 
 public class Metrics extends MetricsAdaptor {
 
-    protected Metrics(Plugin plugin, int pluginId) {
-        super(plugin, pluginId);
+    protected Metrics( Plugin plugin, int pluginId ) {
+        super( plugin, pluginId );
     }
 
     @Override
-    public void register() {
-        this.addChart(new SingleLineChart("servers", () -> 1));
+    public void register( ) {
+        this.addChart( new SingleLineChart( "servers", ( ) -> 1 ) );
     }
+
 }

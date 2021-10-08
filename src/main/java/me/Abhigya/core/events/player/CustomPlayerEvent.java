@@ -21,8 +21,8 @@ public abstract class CustomPlayerEvent extends CustomEvent {
      * @param async  true indicates the event will fire asynchronously, false by
      *               default from default constructor
      */
-    public CustomPlayerEvent(Player player, boolean async) {
-        super(async);
+    public CustomPlayerEvent( Player player, boolean async ) {
+        super( async );
         this.player = player;
     }
 
@@ -32,8 +32,8 @@ public abstract class CustomPlayerEvent extends CustomEvent {
      *
      * @param player Player involved in this event.
      */
-    public CustomPlayerEvent(final Player player) {
-        this(player, false);
+    public CustomPlayerEvent( final Player player ) {
+        this( player, false );
     }
 
     /**
@@ -42,7 +42,7 @@ public abstract class CustomPlayerEvent extends CustomEvent {
      *
      * @return Player who is involved in this event.
      */
-    public Player getPlayer() {
+    public Player getPlayer( ) {
         return player;
     }
 

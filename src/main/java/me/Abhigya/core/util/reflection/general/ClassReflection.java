@@ -4,10 +4,6 @@ import me.Abhigya.core.main.CoreAPI;
 import me.Abhigya.core.util.StringUtils;
 import me.Abhigya.core.util.server.Version;
 import org.reflections8.Reflections;
-import org.reflections8.scanners.SubTypesScanner;
-import org.reflections8.util.ClasspathHelper;
-import org.reflections8.util.ConfigurationBuilder;
-import org.reflections8.util.FilterBuilder;
 
 import java.io.File;
 import java.util.*;
@@ -23,7 +19,7 @@ public class ClassReflection {
     public static final String CRAFT_CLASSES_PACKAGE = "org.bukkit.craftbukkit.";
     public static final String NMS_CLASSES_PACKAGE = "net.minecraft.server.";
 
-    private static final Map<String, Class<?>> CACHED_CLASSES = new ConcurrentHashMap<>();
+    private static final Map< String, Class< ? > > CACHED_CLASSES = new ConcurrentHashMap<>( );
 
     /**
      * Gets the member sub class with the provided name that is hold by the provided
@@ -37,13 +33,13 @@ public class ClassReflection {
      * @throws ClassNotFoundException if the sub class doesn't exist at the
      *                                {@code root} class
      */
-    public static Class<?> getSubClass(Class<?> root, String name, boolean declared) throws ClassNotFoundException {
-        for (Class<?> clazz : declared ? root.getDeclaredClasses() : root.getClasses()) {
-            if (clazz.getSimpleName().equals(name)) {
+    public static Class< ? > getSubClass( Class< ? > root, String name, boolean declared ) throws ClassNotFoundException {
+        for ( Class< ? > clazz : declared ? root.getDeclaredClasses( ) : root.getClasses( ) ) {
+            if ( clazz.getSimpleName( ).equals( name ) ) {
                 return clazz;
             }
         }
-        throw new ClassNotFoundException("The sub class " + name + " doesn't exist!");
+        throw new ClassNotFoundException( "The sub class " + name + " doesn't exist!" );
     }
 
     /**
@@ -57,16 +53,16 @@ public class ClassReflection {
      * @throws ClassNotFoundException if the sub class doesn't exist at the
      *                                {@code root} class
      */
-    public static Class<?> getSubClass(Class<?> root, String name) throws ClassNotFoundException {
+    public static Class< ? > getSubClass( Class< ? > root, String name ) throws ClassNotFoundException {
         try {
-            return getSubClass(root, name, true);
-        } catch (ClassNotFoundException ex) {
+            return getSubClass( root, name, true );
+        } catch ( ClassNotFoundException ex ) {
             try {
-                return getSubClass(root, name, false);
-            } catch (ClassNotFoundException ignored) {
+                return getSubClass( root, name, false );
+            } catch ( ClassNotFoundException ignored ) {
             }
         }
-        throw new ClassNotFoundException("The sub class " + name + " doesn't exist!");
+        throw new ClassNotFoundException( "The sub class " + name + " doesn't exist!" );
     }
 
     /**
@@ -79,18 +75,18 @@ public class ClassReflection {
      *                     within a sub-package
      * @return Class with the provided name
      */
-    public static Class<?> getCraftClass(String name, String package_name) {
+    public static Class< ? > getCraftClass( String name, String package_name ) {
         try {
-            String id = "craft-" + (StringUtils.isBlank(package_name) ? "" : package_name.toLowerCase() + ".") + name;
-            if (CACHED_CLASSES.containsKey(id))
-                return CACHED_CLASSES.get(id);
+            String id = "craft-" + ( StringUtils.isBlank( package_name ) ? "" : package_name.toLowerCase( ) + "." ) + name;
+            if ( CACHED_CLASSES.containsKey( id ) )
+                return CACHED_CLASSES.get( id );
 
-            Class<?> clazz = Class.forName(CRAFT_CLASSES_PACKAGE + Version.getServerVersion().name() + "."
-                    + (StringUtils.isBlank(package_name) ? "" : package_name.toLowerCase() + ".") + name);
-            CACHED_CLASSES.put(id, clazz);
+            Class< ? > clazz = Class.forName( CRAFT_CLASSES_PACKAGE + Version.getServerVersion( ).name( ) + "."
+                    + ( StringUtils.isBlank( package_name ) ? "" : package_name.toLowerCase( ) + "." ) + name );
+            CACHED_CLASSES.put( id, clazz );
             return clazz;
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+        } catch ( ClassNotFoundException e ) {
+            e.printStackTrace( );
         }
         return null;
     }
@@ -103,37 +99,37 @@ public class ClassReflection {
      * @param v17Package Package name/path after 'net.minecraft.'
      * @return Class with the provided name
      */
-    public static Class<?> getNmsClass(String name, String v17Package) {
+    public static Class< ? > getNmsClass( String name, String v17Package ) {
         try {
-            if (CACHED_CLASSES.containsKey(name))
-                return CACHED_CLASSES.get(name);
+            if ( CACHED_CLASSES.containsKey( name ) )
+                return CACHED_CLASSES.get( name );
 
-            Class<?> clazz;
-            if (CoreAPI.getInstance().getServerVersion().isNewerEquals(Version.v1_17_R1))
-                clazz = Class.forName("net.minecraft." +
-                        (StringUtils.isBlank(v17Package) ? "" : v17Package.toLowerCase() + ".") + name);
+            Class< ? > clazz;
+            if ( CoreAPI.getInstance( ).getServerVersion( ).isNewerEquals( Version.v1_17_R1 ) )
+                clazz = Class.forName( "net.minecraft." +
+                        ( StringUtils.isBlank( v17Package ) ? "" : v17Package.toLowerCase( ) + "." ) + name );
             else
-                clazz = Class.forName(NMS_CLASSES_PACKAGE + CoreAPI.getInstance().getServerVersion().name() + "." + name);
+                clazz = Class.forName( NMS_CLASSES_PACKAGE + CoreAPI.getInstance( ).getServerVersion( ).name( ) + "." + name );
 
-            CACHED_CLASSES.put(name, clazz);
+            CACHED_CLASSES.put( name, clazz );
             return clazz;
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+        } catch ( ClassNotFoundException e ) {
+            e.printStackTrace( );
         }
         return null;
     }
 
-    public static boolean nmsClassExist(String name, String v17Package) {
+    public static boolean nmsClassExist( String name, String v17Package ) {
         try {
-            Class<?> clazz;
-            if (CoreAPI.getInstance().getServerVersion().isNewerEquals(Version.v1_17_R1))
-                clazz = Class.forName("net.minecraft." +
-                        (StringUtils.isBlank(v17Package) ? "" : v17Package.toLowerCase() + ".") + name);
+            Class< ? > clazz;
+            if ( CoreAPI.getInstance( ).getServerVersion( ).isNewerEquals( Version.v1_17_R1 ) )
+                clazz = Class.forName( "net.minecraft." +
+                        ( StringUtils.isBlank( v17Package ) ? "" : v17Package.toLowerCase( ) + "." ) + name );
             else
-                clazz = Class.forName(NMS_CLASSES_PACKAGE + CoreAPI.getInstance().getServerVersion().name() + "." + name);
-            CACHED_CLASSES.put(name, clazz);
+                clazz = Class.forName( NMS_CLASSES_PACKAGE + CoreAPI.getInstance( ).getServerVersion( ).name( ) + "." + name );
+            CACHED_CLASSES.put( name, clazz );
             return true;
-        } catch (ClassNotFoundException e) {
+        } catch ( ClassNotFoundException e ) {
             return false;
         }
     }
@@ -146,22 +142,22 @@ public class ClassReflection {
      * @param packageName Base package
      * @return The classes
      */
-    public static Set<Class<?>> getClasses(String packageName) {
+    public static Set< Class< ? > > getClasses( String packageName ) {
 //        Reflections ref = new Reflections(new ConfigurationBuilder()
 //                .setScanners(new SubTypesScanner(false))
 //                .setUrls(ClasspathHelper.forClassLoader(ClasspathHelper.contextClassLoader(), ClasspathHelper.staticClassLoader()))
 //                .filterInputsBy(new FilterBuilder().include(FilterBuilder.prefix(packageName))));
 //        return ref.getSubTypesOf(Object.class);
-        return getClasses(packageName, Object.class);
+        return getClasses( packageName, Object.class );
     }
 
-    public static <T> Set<Class<? extends T>> getClasses(String packageName, Class<T> inherit) {
+    public static < T > Set< Class< ? extends T > > getClasses( String packageName, Class< T > inherit ) {
 //        Reflections ref = new Reflections(new ConfigurationBuilder()
 //                .setScanners(new SubTypesScanner(false))
 //                .setUrls(ClasspathHelper.forPackage(packageName))
 //                .filterInputsBy(new FilterBuilder().includePackage(packageName)));
-        Reflections ref = new Reflections(packageName);
-        return ref.getSubTypesOf(inherit);
+        Reflections ref = new Reflections( packageName );
+        return ref.getSubTypesOf( inherit );
     }
 
     /**
@@ -174,18 +170,18 @@ public class ClassReflection {
      * @throws ClassNotFoundException
      */
     @Deprecated
-    public static List<Class<?>> findClasses(File directory, String packageName) throws ClassNotFoundException {
-        List<Class<?>> classes = new ArrayList<>();
-        if (!directory.exists()) {
+    public static List< Class< ? > > findClasses( File directory, String packageName ) throws ClassNotFoundException {
+        List< Class< ? > > classes = new ArrayList<>( );
+        if ( !directory.exists( ) ) {
             return classes;
         }
-        File[] files = directory.listFiles();
-        for (File file : files) {
-            if (file.isDirectory()) {
-                assert !file.getName().contains(".");
-                classes.addAll(findClasses(file, packageName + "." + file.getName()));
-            } else if (file.getName().endsWith(".class")) {
-                classes.add(Class.forName(packageName + '.' + file.getName().substring(0, file.getName().length() - 6)));
+        File[] files = directory.listFiles( );
+        for ( File file : files ) {
+            if ( file.isDirectory( ) ) {
+                assert !file.getName( ).contains( "." );
+                classes.addAll( findClasses( file, packageName + "." + file.getName( ) ) );
+            } else if ( file.getName( ).endsWith( ".class" ) ) {
+                classes.add( Class.forName( packageName + '.' + file.getName( ).substring( 0, file.getName( ).length( ) - 6 ) ) );
             }
         }
         return classes;
@@ -203,21 +199,21 @@ public class ClassReflection {
      * @return Set with the name of the classes
      */
     @Deprecated
-    public static Set<String> getClassNames(File jarFile, String packageName) {
-        Set<String> names = new HashSet<>();
+    public static Set< String > getClassNames( File jarFile, String packageName ) {
+        Set< String > names = new HashSet<>( );
         try {
-            JarFile file = new JarFile(jarFile);
-            for (Enumeration<JarEntry> entry = file.entries(); entry.hasMoreElements(); ) {
-                JarEntry jarEntry = entry.nextElement();
-                String name = jarEntry.getName().replace("/", ".");
-                if ((packageName == null || packageName.trim().isEmpty() || name.startsWith(packageName.trim()))
-                        && name.endsWith(".class")) {
-                    names.add(name.substring(0, name.lastIndexOf(".class")));
+            JarFile file = new JarFile( jarFile );
+            for ( Enumeration< JarEntry > entry = file.entries( ); entry.hasMoreElements( ); ) {
+                JarEntry jarEntry = entry.nextElement( );
+                String name = jarEntry.getName( ).replace( "/", "." );
+                if ( ( packageName == null || packageName.trim( ).isEmpty( ) || name.startsWith( packageName.trim( ) ) )
+                        && name.endsWith( ".class" ) ) {
+                    names.add( name.substring( 0, name.lastIndexOf( ".class" ) ) );
                 }
             }
-            file.close();
-        } catch (Exception e) {
-            e.printStackTrace();
+            file.close( );
+        } catch ( Exception e ) {
+            e.printStackTrace( );
         }
         return names;
     }
@@ -234,15 +230,16 @@ public class ClassReflection {
      * @return Set with the scanned classes
      */
     @Deprecated
-    public static Set<Class<?>> getClasses(File jarFile, String packageName) {
-        Set<Class<?>> classes = new HashSet<Class<?>>();
-        getClassNames(jarFile, packageName).forEach(class_name -> {
+    public static Set< Class< ? > > getClasses( File jarFile, String packageName ) {
+        Set< Class< ? > > classes = new HashSet< Class< ? > >( );
+        getClassNames( jarFile, packageName ).forEach( class_name -> {
             try {
-                classes.add(Class.forName(class_name));
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
+                classes.add( Class.forName( class_name ) );
+            } catch ( ClassNotFoundException e ) {
+                e.printStackTrace( );
             }
-        });
+        } );
         return classes;
     }
+
 }

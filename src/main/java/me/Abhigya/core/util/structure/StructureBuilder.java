@@ -24,7 +24,7 @@ public class StructureBuilder {
      *
      * @param structure Structure to build
      */
-    public StructureBuilder(Structure structure) {
+    public StructureBuilder( Structure structure ) {
         this.structure = structure;
     }
 
@@ -34,7 +34,7 @@ public class StructureBuilder {
      *
      * @return {@link Structure}
      */
-    public Structure getStructure() {
+    public Structure getStructure( ) {
         return structure;
     }
 
@@ -45,10 +45,10 @@ public class StructureBuilder {
      * @param world World to build in
      * @return Synchronous {@link StructureBuildTask}
      */
-    public StructureBuildTask build(World world) {
-        StructureBuildTask build_task = new StructureBuildTask(this, world);
+    public StructureBuildTask build( World world ) {
+        StructureBuildTask build_task = new StructureBuildTask( this, world );
 
-        Bukkit.getScheduler().runTask(CoreAPI.getInstance(), build_task);
+        Bukkit.getScheduler( ).runTask( CoreAPI.getInstance( ), build_task );
         return build_task;
     }
 
@@ -59,10 +59,10 @@ public class StructureBuilder {
      * @param world World to build in
      * @return Asynchronous {@link StructureBuildTask}
      */
-    public StructureBuildTask buildAsynchronously(World world) {
-        StructureBuildTask build_task = new StructureBuildTask(this, world);
+    public StructureBuildTask buildAsynchronously( World world ) {
+        StructureBuildTask build_task = new StructureBuildTask( this, world );
 
-        Bukkit.getScheduler().runTaskAsynchronously(CoreAPI.getInstance(), build_task);
+        Bukkit.getScheduler( ).runTaskAsynchronously( CoreAPI.getInstance( ), build_task );
         return build_task;
     }
 
@@ -75,7 +75,7 @@ public class StructureBuilder {
 
         protected final StructureBuilder builder;
         protected final World world;
-        protected final Map<BlockVector, Material> type_map;
+        protected final Map< BlockVector, Material > type_map;
         protected final int size;
 
         /**
@@ -94,14 +94,14 @@ public class StructureBuilder {
          * @param builder {@link StructureBuilder} to build
          * @param world   World to build in
          */
-        public StructureBuildTask(StructureBuilder builder, World world) {
+        public StructureBuildTask( StructureBuilder builder, World world ) {
             this.builder = builder;
             this.world = world;
 
             // here we're copying map contents
             // to avoid concurrent modifications
-            this.type_map = new HashMap<>(builder.getStructure().getModel().getTypeMap());
-            this.size = type_map.size();
+            this.type_map = new HashMap<>( builder.getStructure( ).getModel( ).getTypeMap( ) );
+            this.size = type_map.size( );
 
             // marking as processing
             this.state = 0;
@@ -113,73 +113,74 @@ public class StructureBuilder {
          *
          * @return Progress of builder
          */
-        public double getProgress() {
-            return (double) type_map.size() / size;
+        public double getProgress( ) {
+            return (double) type_map.size( ) / size;
         }
 
         /**
          * Resumes the structure builder.
          */
-        public void resume() {
-            if (state != -1) {
+        public void resume( ) {
+            if ( state != -1 ) {
                 this.state = 0;
             } else {
-                throw new IllegalStateException("Cannot resume a stopped build task!");
+                throw new IllegalStateException( "Cannot resume a stopped build task!" );
             }
         }
 
         /**
          * Pauses the structure builder.
          */
-        public void pause() {
+        public void pause( ) {
             this.state = 1;
         }
 
         /**
          * Stops the structure builder.
          */
-        public void stop() {
+        public void stop( ) {
             this.state = -1;
         }
 
         @Override
-        public void run() {
-            Iterator<BlockVector> key_iterator = type_map.keySet().iterator();
+        public void run( ) {
+            Iterator< BlockVector > key_iterator = type_map.keySet( ).iterator( );
 
-            while (key_iterator.hasNext()) {
-                if (state == 1) {
+            while ( key_iterator.hasNext( ) ) {
+                if ( state == 1 ) {
                     continue;
-                } else if (state == -1) {
+                } else if ( state == -1 ) {
                     break;
                 }
 
-                BlockVector position = key_iterator.next();
-                Material type = type_map.get(position);
+                BlockVector position = key_iterator.next( );
+                Material type = type_map.get( position );
 
-                set(position, type);
-                key_iterator.remove();
+                set( position, type );
+                key_iterator.remove( );
             }
         }
 
-        protected void set(BlockVector position, Material type) {
-            Structure structure = builder.getStructure();
-            BlockVector origin = structure.getOrigin();
+        protected void set( BlockVector position, Material type ) {
+            Structure structure = builder.getStructure( );
+            BlockVector origin = structure.getOrigin( );
 
-            int x = origin.getBlockX() + position.getBlockX();
-            int y = origin.getBlockY() + position.getBlockY();
-            int z = origin.getBlockZ() + position.getBlockZ();
+            int x = origin.getBlockX( ) + position.getBlockX( );
+            int y = origin.getBlockY( ) + position.getBlockY( );
+            int z = origin.getBlockZ( ) + position.getBlockZ( );
 
-            Block block = world.getBlockAt(x, y, z);
+            Block block = world.getBlockAt( x, y, z );
 
             // block set synchronously
-            Bukkit.getScheduler().scheduleSyncDelayedTask(CoreAPI.getInstance(), new Runnable() {
+            Bukkit.getScheduler( ).scheduleSyncDelayedTask( CoreAPI.getInstance( ), new Runnable( ) {
                 @Override
-                public void run() {
-                    block.setType(type);
-                    block.getState().update();
+                public void run( ) {
+                    block.setType( type );
+                    block.getState( ).update( );
                 }
-            });
+            } );
         }
+
     }
 
 }

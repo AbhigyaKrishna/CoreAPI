@@ -13,7 +13,7 @@ public final class WorkloadThread implements Runnable {
     /**
      * The work deque.
      */
-    private final Queue<Workload> deque = new ConcurrentLinkedQueue<>();
+    private final Queue< Workload > deque = new ConcurrentLinkedQueue<>( );
 
     /**
      * The maximum nano per tick.
@@ -32,7 +32,7 @@ public final class WorkloadThread implements Runnable {
      * @param workThreadId    Work thread id
      * @param maxNanosPerTick Maximum nano per tick
      */
-    WorkloadThread(final long workThreadId, final long maxNanosPerTick) {
+    WorkloadThread( final long workThreadId, final long maxNanosPerTick ) {
         this.workThreadId = workThreadId;
         this.maxNanosPerTick = maxNanosPerTick;
     }
@@ -43,8 +43,8 @@ public final class WorkloadThread implements Runnable {
      *
      * @param workload {@link Workload} for execution
      */
-    public void add(Workload workload) {
-        deque.add(workload);
+    public void add( Workload workload ) {
+        deque.add( workload );
     }
 
     /**
@@ -53,8 +53,8 @@ public final class WorkloadThread implements Runnable {
      *
      * @return Collection of {@link Workload}
      */
-    public Collection<Workload> getDeque() {
-        return Collections.unmodifiableCollection(deque);
+    public Collection< Workload > getDeque( ) {
+        return Collections.unmodifiableCollection( deque );
     }
 
     /**
@@ -63,7 +63,7 @@ public final class WorkloadThread implements Runnable {
      *
      * @return Work timeout in nanos
      */
-    public long getMaxNanosPerTick() {
+    public long getMaxNanosPerTick( ) {
         return maxNanosPerTick;
     }
 
@@ -73,22 +73,22 @@ public final class WorkloadThread implements Runnable {
      *
      * @return Work Thread id
      */
-    public long getWorkThreadId() {
+    public long getWorkThreadId( ) {
         return workThreadId;
     }
 
     @Override
-    public void run() {
-        final long stopTime = System.nanoTime() + this.maxNanosPerTick;
-        final Workload first = this.deque.poll();
-        if (first == null) {
+    public void run( ) {
+        final long stopTime = System.nanoTime( ) + this.maxNanosPerTick;
+        final Workload first = this.deque.poll( );
+        if ( first == null ) {
             return;
         }
-        this.computeWorkload(first);
+        this.computeWorkload( first );
         Workload workload;
-        while (System.nanoTime() <= stopTime && (workload = this.deque.poll()) != null) {
-            this.computeWorkload(workload);
-            if (!first.reSchedule() && first.equals(workload)) {
+        while ( System.nanoTime( ) <= stopTime && ( workload = this.deque.poll( ) ) != null ) {
+            this.computeWorkload( workload );
+            if ( !first.reSchedule( ) && first.equals( workload ) ) {
                 break;
             }
         }
@@ -101,12 +101,13 @@ public final class WorkloadThread implements Runnable {
      *
      * @param workload Workload to compute
      */
-    private void computeWorkload(final Workload workload) {
-        if (workload.shouldExecute()) {
-            workload.compute();
+    private void computeWorkload( final Workload workload ) {
+        if ( workload.shouldExecute( ) ) {
+            workload.compute( );
         }
-        if (workload.reSchedule()) {
-            this.deque.add(workload);
+        if ( workload.reSchedule( ) ) {
+            this.deque.add( workload );
         }
     }
+
 }
