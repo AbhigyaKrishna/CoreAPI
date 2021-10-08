@@ -12,8 +12,8 @@ public abstract class CustomEvent extends Event {
      * The default constructor is defined for cleaner code. This constructor assumes
      * the event is synchronous.
      */
-    public CustomEvent() {
-        super();
+    public CustomEvent( ) {
+        super( );
     }
 
     /**
@@ -24,8 +24,8 @@ public abstract class CustomEvent extends Event {
      * @param async true indicates the event will fire asynchronously, false by
      *              default from default constructor
      */
-    public CustomEvent(boolean async) {
-        super(async);
+    public CustomEvent( boolean async ) {
+        super( async );
     }
 
     /**
@@ -45,8 +45,8 @@ public abstract class CustomEvent extends Event {
      *                               not be used to test synchronized state. This is
      *                               an indicator for flawed flow logic.</i>
      */
-    public CustomEvent call() throws IllegalStateException {
-        Bukkit.getPluginManager().callEvent(this);
+    public CustomEvent call( ) throws IllegalStateException {
+        Bukkit.getPluginManager( ).callEvent( this );
         return this;
     }
 

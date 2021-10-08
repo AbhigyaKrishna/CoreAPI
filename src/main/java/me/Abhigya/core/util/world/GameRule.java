@@ -13,7 +13,7 @@ public class GameRule implements Validable {
 
     protected final GameRuleType type;
     protected final Object value;
-    protected final Set<GameRule> parents;
+    protected final Set< GameRule > parents;
 
     /**
      * Construct the {@link GameRule}.
@@ -23,18 +23,18 @@ public class GameRule implements Validable {
      * @param value   Game rule value
      * @param parents Required {@link GameRule GameRules} to work
      */
-    public GameRule(GameRuleType type, Object value, GameRule... parents) {
-        Validate.notNull(type, "yype cannot be null!");
-        Validate.notNull(value, "value cannot be null!");
-        Validate.isTrue(type.isSameDataType(value), "the specified type and value are incompatible!");
+    public GameRule( GameRuleType type, Object value, GameRule... parents ) {
+        Validate.notNull( type, "yype cannot be null!" );
+        Validate.notNull( value, "value cannot be null!" );
+        Validate.isTrue( type.isSameDataType( value ), "the specified type and value are incompatible!" );
 
         this.type = type;
         this.value = value;
-        this.parents = new HashSet<>();
-        this.parents.addAll(Arrays.asList(parents)
-                .stream()
-                .filter(GameRule::isValid)
-                .collect(Collectors.toSet()));
+        this.parents = new HashSet<>( );
+        this.parents.addAll( Arrays.asList( parents )
+                .stream( )
+                .filter( GameRule::isValid )
+                .collect( Collectors.toSet( ) ) );
     }
 
     /**
@@ -43,7 +43,7 @@ public class GameRule implements Validable {
      *
      * @return Game rule type
      */
-    public GameRuleType getType() {
+    public GameRuleType getType( ) {
         return type;
     }
 
@@ -53,7 +53,7 @@ public class GameRule implements Validable {
      *
      * @return Game rule value
      */
-    public Object getValue() {
+    public Object getValue( ) {
         return value;
     }
 
@@ -63,7 +63,7 @@ public class GameRule implements Validable {
      *
      * @return Required game rules
      */
-    public Set<GameRule> getParents() {
+    public Set< GameRule > getParents( ) {
         return parents;
     }
 
@@ -74,19 +74,20 @@ public class GameRule implements Validable {
      * @param world World to apply
      * @return Same world, useful for chaining
      */
-    public World apply(World world) {
-        this.getType().apply(world, value);
-        this.parents.forEach(parent -> parent.getType().apply(world, parent.getValue()));
+    public World apply( World world ) {
+        this.getType( ).apply( world, value );
+        this.parents.forEach( parent -> parent.getType( ).apply( world, parent.getValue( ) ) );
         return world;
     }
 
     @Override
-    public boolean isValid() {
-        return getType() != null && getValue() != null && getType().isSameDataType(getValue());
+    public boolean isValid( ) {
+        return getType( ) != null && getValue( ) != null && getType( ).isSameDataType( getValue( ) );
     }
 
     @Override
-    public boolean isInvalid() {
-        return !isValid();
+    public boolean isInvalid( ) {
+        return !isValid( );
     }
+
 }

@@ -7,11 +7,11 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.FIELD)
+@Retention( RetentionPolicy.RUNTIME )
+@Target( ElementType.FIELD )
 public @interface LoadableEntry {
 
-    String key();
+    String key( );
 
     /**
      * Gets the name of the sub-section where this
@@ -20,6 +20,6 @@ public @interface LoadableEntry {
      *
      * @return Name of the sub-section where this is located.
      */
-    String subsection() default StringUtils.EMPTY;
+    String subsection( ) default StringUtils.EMPTY;
 
 }

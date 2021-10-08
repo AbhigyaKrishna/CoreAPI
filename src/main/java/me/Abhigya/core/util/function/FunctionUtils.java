@@ -15,8 +15,8 @@ public class FunctionUtils {
      * @return Predicate that represents the logical negation of the provided
      * predicate
      */
-    public static <T> Predicate<T> negate(Predicate<T> predicate) {
-        return predicate.negate();
+    public static < T > Predicate< T > negate( Predicate< T > predicate ) {
+        return predicate.negate( );
     }
 
 }

@@ -19,7 +19,7 @@ public class ItemMenuHolder implements InventoryHolder {
      * @param menu      ItemMenu
      * @param inventory Inventory
      */
-    public ItemMenuHolder(ItemMenu menu, Inventory inventory) {
+    public ItemMenuHolder( ItemMenu menu, Inventory inventory ) {
         this.menu = menu;
         this.inventory = inventory;
     }
@@ -30,7 +30,7 @@ public class ItemMenuHolder implements InventoryHolder {
      *
      * @return ItemMenu
      */
-    public ItemMenu getItemMenu() {
+    public ItemMenu getItemMenu( ) {
         return menu;
     }
 
@@ -41,7 +41,7 @@ public class ItemMenuHolder implements InventoryHolder {
      * @return Inventory
      */
     @Override
-    public Inventory getInventory() {
+    public Inventory getInventory( ) {
         return inventory;
     }
 

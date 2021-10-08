@@ -13,7 +13,7 @@ import java.util.UUID;
  *
  * @param <T>
  */
-public class UUIDEntity<T extends Entity> {
+public class UUIDEntity< T extends Entity > {
 
     /**
      * The entity's unique id.
@@ -23,7 +23,7 @@ public class UUIDEntity<T extends Entity> {
     /**
      * The entity's type class.
      */
-    protected final Class<T> clazz;
+    protected final Class< T > clazz;
 
     /**
      * Construct the {@code UUIDEntity} from its {@link UUID unique id} and its
@@ -33,7 +33,7 @@ public class UUIDEntity<T extends Entity> {
      * @param uuid  Entity's {@link UUID unique id}
      * @param clazz Type class of the entity
      */
-    public UUIDEntity(final UUID uuid, final Class<T> clazz) {
+    public UUIDEntity( final UUID uuid, final Class< T > clazz ) {
         this.uuid = uuid;
         this.clazz = clazz;
     }
@@ -44,9 +44,9 @@ public class UUIDEntity<T extends Entity> {
      *
      * @param entity Respective entity.
      */
-    @SuppressWarnings("unchecked")
-    public UUIDEntity(final Entity entity) {
-        this(entity.getUniqueId(), (Class<T>) entity.getClass());
+    @SuppressWarnings( "unchecked" )
+    public UUIDEntity( final Entity entity ) {
+        this( entity.getUniqueId( ), (Class< T >) entity.getClass( ) );
     }
 
     /**
@@ -55,7 +55,7 @@ public class UUIDEntity<T extends Entity> {
      *
      * @return Entity's {@link UUID unique id}.
      */
-    public UUID getUniqueId() {
+    public UUID getUniqueId( ) {
         return uuid;
     }
 
@@ -65,7 +65,7 @@ public class UUIDEntity<T extends Entity> {
      *
      * @return entity's type class.
      */
-    public Class<T> getTypeClass() {
+    public Class< T > getTypeClass( ) {
         return clazz;
     }
 
@@ -77,17 +77,17 @@ public class UUIDEntity<T extends Entity> {
      *
      * @return Respective entity.
      */
-    @SuppressWarnings("unchecked")
-    public T get() {
-        if (Player.class.equals(getTypeClass())) {
-            return (T) Bukkit.getPlayer(getUniqueId());
+    @SuppressWarnings( "unchecked" )
+    public T get( ) {
+        if ( Player.class.equals( getTypeClass( ) ) ) {
+            return (T) Bukkit.getPlayer( getUniqueId( ) );
         }
 
-        for (World world : Bukkit.getWorlds()) {
-            Optional<T> filter = world.getEntitiesByClass(getTypeClass()).stream()
-                    .filter(entity -> entity.getUniqueId().equals(getUniqueId())).findAny();
-            if (filter.isPresent()) {
-                return filter.get();
+        for ( World world : Bukkit.getWorlds( ) ) {
+            Optional< T > filter = world.getEntitiesByClass( getTypeClass( ) ).stream( )
+                    .filter( entity -> entity.getUniqueId( ).equals( getUniqueId( ) ) ).findAny( );
+            if ( filter.isPresent( ) ) {
+                return filter.get( );
             }
 
 //			// we do this to avoid ConcurrentModificationException
@@ -106,19 +106,20 @@ public class UUIDEntity<T extends Entity> {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (obj instanceof UUIDEntity) {
-            return getUniqueId().equals(((UUIDEntity<?>) obj).getUniqueId());
+    public boolean equals( Object obj ) {
+        if ( obj instanceof UUIDEntity ) {
+            return getUniqueId( ).equals( ( (UUIDEntity< ? >) obj ).getUniqueId( ) );
         } else {
             return false;
         }
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode( ) {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((uuid == null) ? 0 : uuid.hashCode());
+        result = prime * result + ( ( uuid == null ) ? 0 : uuid.hashCode( ) );
         return result;
     }
+
 }

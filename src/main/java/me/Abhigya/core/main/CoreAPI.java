@@ -1,5 +1,6 @@
 package me.Abhigya.core.main;
 
+import io.github.retrooper.packetevents.PacketEvents;
 import me.Abhigya.core.item.ActionItemHandler;
 import me.Abhigya.core.metrics.MetricsAdaptor;
 import me.Abhigya.core.plugin.Plugin;
@@ -22,30 +23,38 @@ public final class CoreAPI extends PluginAdapter {
      *
      * @return Core instance.
      */
-    public static CoreAPI getInstance() {
-        return Plugin.getPlugin(CoreAPI.class);
+    public static CoreAPI getInstance( ) {
+        return Plugin.getPlugin( CoreAPI.class );
     }
 
     @Override
-    protected boolean setUp() {
-        Bukkit.getServicesManager().register(CoreAPI.class, getInstance(), getInstance(), ServicePriority.Highest);
-        this.serverVersion = Version.getServerVersion();
+    public void onLoad( ) {
+        PacketEvents.create( this );
+        PacketEvents.get( ).loadAsyncNewThread( );
+    }
+
+    @Override
+    protected boolean setUp( ) {
+        PacketEvents.get( ).init( );
+        Bukkit.getServicesManager( ).register( CoreAPI.class, getInstance( ), getInstance( ), ServicePriority.Highest );
+        this.serverVersion = Version.getServerVersion( );
         return true;
     }
 
     @Override
-    public MetricsAdaptor getMetrics() {
-        return new Metrics(this, 11582);
+    public MetricsAdaptor getMetrics( ) {
+        return new Metrics( this, 11582 );
     }
 
     @Override
-    protected boolean setUpHandlers() {
-        new GameRuleHandler(this);
-        new ActionItemHandler(this);
+    protected boolean setUpHandlers( ) {
+        new GameRuleHandler( this );
+        new ActionItemHandler( this );
         return true;
     }
 
-    public Version getServerVersion() {
+    public Version getServerVersion( ) {
         return serverVersion;
     }
+
 }

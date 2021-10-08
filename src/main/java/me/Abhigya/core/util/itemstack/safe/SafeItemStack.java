@@ -17,8 +17,8 @@ public class SafeItemStack extends CustomItemStack {
      *
      * @param material Type
      */
-    public SafeItemStack(Material material) {
-        this(material, 1);
+    public SafeItemStack( Material material ) {
+        this( material, 1 );
     }
 
     /**
@@ -28,9 +28,9 @@ public class SafeItemStack extends CustomItemStack {
      * @param material Type
      * @param amount   Stack size
      */
-    public SafeItemStack(Material material, int amount) {
-        super.setType(MaterialUtils.getRightMaterial(material));
-        this.setAmount(amount);
+    public SafeItemStack( Material material, int amount ) {
+        super.setType( MaterialUtils.getRightMaterial( material ) );
+        this.setAmount( amount );
     }
 
 }

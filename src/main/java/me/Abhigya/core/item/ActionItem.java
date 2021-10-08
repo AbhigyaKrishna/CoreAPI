@@ -16,7 +16,7 @@ public interface ActionItem {
      *
      * @return Display name of the Action Item
      */
-    public String getDisplayName();
+    public String getDisplayName( );
 
     /**
      * Gets the lore of the Action Item.
@@ -24,7 +24,7 @@ public interface ActionItem {
      *
      * @return Lore of the Action Item
      */
-    public List<String> getLore();
+    public List< String > getLore( );
 
     /**
      * Gets the material of the Action Item.
@@ -32,7 +32,7 @@ public interface ActionItem {
      *
      * @return Material of the Action Item
      */
-    public Material getMaterial();
+    public Material getMaterial( );
 
     /**
      * Gets the {@link EventPriority} for the Action Item.
@@ -40,7 +40,7 @@ public interface ActionItem {
      *
      * @return Event priority of the Action Item
      */
-    public EventPriority getPriority();
+    public EventPriority getPriority( );
 
     /**
      * Get the ItemStack of the Action Item.
@@ -48,7 +48,7 @@ public interface ActionItem {
      *
      * @return ItemStack of the Action Item
      */
-    public ItemStack toItemStack();
+    public ItemStack toItemStack( );
 
     /**
      * Checks if the provided ItemStack is of this Action Item.
@@ -57,7 +57,7 @@ public interface ActionItem {
      * @param item ItemStack to check
      * @return <strong>{@code true}</strong> if the ItemStack is of this Action Item, else false
      */
-    public boolean isThis(ItemStack item);
+    public boolean isThis( ItemStack item );
 
     /**
      * Register the action to be performed on interact with this item.
@@ -67,7 +67,7 @@ public interface ActionItem {
      * @param action {@link EnumAction} performed on this item
      * @param event  {@link PlayerInteractEvent} triggered in the action event
      */
-    public void onActionPerform(Player player, EnumAction action, PlayerInteractEvent event);
+    public void onActionPerform( Player player, EnumAction action, PlayerInteractEvent event );
 
     /**
      * Enumeration for actions defined for an item.

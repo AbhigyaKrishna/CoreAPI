@@ -43,6 +43,10 @@
                             <pattern>com.cryptomorin.xseries</pattern>
                             <shadedPattern>me.Abhigya.core.util.xseries</shadedPattern>
                         </relocation>
+                        <relocation>
+                            <pattern>io.github.retrooper.packetevents</pattern>
+                            <shadedPattern>me.Abhigya.core.util.packet.packetevents</shadedPattern>
+                        </relocation>
                     </relocations>
                     <filters>
                         <filter>
@@ -63,7 +67,7 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
+            <!--<plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>3.3.0</version>
@@ -75,7 +79,7 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
+            </plugin>-->
         </plugins>
         <resources>
             <resource>
@@ -207,12 +211,12 @@
         </dependency>
 
         <!-- Packet Events -->
-<!--        <dependency>-->
-<!--            <groupId>com.github.retrooper</groupId>-->
-<!--            <artifactId>packetevents</artifactId>-->
-<!--            <version>1.8-pre-17</version>-->
-<!--            <scope>compile</scope>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>com.github.retrooper</groupId>
+            <artifactId>packetevents</artifactId>
+            <version>1.8-pre-18</version>
+            <scope>compile</scope>
+        </dependency>
 
         <!-- Reflections -->
         <dependency>

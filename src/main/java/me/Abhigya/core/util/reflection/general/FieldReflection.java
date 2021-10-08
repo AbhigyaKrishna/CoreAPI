@@ -41,9 +41,9 @@ public class FieldReflection {
      *                              package of this class</li>
      *                              </ul>
      */
-    public static Field get(Class<?> clazz, String name, boolean declared)
+    public static Field get( Class< ? > clazz, String name, boolean declared )
             throws SecurityException, NoSuchFieldException {
-        return declared ? clazz.getDeclaredField(name) : clazz.getField(name);
+        return declared ? clazz.getDeclaredField( name ) : clazz.getField( name );
     }
 
     /**
@@ -76,12 +76,12 @@ public class FieldReflection {
      *                              </ul>
      * @see #get(Class, String, boolean)
      */
-    public static Field get(Class<?> clazz, String name)
+    public static Field get( Class< ? > clazz, String name )
             throws SecurityException, NoSuchFieldException {
         try {
-            return get(clazz, name, false);
-        } catch (NoSuchFieldException ex) {
-            return get(clazz, name, true);
+            return get( clazz, name, false );
+        } catch ( NoSuchFieldException ex ) {
+            return get( clazz, name, true );
         }
     }
 
@@ -117,10 +117,10 @@ public class FieldReflection {
      *                              <li>the field cannot be made accessible.
      *                              </ul>
      */
-    public static Field getAccessible(Class<?> clazz, String name, boolean declared)
+    public static Field getAccessible( Class< ? > clazz, String name, boolean declared )
             throws SecurityException, NoSuchFieldException {
-        final Field field = get(clazz, name, declared);
-        field.setAccessible(true);
+        final Field field = get( clazz, name, declared );
+        field.setAccessible( true );
         return field;
     }
 
@@ -156,10 +156,10 @@ public class FieldReflection {
      *                              </ul>
      * @see #getAccessible(Class, String, boolean)
      */
-    public static Field getAccessible(Class<?> clazz, String name)
+    public static Field getAccessible( Class< ? > clazz, String name )
             throws SecurityException, NoSuchFieldException {
-        final Field field = get(clazz, name);
-        field.setAccessible(true);
+        final Field field = get( clazz, name );
+        field.setAccessible( true );
         return field;
     }
 
@@ -205,19 +205,19 @@ public class FieldReflection {
      *                                  </ul>
      * @see Field#get(Object)
      */
-    @SuppressWarnings("unchecked")
-    public static <T> T getValue(Object object, String name, boolean declared)
+    @SuppressWarnings( "unchecked" )
+    public static < T > T getValue( Object object, String name, boolean declared )
             throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
-        final Field field = getAccessible(object.getClass(), name, declared);
-        final boolean b0 = field.isAccessible();
+        final Field field = getAccessible( object.getClass( ), name, declared );
+        final boolean b0 = field.isAccessible( );
 
-        field.setAccessible(true);
+        field.setAccessible( true );
         try {
-            return (T) field.get(object);
-        } catch (Throwable ex) {
+            return (T) field.get( object );
+        } catch ( Throwable ex ) {
             throw ex;
         } finally {
-            field.setAccessible(b0);
+            field.setAccessible( b0 );
         }
     }
 
@@ -263,12 +263,12 @@ public class FieldReflection {
      *                                  </ul>
      * @see #getValue(Object, String, boolean)
      */
-    public static <T> T getValue(Object object, String name)
+    public static < T > T getValue( Object object, String name )
             throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
         try {
-            return getValue(object, name, false);
-        } catch (NoSuchFieldException ex) {
-            return getValue(object, name, true);
+            return getValue( object, name, false );
+        } catch ( NoSuchFieldException ex ) {
+            return getValue( object, name, true );
         }
     }
 
@@ -309,18 +309,18 @@ public class FieldReflection {
      *                                </ul>
      * @see Field#set(Object, Object)
      */
-    public static Object setValue(Object object, String name, boolean declared, Object value)
+    public static Object setValue( Object object, String name, boolean declared, Object value )
             throws SecurityException, NoSuchFieldException, IllegalAccessException {
-        final Field field = getAccessible(object.getClass(), name, declared);
-        final boolean b0 = field.isAccessible();
+        final Field field = getAccessible( object.getClass( ), name, declared );
+        final boolean b0 = field.isAccessible( );
 
-        field.setAccessible(true);
+        field.setAccessible( true );
         try {
-            field.set(object, value);
-        } catch (Throwable ex) {
+            field.set( object, value );
+        } catch ( Throwable ex ) {
             throw ex;
         } finally {
-            field.setAccessible(b0);
+            field.setAccessible( b0 );
         }
         return object;
     }
@@ -362,12 +362,12 @@ public class FieldReflection {
      *                                </ul>
      * @see Field#set(Object, Object)
      */
-    public static Object setValue(Object object, String name, Object value)
+    public static Object setValue( Object object, String name, Object value )
             throws SecurityException, NoSuchFieldException, IllegalAccessException {
         try {
-            return setValue(object, name, false, value);
-        } catch (NoSuchFieldException ex) {
-            return setValue(object, name, true, value);
+            return setValue( object, name, false, value );
+        } catch ( NoSuchFieldException ex ) {
+            return setValue( object, name, true, value );
         }
     }
 
@@ -383,16 +383,16 @@ public class FieldReflection {
      * @return Same Object, for chaining
      * @throws SecurityException if the request is denied
      */
-    public static Field setAccessible(Field field, boolean accessible) throws SecurityException {
-        field.setAccessible(accessible);
-        if (accessible) {
+    public static Field setAccessible( Field field, boolean accessible ) throws SecurityException {
+        field.setAccessible( accessible );
+        if ( accessible ) {
             try {
-                Field modifiersField = Field.class.getDeclaredField("modifiers");
-                modifiersField.setAccessible(true);
-                modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
+                Field modifiersField = Field.class.getDeclaredField( "modifiers" );
+                modifiersField.setAccessible( true );
+                modifiersField.setInt( field, field.getModifiers( ) & ~Modifier.FINAL );
 //				modifiersField.setAccessible ( false );
-            } catch (Throwable ex) {
-                ex.printStackTrace();
+            } catch ( Throwable ex ) {
+                ex.printStackTrace( );
             }
         }
 
@@ -411,9 +411,9 @@ public class FieldReflection {
      * @throws SecurityException if the request is denied
      * @see #setAccessible(Field, boolean)
      */
-    public static Field setAccessible(Field field)
+    public static Field setAccessible( Field field )
             throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
-        return setAccessible(field, true);
+        return setAccessible( field, true );
     }
 
     /**
@@ -429,17 +429,18 @@ public class FieldReflection {
      * @param field Parameterized field
      * @return Classes of the types of a parameterized field
      */
-    public static Class<?>[] getParameterizedTypesClasses(Field field) {
-        if (!(field.getGenericType() instanceof ParameterizedType)) {
-            throw new IllegalArgumentException("The field doesn't represent a parameterized type!");
+    public static Class< ? >[] getParameterizedTypesClasses( Field field ) {
+        if ( !( field.getGenericType( ) instanceof ParameterizedType ) ) {
+            throw new IllegalArgumentException( "The field doesn't represent a parameterized type!" );
         }
 
-        ParameterizedType parameterized_type = (ParameterizedType) field.getGenericType();
-        Type[] types_arguments = parameterized_type.getActualTypeArguments();
-        Class<?>[] classes = new Class<?>[types_arguments.length];
-        for (int i = 0; i < classes.length; i++) {
-            classes[i] = (Class<?>) types_arguments[i];
+        ParameterizedType parameterized_type = (ParameterizedType) field.getGenericType( );
+        Type[] types_arguments = parameterized_type.getActualTypeArguments( );
+        Class< ? >[] classes = new Class< ? >[types_arguments.length];
+        for ( int i = 0; i < classes.length; i++ ) {
+            classes[i] = (Class< ? >) types_arguments[i];
         }
         return classes;
     }
+
 }

@@ -20,20 +20,20 @@ public class EconomyManager {
     /**
      * Enables the economy manager and hooks into Vault
      */
-    public static void enable() {
-        ConsoleUtils.sendPluginMessage(ChatColor.YELLOW, "Disabling economy until vault loads", CoreAPI.getInstance());
+    public static void enable( ) {
+        ConsoleUtils.sendPluginMessage( ChatColor.YELLOW, "Disabling economy until vault loads", CoreAPI.getInstance( ) );
         enabled = false;
 
-        PluginUtils.onPluginLoaded("Vault", p -> {
-            RegisteredServiceProvider<Economy> rsp = Bukkit.getServicesManager().getRegistration(Economy.class);
-            if (rsp == null) {
-                ConsoleUtils.sendPluginMessage(ChatColor.RED, "Cannot find any economy service, economy not supported", CoreAPI.getInstance());
+        PluginUtils.onPluginLoaded( "Vault", p -> {
+            RegisteredServiceProvider< Economy > rsp = Bukkit.getServicesManager( ).getRegistration( Economy.class );
+            if ( rsp == null ) {
+                ConsoleUtils.sendPluginMessage( ChatColor.RED, "Cannot find any economy service, economy not supported", CoreAPI.getInstance( ) );
                 enabled = false;
                 return;
             }
             enabled = true;
-            economy = rsp.getProvider();
-        });
+            economy = rsp.getProvider( );
+        } );
     }
 
     /**
@@ -42,7 +42,7 @@ public class EconomyManager {
      *
      * @return {@link Economy} if economy enabled otherwise null
      */
-    public static Economy getEconomy() {
+    public static Economy getEconomy( ) {
         return enabled ? economy : null;
     }
 
@@ -53,8 +53,8 @@ public class EconomyManager {
      * @param player Player to get balance of
      * @return {@link Balance} of the given player
      */
-    public static Balance get(OfflinePlayer player) {
-        return economy == null ? null : new Balance(player);
+    public static Balance get( OfflinePlayer player ) {
+        return economy == null ? null : new Balance( player );
     }
 
     /**
@@ -65,8 +65,8 @@ public class EconomyManager {
      * @param v Amount to format
      * @return Formatted amount
      */
-    public static String format(double v) {
-        return economy.format(v);
+    public static String format( double v ) {
+        return economy.format( v );
     }
 
     /**
@@ -76,7 +76,8 @@ public class EconomyManager {
      * @return {@code true} if Vault hook was successful, false
      * otherwise
      */
-    public static boolean isEnabled() {
+    public static boolean isEnabled( ) {
         return enabled;
     }
+
 }

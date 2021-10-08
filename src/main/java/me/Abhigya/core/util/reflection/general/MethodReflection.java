@@ -46,9 +46,9 @@ public class MethodReflection {
      *
      *                               </ul>
      */
-    public static Method get(Class<?> clazz, String name, boolean declared, Class<?>... parameter_types)
+    public static Method get( Class< ? > clazz, String name, boolean declared, Class< ? >... parameter_types )
             throws NoSuchMethodException, SecurityException {
-        return declared ? clazz.getDeclaredMethod(name, parameter_types) : clazz.getMethod(name, parameter_types);
+        return declared ? clazz.getDeclaredMethod( name, parameter_types ) : clazz.getMethod( name, parameter_types );
     }
 
     /**
@@ -86,12 +86,12 @@ public class MethodReflection {
      *                               </ul>
      * @see #get(Class, String, boolean, Class...)
      */
-    public static Method get(Class<?> clazz, String name, Class<?>... parameter_types)
+    public static Method get( Class< ? > clazz, String name, Class< ? >... parameter_types )
             throws NoSuchMethodException, SecurityException {
         try {
-            return get(clazz, name, false, parameter_types);
-        } catch (NoSuchMethodException ex) {
-            return get(clazz, name, true, parameter_types);
+            return get( clazz, name, false, parameter_types );
+        } catch ( NoSuchMethodException ex ) {
+            return get( clazz, name, true, parameter_types );
         }
     }
 
@@ -130,10 +130,10 @@ public class MethodReflection {
      *
      *                               </ul>
      */
-    public static Method getAccessible(Class<?> clazz, String name, boolean declared, Class<?>... parameter_types)
+    public static Method getAccessible( Class< ? > clazz, String name, boolean declared, Class< ? >... parameter_types )
             throws NoSuchMethodException, SecurityException {
-        final Method method = get(clazz, name, declared, parameter_types);
-        method.setAccessible(true);
+        final Method method = get( clazz, name, declared, parameter_types );
+        method.setAccessible( true );
         return method;
     }
 
@@ -172,10 +172,10 @@ public class MethodReflection {
      *                               </ul>
      * @see #getAccessible(Class, String, boolean, Class...)
      */
-    public static Method getAccessible(Class<?> clazz, String name, Class<?>... parameter_types)
+    public static Method getAccessible( Class< ? > clazz, String name, Class< ? >... parameter_types )
             throws NoSuchMethodException, SecurityException {
-        final Method method = get(clazz, name, parameter_types);
-        method.setAccessible(true);
+        final Method method = get( clazz, name, parameter_types );
+        method.setAccessible( true );
         return method;
     }
 
@@ -211,9 +211,9 @@ public class MethodReflection {
      * @throws InvocationTargetException if the underlying method throws an
      *                                   exception.
      */
-    public static Object invoke(Method method, Object object, Object... arguments)
+    public static Object invoke( Method method, Object object, Object... arguments )
             throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        return method.invoke(object, arguments);
+        return method.invoke( object, arguments );
     }
 
     /**
@@ -250,15 +250,15 @@ public class MethodReflection {
      * @throws InvocationTargetException if the underlying method throws an
      *                                   exception.
      */
-    public static Object invokeAccessible(Method method, Object object, Object... arguments)
+    public static Object invokeAccessible( Method method, Object object, Object... arguments )
             throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        final boolean b0 = method.isAccessible();
+        final boolean b0 = method.isAccessible( );
         try {
-            return method.invoke(object, arguments);
-        } catch (Throwable ex) {
+            return method.invoke( object, arguments );
+        } catch ( Throwable ex ) {
             throw ex;
         } finally {
-            method.setAccessible(b0);
+            method.setAccessible( b0 );
         }
     }
 
@@ -297,9 +297,9 @@ public class MethodReflection {
      * @throws InvocationTargetException if the underlying method throws an
      *                                   exception.
      */
-    public static Object invoke(Object object, String name, Class<?>[] parameter_types, Object... arguments)
+    public static Object invoke( Object object, String name, Class< ? >[] parameter_types, Object... arguments )
             throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
-        return invoke(get(object.getClass(), name, parameter_types), object, arguments);
+        return invoke( get( object.getClass( ), name, parameter_types ), object, arguments );
     }
 
     /**
@@ -339,9 +339,9 @@ public class MethodReflection {
      * @throws InvocationTargetException if the underlying method throws an
      *                                   exception.
      */
-    public static Object invokeAccessible(Object object, String name, Class<?>[] parameter_types, Object... arguments)
+    public static Object invokeAccessible( Object object, String name, Class< ? >[] parameter_types, Object... arguments )
             throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
-        return invokeAccessible(get(object.getClass(), name, parameter_types), object, arguments);
+        return invokeAccessible( get( object.getClass( ), name, parameter_types ), object, arguments );
     }
 
     /**
@@ -378,9 +378,9 @@ public class MethodReflection {
      * @throws InvocationTargetException if the underlying method throws an
      *                                   exception.
      */
-    public static Object invoke(Object object, String name, Object... arguments)
+    public static Object invoke( Object object, String name, Object... arguments )
             throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
-        return invoke(get(object.getClass(), name, DataType.getPrimitive(arguments)), object, arguments);
+        return invoke( get( object.getClass( ), name, DataType.getPrimitive( arguments ) ), object, arguments );
     }
 
     /**
@@ -419,9 +419,9 @@ public class MethodReflection {
      * @throws InvocationTargetException if the underlying method throws an
      *                                   exception.
      */
-    public static Object invokeAccessible(Object object, String name, Object... arguments)
+    public static Object invokeAccessible( Object object, String name, Object... arguments )
             throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
-        return invokeAccessible(get(object.getClass(), name, DataType.getPrimitive(arguments)), object, arguments);
+        return invokeAccessible( get( object.getClass( ), name, DataType.getPrimitive( arguments ) ), object, arguments );
     }
 
     /**
@@ -433,16 +433,16 @@ public class MethodReflection {
      * @return the same Object, for chaining
      * @throws SecurityException if the request is denied
      */
-    public static Method setAccessible(Method method, boolean accessible) throws SecurityException {
-        method.setAccessible(accessible);
-        if (accessible) {
+    public static Method setAccessible( Method method, boolean accessible ) throws SecurityException {
+        method.setAccessible( accessible );
+        if ( accessible ) {
             try {
-                Field modifiersField = Method.class.getDeclaredField("modifiers");
-                modifiersField.setAccessible(true);
-                modifiersField.setInt(method, method.getModifiers() & ~Modifier.FINAL);
-                modifiersField.setAccessible(false);
-            } catch (Throwable ex) {
-                ex.printStackTrace();
+                Field modifiersField = Method.class.getDeclaredField( "modifiers" );
+                modifiersField.setAccessible( true );
+                modifiersField.setInt( method, method.getModifiers( ) & ~Modifier.FINAL );
+                modifiersField.setAccessible( false );
+            } catch ( Throwable ex ) {
+                ex.printStackTrace( );
             }
         }
         return method;
@@ -457,8 +457,9 @@ public class MethodReflection {
      * @throws SecurityException if the request is denied
      * @see #setAccessible(Method, boolean)
      */
-    public static Method setAccessible(Method method)
+    public static Method setAccessible( Method method )
             throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
-        return setAccessible(method, true);
+        return setAccessible( method, true );
     }
+
 }

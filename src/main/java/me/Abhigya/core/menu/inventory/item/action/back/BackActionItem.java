@@ -19,20 +19,20 @@ public class BackActionItem extends ActionItem {
      * @param icon ItemStack icon of the Item
      * @param lore Lore of the Item
      */
-    public BackActionItem(String name, ItemStack icon, String[] lore) {
-        super(name, icon, lore);
-        addAction(new ItemAction() {
+    public BackActionItem( String name, ItemStack icon, String[] lore ) {
+        super( name, icon, lore );
+        addAction( new ItemAction( ) {
 
             @Override
-            public ItemActionPriority getPriority() {
+            public ItemActionPriority getPriority( ) {
                 return ItemActionPriority.LOW;
             }
 
             @Override
-            public void onClick(ItemClickAction action) {
-                action.setGoBack(true);
+            public void onClick( ItemClickAction action ) {
+                action.setGoBack( true );
             }
-        });
+        } );
     }
 
 }

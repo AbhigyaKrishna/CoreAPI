@@ -7,16 +7,16 @@ import java.util.Arrays;
  */
 public enum ItemMenuSize {
 
-    ONE_LINE(9),
-    TWO_LINE(18),
-    THREE_LINE(27),
-    FOUR_LINE(36),
-    FIVE_LINE(45),
-    SIX_LINE(54);
+    ONE_LINE( 9 ),
+    TWO_LINE( 18 ),
+    THREE_LINE( 27 ),
+    FOUR_LINE( 36 ),
+    FIVE_LINE( 45 ),
+    SIX_LINE( 54 );
 
     private final int size;
 
-    ItemMenuSize(int size) {
+    ItemMenuSize( int size ) {
         this.size = size;
     }
 
@@ -27,15 +27,15 @@ public enum ItemMenuSize {
      * @param size Size to fit in ItemMenu
      * @return ItemMenuSize instance with the given size
      */
-    public static ItemMenuSize fitOf(int size) {
+    public static ItemMenuSize fitOf( int size ) {
         int difference = -1;
-        for (ItemMenuSize constant : ItemMenuSize.values()) {
-            difference = ((difference == -1 || (Math.max(size - constant.getSize(), 0)) < difference)
-                    ? (size - constant.getSize())
-                    : difference);
+        for ( ItemMenuSize constant : ItemMenuSize.values( ) ) {
+            difference = ( ( difference == -1 || ( Math.max( size - constant.getSize( ), 0 ) ) < difference )
+                    ? ( size - constant.getSize( ) )
+                    : difference );
         }
-        return Arrays.stream(ItemMenuSize.values()).filter(constant -> Math.max(size - constant.getSize(), 0) == 0)
-                .findAny().orElse(SIX_LINE);
+        return Arrays.stream( ItemMenuSize.values( ) ).filter( constant -> Math.max( size - constant.getSize( ), 0 ) == 0 )
+                .findAny( ).orElse( SIX_LINE );
     }
 
     /**
@@ -45,8 +45,8 @@ public enum ItemMenuSize {
      * @param from Size to get next to
      * @return The next size enumeration
      */
-    public static ItemMenuSize nextTo(ItemMenuSize from) {
-        return fitOf(from.getSize() + 1);
+    public static ItemMenuSize nextTo( ItemMenuSize from ) {
+        return fitOf( from.getSize( ) + 1 );
     }
 
     /**
@@ -56,8 +56,8 @@ public enum ItemMenuSize {
      * @param from Size to get before size
      * @return The before size enumeration
      */
-    public static ItemMenuSize beforeTo(ItemMenuSize from) {
-        switch (from) {
+    public static ItemMenuSize beforeTo( ItemMenuSize from ) {
+        switch ( from ) {
             case ONE_LINE:
 
             case TWO_LINE:
@@ -86,7 +86,7 @@ public enum ItemMenuSize {
      *
      * @return Size of menu
      */
-    public int getSize() {
+    public int getSize( ) {
         return size;
     }
 
@@ -97,8 +97,8 @@ public enum ItemMenuSize {
      * @param other Other size
      * @return <strong>{@code true}</strong> if the given size is higher, else false
      */
-    public boolean isHigherThan(ItemMenuSize other) {
-        return other != null && getSize() > other.getSize();
+    public boolean isHigherThan( ItemMenuSize other ) {
+        return other != null && getSize( ) > other.getSize( );
     }
 
     /**
@@ -108,8 +108,8 @@ public enum ItemMenuSize {
      * @param other Other size
      * @return <strong>{@code true}</strong> if the given size is higher or equal, else false
      */
-    public boolean isHigherEqualsThan(ItemMenuSize other) {
-        return other != null && getSize() >= other.getSize();
+    public boolean isHigherEqualsThan( ItemMenuSize other ) {
+        return other != null && getSize( ) >= other.getSize( );
     }
 
     /**
@@ -119,8 +119,8 @@ public enum ItemMenuSize {
      * @param other Other size
      * @return <strong>{@code true}</strong> if the given size is lower, else false
      */
-    public boolean isLowerThan(ItemMenuSize other) {
-        return other != null && getSize() < other.getSize();
+    public boolean isLowerThan( ItemMenuSize other ) {
+        return other != null && getSize( ) < other.getSize( );
     }
 
     /**
@@ -130,16 +130,16 @@ public enum ItemMenuSize {
      * @param other Other size
      * @return <strong>{@code true}</strong> if the given size is lower or equal, else false
      */
-    public boolean isLowerEqualsThan(ItemMenuSize other) {
-        return other != null && getSize() <= other.getSize();
+    public boolean isLowerEqualsThan( ItemMenuSize other ) {
+        return other != null && getSize( ) <= other.getSize( );
     }
 
-    public int getFirstSlotTest() {
-        return beforeTo(this).getSize() + 1;
+    public int getFirstSlotTest( ) {
+        return beforeTo( this ).getSize( ) + 1;
     }
 
-    public int getLastSlotTest() {
-        return getSize() - 1;
+    public int getLastSlotTest( ) {
+        return getSize( ) - 1;
     }
 
 }

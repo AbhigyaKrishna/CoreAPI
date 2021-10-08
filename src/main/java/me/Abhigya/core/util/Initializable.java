@@ -11,6 +11,6 @@ public interface Initializable {
      *
      * @return true if initialized
      */
-    public boolean isInitialized();
+    public boolean isInitialized( );
 
 }

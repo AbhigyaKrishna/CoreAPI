@@ -28,12 +28,12 @@ public class BukkitReflection {
      * @throws IllegalAccessException        reflection exception...
      * @throws UnsupportedOperationException if couldn't get the handle of the provided object
      */
-    public static Object getHandle(Object object)
+    public static Object getHandle( Object object )
             throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, SecurityException {
         try {
-            return object.getClass().getMethod("getHandle").invoke(object);
-        } catch (NoSuchMethodException ex_a) {
-            throw new UnsupportedOperationException("cannot get the handle of the provided object!");
+            return object.getClass( ).getMethod( "getHandle" ).invoke( object );
+        } catch ( NoSuchMethodException ex_a ) {
+            throw new UnsupportedOperationException( "cannot get the handle of the provided object!" );
         }
     }
 
@@ -44,21 +44,21 @@ public class BukkitReflection {
      * @param player Player that will receive the packet
      * @param packet Packet instance to send
      */
-    public static void sendPacket(Player player, Object packet) {
+    public static void sendPacket( Player player, Object packet ) {
         try {
-            Object nms_player = getHandle(player);
+            Object nms_player = getHandle( player );
             Object connection;
 
-            if (CoreAPI.getInstance().getServerVersion().isNewerEquals(Version.v1_17_R1))
-                connection = FieldReflection.getValue(nms_player, "b");
+            if ( CoreAPI.getInstance( ).getServerVersion( ).isNewerEquals( Version.v1_17_R1 ) )
+                connection = FieldReflection.getValue( nms_player, "b" );
             else
-                connection = FieldReflection.getValue(nms_player, "playerConnection");
+                connection = FieldReflection.getValue( nms_player, "playerConnection" );
 
-            MethodReflection.getAccessible(connection.getClass(), "sendPacket", ClassReflection.getNmsClass("Packet", "network.protocol"))
-                    .invoke(connection, packet);
-        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException
-                | SecurityException | NoSuchFieldException e) {
-            e.printStackTrace();
+            MethodReflection.getAccessible( connection.getClass( ), "sendPacket", ClassReflection.getNmsClass( "Packet", "network.protocol" ) )
+                    .invoke( connection, packet );
+        } catch ( IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException
+                | SecurityException | NoSuchFieldException e ) {
+            e.printStackTrace( );
         }
     }
 
@@ -68,15 +68,15 @@ public class BukkitReflection {
      *
      * @param motd New MOTD for this server
      */
-    public static void setMotd(String motd) {
+    public static void setMotd( String motd ) {
         try {
-            Class<?> server_class = ClassReflection.getNmsClass("MinecraftServer", "");
-            Object server = MethodReflection.invokeAccessible(MethodReflection.get(server_class, "getServer"), server_class);
+            Class< ? > server_class = ClassReflection.getNmsClass( "MinecraftServer", "" );
+            Object server = MethodReflection.invokeAccessible( MethodReflection.get( server_class, "getServer" ), server_class );
 
-            MethodReflection.invokeAccessible(MethodReflection.get(server_class, "setMotd", String.class), server, motd);
-        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException
-                | SecurityException e) {
-            e.printStackTrace();
+            MethodReflection.invokeAccessible( MethodReflection.get( server_class, "setMotd", String.class ), server, motd );
+        } catch ( IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException
+                | SecurityException e ) {
+            e.printStackTrace( );
         }
     }
 
@@ -86,13 +86,14 @@ public class BukkitReflection {
      *
      * @param world World with the desired border to clear
      */
-    public static void clearBorder(World world) {
-        world.getWorldBorder().reset();
+    public static void clearBorder( World world ) {
+        world.getWorldBorder( ).reset( );
 
         try {
-            FieldReflection.setValue(world, "worldBorder", null);
-        } catch (SecurityException | NoSuchFieldException | IllegalAccessException e) {
-            e.printStackTrace();
+            FieldReflection.setValue( world, "worldBorder", null );
+        } catch ( SecurityException | NoSuchFieldException | IllegalAccessException e ) {
+            e.printStackTrace( );
         }
     }
+
 }

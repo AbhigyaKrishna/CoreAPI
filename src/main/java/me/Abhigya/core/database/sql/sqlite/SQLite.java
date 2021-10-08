@@ -40,11 +40,11 @@ public class SQLite extends SQLDatabase {
      * @param db        Database file
      * @param reconnect <strong>{@code true}</strong> to auto reconnect
      */
-    public SQLite(Plugin plugin, File db, boolean reconnect) {
-        super(DatabaseType.SQLite);
+    public SQLite( Plugin plugin, File db, boolean reconnect ) {
+        super( DatabaseType.SQLite );
 
-        Validate.notNull(plugin, "The plugin cannot be null!");
-        Validate.notNull(db, "The database file cannot be null!");
+        Validate.notNull( plugin, "The plugin cannot be null!" );
+        Validate.notNull( db, "The database file cannot be null!" );
 
         this.plugin = plugin;
         this.db = db;
@@ -61,8 +61,8 @@ public class SQLite extends SQLDatabase {
      * @param plugin Plugin for which database is created
      * @param db     Database file
      */
-    public SQLite(Plugin plugin, File db) {
-        this(plugin, db, true);
+    public SQLite( Plugin plugin, File db ) {
+        this( plugin, db, true );
     }
 
     /**
@@ -72,10 +72,10 @@ public class SQLite extends SQLDatabase {
      * @return true if connected.
      */
     @Override
-    public boolean isConnected() {
+    public boolean isConnected( ) {
         try {
-            return this.connection != null && !this.connection.isClosed();
-        } catch (SQLException e) {
+            return this.connection != null && !this.connection.isClosed( );
+        } catch ( SQLException e ) {
             return false;
         }
     }
@@ -109,13 +109,13 @@ public class SQLite extends SQLDatabase {
      * @throws SQLException          if a database access error occurs.
      */
     @Override
-    public Connection getConnection()
+    public Connection getConnection( )
             throws IOException, SQLTimeoutException, IllegalStateException, SQLException {
-        if (!isConnected() && reconnect) {
+        if ( !isConnected( ) && reconnect ) {
             this.lost_connections++;
-            this.connect();
+            this.connect( );
         }
-        return this.isConnected() ? this.connection : null;
+        return this.isConnected( ) ? this.connection : null;
     }
 
     /**
@@ -126,7 +126,7 @@ public class SQLite extends SQLDatabase {
      * <strong>{@code -1}</strong> if the auto-reconnection is disabled.
      */
     @Override
-    public int getLostConnections() {
+    public int getLostConnections( ) {
         return reconnect ? lost_connections : -1;
     }
 
@@ -143,20 +143,20 @@ public class SQLite extends SQLDatabase {
      *                               cancel the current database connection attempt.
      */
     @Override
-    public synchronized void connect()
+    public synchronized void connect( )
             throws IOException, IllegalStateException, SQLException, SQLTimeoutException {
-        if (!plugin.getDataFolder().exists())
-            plugin.getDataFolder().mkdirs();
-        if (!this.db.getName().endsWith(".db"))
-            throw new IllegalStateException("The database file should have '.db' extension.");
-        if (!this.db.exists())
-            plugin.getDataFolder().createNewFile();
+        if ( !plugin.getDataFolder( ).exists( ) )
+            plugin.getDataFolder( ).mkdirs( );
+        if ( !this.db.getName( ).endsWith( ".db" ) )
+            throw new IllegalStateException( "The database file should have '.db' extension." );
+        if ( !this.db.exists( ) )
+            plugin.getDataFolder( ).createNewFile( );
         try {
-            Class.forName(DRIVER_CLASS);
-        } catch (ClassNotFoundException ex) {
-            throw new IllegalStateException("Could not connect to SQLite! the JDBC driver is unavailable!");
+            Class.forName( DRIVER_CLASS );
+        } catch ( ClassNotFoundException ex ) {
+            throw new IllegalStateException( "Could not connect to SQLite! the JDBC driver is unavailable!" );
         }
-        this.connection = DriverManager.getConnection("jdbc:sqlite:" + db);
+        this.connection = DriverManager.getConnection( "jdbc:sqlite:" + db );
     }
 
     /**
@@ -169,12 +169,13 @@ public class SQLite extends SQLDatabase {
      * @throws SQLException          if a database access error occurs.
      */
     @Override
-    public void disconnect() throws SQLException {
-        if (!isConnected()) {
-            throw new IllegalStateException("Not connected!");
+    public void disconnect( ) throws SQLException {
+        if ( !isConnected( ) ) {
+            throw new IllegalStateException( "Not connected!" );
         }
 
-        this.connection.close();
+        this.connection.close( );
         this.connection = null;
     }
+
 }

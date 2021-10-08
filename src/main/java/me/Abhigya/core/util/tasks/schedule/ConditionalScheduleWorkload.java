@@ -11,23 +11,24 @@ import java.util.function.Predicate;
  *
  * @param <T> The type of the element.
  */
-public abstract class ConditionalScheduleWorkload<T> implements Workload, Predicate<T> {
+public abstract class ConditionalScheduleWorkload< T > implements Workload, Predicate< T > {
 
     /**
      * The element to test {@link Workload#shouldExecute()}.
      */
     private final T element;
 
-    protected ConditionalScheduleWorkload(T element) {
+    protected ConditionalScheduleWorkload( T element ) {
         this.element = element;
     }
 
     @Override
-    public final boolean reSchedule() {
-        return this.test(this.element);
+    public final boolean reSchedule( ) {
+        return this.test( this.element );
     }
 
-    public T getElement() {
+    public T getElement( ) {
         return element;
     }
+
 }

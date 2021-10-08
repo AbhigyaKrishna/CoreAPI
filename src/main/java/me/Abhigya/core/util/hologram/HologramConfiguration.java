@@ -5,39 +5,37 @@ import org.bukkit.Axis;
 public class HologramConfiguration {
 
     public static final float NAME_THRESHOLD = 0.2F;
-
+    boolean autoCenter = true;
     private double offsetX = 0D;
     private double offsetY = 0D;
     private double offsetZ = 0D;
-
     private double lineSeparation = 0.25D;
     private double smallItemAboveSeparator = 0.75D;
     private double smallItemBelowSeparator = 0.55D;
     private double bigItemAboveSeparator = 1D;
     private double bigItemBelowSeparator = 0.25D;
 
-    boolean autoCenter = true;
-
     /**
      * Get a new hologram configuration instance
      * with the default values
      */
-    public HologramConfiguration() {}
+    public HologramConfiguration( ) {
+    }
 
     /**
      * Initialize the hologram configuration
      *
-     * @param offX the hologram offset x
-     * @param offY the hologram offset y
-     * @param offZ the hologram offset z
-     * @param lSep the hologram text separation size
-     * @param iSASep the hologram small item above separation size
-     * @param iSBSep the hologram small item below separation size
-     * @param iBASep the hologram big item above separation size
-     * @param iBBSep the hologram big item below separation size
+     * @param offX     the hologram offset x
+     * @param offY     the hologram offset y
+     * @param offZ     the hologram offset z
+     * @param lSep     the hologram text separation size
+     * @param iSASep   the hologram small item above separation size
+     * @param iSBSep   the hologram small item below separation size
+     * @param iBASep   the hologram big item above separation size
+     * @param iBBSep   the hologram big item below separation size
      * @param autoCent the hologram auto center status
      */
-    public HologramConfiguration(double offX, double offY, double offZ, double lSep, double iSASep, double iSBSep, double iBASep, double iBBSep, boolean autoCent) {
+    public HologramConfiguration( double offX, double offY, double offZ, double lSep, double iSASep, double iSBSep, double iBASep, double iBBSep, boolean autoCent ) {
         offsetX = offX;
         offsetY = offY;
         offsetZ = offZ;
@@ -53,12 +51,12 @@ public class HologramConfiguration {
      * Set the new offset configuration
      * for the specified axis
      *
-     * @param axis the axis
+     * @param axis      the axis
      * @param newOffset the new offset for the
      *                  specified axis
      */
-    public void setOffset(Axis axis, double newOffset) {
-        switch (axis) {
+    public void setOffset( Axis axis, double newOffset ) {
+        switch ( axis ) {
             case X:
                 offsetX = newOffset;
                 break;
@@ -78,56 +76,10 @@ public class HologramConfiguration {
      * @param y the Y offset
      * @param z the Z offset
      */
-    public void setOffset(double x, double y, double z) {
+    public void setOffset( double x, double y, double z ) {
         offsetX = x;
         offsetY = y;
         offsetZ = z;
-    }
-
-    /**
-     * Set the new separation size between text and item
-     * lines
-     *
-     * @param separationSize the new separation size
-     */
-    public void setLineSeparation(double separationSize) {
-        lineSeparation = separationSize;
-    }
-
-    /**
-     * Set the new separation size between text and small item lines
-     *
-     * @param separationSize the new separation size
-     */
-    public void setSmallItemAboveSeparator(double separationSize) {
-        smallItemAboveSeparator = separationSize;
-    }
-
-    /**
-     * Set the new separation size between text and small item lines
-     *
-     * @param separationSize the new separation size
-     */
-    public void setSmallItemBelowSeparator(double separationSize) {
-        smallItemBelowSeparator = separationSize;
-    }
-
-    /**
-     * Set the new separation size between text and big item lines
-     *
-     * @param separationSize the new separation size
-     */
-    public void setBigItemAboveSeparator(double separationSize) {
-        bigItemAboveSeparator = separationSize;
-    }
-
-    /**
-     * Set the new separation size between text and big item lines
-     *
-     * @param separationSize the new separation size
-     */
-    public void setBigItemBelowSeparator(double separationSize) {
-        bigItemBelowSeparator = separationSize;
     }
 
     /**
@@ -136,7 +88,7 @@ public class HologramConfiguration {
      *
      * @param status the auto center status
      */
-    public void centerAutomatically(final boolean status) {
+    public void centerAutomatically( final boolean status ) {
         autoCenter = status;
     }
 
@@ -145,8 +97,8 @@ public class HologramConfiguration {
      *
      * @return the offset configuration
      */
-    public OffsetConfiguration getOffsetConfiguration() {
-        return new OffsetConfiguration(this);
+    public OffsetConfiguration getOffsetConfiguration( ) {
+        return new OffsetConfiguration( this );
     }
 
     /**
@@ -154,8 +106,18 @@ public class HologramConfiguration {
      *
      * @return the hologram separation between lines
      */
-    public double getLineSeparation() {
+    public double getLineSeparation( ) {
         return lineSeparation;
+    }
+
+    /**
+     * Set the new separation size between text and item
+     * lines
+     *
+     * @param separationSize the new separation size
+     */
+    public void setLineSeparation( double separationSize ) {
+        lineSeparation = separationSize;
     }
 
     /**
@@ -163,20 +125,56 @@ public class HologramConfiguration {
      *
      * @return the hologram separation between items
      */
-    public double getSmallItemAboveSeparator() {
+    public double getSmallItemAboveSeparator( ) {
         return smallItemAboveSeparator;
     }
 
-    public double getSmallItemBelowSeparator() {
+    /**
+     * Set the new separation size between text and small item lines
+     *
+     * @param separationSize the new separation size
+     */
+    public void setSmallItemAboveSeparator( double separationSize ) {
+        smallItemAboveSeparator = separationSize;
+    }
+
+    public double getSmallItemBelowSeparator( ) {
         return smallItemBelowSeparator;
     }
 
-    public double getBigItemAboveSeparator() {
+    /**
+     * Set the new separation size between text and small item lines
+     *
+     * @param separationSize the new separation size
+     */
+    public void setSmallItemBelowSeparator( double separationSize ) {
+        smallItemBelowSeparator = separationSize;
+    }
+
+    public double getBigItemAboveSeparator( ) {
         return bigItemAboveSeparator;
     }
 
-    public double getBigItemBelowSeparator() {
+    /**
+     * Set the new separation size between text and big item lines
+     *
+     * @param separationSize the new separation size
+     */
+    public void setBigItemAboveSeparator( double separationSize ) {
+        bigItemAboveSeparator = separationSize;
+    }
+
+    public double getBigItemBelowSeparator( ) {
         return bigItemBelowSeparator;
+    }
+
+    /**
+     * Set the new separation size between text and big item lines
+     *
+     * @param separationSize the new separation size
+     */
+    public void setBigItemBelowSeparator( double separationSize ) {
+        bigItemBelowSeparator = separationSize;
     }
 
     /**
@@ -184,19 +182,20 @@ public class HologramConfiguration {
      *
      * @return if the hologram centers himself
      */
-    public final boolean isAutoCenter() {
+    public final boolean isAutoCenter( ) {
         return autoCenter;
     }
 
     public static class OffsetConfiguration {
-        private final double x,y,z;
+
+        private final double x, y, z;
 
         /**
          * Initialize the offset configuration
          *
          * @param configuration the hologram configuration
          */
-        OffsetConfiguration(HologramConfiguration configuration) {
+        OffsetConfiguration( HologramConfiguration configuration ) {
             x = configuration.offsetX;
             y = configuration.offsetY;
             z = configuration.offsetZ;
@@ -207,7 +206,7 @@ public class HologramConfiguration {
          *
          * @return the Z offset axis
          */
-        public final double getX() {
+        public final double getX( ) {
             return x;
         }
 
@@ -216,7 +215,7 @@ public class HologramConfiguration {
          *
          * @return the Z offset axis
          */
-        public final double getY() {
+        public final double getY( ) {
             return y;
         }
 
@@ -225,9 +224,10 @@ public class HologramConfiguration {
          *
          * @return the Z offset axis
          */
-        public final double getZ() {
+        public final double getZ( ) {
             return z;
         }
+
     }
 
 }

@@ -4,17 +4,18 @@ public abstract class Database {
 
     private final DatabaseType databaseType;
 
-    public Database(DatabaseType type) {
+    public Database( DatabaseType type ) {
         this.databaseType = type;
     }
 
-    public abstract boolean isConnected();
+    public abstract boolean isConnected( );
 
-    public abstract void connect() throws Exception;
+    public abstract void connect( ) throws Exception;
 
-    public abstract void disconnect() throws Exception;
+    public abstract void disconnect( ) throws Exception;
 
-    public DatabaseType getDatabaseType() {
+    public DatabaseType getDatabaseType( ) {
         return databaseType;
     }
+
 }

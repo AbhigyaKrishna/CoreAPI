@@ -49,8 +49,8 @@ public enum PlayerBlockAction {
      * @param action Action to get from
      * @return The corresponding {@link PlayerBlockAction}
      */
-    public static PlayerBlockAction ofBukkit(Action action) {
-        return PlayerBlockAction.valueOf(action.name());
+    public static PlayerBlockAction ofBukkit( Action action ) {
+        return PlayerBlockAction.valueOf( action.name( ) );
     }
 
     /**
@@ -59,7 +59,7 @@ public enum PlayerBlockAction {
      *
      * @return Whether this is left click
      */
-    public boolean isLeftClick() {
+    public boolean isLeftClick( ) {
         return this == LEFT_CLICK_AIR || this == LEFT_CLICK_BLOCK;
     }
 
@@ -69,7 +69,7 @@ public enum PlayerBlockAction {
      *
      * @return Whether this is right click
      */
-    public boolean isRightClick() {
+    public boolean isRightClick( ) {
         return this == RIGHT_CLICK_AIR || this == RIGHT_CLICK_BLOCK;
     }
 
@@ -79,7 +79,7 @@ public enum PlayerBlockAction {
      *
      * @return Whether this is a physical action
      */
-    public boolean isPhysical() {
+    public boolean isPhysical( ) {
         return this == PHYSICAL;
     }
 
@@ -89,7 +89,7 @@ public enum PlayerBlockAction {
      *
      * @return The corresponding {@link Action}
      */
-    public Action toBukkit() {
-        return Action.valueOf(name());
+    public Action toBukkit( ) {
+        return Action.valueOf( name( ) );
     }
 }

@@ -27,51 +27,51 @@ public abstract class Plugin extends JavaPlugin {
     protected String compilation_id;
 
     @Override
-    public final void onEnable() {
+    public final void onEnable( ) {
         /* checking the required core version */
-        if (getRequiredCoreVersion() != null
-                && CoreVersion.getCoreVersion().isOlder(getRequiredCoreVersion())) {
-            ConsoleUtils.sendPluginMessage(ChatColor.RED, "Obsolete core version! A core version newer than or equal to "
-                    + getRequiredCoreVersion().name() + " is required!", this);
-            Bukkit.getPluginManager().disablePlugin(this);
+        if ( getRequiredCoreVersion( ) != null
+                && CoreVersion.getCoreVersion( ).isOlder( getRequiredCoreVersion( ) ) ) {
+            ConsoleUtils.sendPluginMessage( ChatColor.RED, "Obsolete core version! A core version newer than or equal to "
+                    + getRequiredCoreVersion( ).name( ) + " is required!", this );
+            Bukkit.getPluginManager( ).disablePlugin( this );
             return;
         }
 
         /* checking the plugin dependencies */
-        if (getDependences() != null && getDependences().length > 0) {
-            for (PluginDependence dependence : getDependences()) {
-                final org.bukkit.plugin.Plugin plugin = Bukkit.getPluginManager().getPlugin(dependence.getName());
-                final Boolean result = dependence.apply(plugin);
+        if ( getDependences( ) != null && getDependences( ).length > 0 ) {
+            for ( PluginDependence dependence : getDependences( ) ) {
+                final org.bukkit.plugin.Plugin plugin = Bukkit.getPluginManager( ).getPlugin( dependence.getName( ) );
+                final Boolean result = dependence.apply( plugin );
 
-                if (result == null || result == false) {
-                    Bukkit.getPluginManager().disablePlugin(this);
+                if ( result == null || result == false ) {
+                    Bukkit.getPluginManager( ).disablePlugin( this );
                     return;
                 }
             }
         }
 
         /* checking metrics */
-        if (getMetrics() != null) {
-            MetricsAdaptor metrics = getMetrics();
-            metrics.register();
+        if ( getMetrics( ) != null ) {
+            MetricsAdaptor metrics = getMetrics( );
+            metrics.register( );
         }
 
         /* plugin setup */
-        if (!setUp() || !isEnabled()) {
-            Bukkit.getPluginManager().disablePlugin(this);
+        if ( !setUp( ) || !isEnabled( ) ) {
+            Bukkit.getPluginManager( ).disablePlugin( this );
             return;
         }
 
         /* finalizing plugin setup */
         try {
-            this.setUpConfig();
-            this.setUpHandlers();
-            this.setUpCommands();
-            this.setUpListeners();
-        } catch (Throwable ex) {
+            this.setUpConfig( );
+            this.setUpHandlers( );
+            this.setUpCommands( );
+            this.setUpListeners( );
+        } catch ( Throwable ex ) {
             // any exception will disable the plugin
-            ex.printStackTrace();
-            Bukkit.getPluginManager().disablePlugin(this);
+            ex.printStackTrace( );
+            Bukkit.getPluginManager( ).disablePlugin( this );
         }
     }
 
@@ -88,7 +88,7 @@ public abstract class Plugin extends JavaPlugin {
      *
      * @return true if the initialization was successfully.
      */
-    protected abstract boolean setUp();
+    protected abstract boolean setUp( );
 
     /**
      * Gets the required core version by this plugin. If the current core version is
@@ -100,7 +100,7 @@ public abstract class Plugin extends JavaPlugin {
      *
      * @return The required core version, or null if not required.
      */
-    public abstract CoreVersion getRequiredCoreVersion();
+    public abstract CoreVersion getRequiredCoreVersion( );
 
     /**
      * Gets the metrics adaptor and setup the metrics with the graphs accordingly.
@@ -111,7 +111,7 @@ public abstract class Plugin extends JavaPlugin {
      *
      * @return The required metrics adaptor, or null if not required.
      */
-    public abstract MetricsAdaptor getMetrics();
+    public abstract MetricsAdaptor getMetrics( );
 
     /**
      * Gets the plugins on which this plugin depends.
@@ -123,7 +123,7 @@ public abstract class Plugin extends JavaPlugin {
      * @return The dependencies or null if this plugin doesn't depend on another.
      * @see PluginDependence
      */
-    public abstract PluginDependence[] getDependences();
+    public abstract PluginDependence[] getDependences( );
 
     /**
      * This method should setups the configuration.
@@ -142,7 +142,7 @@ public abstract class Plugin extends JavaPlugin {
      *
      * @return whether the configuration was loaded successfully.
      */
-    protected abstract boolean setUpConfig();
+    protected abstract boolean setUpConfig( );
 
     /**
      * This method should setups the plugin handlers.
@@ -162,7 +162,7 @@ public abstract class Plugin extends JavaPlugin {
      *
      * @return Whether the initialization of the handlers was successfully.
      */
-    protected abstract boolean setUpHandlers();
+    protected abstract boolean setUpHandlers( );
 
     /**
      * This method should setups the commands of the plugin.
@@ -183,7 +183,7 @@ public abstract class Plugin extends JavaPlugin {
      *
      * @return Whether the initialization of the commands was successfully.
      */
-    protected abstract boolean setUpCommands();
+    protected abstract boolean setUpCommands( );
 
     /**
      * This method should setups the listeners of the plugin.
@@ -204,7 +204,7 @@ public abstract class Plugin extends JavaPlugin {
      *
      * @return Whether the initialization of the listeners was successfully.
      */
-    protected abstract boolean setUpListeners();
+    protected abstract boolean setUpListeners( );
 
     /**
      * Loads all the listeners within the provided package.
@@ -244,22 +244,22 @@ public abstract class Plugin extends JavaPlugin {
      * @throws IllegalAccessException    exception to handle
      * @throws InstantiationException    exception to handle
      */
-    protected void setUpListenersPackage(String packaje) throws InvocationTargetException, InstantiationException,
+    protected void setUpListenersPackage( String packaje ) throws InvocationTargetException, InstantiationException,
             IllegalAccessException {
-        for (Class<? extends Listener> clazz : ClassReflection.getClasses(packaje, Listener.class)) {
-            if (Modifier.isAbstract(clazz.getModifiers())
-                    || !Listener.class.isAssignableFrom(clazz)) {
+        for ( Class< ? extends Listener > clazz : ClassReflection.getClasses( packaje, Listener.class ) ) {
+            if ( Modifier.isAbstract( clazz.getModifiers( ) )
+                    || !Listener.class.isAssignableFrom( clazz ) ) {
                 continue;
             }
 
-            Constructor<?> constructor;
+            Constructor< ? > constructor;
             try {
-                constructor = clazz.getConstructor(getClass());
-            } catch (NoSuchMethodException | SecurityException ex) {
+                constructor = clazz.getConstructor( getClass( ) );
+            } catch ( NoSuchMethodException | SecurityException ex ) {
                 continue;
             }
 
-            constructor.newInstance(this);
+            constructor.newInstance( this );
         }
     }
 
@@ -276,35 +276,35 @@ public abstract class Plugin extends JavaPlugin {
      * @param replace       If true, the embedded resource will overwrite the
      *                      contents of an existing file.
      */
-    public void saveResource(String resource_path, File out_directory, boolean replace) {
-        InputStream input = getResource(resource_path = resource_path.replace('\\', '/'));
-        if (input != null) {
-            File out = new File(out_directory,
-                    resource_path.lastIndexOf('/') != -1
-                            ? resource_path.substring(resource_path.lastIndexOf('/') + 1)
-                            : resource_path);
+    public void saveResource( String resource_path, File out_directory, boolean replace ) {
+        InputStream input = getResource( resource_path = resource_path.replace( '\\', '/' ) );
+        if ( input != null ) {
+            File out = new File( out_directory,
+                    resource_path.lastIndexOf( '/' ) != -1
+                            ? resource_path.substring( resource_path.lastIndexOf( '/' ) + 1 )
+                            : resource_path );
 
-            if (!out.exists() || replace) {
+            if ( !out.exists( ) || replace ) {
                 try {
-                    FileUtils.copyInputStreamToFile(input, out);
-                } catch (IOException ex) {
-                    ConsoleUtils.sendPluginMessage(ChatColor.RED,
-                            "Couldn't save resource " + resource_path + " to " + out, this);
-                    ex.printStackTrace();
+                    FileUtils.copyInputStreamToFile( input, out );
+                } catch ( IOException ex ) {
+                    ConsoleUtils.sendPluginMessage( ChatColor.RED,
+                            "Couldn't save resource " + resource_path + " to " + out, this );
+                    ex.printStackTrace( );
                 }
             }
         } else {
             throw new IllegalArgumentException(
-                    "The embedded resource '" + resource_path + "' cannot be found in " + getFile());
+                    "The embedded resource '" + resource_path + "' cannot be found in " + getFile( ) );
         }
     }
 
-    protected String getCompilationId() {
-        if (compilation_id == null) {
+    protected String getCompilationId( ) {
+        if ( compilation_id == null ) {
             YamlConfiguration plugin = YamlConfiguration.loadConfiguration(
-                    new InputStreamReader(getResource("plugin.yml")));
+                    new InputStreamReader( getResource( "plugin.yml" ) ) );
 
-            compilation_id = plugin.getString("compid", String.valueOf(0));
+            compilation_id = plugin.getString( "compid", String.valueOf( 0 ) );
         }
 
         return compilation_id;

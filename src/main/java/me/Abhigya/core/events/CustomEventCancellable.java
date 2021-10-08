@@ -13,12 +13,12 @@ public abstract class CustomEventCancellable extends CustomEvent implements Canc
     protected boolean cancelled;
 
     @Override
-    public boolean isCancelled() {
+    public boolean isCancelled( ) {
         return cancelled;
     }
 
     @Override
-    public void setCancelled(boolean cancelled) {
+    public void setCancelled( boolean cancelled ) {
         this.cancelled = cancelled;
     }
 

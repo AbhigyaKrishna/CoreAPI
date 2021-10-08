@@ -32,9 +32,9 @@ public class ItemMenuClickAction {
      * @param menu  ItemMenu to bind action
      * @param event {@link InventoryClickEvent}
      */
-    public ItemMenuClickAction(ItemMenu menu, InventoryClickEvent event) {
-        this(menu, event.getView(), event.getClick(), event.getAction(), event.getSlotType(), event.getSlot(),
-                event.getRawSlot(), event.getCurrentItem(), event.getHotbarButton());
+    public ItemMenuClickAction( ItemMenu menu, InventoryClickEvent event ) {
+        this( menu, event.getView( ), event.getClick( ), event.getAction( ), event.getSlotType( ), event.getSlot( ),
+                event.getRawSlot( ), event.getCurrentItem( ), event.getHotbarButton( ) );
     }
 
     /**
@@ -51,8 +51,8 @@ public class ItemMenuClickAction {
      * @param current        Current clicked ItemStack
      * @param hotbar_key     Hotbar Key
      */
-    public ItemMenuClickAction(ItemMenu menu, InventoryView inventory_view, ClickType click_type, InventoryAction action,
-                               SlotType slot_type, int slot, int raw_slot, ItemStack current, int hotbar_key) {
+    public ItemMenuClickAction( ItemMenu menu, InventoryView inventory_view, ClickType click_type, InventoryAction action,
+                                SlotType slot_type, int slot, int raw_slot, ItemStack current, int hotbar_key ) {
         this.menu = menu;
         this.inventory_view = inventory_view;
         this.click_type = click_type;
@@ -70,7 +70,7 @@ public class ItemMenuClickAction {
      *
      * @return ItemMenu
      */
-    public ItemMenu getMenu() {
+    public ItemMenu getMenu( ) {
         return menu;
     }
 
@@ -80,8 +80,8 @@ public class ItemMenuClickAction {
      *
      * @return Inventory
      */
-    public Inventory getInventory() {
-        return this.getInventoryView().getTopInventory();
+    public Inventory getInventory( ) {
+        return this.getInventoryView( ).getTopInventory( );
     }
 
     /**
@@ -90,7 +90,7 @@ public class ItemMenuClickAction {
      *
      * @return InventoryView
      */
-    public InventoryView getInventoryView() {
+    public InventoryView getInventoryView( ) {
         return inventory_view;
     }
 
@@ -100,8 +100,8 @@ public class ItemMenuClickAction {
      *
      * @return Player who clicked
      */
-    public Player getPlayer() {
-        return (Player) this.getInventoryView().getPlayer();
+    public Player getPlayer( ) {
+        return (Player) this.getInventoryView( ).getPlayer( );
     }
 
     /**
@@ -110,7 +110,7 @@ public class ItemMenuClickAction {
      *
      * @return ClickType
      */
-    public ClickType getClickType() {
+    public ClickType getClickType( ) {
         return click_type;
     }
 
@@ -120,7 +120,7 @@ public class ItemMenuClickAction {
      *
      * @return {@link InventoryAction}
      */
-    public InventoryAction getInventoryAction() {
+    public InventoryAction getInventoryAction( ) {
         return action;
     }
 
@@ -130,7 +130,7 @@ public class ItemMenuClickAction {
      *
      * @return {@link SlotType}
      */
-    public SlotType getSlotType() {
+    public SlotType getSlotType( ) {
         return slot_type;
     }
 
@@ -140,7 +140,7 @@ public class ItemMenuClickAction {
      *
      * @return Slot index
      */
-    public int getSlot() {
+    public int getSlot( ) {
         return slot;
     }
 
@@ -150,7 +150,7 @@ public class ItemMenuClickAction {
      *
      * @return Raw slot index
      */
-    public int getRawSlot() {
+    public int getRawSlot( ) {
         return raw_slot;
     }
 
@@ -160,8 +160,8 @@ public class ItemMenuClickAction {
      *
      * @return Cursor ItemStack
      */
-    public ItemStack getCursor() {
-        return getInventoryView().getCursor();
+    public ItemStack getCursor( ) {
+        return getInventoryView( ).getCursor( );
     }
 
     /**
@@ -175,8 +175,8 @@ public class ItemMenuClickAction {
      * make unexpected changes in the behavior of the clicked Inventory.
      */
     @Deprecated
-    public void setCursor(ItemStack stack) {
-        getInventoryView().setCursor(stack);
+    public void setCursor( ItemStack stack ) {
+        getInventoryView( ).setCursor( stack );
     }
 
     /**
@@ -185,7 +185,7 @@ public class ItemMenuClickAction {
      *
      * @return Item in the clicked
      */
-    public ItemStack getCurrentItem() {
+    public ItemStack getCurrentItem( ) {
         return current;
     }
 
@@ -195,11 +195,11 @@ public class ItemMenuClickAction {
      *
      * @param current Item to be placed in the current slot
      */
-    public void setCurrentItem(ItemStack current) {
+    public void setCurrentItem( ItemStack current ) {
         this.current = current;
     }
 
-    public int getHotbarKey() {
+    public int getHotbarKey( ) {
         return hotbar_key;
     }
 
@@ -211,8 +211,8 @@ public class ItemMenuClickAction {
      * @return true if the ClickType uses the right mouse button
      * @see ClickType#isRightClick()
      */
-    public boolean isRightClick() {
-        return this.getClickType().isRightClick();
+    public boolean isRightClick( ) {
+        return this.getClickType( ).isRightClick( );
     }
 
     /**
@@ -223,8 +223,8 @@ public class ItemMenuClickAction {
      * @return true if the ClickType uses the left mouse button
      * @see ClickType#isLeftClick()
      */
-    public boolean isLeftClick() {
-        return this.getClickType().isLeftClick();
+    public boolean isLeftClick( ) {
+        return this.getClickType( ).isLeftClick( );
     }
 
     /**
@@ -235,8 +235,8 @@ public class ItemMenuClickAction {
      * @return true if the ClickType uses Shift or Ctrl
      * @see ClickType#isShiftClick()
      */
-    public boolean isShiftClick() {
-        return this.getClickType().isShiftClick();
+    public boolean isShiftClick( ) {
+        return this.getClickType( ).isShiftClick( );
     }
 
 }

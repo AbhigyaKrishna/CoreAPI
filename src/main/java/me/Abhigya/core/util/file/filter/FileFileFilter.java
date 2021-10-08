@@ -9,8 +9,8 @@ import java.io.FileFilter;
 public class FileFileFilter implements FileFilter {
 
     @Override
-    public boolean accept(File file) {
-        return file.isFile();
+    public boolean accept( File file ) {
+        return file.isFile( );
     }
 
 }

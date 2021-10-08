@@ -8,7 +8,7 @@ public interface Workload {
     /**
      * Computes a piece of the work.
      */
-    void compute();
+    void compute( );
 
     /**
      * Computes then checks {@link #reSchedule()}.
@@ -16,9 +16,9 @@ public interface Workload {
      *
      * @return {@code true} if re-scheduling
      */
-    default boolean computeThenCheckForScheduling() {
-        this.compute();
-        return !this.reSchedule();
+    default boolean computeThenCheckForScheduling( ) {
+        this.compute( );
+        return !this.reSchedule( );
     }
 
     /**
@@ -27,7 +27,7 @@ public interface Workload {
      *
      * @return {@code true} if the work should be re schedule
      */
-    default boolean reSchedule() {
+    default boolean reSchedule( ) {
         return false;
     }
 
@@ -37,7 +37,8 @@ public interface Workload {
      *
      * @return {@code true} if the work should execute
      */
-    default boolean shouldExecute() {
+    default boolean shouldExecute( ) {
         return true;
     }
+
 }

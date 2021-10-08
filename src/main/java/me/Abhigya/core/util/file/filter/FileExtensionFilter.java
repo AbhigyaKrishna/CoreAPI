@@ -21,13 +21,13 @@ public abstract class FileExtensionFilter implements FileFilter {
      * @param file_extension File extension. Example: '.jar'
      * @return {@link FileExtensionFilter} for the given file extension.
      */
-    public static FileExtensionFilter of(final String file_extension) {
-        return new FileExtensionFilter() {
+    public static FileExtensionFilter of( final String file_extension ) {
+        return new FileExtensionFilter( ) {
 
             @Override
-            public boolean accept(File file) {
-                return Pattern.compile("\\" + (file_extension.startsWith(".") ? file_extension.toLowerCase()
-                        : ("." + file_extension.toLowerCase())) + "$").matcher(file.getName()).find();
+            public boolean accept( File file ) {
+                return Pattern.compile( "\\" + ( file_extension.startsWith( "." ) ? file_extension.toLowerCase( )
+                        : ( "." + file_extension.toLowerCase( ) ) ) + "$" ).matcher( file.getName( ) ).find( );
             }
         };
     }

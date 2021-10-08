@@ -12,8 +12,8 @@ public class TargetFilterPlayer extends TargetFilterType {
     /**
      * Constructs the target filter.
      */
-    public TargetFilterPlayer() {
-        super(EntityType.PLAYER);
+    public TargetFilterPlayer( ) {
+        super( EntityType.PLAYER );
     }
 
 }

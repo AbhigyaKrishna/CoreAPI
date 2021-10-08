@@ -13,7 +13,7 @@ import java.util.Locale;
  */
 public class StringUtils extends org.apache.commons.lang.StringUtils {
 
-    public static final String LINE_SEPARATOR = System.lineSeparator();
+    public static final String LINE_SEPARATOR = System.lineSeparator( );
 
     /**
      * Converts integer to an HTML RGB value
@@ -22,16 +22,16 @@ public class StringUtils extends org.apache.commons.lang.StringUtils {
      * @param rgb RGB (0 ~ 0xFFFFFF)
      * @return Hex (#FFFFFF)
      */
-    public static String toRgbText(int rgb) {
-        if (rgb > 16777215)
+    public static String toRgbText( int rgb ) {
+        if ( rgb > 16777215 )
             rgb = 16777215;
 
-        if (rgb < 0)
+        if ( rgb < 0 )
             rgb = 0;
 
-        String str = "000000" + Integer.toHexString(rgb);
+        String str = "000000" + Integer.toHexString( rgb );
 
-        return "#" + str.substring(str.length() - 6);
+        return "#" + str.substring( str.length( ) - 6 );
     }
 
     /**
@@ -42,8 +42,8 @@ public class StringUtils extends org.apache.commons.lang.StringUtils {
      * @param max_length Max length to limit
      * @return Formatted string
      */
-    public static String limit(String string, int max_length) {
-        return (string.length() > max_length) ? string.substring(0, max_length) : string;
+    public static String limit( String string, int max_length ) {
+        return ( string.length( ) > max_length ) ? string.substring( 0, max_length ) : string;
     }
 
     /**
@@ -54,19 +54,19 @@ public class StringUtils extends org.apache.commons.lang.StringUtils {
      * @param colors ColorUtils
      * @return Single color line
      */
-    public static String concatenate(ChatColor... colors) {
-        StringBuilder builder = new StringBuilder();
+    public static String concatenate( ChatColor... colors ) {
+        StringBuilder builder = new StringBuilder( );
 
-        for (int x = 0; x < 2; x++) {
+        for ( int x = 0; x < 2; x++ ) {
             boolean apply_colors = x == 0;
 
-            for (ChatColor color : colors) {
-                if (apply_colors ? color.isColor() : color.isFormat()) {
-                    builder.append(color.toString());
+            for ( ChatColor color : colors ) {
+                if ( apply_colors ? color.isColor( ) : color.isFormat( ) ) {
+                    builder.append( color.toString( ) );
                 }
             }
         }
-        return builder.toString();
+        return builder.toString( );
     }
 
     /**
@@ -77,8 +77,8 @@ public class StringUtils extends org.apache.commons.lang.StringUtils {
      * @param string String to colorize
      * @return Colorized string
      */
-    public static String colorize(ChatColor[] colors, String string) {
-        return concatenate(colors) + string;
+    public static String colorize( ChatColor[] colors, String string ) {
+        return concatenate( colors ) + string;
     }
 
     /**
@@ -89,8 +89,8 @@ public class StringUtils extends org.apache.commons.lang.StringUtils {
      * @param colors {@link ChatColor} to apply
      * @return Colorized string
      */
-    public static String colorize(String string, ChatColor... colors) {
-        return colorize(colors, string);
+    public static String colorize( String string, ChatColor... colors ) {
+        return colorize( colors, string );
     }
 
     /**
@@ -106,8 +106,8 @@ public class StringUtils extends org.apache.commons.lang.StringUtils {
      * @return Text containing the ChatColor.COLOR_CODE color code character
      * @see ChatColor#translateAlternateColorCodes(char, String)
      */
-    public static String translateAlternateColorCodes(char alt_char, String string) {
-        return ChatColor.translateAlternateColorCodes(alt_char, string);
+    public static String translateAlternateColorCodes( char alt_char, String string ) {
+        return ChatColor.translateAlternateColorCodes( alt_char, string );
     }
 
     /**
@@ -121,8 +121,8 @@ public class StringUtils extends org.apache.commons.lang.StringUtils {
      * @return Text containing the ChatColor.COLOR_CODE color code character
      * @see #translateAlternateColorCodes(char, String)
      */
-    public static String translateAlternateColorCodes(String string) {
-        return translateAlternateColorCodes('&', string);
+    public static String translateAlternateColorCodes( String string ) {
+        return translateAlternateColorCodes( '&', string );
     }
 
     /**
@@ -137,11 +137,11 @@ public class StringUtils extends org.apache.commons.lang.StringUtils {
      * @param array    StringUtils array to translate
      * @return New strings array containing the translated strings
      */
-    public static String[] translateAlternateColorCodes(char alt_char, String[] array) {
+    public static String[] translateAlternateColorCodes( char alt_char, String[] array ) {
         String[] copy = new String[array.length];
 
-        for (int i = 0; i < copy.length; i++)
-            copy[i] = translateAlternateColorCodes(alt_char, array[i]);
+        for ( int i = 0; i < copy.length; i++ )
+            copy[i] = translateAlternateColorCodes( alt_char, array[i] );
 
         return copy;
     }
@@ -157,8 +157,8 @@ public class StringUtils extends org.apache.commons.lang.StringUtils {
      * @param array StringUtils collection to translate
      * @return New strings array containing the translated strings
      */
-    public static String[] translateAlternateColorCodes(String[] array) {
-        return translateAlternateColorCodes('&', array);
+    public static String[] translateAlternateColorCodes( String[] array ) {
+        return translateAlternateColorCodes( '&', array );
     }
 
     /**
@@ -173,11 +173,11 @@ public class StringUtils extends org.apache.commons.lang.StringUtils {
      * @param collection the collection of strings to translate
      * @return New {@link List} of string containing the translated strings
      */
-    public static List<String> translateAlternateColorCodes(char alt_char, Collection<String> collection) {
-        List<String> list = new ArrayList<>();
+    public static List< String > translateAlternateColorCodes( char alt_char, Collection< String > collection ) {
+        List< String > list = new ArrayList<>( );
 
-        for (String string : collection)
-            list.add(translateAlternateColorCodes(alt_char, string));
+        for ( String string : collection )
+            list.add( translateAlternateColorCodes( alt_char, string ) );
 
         return list;
     }
@@ -193,8 +193,8 @@ public class StringUtils extends org.apache.commons.lang.StringUtils {
      * @param collection Collection of strings to translate
      * @return New {@link List} of string containing the translated strings
      */
-    public static List<String> translateAlternateColorCodes(Collection<String> collection) {
-        return translateAlternateColorCodes('&', collection);
+    public static List< String > translateAlternateColorCodes( Collection< String > collection ) {
+        return translateAlternateColorCodes( '&', collection );
     }
 
     /**
@@ -209,9 +209,9 @@ public class StringUtils extends org.apache.commons.lang.StringUtils {
      * @param list     List of strings to translate
      * @return {@link List} containing the translated strings
      */
-    public static List<String> translateAlternateColorCodes(char alt_char, List<String> list) {
-        for (int i = 0; i < list.size(); i++)
-            list.set(i, translateAlternateColorCodes(alt_char, list.get(i)));
+    public static List< String > translateAlternateColorCodes( char alt_char, List< String > list ) {
+        for ( int i = 0; i < list.size( ); i++ )
+            list.set( i, translateAlternateColorCodes( alt_char, list.get( i ) ) );
 
         return list;
     }
@@ -227,8 +227,8 @@ public class StringUtils extends org.apache.commons.lang.StringUtils {
      * @param list List of strings to translate
      * @return {@link List} containing the translated strings
      */
-    public static List<String> translateAlternateColorCodes(List<String> list) {
-        return translateAlternateColorCodes('&', list);
+    public static List< String > translateAlternateColorCodes( List< String > list ) {
+        return translateAlternateColorCodes( '&', list );
     }
 
     /**
@@ -240,15 +240,15 @@ public class StringUtils extends org.apache.commons.lang.StringUtils {
      * @param string   Target string
      * @return Formatted string
      */
-    public static String untranslateAlternateColorCodes(char alt_char, String string) {
-        char[] contents = string.toCharArray();
+    public static String untranslateAlternateColorCodes( char alt_char, String string ) {
+        char[] contents = string.toCharArray( );
 
-        for (int i = 0; i < contents.length; i++) {
-            if (contents[i] == '\'')
+        for ( int i = 0; i < contents.length; i++ ) {
+            if ( contents[i] == '\'' )
                 contents[i] = alt_char;
         }
 
-        return new String(contents);
+        return new String( contents );
     }
 
     /**
@@ -259,8 +259,8 @@ public class StringUtils extends org.apache.commons.lang.StringUtils {
      * @param string Target string
      * @return Formatted string
      */
-    public static String untranslateAlternateColorCodes(String string) {
-        return untranslateAlternateColorCodes('&', string);
+    public static String untranslateAlternateColorCodes( String string ) {
+        return untranslateAlternateColorCodes( '&', string );
     }
 
     /**
@@ -272,11 +272,11 @@ public class StringUtils extends org.apache.commons.lang.StringUtils {
      * @param array    StringUtils array to replace
      * @return StringUtils array containing the processed strings
      */
-    public static String[] untranslateAlternateColorCodes(char alt_char, String[] array) {
+    public static String[] untranslateAlternateColorCodes( char alt_char, String[] array ) {
         String[] copy = new String[array.length];
 
-        for (int i = 0; i < copy.length; i++)
-            copy[i] = untranslateAlternateColorCodes(alt_char, array[i]);
+        for ( int i = 0; i < copy.length; i++ )
+            copy[i] = untranslateAlternateColorCodes( alt_char, array[i] );
 
         return copy;
     }
@@ -290,8 +290,8 @@ public class StringUtils extends org.apache.commons.lang.StringUtils {
      * @param array StringUtils array to replace
      * @return StringUtils array containing the processed strings
      */
-    public static String[] untranslateAlternateColorCodes(String[] array) {
-        return untranslateAlternateColorCodes('&', array);
+    public static String[] untranslateAlternateColorCodes( String[] array ) {
+        return untranslateAlternateColorCodes( '&', array );
     }
 
     /**
@@ -303,11 +303,11 @@ public class StringUtils extends org.apache.commons.lang.StringUtils {
      * @param collection StringUtils collection to replace
      * @return List containing the processed strings
      */
-    public static List<String> untranslateAlternateColorCodes(char alt_char, Collection<String> collection) {
-        List<String> list = new ArrayList<>();
+    public static List< String > untranslateAlternateColorCodes( char alt_char, Collection< String > collection ) {
+        List< String > list = new ArrayList<>( );
 
-        for (String string : collection)
-            list.add(translateAlternateColorCodes(alt_char, string));
+        for ( String string : collection )
+            list.add( translateAlternateColorCodes( alt_char, string ) );
 
         return list;
     }
@@ -321,8 +321,8 @@ public class StringUtils extends org.apache.commons.lang.StringUtils {
      * @param collection StringUtils collection to replace
      * @return List containing the processed strings
      */
-    public static List<String> untranslateAlternateColorCodes(Collection<String> collection) {
-        return untranslateAlternateColorCodes('&', collection);
+    public static List< String > untranslateAlternateColorCodes( Collection< String > collection ) {
+        return untranslateAlternateColorCodes( '&', collection );
     }
 
     /**
@@ -334,9 +334,9 @@ public class StringUtils extends org.apache.commons.lang.StringUtils {
      * @param list     List of strings to replace
      * @return {@link List} containing the processed strings
      */
-    public static List<String> untranslateAlternateColorCodes(char alt_char, List<String> list) {
-        for (int i = 0; i < list.size(); i++)
-            list.set(i, translateAlternateColorCodes(alt_char, list.get(i)));
+    public static List< String > untranslateAlternateColorCodes( char alt_char, List< String > list ) {
+        for ( int i = 0; i < list.size( ); i++ )
+            list.set( i, translateAlternateColorCodes( alt_char, list.get( i ) ) );
 
         return list;
     }
@@ -350,8 +350,8 @@ public class StringUtils extends org.apache.commons.lang.StringUtils {
      * @param list List of strings to replace
      * @return {@link List} containing the processed strings
      */
-    public static List<String> untranslateAlternateColorCodes(List<String> list) {
-        return untranslateAlternateColorCodes('&', list);
+    public static List< String > untranslateAlternateColorCodes( List< String > list ) {
+        return untranslateAlternateColorCodes( '&', list );
     }
 
     /**
@@ -361,8 +361,8 @@ public class StringUtils extends org.apache.commons.lang.StringUtils {
      * @param string the string to strip of color
      * @return Formatted string
      */
-    public static String stripColors(String string) {
-        return ChatColor.stripColor(string);
+    public static String stripColors( String string ) {
+        return ChatColor.stripColor( string );
     }
 
     /**
@@ -372,8 +372,8 @@ public class StringUtils extends org.apache.commons.lang.StringUtils {
      * @param string String to fix
      * @return Formatted string
      */
-    public static String fixExcessiveWhitespaces(String string) {
-        return string.replaceAll("\\s{2,}", " ");
+    public static String fixExcessiveWhitespaces( String string ) {
+        return string.replaceAll( "\\s{2,}", " " );
     }
 
     /**
@@ -384,8 +384,8 @@ public class StringUtils extends org.apache.commons.lang.StringUtils {
      * @param target Characters sequence reference
      * @return Characters sequence of the given target in the given string converted to lower case
      */
-    public static String toLowerCase(String string, String target) {
-        return toLowerCase(string, target, Locale.getDefault());
+    public static String toLowerCase( String string, String target ) {
+        return toLowerCase( string, target, Locale.getDefault( ) );
     }
 
     /**
@@ -400,13 +400,13 @@ public class StringUtils extends org.apache.commons.lang.StringUtils {
      * @param notCompletedColor Default color of bars
      * @return Progress bar for the given data
      */
-    public static String getProgressBar(int current, int max, int totalBars, char symbol, ChatColor completedColor,
-                                        ChatColor notCompletedColor) {
+    public static String getProgressBar( int current, int max, int totalBars, char symbol, ChatColor completedColor,
+                                         ChatColor notCompletedColor ) {
         float percent = (float) current / max;
-        int progressBars = (int) (totalBars * percent);
+        int progressBars = (int) ( totalBars * percent );
 
-        return Strings.repeat("" + completedColor + symbol, progressBars)
-                + Strings.repeat("" + notCompletedColor + symbol, totalBars - progressBars);
+        return Strings.repeat( "" + completedColor + symbol, progressBars )
+                + Strings.repeat( "" + notCompletedColor + symbol, totalBars - progressBars );
     }
 
     /**
@@ -419,29 +419,29 @@ public class StringUtils extends org.apache.commons.lang.StringUtils {
      * @param locale {@code Locale} rules reference
      * @return Characters sequence of the given target in the given string converted to lower case
      */
-    public static String toLowerCase(String string, String target, Locale locale) {
-        String lower_case = string.toLowerCase(locale);
-        String target_lower_case = target.toLowerCase(locale);
+    public static String toLowerCase( String string, String target, Locale locale ) {
+        String lower_case = string.toLowerCase( locale );
+        String target_lower_case = target.toLowerCase( locale );
 
-        if (!lower_case.contains(target_lower_case))
+        if ( !lower_case.contains( target_lower_case ) )
             return lower_case;
 
-        char[] chars = string.toCharArray();
+        char[] chars = string.toCharArray( );
         int last_index = 0;
 
-        for (int i = 0; i < lower_case.length(); i++) {
-            int current_index = lower_case.indexOf(target_lower_case, last_index);
+        for ( int i = 0; i < lower_case.length( ); i++ ) {
+            int current_index = lower_case.indexOf( target_lower_case, last_index );
 
-            if (current_index != -1) {
-                int end_index = current_index + target_lower_case.length();
+            if ( current_index != -1 ) {
+                int end_index = current_index + target_lower_case.length( );
                 last_index = end_index;
 
-                for (int j = current_index; j < end_index; j++)
-                    chars[j] = lower_case.charAt(j);
+                for ( int j = current_index; j < end_index; j++ )
+                    chars[j] = lower_case.charAt( j );
             }
         }
 
-        return new String(chars);
+        return new String( chars );
     }
 
     /**
@@ -452,8 +452,8 @@ public class StringUtils extends org.apache.commons.lang.StringUtils {
      * @param target Characters sequence reference
      * @return Characters sequence of the given target in the given string converted to upper case
      */
-    public static String toUpperCase(String string, String target) {
-        return toUpperCase(string, target, Locale.getDefault());
+    public static String toUpperCase( String string, String target ) {
+        return toUpperCase( string, target, Locale.getDefault( ) );
     }
 
     /**
@@ -466,29 +466,29 @@ public class StringUtils extends org.apache.commons.lang.StringUtils {
      * @param locale {@code Locale} rules reference
      * @return Characters sequence of the given target in the given string converted to upper case.
      */
-    public static String toUpperCase(String string, String target, Locale locale) {
-        String upper_case = string.toUpperCase(locale);
-        String target_upper_case = target.toUpperCase(locale);
+    public static String toUpperCase( String string, String target, Locale locale ) {
+        String upper_case = string.toUpperCase( locale );
+        String target_upper_case = target.toUpperCase( locale );
 
-        if (!upper_case.contains(target_upper_case))
+        if ( !upper_case.contains( target_upper_case ) )
             return upper_case;
 
-        char[] chars = string.toCharArray();
+        char[] chars = string.toCharArray( );
         int last_index = 0;
 
-        for (int i = 0; i < upper_case.length(); i++) {
-            int current_index = upper_case.indexOf(target_upper_case, last_index);
+        for ( int i = 0; i < upper_case.length( ); i++ ) {
+            int current_index = upper_case.indexOf( target_upper_case, last_index );
 
-            if (current_index != -1) {
-                int end_index = current_index + target_upper_case.length();
+            if ( current_index != -1 ) {
+                int end_index = current_index + target_upper_case.length( );
                 last_index = end_index;
 
-                for (int j = current_index; j < end_index; j++)
-                    chars[j] = upper_case.charAt(j);
+                for ( int j = current_index; j < end_index; j++ )
+                    chars[j] = upper_case.charAt( j );
             }
         }
 
-        return new String(chars);
+        return new String( chars );
     }
 
 }

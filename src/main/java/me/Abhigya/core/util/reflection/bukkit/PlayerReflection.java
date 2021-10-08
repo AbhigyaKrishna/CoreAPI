@@ -13,8 +13,8 @@ import java.lang.reflect.InvocationTargetException;
  */
 public class PlayerReflection {
 
-    public static final String PLAYER_CONNECTION_FIELD_NAME = CoreAPI.getInstance().getServerVersion().isNewerEquals(Version.v1_17_R1) ? "b" : "playerConnection";
-    public static final String NETWORK_MANAGER_FIELD_NAME = CoreAPI.getInstance().getServerVersion().isNewerEquals(Version.v1_17_R1) ? "a" : "networkManager";
+    public static final String PLAYER_CONNECTION_FIELD_NAME = CoreAPI.getInstance( ).getServerVersion( ).isNewerEquals( Version.v1_17_R1 ) ? "b" : "playerConnection";
+    public static final String NETWORK_MANAGER_FIELD_NAME = CoreAPI.getInstance( ).getServerVersion( ).isNewerEquals( Version.v1_17_R1 ) ? "a" : "networkManager";
 
     /**
      * Gets the handle ( the represented nms player by the craftbukkit player ) of
@@ -31,9 +31,9 @@ public class PlayerReflection {
      *                                       provided player
      * @see BukkitReflection#getHandle(Object)
      */
-    public static Object getHandle(Player player)
+    public static Object getHandle( Player player )
             throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, SecurityException {
-        return BukkitReflection.getHandle(player);
+        return BukkitReflection.getHandle( player );
     }
 
     /**
@@ -48,9 +48,9 @@ public class PlayerReflection {
      * @throws IllegalAccessException    reflection exception...
      * @throws InvocationTargetException reflection exception...
      */
-    public static Object getPlayerConnection(Player player) throws SecurityException, NoSuchFieldException,
+    public static Object getPlayerConnection( Player player ) throws SecurityException, NoSuchFieldException,
             IllegalArgumentException, IllegalAccessException, InvocationTargetException {
-        return FieldReflection.getValue(BukkitReflection.getHandle(player), PLAYER_CONNECTION_FIELD_NAME);
+        return FieldReflection.getValue( BukkitReflection.getHandle( player ), PLAYER_CONNECTION_FIELD_NAME );
     }
 
     /**
@@ -65,9 +65,9 @@ public class PlayerReflection {
      * @throws IllegalAccessException    reflection exception...
      * @throws InvocationTargetException reflection exception...
      */
-    public static Object getNetworkManager(Player player) throws SecurityException, NoSuchFieldException,
+    public static Object getNetworkManager( Player player ) throws SecurityException, NoSuchFieldException,
             IllegalArgumentException, IllegalAccessException, InvocationTargetException {
-        return FieldReflection.getValue(getPlayerConnection(player), NETWORK_MANAGER_FIELD_NAME);
+        return FieldReflection.getValue( getPlayerConnection( player ), NETWORK_MANAGER_FIELD_NAME );
     }
 
     /**
@@ -82,10 +82,10 @@ public class PlayerReflection {
      * @throws IllegalAccessException    reflection exception...
      * @throws InvocationTargetException reflection exception...
      */
-    public static Channel getChannel(Player player) throws SecurityException, NoSuchFieldException,
+    public static Channel getChannel( Player player ) throws SecurityException, NoSuchFieldException,
             IllegalArgumentException, IllegalAccessException, InvocationTargetException {
         String channelField;
-        switch (CoreAPI.getInstance().getServerVersion()) {
+        switch ( CoreAPI.getInstance( ).getServerVersion( ) ) {
             case v1_8_R1:
                 channelField = "i";
             case v1_8_R2:
@@ -94,6 +94,7 @@ public class PlayerReflection {
             default:
                 channelField = "channel";
         }
-        return (Channel) FieldReflection.getValue(getNetworkManager(player), channelField);
+        return (Channel) FieldReflection.getValue( getNetworkManager( player ), channelField );
     }
+
 }

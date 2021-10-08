@@ -21,19 +21,19 @@ public class UpdatingItemMenu extends ItemMenu {
      * @param parent   Parent of the menu if any. or null
      * @param contents Content of the menu
      */
-    public UpdatingItemMenu(String title, ItemMenuSize size, ItemMenu parent, Item... contents) {
-        super(title, size, parent, contents);
+    public UpdatingItemMenu( String title, ItemMenuSize size, ItemMenu parent, Item... contents ) {
+        super( title, size, parent, contents );
     }
 
     @Override
-    public UpdatingItemMenuHandler getHandler() {
+    public UpdatingItemMenuHandler getHandler( ) {
         return (UpdatingItemMenuHandler) this.handler;
     }
 
     @Override
-    public boolean registerListener(Plugin plugin) {
-        if (this.handler == null) {
-            Bukkit.getPluginManager().registerEvents((this.handler = new UpdatingItemMenuHandler(this, plugin)), plugin);
+    public boolean registerListener( Plugin plugin ) {
+        if ( this.handler == null ) {
+            Bukkit.getPluginManager( ).registerEvents( ( this.handler = new UpdatingItemMenuHandler( this, plugin ) ), plugin );
             return true;
         }
         return false;

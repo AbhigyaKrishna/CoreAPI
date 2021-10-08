@@ -35,9 +35,9 @@ public class ItemClickAction {
      * @param menu  Item to bind action
      * @param event {@link InventoryClickEvent}
      */
-    public ItemClickAction(ItemMenu menu, InventoryClickEvent event) {
-        this(menu, event.getView(), event.getClick(), event.getAction(), event.getSlotType(), event.getSlot(),
-                event.getRawSlot(), event.getCurrentItem(), event.getHotbarButton(), false, false, false);
+    public ItemClickAction( ItemMenu menu, InventoryClickEvent event ) {
+        this( menu, event.getView( ), event.getClick( ), event.getAction( ), event.getSlotType( ), event.getSlot( ),
+                event.getRawSlot( ), event.getCurrentItem( ), event.getHotbarButton( ), false, false, false );
     }
 
     /**
@@ -57,9 +57,9 @@ public class ItemClickAction {
      * @param close          Close
      * @param update         Update
      */
-    public ItemClickAction(ItemMenu menu, InventoryView inventory_view, ClickType click_type, InventoryAction action,
-                           SlotType slot_type, int slot, int raw_slot, ItemStack clicked, int hotbar_key, boolean go_back,
-                           boolean close, boolean update) {
+    public ItemClickAction( ItemMenu menu, InventoryView inventory_view, ClickType click_type, InventoryAction action,
+                            SlotType slot_type, int slot, int raw_slot, ItemStack clicked, int hotbar_key, boolean go_back,
+                            boolean close, boolean update ) {
         this.menu = menu;
         this.inventory_view = inventory_view;
         this.click_type = click_type;
@@ -80,7 +80,7 @@ public class ItemClickAction {
      *
      * @return ItemMenu
      */
-    public ItemMenu getMenu() {
+    public ItemMenu getMenu( ) {
         return menu;
     }
 
@@ -90,8 +90,8 @@ public class ItemClickAction {
      *
      * @return Inventory
      */
-    public Inventory getInventory() {
-        return this.getInventoryView().getTopInventory();
+    public Inventory getInventory( ) {
+        return this.getInventoryView( ).getTopInventory( );
     }
 
     /**
@@ -100,7 +100,7 @@ public class ItemClickAction {
      *
      * @return InventoryView
      */
-    public InventoryView getInventoryView() {
+    public InventoryView getInventoryView( ) {
         return inventory_view;
     }
 
@@ -110,8 +110,8 @@ public class ItemClickAction {
      *
      * @return Player who clicked
      */
-    public Player getPlayer() {
-        return (Player) this.getInventoryView().getPlayer();
+    public Player getPlayer( ) {
+        return (Player) this.getInventoryView( ).getPlayer( );
     }
 
     /**
@@ -120,7 +120,7 @@ public class ItemClickAction {
      *
      * @return ClickType
      */
-    public ClickType getClickType() {
+    public ClickType getClickType( ) {
         return click_type;
     }
 
@@ -130,7 +130,7 @@ public class ItemClickAction {
      *
      * @return InventoryAction
      */
-    public InventoryAction getInventoryAction() {
+    public InventoryAction getInventoryAction( ) {
         return action;
     }
 
@@ -140,7 +140,7 @@ public class ItemClickAction {
      *
      * @return SlotType
      */
-    public SlotType getSlotType() {
+    public SlotType getSlotType( ) {
         return slot_type;
     }
 
@@ -150,7 +150,7 @@ public class ItemClickAction {
      *
      * @return Slot index
      */
-    public int getSlot() {
+    public int getSlot( ) {
         return slot;
     }
 
@@ -160,7 +160,7 @@ public class ItemClickAction {
      *
      * @return Raw slot index
      */
-    public int getRawSlot() {
+    public int getRawSlot( ) {
         return raw_slot;
     }
 
@@ -170,7 +170,7 @@ public class ItemClickAction {
      *
      * @return Clicked ItemStack
      */
-    public ItemStack getClickedItem() {
+    public ItemStack getClickedItem( ) {
         return clicked;
     }
 
@@ -180,7 +180,7 @@ public class ItemClickAction {
      *
      * @return Hotbar Key
      */
-    public int getHotbarKey() {
+    public int getHotbarKey( ) {
         return hotbar_key;
     }
 
@@ -190,7 +190,7 @@ public class ItemClickAction {
      *
      * @return if it will go back
      */
-    public boolean isWillGoBack() {
+    public boolean isWillGoBack( ) {
         return go_back;
     }
 
@@ -200,7 +200,7 @@ public class ItemClickAction {
      *
      * @return if it will close
      */
-    public boolean isWillClose() {
+    public boolean isWillClose( ) {
         return close;
     }
 
@@ -210,7 +210,7 @@ public class ItemClickAction {
      *
      * @return if it will update
      */
-    public boolean isWillUpdate() {
+    public boolean isWillUpdate( ) {
         return update;
     }
 
@@ -220,9 +220,9 @@ public class ItemClickAction {
      *
      * @param go_back Boolean value
      */
-    public void setGoBack(boolean go_back) {
+    public void setGoBack( boolean go_back ) {
         this.go_back = go_back;
-        if (go_back) {
+        if ( go_back ) {
             this.close = false;
             this.update = false;
         }
@@ -234,9 +234,9 @@ public class ItemClickAction {
      *
      * @param close Boolean value
      */
-    public void setClose(boolean close) {
+    public void setClose( boolean close ) {
         this.close = close;
-        if (close) {
+        if ( close ) {
             this.go_back = false;
             this.update = false;
         }
@@ -248,9 +248,9 @@ public class ItemClickAction {
      *
      * @param update Boolean value
      */
-    public void setUpdate(boolean update) {
+    public void setUpdate( boolean update ) {
         this.update = update;
-        if (update) {
+        if ( update ) {
             this.go_back = false;
             this.close = false;
         }

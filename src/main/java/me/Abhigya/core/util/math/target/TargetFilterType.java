@@ -20,13 +20,13 @@ public class TargetFilterType implements TargetFilter {
      *
      * @param type Entity type to filter
      */
-    public TargetFilterType(EntityType type) {
+    public TargetFilterType( EntityType type ) {
         this.type = type;
     }
 
     @Override
-    public boolean accept(Entity entity) {
-        return type.equals(entity.getType());
+    public boolean accept( Entity entity ) {
+        return type.equals( entity.getType( ) );
     }
 
 }

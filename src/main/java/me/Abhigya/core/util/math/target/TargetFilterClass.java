@@ -10,12 +10,12 @@ import org.bukkit.entity.Entity;
  *
  * @param <T> the entity class, for example: {@link Enderman}.
  */
-public class TargetFilterClass<T extends Entity> implements TargetFilter {
+public class TargetFilterClass< T extends Entity > implements TargetFilter {
 
     /**
      * The class extending {@link Entity}
      */
-    protected final Class<T> clazz;
+    protected final Class< T > clazz;
 
     /**
      * Construct the target filter.
@@ -23,13 +23,13 @@ public class TargetFilterClass<T extends Entity> implements TargetFilter {
      *
      * @param clazz Entity class
      */
-    public TargetFilterClass(Class<T> clazz) {
+    public TargetFilterClass( Class< T > clazz ) {
         this.clazz = clazz;
     }
 
     @Override
-    public boolean accept(Entity entity) {
-        return clazz.isAssignableFrom(entity.getClass());
+    public boolean accept( Entity entity ) {
+        return clazz.isAssignableFrom( entity.getClass( ) );
     }
 
 }

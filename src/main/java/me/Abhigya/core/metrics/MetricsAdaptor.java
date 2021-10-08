@@ -16,7 +16,7 @@ public abstract class MetricsAdaptor {
     /**
      * Set of all {@link CustomChart} added to the metrics of this plugin.
      */
-    private Set<CustomChart> chartTypes;
+    private Set< CustomChart > chartTypes;
 
     /**
      * Constructs the class
@@ -25,18 +25,18 @@ public abstract class MetricsAdaptor {
      * @param plugin    Plugin for which the metrics is
      * @param serviceId Id of the plugin metrics
      */
-    public MetricsAdaptor(Plugin plugin, int serviceId) {
+    public MetricsAdaptor( Plugin plugin, int serviceId ) {
         this.plugin = plugin;
         this.serviceId = serviceId;
-        this.metrics = new Metrics(plugin, serviceId);
+        this.metrics = new Metrics( plugin, serviceId );
 
-        this.chartTypes = new HashSet<>();
+        this.chartTypes = new HashSet<>( );
     }
 
     /**
      * Register customs charts and stuffs
      */
-    public abstract void register();
+    public abstract void register( );
 
     /**
      * Add {@link CustomChart} to metrics.
@@ -44,12 +44,12 @@ public abstract class MetricsAdaptor {
      *
      * @param chart {@link CustomChart} to add
      */
-    public void addChart(CustomChart chart) {
-        metrics.addCustomChart(chart);
-        this.chartTypes.add(chart);
+    public void addChart( CustomChart chart ) {
+        metrics.addCustomChart( chart );
+        this.chartTypes.add( chart );
     }
 
-    public int getServiceId() {
+    public int getServiceId( ) {
         return serviceId;
     }
 
@@ -59,7 +59,8 @@ public abstract class MetricsAdaptor {
      *
      * @return Set of registered charts
      */
-    public Set<CustomChart> getChartTypes() {
+    public Set< CustomChart > getChartTypes( ) {
         return chartTypes;
     }
+
 }

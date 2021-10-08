@@ -22,9 +22,9 @@ public class OpenMenuActionItem extends ActionItem {
      * @param icon ItemStack icon of the Item
      * @param lore Lore of the Item
      */
-    public OpenMenuActionItem(String name, ItemStack icon, String... lore) {
-        super(name, icon, lore);
-        addDefaultAction();
+    public OpenMenuActionItem( String name, ItemStack icon, String... lore ) {
+        super( name, icon, lore );
+        addDefaultAction( );
     }
 
     /**
@@ -33,28 +33,28 @@ public class OpenMenuActionItem extends ActionItem {
      *
      * @param icon ItemStack icon of the Item
      */
-    public OpenMenuActionItem(ItemStack icon) {
-        super(icon);
-        addDefaultAction();
+    public OpenMenuActionItem( ItemStack icon ) {
+        super( icon );
+        addDefaultAction( );
     }
 
     /**
      * Adds the default action of opening other menu.
      */
-    protected void addDefaultAction() {
-        addAction(new ItemAction() {
+    protected void addDefaultAction( ) {
+        addAction( new ItemAction( ) {
 
             @Override
-            public ItemActionPriority getPriority() {
+            public ItemActionPriority getPriority( ) {
                 return ItemActionPriority.LOW;
             }
 
             @Override
-            public void onClick(ItemClickAction action) {
-                action.getMenu().getHandler().delayedClose(action.getPlayer(), 1);
-                menu.getHandler().delayedOpen(action.getPlayer(), 3);
+            public void onClick( ItemClickAction action ) {
+                action.getMenu( ).getHandler( ).delayedClose( action.getPlayer( ), 1 );
+                menu.getHandler( ).delayedOpen( action.getPlayer( ), 3 );
             }
-        });
+        } );
     }
 
     /**
@@ -65,7 +65,7 @@ public class OpenMenuActionItem extends ActionItem {
      * @param menu Menu to open when this clicked
      * @return This Object, for chaining
      */
-    public OpenMenuActionItem setMenu(ItemMenu menu) {
+    public OpenMenuActionItem setMenu( ItemMenu menu ) {
         this.menu = menu;
         return this;
     }

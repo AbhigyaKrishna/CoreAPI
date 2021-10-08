@@ -21,7 +21,7 @@ public abstract class AnvilItem {
 
     protected String name;
     protected ItemStack icon;
-    protected List<String> lore;
+    protected List< String > lore;
     protected AnvilMenu menu;
 
     /**
@@ -32,11 +32,11 @@ public abstract class AnvilItem {
      * @param icon ItemStack icon for the AnvilItem
      * @param lore Lore of the AnvilItem
      */
-    public AnvilItem(String name, ItemStack icon, Collection<String> lore) {
-        Validate.notNull(icon, "The icon cannot be null!");
+    public AnvilItem( String name, ItemStack icon, Collection< String > lore ) {
+        Validate.notNull( icon, "The icon cannot be null!" );
         this.name = name == null ? "" : name;
         this.icon = icon;
-        this.lore = new ArrayList(lore);
+        this.lore = new ArrayList( lore );
     }
 
     /**
@@ -47,8 +47,8 @@ public abstract class AnvilItem {
      * @param icon ItemStack icon for the AnvilItem
      * @param lore Lore of the AnvilItem
      */
-    public AnvilItem(String name, ItemStack icon, String... lore) {
-        this(name, icon, Arrays.asList(lore));
+    public AnvilItem( String name, ItemStack icon, String... lore ) {
+        this( name, icon, Arrays.asList( lore ) );
     }
 
     /**
@@ -57,9 +57,9 @@ public abstract class AnvilItem {
      *
      * @param icon ItemStack icon for the AnvilItem
      */
-    public AnvilItem(ItemStack icon) {
-        this(StringUtils.defaultIfBlank(icon.getItemMeta() != null ? icon.getItemMeta().getDisplayName() : null, "null name"),
-                icon, (String[]) ItemStackUtils.extractLore(icon, false).toArray(new String[ItemStackUtils.extractLore(icon, false).size()]));
+    public AnvilItem( ItemStack icon ) {
+        this( StringUtils.defaultIfBlank( icon.getItemMeta( ) != null ? icon.getItemMeta( ).getDisplayName( ) : null, "null name" ),
+                icon, (String[]) ItemStackUtils.extractLore( icon, false ).toArray( new String[ItemStackUtils.extractLore( icon, false ).size( )] ) );
     }
 
     /**
@@ -68,7 +68,7 @@ public abstract class AnvilItem {
      *
      * @return Name of the AnvilItem
      */
-    public String getName() {
+    public String getName( ) {
         return name;
     }
 
@@ -79,7 +79,7 @@ public abstract class AnvilItem {
      * @param name Name for the AnvilItem
      * @return This Object, for chaining
      */
-    public AnvilItem setName(String name) {
+    public AnvilItem setName( String name ) {
         this.name = name;
         return this;
     }
@@ -90,7 +90,7 @@ public abstract class AnvilItem {
      *
      * @return Icon of the AnvilItem
      */
-    public ItemStack getIcon() {
+    public ItemStack getIcon( ) {
         return icon;
     }
 
@@ -101,8 +101,8 @@ public abstract class AnvilItem {
      * @param icon ItemStack icon for the AnvilItem
      * @return This Object, for chaining
      */
-    public AnvilItem setIcon(ItemStack icon) {
-        Validate.notNull(icon, "The icon cannot be null!");
+    public AnvilItem setIcon( ItemStack icon ) {
+        Validate.notNull( icon, "The icon cannot be null!" );
         this.icon = icon;
         return this;
     }
@@ -113,9 +113,9 @@ public abstract class AnvilItem {
      *
      * @return Display icon of the AnvilItem
      */
-    public ItemStack getDisplayIcon() {
-        return this.getIcon().getType() == Material.AIR ? this.icon : (new ItemMetaBuilder(MaterialUtils.getRightMaterial(this.getIcon())))
-                .withDisplayName(StringUtils.translateAlternateColorCodes(this.getName())).withLore(this.getLore()).applyTo(this.getIcon().clone());
+    public ItemStack getDisplayIcon( ) {
+        return this.getIcon( ).getType( ) == Material.AIR ? this.icon : ( new ItemMetaBuilder( MaterialUtils.getRightMaterial( this.getIcon( ) ) ) )
+                .withDisplayName( StringUtils.translateAlternateColorCodes( this.getName( ) ) ).withLore( this.getLore( ) ).applyTo( this.getIcon( ).clone( ) );
     }
 
     /**
@@ -124,7 +124,7 @@ public abstract class AnvilItem {
      *
      * @return Lore of the AnvilItem
      */
-    public List<String> getLore() {
+    public List< String > getLore( ) {
         return lore;
     }
 
@@ -135,8 +135,8 @@ public abstract class AnvilItem {
      * @param lore Lore for the AnvilItem
      * @return This Object, for chaining
      */
-    public AnvilItem setLore(List<String> lore) {
-        this.lore = lore != null ? lore : new ArrayList<>();
+    public AnvilItem setLore( List< String > lore ) {
+        this.lore = lore != null ? lore : new ArrayList<>( );
         return this;
     }
 
@@ -149,7 +149,7 @@ public abstract class AnvilItem {
      *
      * @return The menu this item belongs
      */
-    public AnvilMenu getMenu() {
+    public AnvilMenu getMenu( ) {
         return menu;
     }
 
@@ -159,5 +159,6 @@ public abstract class AnvilItem {
      *
      * @param action {@link AnvilItemClickAction} for the AnvilItem
      */
-    public abstract void onClick(AnvilItemClickAction action);
+    public abstract void onClick( AnvilItemClickAction action );
+
 }

@@ -22,8 +22,8 @@ public abstract class CustomPlayerEventCancellable extends CustomPlayerEvent imp
      * @param async  true indicates the event will fire asynchronously, false by
      *               default from default constructor
      */
-    public CustomPlayerEventCancellable(Player player, boolean async) {
-        super(player, async);
+    public CustomPlayerEventCancellable( Player player, boolean async ) {
+        super( player, async );
     }
 
     /**
@@ -32,17 +32,17 @@ public abstract class CustomPlayerEventCancellable extends CustomPlayerEvent imp
      *
      * @param player Player involved in this event.
      */
-    public CustomPlayerEventCancellable(final Player player) {
-        super(player);
+    public CustomPlayerEventCancellable( final Player player ) {
+        super( player );
     }
 
     @Override
-    public boolean isCancelled() {
+    public boolean isCancelled( ) {
         return cancelled;
     }
 
     @Override
-    public void setCancelled(boolean cancelled) {
+    public void setCancelled( boolean cancelled ) {
         this.cancelled = cancelled;
     }
 

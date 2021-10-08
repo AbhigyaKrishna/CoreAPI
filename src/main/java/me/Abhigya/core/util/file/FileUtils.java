@@ -20,15 +20,15 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
      * @param directory Desired directory
      * @return All the elements within the directory and its sub-directories
      */
-    public static Set<File> getElements(File directory) {
-        Validate.isTrue(directory.isDirectory(), "the provided file is not a valid directory!");
+    public static Set< File > getElements( File directory ) {
+        Validate.isTrue( directory.isDirectory( ), "the provided file is not a valid directory!" );
 
-        final Set<File> elements = new HashSet<>();
-        for (File file : directory.listFiles()) {
-            if (file.isDirectory()) {
-                elements.addAll(getElements(file)); // recursive.
+        final Set< File > elements = new HashSet<>( );
+        for ( File file : directory.listFiles( ) ) {
+            if ( file.isDirectory( ) ) {
+                elements.addAll( getElements( file ) ); // recursive.
             } else {
-                elements.add(file);
+                elements.add( file );
             }
         }
         return elements;
@@ -47,16 +47,16 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
      * @return Sum of the sum of the lengths of all the elements within the
      * directory
      */
-    public static long getLength(File directory) {
-        if (directory.isFile()) {
-            return directory.length();
+    public static long getLength( File directory ) {
+        if ( directory.isFile( ) ) {
+            return directory.length( );
         }
 
-        final Set<File> elements = getElements(directory);
+        final Set< File > elements = getElements( directory );
         long length = 0L;
-        return elements.stream()
-                .map((e) -> e.length())
-                .reduce(length, (accumulator, _item) -> accumulator + _item);
+        return elements.stream( )
+                .map( ( e ) -> e.length( ) )
+                .reduce( length, ( accumulator, _item ) -> accumulator + _item );
     }
 
     /**
@@ -66,19 +66,19 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
      * @param file File to get type of
      * @return File type
      */
-    public static String getFileType(File file) {
+    public static String getFileType( File file ) {
         try {
-            String mimetype = Files.probeContentType(file.toPath());
+            String mimetype = Files.probeContentType( file.toPath( ) );
 
-            if (mimetype != null) {
-                if (mimetype.contains("/")) {
-                    return mimetype.split("/")[0];
+            if ( mimetype != null ) {
+                if ( mimetype.contains( "/" ) ) {
+                    return mimetype.split( "/" )[0];
                 } else {
                     return mimetype;
                 }
             }
-        } catch (Throwable ex) {
-            ex.printStackTrace();
+        } catch ( Throwable ex ) {
+            ex.printStackTrace( );
         }
 
         return "";

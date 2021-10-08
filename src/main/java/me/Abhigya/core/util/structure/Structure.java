@@ -23,7 +23,7 @@ public class Structure {
      * @param y     Y-axis position
      * @param z     Z-axis position
      */
-    public Structure(StructureModel model, int x, int y, int z) {
+    public Structure( StructureModel model, int x, int y, int z ) {
         this.model = model;
         this.x = x;
         this.y = y;
@@ -39,9 +39,9 @@ public class Structure {
      * @param y     Y-axis position
      * @param z     Z-axis position
      */
-    public Structure(StructureModel model, double x, double y, double z) {
-        this(model, NumberConversions.floor(x), NumberConversions.floor(y),
-                NumberConversions.floor(z));
+    public Structure( StructureModel model, double x, double y, double z ) {
+        this( model, NumberConversions.floor( x ), NumberConversions.floor( y ),
+                NumberConversions.floor( z ) );
     }
 
     /**
@@ -50,7 +50,7 @@ public class Structure {
      *
      * @return This structure's model
      */
-    public StructureModel getModel() {
+    public StructureModel getModel( ) {
         return model;
     }
 
@@ -61,10 +61,10 @@ public class Structure {
      * @param vector Vector object to copy into
      * @return This structure's origin
      */
-    public BlockVector getOrigin(BlockVector vector) {
-        vector.setX(x);
-        vector.setY(y);
-        vector.setZ(z);
+    public BlockVector getOrigin( BlockVector vector ) {
+        vector.setX( x );
+        vector.setY( y );
+        vector.setZ( z );
 
         return vector;
     }
@@ -75,8 +75,8 @@ public class Structure {
      *
      * @return This structure's origin
      */
-    public BlockVector getOrigin() {
-        return getOrigin(new BlockVector());
+    public BlockVector getOrigin( ) {
+        return getOrigin( new BlockVector( ) );
     }
 
 }

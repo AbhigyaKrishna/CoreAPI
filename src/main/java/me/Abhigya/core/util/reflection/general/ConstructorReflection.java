@@ -43,9 +43,9 @@ public class ConstructorReflection {
      *
      *                               </ul>
      */
-    public static Constructor<?> get(Class<?> clazz, boolean declared, Class<?>... parameter_types)
+    public static Constructor< ? > get( Class< ? > clazz, boolean declared, Class< ? >... parameter_types )
             throws NoSuchMethodException, SecurityException {
-        return declared ? clazz.getDeclaredConstructor(parameter_types) : clazz.getConstructor(parameter_types);
+        return declared ? clazz.getDeclaredConstructor( parameter_types ) : clazz.getConstructor( parameter_types );
     }
 
     /**
@@ -84,12 +84,12 @@ public class ConstructorReflection {
      *                               </ul>
      * @see #get(Class, boolean, Class...)
      */
-    public static Constructor<?> get(Class<?> clazz, Class<?>... parameter_types)
+    public static Constructor< ? > get( Class< ? > clazz, Class< ? >... parameter_types )
             throws NoSuchMethodException, SecurityException {
         try {
-            return get(clazz, false, parameter_types);
-        } catch (NoSuchMethodException ex) {
-            return get(clazz, true, parameter_types);
+            return get( clazz, false, parameter_types );
+        } catch ( NoSuchMethodException ex ) {
+            return get( clazz, true, parameter_types );
         }
     }
 
@@ -128,10 +128,10 @@ public class ConstructorReflection {
      *
      *                               </ul>
      */
-    public static Constructor<?> getAccessible(Class<?> clazz, boolean declared, Class<?>... parameter_types)
+    public static Constructor< ? > getAccessible( Class< ? > clazz, boolean declared, Class< ? >... parameter_types )
             throws NoSuchMethodException, SecurityException {
-        final Constructor<?> constructor = get(clazz, declared, parameter_types);
-        constructor.setAccessible(true);
+        final Constructor< ? > constructor = get( clazz, declared, parameter_types );
+        constructor.setAccessible( true );
         return constructor;
     }
 
@@ -170,12 +170,12 @@ public class ConstructorReflection {
      *
      *                               </ul>
      */
-    public static Constructor<?> getAccessible(Class<?> clazz, Class<?>... parameter_types)
+    public static Constructor< ? > getAccessible( Class< ? > clazz, Class< ? >... parameter_types )
             throws NoSuchMethodException, SecurityException {
         try {
-            return getAccessible(clazz, false, parameter_types);
-        } catch (NoSuchMethodException ex) {
-            return getAccessible(clazz, true, parameter_types);
+            return getAccessible( clazz, false, parameter_types );
+        } catch ( NoSuchMethodException ex ) {
+            return getAccessible( clazz, true, parameter_types );
         }
     }
 
@@ -248,11 +248,11 @@ public class ConstructorReflection {
      * @throws InvocationTargetException if the underlying constructor throws an
      *                                   exception.
      */
-    @SuppressWarnings("unchecked")
-    public static <T> T newInstance(Class<?> clazz, boolean declared, Class<?>[] parameter_types, Object... arguments)
+    @SuppressWarnings( "unchecked" )
+    public static < T > T newInstance( Class< ? > clazz, boolean declared, Class< ? >[] parameter_types, Object... arguments )
             throws NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException,
             IllegalArgumentException, InvocationTargetException {
-        return (T) getAccessible(clazz, declared, parameter_types).newInstance(arguments);
+        return (T) getAccessible( clazz, declared, parameter_types ).newInstance( arguments );
     }
 
 //	/**
@@ -407,13 +407,13 @@ public class ConstructorReflection {
      * @throws InvocationTargetException if the underlying constructor throws an
      *                                   exception.
      */
-    public static <T> T newInstance(Class<?> clazz, Class<?>[] parameter_types, Object... arguments)
+    public static < T > T newInstance( Class< ? > clazz, Class< ? >[] parameter_types, Object... arguments )
             throws NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException,
             IllegalArgumentException, InvocationTargetException {
         try {
-            return newInstance(clazz, false, parameter_types, arguments);
-        } catch (NoSuchMethodException ex) {
-            return newInstance(clazz, true, parameter_types, arguments);
+            return newInstance( clazz, false, parameter_types, arguments );
+        } catch ( NoSuchMethodException ex ) {
+            return newInstance( clazz, true, parameter_types, arguments );
         }
     }
 
@@ -509,17 +509,17 @@ public class ConstructorReflection {
      * @return Object, for chaining
      * @throws SecurityException if the request is denied
      */
-    public static <T> Constructor<T> setAccessible(Constructor<T> constructor, boolean accessible)
+    public static < T > Constructor< T > setAccessible( Constructor< T > constructor, boolean accessible )
             throws SecurityException {
-        constructor.setAccessible(accessible);
-        if (accessible) {
+        constructor.setAccessible( accessible );
+        if ( accessible ) {
             try {
-                Field modifiersField = Constructor.class.getDeclaredField("modifiers");
-                modifiersField.setAccessible(true);
-                modifiersField.setInt(constructor, constructor.getModifiers() & ~Modifier.FINAL);
-                modifiersField.setAccessible(false);
-            } catch (Throwable ex) {
-                ex.printStackTrace();
+                Field modifiersField = Constructor.class.getDeclaredField( "modifiers" );
+                modifiersField.setAccessible( true );
+                modifiersField.setInt( constructor, constructor.getModifiers( ) & ~Modifier.FINAL );
+                modifiersField.setAccessible( false );
+            } catch ( Throwable ex ) {
+                ex.printStackTrace( );
             }
         }
         return constructor;
@@ -533,9 +533,9 @@ public class ConstructorReflection {
      * @throws SecurityException if the request is denied
      * @see #setAccessible(Constructor, boolean)
      */
-    public static <T> Constructor<T> setAccessible(Constructor<T> constructor)
+    public static < T > Constructor< T > setAccessible( Constructor< T > constructor )
             throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
-        return setAccessible(constructor, true);
+        return setAccessible( constructor, true );
     }
 
 //	/**

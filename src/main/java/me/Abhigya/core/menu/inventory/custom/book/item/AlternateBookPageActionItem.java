@@ -24,34 +24,34 @@ public class AlternateBookPageActionItem extends ActionItem {
      * @param icon ItemStack icon of the item
      * @param lore Lore of the item
      */
-    public AlternateBookPageActionItem(String name, ItemStack icon, String... lore) {
-        super(name, icon, lore);
+    public AlternateBookPageActionItem( String name, ItemStack icon, String... lore ) {
+        super( name, icon, lore );
         this.go_next = true;
-        super.addAction(new ItemAction() {
+        super.addAction( new ItemAction( ) {
 
             @Override
-            public ItemActionPriority getPriority() {
+            public ItemActionPriority getPriority( ) {
                 return ItemActionPriority.LOW;
             }
 
             @Override
-            public void onClick(ItemClickAction action) {
-                if (!(action.getMenu() instanceof BookPageItemMenu)) {
+            public void onClick( ItemClickAction action ) {
+                if ( !( action.getMenu( ) instanceof BookPageItemMenu ) ) {
                     return;
                 }
 
-                if (!((BookPageItemMenu) action.getMenu()).getBookMenu().equals(book)) {
+                if ( !( (BookPageItemMenu) action.getMenu( ) ).getBookMenu( ).equals( book ) ) {
                     return;
                 }
 
-                BookPageItemMenu current = book.getPage(book.getOpenPageNumber(action.getPlayer()));
-                BookPageItemMenu to = go_next ? current.getNextBookPage() : current.getBeforeBookPage();
-                if (to != null) {
-                    book.getHandler().delayedClose(action.getPlayer(), 1);
-                    to.getHandler().delayedOpen(action.getPlayer(), 2);
+                BookPageItemMenu current = book.getPage( book.getOpenPageNumber( action.getPlayer( ) ) );
+                BookPageItemMenu to = go_next ? current.getNextBookPage( ) : current.getBeforeBookPage( );
+                if ( to != null ) {
+                    book.getHandler( ).delayedClose( action.getPlayer( ), 1 );
+                    to.getHandler( ).delayedOpen( action.getPlayer( ), 2 );
                 }
             }
-        });
+        } );
     }
 
     /**
@@ -62,7 +62,7 @@ public class AlternateBookPageActionItem extends ActionItem {
      * @param book {@link BookItemMenu} owner of the pages that the player can alternate
      * @return This Object, for chaining
      */
-    public AlternateBookPageActionItem setBookMenu(BookItemMenu book) {
+    public AlternateBookPageActionItem setBookMenu( BookItemMenu book ) {
         this.book = book;
         return this;
     }
@@ -75,20 +75,20 @@ public class AlternateBookPageActionItem extends ActionItem {
      * @param flag true == next page. false == page before
      * @return This Object, for chaining
      */
-    public AlternateBookPageActionItem setGoNext(boolean flag) {
+    public AlternateBookPageActionItem setGoNext( boolean flag ) {
         this.go_next = flag;
         return this;
     }
 
     @Deprecated
     @Override
-    public final ActionItem addAction(ItemAction action) {
+    public final ActionItem addAction( ItemAction action ) {
         return this;
     }
 
     @Deprecated
     @Override
-    public final ActionItem removeAction(ItemAction action) {
+    public final ActionItem removeAction( ItemAction action ) {
         return this;
     }
 

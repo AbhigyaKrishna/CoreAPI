@@ -32,29 +32,29 @@ public class EntityReflection {
      * @param height Entity's height
      * @return BoundingBox for the entity, or null if couldn't get
      */
-    public static BoundingBox getBoundingBox(Entity entity, float height) {
+    public static BoundingBox getBoundingBox( Entity entity, float height ) {
         try {
-            final Object handle = BukkitReflection.getHandle(entity);
-            final Object nms_bb = handle.getClass().getMethod("getBoundingBox").invoke(handle); // NMS bounding box
+            final Object handle = BukkitReflection.getHandle( entity );
+            final Object nms_bb = handle.getClass( ).getMethod( "getBoundingBox" ).invoke( handle ); // NMS bounding box
 
-            final Field[] fields = nms_bb.getClass().getDeclaredFields();
+            final Field[] fields = nms_bb.getClass( ).getDeclaredFields( );
 
             int i = 0;
 
-            if (CoreAPI.getInstance().getServerVersion().isNewerEquals(Version.v1_17_R1))
+            if ( CoreAPI.getInstance( ).getServerVersion( ).isNewerEquals( Version.v1_17_R1 ) )
                 i = 1;
 
-            final double min_x = (double) FieldReflection.getValue(nms_bb, fields[i++].getName());
-            final double min_y = (double) FieldReflection.getValue(nms_bb, fields[i++].getName()) - height;
-            final double min_z = (double) FieldReflection.getValue(nms_bb, fields[i++].getName());
+            final double min_x = (double) FieldReflection.getValue( nms_bb, fields[i++].getName( ) );
+            final double min_y = (double) FieldReflection.getValue( nms_bb, fields[i++].getName( ) ) - height;
+            final double min_z = (double) FieldReflection.getValue( nms_bb, fields[i++].getName( ) );
 
-            final double max_x = (double) FieldReflection.getValue(nms_bb, fields[i++].getName());
-            final double max_y = (double) FieldReflection.getValue(nms_bb, fields[i++].getName()) - height;
-            final double max_z = (double) FieldReflection.getValue(nms_bb, fields[i++].getName());
+            final double max_x = (double) FieldReflection.getValue( nms_bb, fields[i++].getName( ) );
+            final double max_y = (double) FieldReflection.getValue( nms_bb, fields[i++].getName( ) ) - height;
+            final double max_z = (double) FieldReflection.getValue( nms_bb, fields[i++].getName( ) );
 
-            return new BoundingBox(new Vector(min_x, min_y, min_z), new Vector(max_x, max_y, max_z));
-        } catch (Throwable ex) {
-            ex.printStackTrace();
+            return new BoundingBox( new Vector( min_x, min_y, min_z ), new Vector( max_x, max_y, max_z ) );
+        } catch ( Throwable ex ) {
+            ex.printStackTrace( );
             return null;
         }
     }
@@ -67,15 +67,15 @@ public class EntityReflection {
      * @param entity Entity to get its BoundingBox
      * @return BoundingBox for the entity, or null if couldn't get
      */
-    public static BoundingBox getBoundingBox(Entity entity) {
+    public static BoundingBox getBoundingBox( Entity entity ) {
         try {
-            final Object handle = BukkitReflection.getHandle(entity);
-            final float head_height = (float) handle.getClass().getMethod("getHeadHeight").invoke(handle);
+            final Object handle = BukkitReflection.getHandle( entity );
+            final float head_height = (float) handle.getClass( ).getMethod( "getHeadHeight" ).invoke( handle );
 
-            return getBoundingBox(entity, head_height);
-        } catch (IllegalAccessException | IllegalArgumentException
-                | InvocationTargetException | SecurityException | NoSuchMethodException ex) {
-            ex.printStackTrace();
+            return getBoundingBox( entity, head_height );
+        } catch ( IllegalAccessException | IllegalArgumentException
+                | InvocationTargetException | SecurityException | NoSuchMethodException ex ) {
+            ex.printStackTrace( );
             return null;
         }
     }
@@ -91,19 +91,19 @@ public class EntityReflection {
      * @param entity  Entity to make invisible to the {@code targets} players
      * @param targets Players that will not can see the entity
      */
-    public static void setInvisibleTo(Entity entity, Player... targets) {
+    public static void setInvisibleTo( Entity entity, Player... targets ) {
         try {
-            Class<?> packetPlayOutEntityDestroy = ClassReflection.getNmsClass("PacketPlayOutEntityDestroy", "network.protocol.game");
+            Class< ? > packetPlayOutEntityDestroy = ClassReflection.getNmsClass( "PacketPlayOutEntityDestroy", "network.protocol.game" );
 
-            Object packet = ConstructorReflection.get(packetPlayOutEntityDestroy, int[].class).newInstance(new int[]{entity.getEntityId()});
-            for (Player target : targets) {
-                if (target.isOnline()) {
-                    BukkitReflection.sendPacket(target, packet);
+            Object packet = ConstructorReflection.get( packetPlayOutEntityDestroy, int[].class ).newInstance( new int[]{ entity.getEntityId( ) } );
+            for ( Player target : targets ) {
+                if ( target.isOnline( ) ) {
+                    BukkitReflection.sendPacket( target, packet );
                 }
             }
-        } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
-                | NoSuchMethodException | SecurityException e) {
-            e.printStackTrace();
+        } catch ( InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
+                | NoSuchMethodException | SecurityException e ) {
+            e.printStackTrace( );
         }
     }
 
@@ -114,28 +114,28 @@ public class EntityReflection {
      * @param entity Target entity
      * @param ai     Whether the entity will have AI or not
      */
-    public static void setAI(LivingEntity entity, boolean ai) {
+    public static void setAI( LivingEntity entity, boolean ai ) {
         try {
-            if (CoreAPI.getInstance().getServerVersion().isOlder(Version.v1_9_R2)) {
-                Class<?> nbt_class = ClassReflection.getNmsClass("NBTTagCompound", "");
+            if ( CoreAPI.getInstance( ).getServerVersion( ).isOlder( Version.v1_9_R2 ) ) {
+                Class< ? > nbt_class = ClassReflection.getNmsClass( "NBTTagCompound", "" );
 
-                Object handle = BukkitReflection.getHandle(entity);
-                Object ntb = ConstructorReflection.newInstance(nbt_class, new Class<?>[0]);
+                Object handle = BukkitReflection.getHandle( entity );
+                Object ntb = ConstructorReflection.newInstance( nbt_class, new Class< ? >[0] );
 //				Object    ntb = ConstructorReflection.newInstance(nbt_class);
 
-                Method m0 = MethodReflection.get(handle.getClass(), "c", nbt_class);
-                Method m1 = MethodReflection.get(nbt_class, "setInt", String.class, int.class);
-                Method m2 = MethodReflection.get(handle.getClass(), "f", nbt_class);
+                Method m0 = MethodReflection.get( handle.getClass( ), "c", nbt_class );
+                Method m1 = MethodReflection.get( nbt_class, "setInt", String.class, int.class );
+                Method m2 = MethodReflection.get( handle.getClass( ), "f", nbt_class );
 
-                MethodReflection.invoke(m0, handle, ntb);
-                MethodReflection.invoke(m1, ntb, "NoAI", (ai ? 0 : 1));
-                MethodReflection.invoke(m2, handle, ntb);
+                MethodReflection.invoke( m0, handle, ntb );
+                MethodReflection.invoke( m1, ntb, "NoAI", ( ai ? 0 : 1 ) );
+                MethodReflection.invoke( m2, handle, ntb );
             } else {
-                MethodReflection.invoke(MethodReflection.get(entity.getClass(), "setAI", boolean.class), entity, ai);
+                MethodReflection.invoke( MethodReflection.get( entity.getClass( ), "setAI", boolean.class ), entity, ai );
             }
-        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException
-                | SecurityException | InstantiationException ex) {
-            ex.printStackTrace();
+        } catch ( IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException
+                | SecurityException | InstantiationException ex ) {
+            ex.printStackTrace( );
         }
     }
 
@@ -146,14 +146,14 @@ public class EntityReflection {
      * @param entity     Target entity
      * @param collidable Whether to enable collisions for the entity
      */
-    public static void setCollidable(LivingEntity entity, boolean collidable) {
+    public static void setCollidable( LivingEntity entity, boolean collidable ) {
         try {
-            if (CoreAPI.getInstance().getServerVersion().isNewerEquals(Version.v1_9_R2)) {
-                MethodReflection.invoke(MethodReflection.get(entity.getClass(), "setCollidable", boolean.class), entity, collidable);
+            if ( CoreAPI.getInstance( ).getServerVersion( ).isNewerEquals( Version.v1_9_R2 ) ) {
+                MethodReflection.invoke( MethodReflection.get( entity.getClass( ), "setCollidable", boolean.class ), entity, collidable );
             }
-        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
-                | NoSuchMethodException | SecurityException e) {
-            e.printStackTrace();
+        } catch ( IllegalAccessException | IllegalArgumentException | InvocationTargetException
+                | NoSuchMethodException | SecurityException e ) {
+            e.printStackTrace( );
         }
     }
 
@@ -164,12 +164,12 @@ public class EntityReflection {
      * @param entity Entity to get
      * @return Copy of Location containing the position of the desired entity, or null if couldn't get
      */
-    public static Location getLocation(Entity entity) {
+    public static Location getLocation( Entity entity ) {
         try {
-            Object handle = BukkitReflection.getHandle(entity);
+            Object handle = BukkitReflection.getHandle( entity );
 
             String locYaw, locPitch;
-            if (CoreAPI.getInstance().getServerVersion().isNewerEquals(Version.v1_17_R1)) {
+            if ( CoreAPI.getInstance( ).getServerVersion( ).isNewerEquals( Version.v1_17_R1 ) ) {
                 locYaw = "ay";
                 locPitch = "az";
             } else {
@@ -177,17 +177,17 @@ public class EntityReflection {
                 locPitch = "pitch";
             }
 
-            final double x = (double) MethodReflection.get(handle.getClass(), "locX").invoke(handle);
-            final double y = (double) MethodReflection.get(handle.getClass(), "locY").invoke(handle);
-            final double z = (double) MethodReflection.get(handle.getClass(), "locZ").invoke(handle);
+            final double x = (double) MethodReflection.get( handle.getClass( ), "locX" ).invoke( handle );
+            final double y = (double) MethodReflection.get( handle.getClass( ), "locY" ).invoke( handle );
+            final double z = (double) MethodReflection.get( handle.getClass( ), "locZ" ).invoke( handle );
 
-            final float yaw = FieldReflection.get(handle.getClass(), locYaw).getFloat(handle);
-            final float pitch = FieldReflection.get(handle.getClass(), locPitch).getFloat(handle);
+            final float yaw = FieldReflection.get( handle.getClass( ), locYaw ).getFloat( handle );
+            final float pitch = FieldReflection.get( handle.getClass( ), locPitch ).getFloat( handle );
 
-            return new Location(entity.getWorld(), x, y, z, yaw, pitch);
-        } catch (IllegalArgumentException | IllegalAccessException | SecurityException | NoSuchFieldException |
-                InvocationTargetException | NoSuchMethodException e) {
-            e.printStackTrace();
+            return new Location( entity.getWorld( ), x, y, z, yaw, pitch );
+        } catch ( IllegalArgumentException | IllegalAccessException | SecurityException | NoSuchFieldException |
+                InvocationTargetException | NoSuchMethodException e ) {
+            e.printStackTrace( );
             return null;
         }
     }
@@ -203,13 +203,13 @@ public class EntityReflection {
      * @param yaw    Rotation around axis y
      * @param pitch  Rotation around axis x
      */
-    public static void setLocation(Object entity, double x, double y, double z, float yaw, float pitch) {
+    public static void setLocation( Object entity, double x, double y, double z, float yaw, float pitch ) {
         try {
-            MethodReflection.invoke(MethodReflection.get(entity.getClass(), "setLocation", double.class,
-                    double.class, double.class, float.class, float.class), entity, x, y, z, yaw, pitch);
-        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException
-                | SecurityException e) {
-            e.printStackTrace();
+            MethodReflection.invoke( MethodReflection.get( entity.getClass( ), "setLocation", double.class,
+                    double.class, double.class, float.class, float.class ), entity, x, y, z, yaw, pitch );
+        } catch ( IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException
+                | SecurityException e ) {
+            e.printStackTrace( );
         }
     }
 
@@ -224,15 +224,15 @@ public class EntityReflection {
      * @param yaw    Rotation around axis y
      * @param pitch  Rotation around axis x
      */
-    public static void setLocation(Entity entity, double x, double y, double z, float yaw, float pitch) {
+    public static void setLocation( Entity entity, double x, double y, double z, float yaw, float pitch ) {
         try {
-            Object handle = BukkitReflection.getHandle(entity);
+            Object handle = BukkitReflection.getHandle( entity );
 
-            MethodReflection.invoke(MethodReflection.get(handle.getClass(), "setLocation", double.class,
-                    double.class, double.class, float.class, float.class), handle, x, y, z, yaw, pitch);
-        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException
-                | SecurityException e) {
-            e.printStackTrace();
+            MethodReflection.invoke( MethodReflection.get( handle.getClass( ), "setLocation", double.class,
+                    double.class, double.class, float.class, float.class ), handle, x, y, z, yaw, pitch );
+        } catch ( IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException
+                | SecurityException e ) {
+            e.printStackTrace( );
         }
     }
 
@@ -243,8 +243,8 @@ public class EntityReflection {
      * @param entity   Entity to set
      * @param location Location for the entity
      */
-    public static void setLocation(Entity entity, Location location) {
-        setLocation(entity, location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
+    public static void setLocation( Entity entity, Location location ) {
+        setLocation( entity, location.getX( ), location.getY( ), location.getZ( ), location.getYaw( ), location.getPitch( ) );
     }
 
     /**
@@ -254,8 +254,8 @@ public class EntityReflection {
      * @param entity   Nms entity to set
      * @param location Location for the entity
      */
-    public static void setLocation(Object entity, Location location) {
-        setLocation(entity, location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
+    public static void setLocation( Object entity, Location location ) {
+        setLocation( entity, location.getX( ), location.getY( ), location.getZ( ), location.getYaw( ), location.getPitch( ) );
     }
 
     /**
@@ -270,15 +270,15 @@ public class EntityReflection {
      * @param yaw    New yaw
      * @param pitch  New pitch
      */
-    public static void setYawPitch(Entity entity, float yaw, float pitch) {
+    public static void setYawPitch( Entity entity, float yaw, float pitch ) {
         try {
-            Object handle = BukkitReflection.getHandle(entity);
+            Object handle = BukkitReflection.getHandle( entity );
 
-            MethodReflection.invoke(MethodReflection.get(handle.getClass(), "setYawPitch", float.class, float.class),
-                    handle, yaw, pitch);
-        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException
-                | SecurityException e) {
-            e.printStackTrace();
+            MethodReflection.invoke( MethodReflection.get( handle.getClass( ), "setYawPitch", float.class, float.class ),
+                    handle, yaw, pitch );
+        } catch ( IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException
+                | SecurityException e ) {
+            e.printStackTrace( );
         }
     }
 
@@ -289,14 +289,14 @@ public class EntityReflection {
      * @param entity Entity to check
      * @return true if visible
      */
-    public static boolean isVisible(Entity entity) {
+    public static boolean isVisible( Entity entity ) {
         try {
-            Object handle = BukkitReflection.getHandle(entity);
+            Object handle = BukkitReflection.getHandle( entity );
 
-            return !(boolean) MethodReflection.invoke(MethodReflection.get(handle.getClass(), "isInvisible"), handle);
-        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException
-                | SecurityException e) {
-            e.printStackTrace();
+            return !(boolean) MethodReflection.invoke( MethodReflection.get( handle.getClass( ), "isInvisible" ), handle );
+        } catch ( IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException
+                | SecurityException e ) {
+            e.printStackTrace( );
             return false;
         }
     }
@@ -308,14 +308,14 @@ public class EntityReflection {
      * @param entity  Entity to set
      * @param visible {@code true} = visible, {@code false} = invisible
      */
-    public static void setVisible(Entity entity, boolean visible) {
+    public static void setVisible( Entity entity, boolean visible ) {
         try {
-            Object handle = BukkitReflection.getHandle(entity);
+            Object handle = BukkitReflection.getHandle( entity );
 
-            MethodReflection.invoke(MethodReflection.get(handle.getClass(), "setInvisible", boolean.class), handle, !visible);
-        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException
-                | SecurityException e) {
-            e.printStackTrace();
+            MethodReflection.invoke( MethodReflection.get( handle.getClass( ), "setInvisible", boolean.class ), handle, !visible );
+        } catch ( IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException
+                | SecurityException e ) {
+            e.printStackTrace( );
         }
     }
 
@@ -326,30 +326,30 @@ public class EntityReflection {
      * @param entity Entity to check
      * @return true if silent
      */
-    public static boolean isSilent(Entity entity) {
+    public static boolean isSilent( Entity entity ) {
         try {
-            Object handle = BukkitReflection.getHandle(entity);
+            Object handle = BukkitReflection.getHandle( entity );
             Method getter = null;
 
-            switch (Version.getServerVersion()) {
+            switch ( Version.getServerVersion( ) ) {
                 case v1_8_R1:
                 case v1_8_R2:
                 case v1_8_R3:
-                    getter = MethodReflection.get(handle.getClass(), "R");
+                    getter = MethodReflection.get( handle.getClass( ), "R" );
                     break;
 
                 case v1_9_R1:
                 case v1_9_R2:
-                    getter = MethodReflection.get(handle.getClass(), "ad");
+                    getter = MethodReflection.get( handle.getClass( ), "ad" );
                     break;
 
                 default:
-                    return (boolean) MethodReflection.invoke(MethodReflection.get(entity.getClass(), "isSilent"), entity);
+                    return (boolean) MethodReflection.invoke( MethodReflection.get( entity.getClass( ), "isSilent" ), entity );
             }
-            return (boolean) MethodReflection.invoke(getter, handle);
-        } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
-                | InvocationTargetException e) {
-            e.printStackTrace();
+            return (boolean) MethodReflection.invoke( getter, handle );
+        } catch ( NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
+                | InvocationTargetException e ) {
+            e.printStackTrace( );
             return false;
         }
     }
@@ -361,18 +361,18 @@ public class EntityReflection {
      * @param entity Entity to set
      * @param silent true = silent, false = not silent
      */
-    public static void setSilent(Entity entity, boolean silent) {
+    public static void setSilent( Entity entity, boolean silent ) {
         try {
-            Object handle = BukkitReflection.getHandle(entity);
+            Object handle = BukkitReflection.getHandle( entity );
 
-            if (Version.getServerVersion().isOlderEquals(Version.v1_9_R2)) {
-                MethodReflection.invoke(MethodReflection.get(handle.getClass(), "b", boolean.class), handle, silent);
+            if ( Version.getServerVersion( ).isOlderEquals( Version.v1_9_R2 ) ) {
+                MethodReflection.invoke( MethodReflection.get( handle.getClass( ), "b", boolean.class ), handle, silent );
             } else {
-                MethodReflection.invoke(MethodReflection.get(entity.getClass(), "setSilent", boolean.class), entity, silent);
+                MethodReflection.invoke( MethodReflection.get( entity.getClass( ), "setSilent", boolean.class ), entity, silent );
             }
-        } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
-                | InvocationTargetException e) {
-            e.printStackTrace();
+        } catch ( NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
+                | InvocationTargetException e ) {
+            e.printStackTrace( );
         }
     }
 
@@ -383,22 +383,22 @@ public class EntityReflection {
      * @param entity Entity to check
      * @return true if invulnerable
      */
-    public static boolean isInvulnerable(Entity entity) {
+    public static boolean isInvulnerable( Entity entity ) {
         try {
-            Object handle = BukkitReflection.getHandle(entity);
+            Object handle = BukkitReflection.getHandle( entity );
 
-            if (Version.getServerVersion().isOlderEquals(Version.v1_9_R2)) {
-                Class<?> damage_class = ClassReflection.getNmsClass("DamageSource", "");
-                Object generic_damage = FieldReflection.getValue(damage_class, "GENERIC");
-                Method getter = MethodReflection.get(handle.getClass(), "isInvulnerable", damage_class);
+            if ( Version.getServerVersion( ).isOlderEquals( Version.v1_9_R2 ) ) {
+                Class< ? > damage_class = ClassReflection.getNmsClass( "DamageSource", "" );
+                Object generic_damage = FieldReflection.getValue( damage_class, "GENERIC" );
+                Method getter = MethodReflection.get( handle.getClass( ), "isInvulnerable", damage_class );
 
-                return (boolean) MethodReflection.invoke(getter, handle, generic_damage);
+                return (boolean) MethodReflection.invoke( getter, handle, generic_damage );
             } else {
-                return (boolean) MethodReflection.invoke(MethodReflection.get(entity.getClass(), "isInvulnerable"), entity);
+                return (boolean) MethodReflection.invoke( MethodReflection.get( entity.getClass( ), "isInvulnerable" ), entity );
             }
-        } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
-                | InvocationTargetException | NoSuchFieldException e) {
-            e.printStackTrace();
+        } catch ( NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
+                | InvocationTargetException | NoSuchFieldException e ) {
+            e.printStackTrace( );
             return false;
         }
     }
@@ -413,22 +413,22 @@ public class EntityReflection {
      * @param entity       Entity to set
      * @param invulnerable true = invulnerable, false = vulnerable
      */
-    public static void setInvulnerable(Entity entity, boolean invulnerable) {
+    public static void setInvulnerable( Entity entity, boolean invulnerable ) {
         try {
-            Object handle = BukkitReflection.getHandle(entity);
+            Object handle = BukkitReflection.getHandle( entity );
 
-            if (Version.getServerVersion().isOlderEquals(Version.v1_9_R2)) {
-                Class<?> nms_entity_class = ClassReflection.getNmsClass("Entity", "");
-                Field field = FieldReflection.getAccessible(nms_entity_class, "invulnerable");
+            if ( Version.getServerVersion( ).isOlderEquals( Version.v1_9_R2 ) ) {
+                Class< ? > nms_entity_class = ClassReflection.getNmsClass( "Entity", "" );
+                Field field = FieldReflection.getAccessible( nms_entity_class, "invulnerable" );
 
-                field.set(handle, invulnerable);
+                field.set( handle, invulnerable );
             } else {
-                MethodReflection.invoke(MethodReflection.get(entity.getClass(), "setInvulnerable", boolean.class),
-                        entity, invulnerable);
+                MethodReflection.invoke( MethodReflection.get( entity.getClass( ), "setInvulnerable", boolean.class ),
+                        entity, invulnerable );
             }
-        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException
-                | SecurityException | NoSuchFieldException e) {
-            e.printStackTrace();
+        } catch ( IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException
+                | SecurityException | NoSuchFieldException e ) {
+            e.printStackTrace( );
         }
     }
 
@@ -439,9 +439,9 @@ public class EntityReflection {
      *
      * @param stand Armor stand to set
      */
-    public static void setInvulnerable(ArmorStand stand, boolean invulnerable) {
+    public static void setInvulnerable( ArmorStand stand, boolean invulnerable ) {
         String field_name;
-        switch (Version.getServerVersion()) {
+        switch ( Version.getServerVersion( ) ) {
             case v1_9_R1:
                 field_name = "by";
                 break;
@@ -475,10 +475,10 @@ public class EntityReflection {
         }
 
         try {
-            FieldReflection.setValue(BukkitReflection.getHandle(stand), field_name, !invulnerable);
-        } catch (SecurityException | NoSuchFieldException
-                | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
-            ex.printStackTrace();
+            FieldReflection.setValue( BukkitReflection.getHandle( stand ), field_name, !invulnerable );
+        } catch ( SecurityException | NoSuchFieldException
+                | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex ) {
+            ex.printStackTrace( );
         }
     }
 
@@ -495,27 +495,27 @@ public class EntityReflection {
      * @param volume Volume of the sound
      * @param pitch  Pitch of the sound
      */
-    public static void playNamedSound(Player player, String sound, float volume, float pitch) {
+    public static void playNamedSound( Player player, String sound, float volume, float pitch ) {
         try {
-            Class<?> category_enum = ClassReflection.getNmsClass("SoundCategory", "sounds");
-            Class<?> packet_play_out_custom_sound_effect = ClassReflection.getNmsClass("PacketPlayOutCustomSoundEffect", "network.protocol.game");
+            Class< ? > category_enum = ClassReflection.getNmsClass( "SoundCategory", "sounds" );
+            Class< ? > packet_play_out_custom_sound_effect = ClassReflection.getNmsClass( "PacketPlayOutCustomSoundEffect", "network.protocol.game" );
 
-            Object master = MethodReflection.invoke(MethodReflection.get(category_enum, "valueOf", String.class), category_enum, "MASTER");
+            Object master = MethodReflection.invoke( MethodReflection.get( category_enum, "valueOf", String.class ), category_enum, "MASTER" );
 
-            Location location = player.getEyeLocation();
-            double x = location.getX();
-            double y = location.getY();
-            double z = location.getZ();
+            Location location = player.getEyeLocation( );
+            double x = location.getX( );
+            double y = location.getY( );
+            double z = location.getZ( );
 
             Object packet = ConstructorReflection.newInstance(
-                    packet_play_out_custom_sound_effect, new Class<?>[]{String.class,
-                            category_enum, double.class, double.class, double.class, float.class, float.class},
-                    sound, master, x, y, z, volume, pitch);
+                    packet_play_out_custom_sound_effect, new Class< ? >[]{ String.class,
+                            category_enum, double.class, double.class, double.class, float.class, float.class },
+                    sound, master, x, y, z, volume, pitch );
 
-            BukkitReflection.sendPacket(player, packet);
-        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
-                | NoSuchMethodException | SecurityException | InstantiationException e) {
-            e.printStackTrace();
+            BukkitReflection.sendPacket( player, packet );
+        } catch ( IllegalAccessException | IllegalArgumentException | InvocationTargetException
+                | NoSuchMethodException | SecurityException | InstantiationException e ) {
+            e.printStackTrace( );
         }
     }
 
@@ -532,52 +532,53 @@ public class EntityReflection {
      * @param volume   Volume of the sound
      * @param pitch    Pitch of the sound
      */
-    public static void playNameSoundAt(Location location, String sound, float volume, float pitch) {
-        World w = location.getWorld();
-        double x = location.getX();
-        double y = location.getY();
-        double z = location.getZ();
+    public static void playNameSoundAt( Location location, String sound, float volume, float pitch ) {
+        World w = location.getWorld( );
+        double x = location.getX( );
+        double y = location.getY( );
+        double z = location.getZ( );
 
         try {
-            boolean newest = CoreAPI.getInstance().getServerVersion().isNewerEquals(Version.v1_17_R1);
-            Class<?> category_enum = ClassReflection.getNmsClass("SoundCategory", "sounds");
-            Class<?> packet_play_out_custom_sound_effect = ClassReflection.getNmsClass("PacketPlayOutCustomSoundEffect", "network.protocol.game");
-            Class<?> human_class = ClassReflection.getNmsClass("EntityHuman", "world.entity.player");
-            Class<?> packet_class = ClassReflection.getNmsClass("Packet", "network.protocol");
+            boolean newest = CoreAPI.getInstance( ).getServerVersion( ).isNewerEquals( Version.v1_17_R1 );
+            Class< ? > category_enum = ClassReflection.getNmsClass( "SoundCategory", "sounds" );
+            Class< ? > packet_play_out_custom_sound_effect = ClassReflection.getNmsClass( "PacketPlayOutCustomSoundEffect", "network.protocol.game" );
+            Class< ? > human_class = ClassReflection.getNmsClass( "EntityHuman", "world.entity.player" );
+            Class< ? > packet_class = ClassReflection.getNmsClass( "Packet", "network.protocol" );
 
-            Object master = MethodReflection.invoke(MethodReflection.get(category_enum, "valueOf", String.class),
-                    category_enum, newest ? "a" : "MASTER");
+            Object master = MethodReflection.invoke( MethodReflection.get( category_enum, "valueOf", String.class ),
+                    category_enum, newest ? "a" : "MASTER" );
 
             Object packet = ConstructorReflection.newInstance(
-                    packet_play_out_custom_sound_effect, new Class<?>[]{String.class,
-                            category_enum, double.class, double.class, double.class, float.class, float.class},
-                    sound, master, x, y, z, volume, pitch);
+                    packet_play_out_custom_sound_effect, new Class< ? >[]{ String.class,
+                            category_enum, double.class, double.class, double.class, float.class, float.class },
+                    sound, master, x, y, z, volume, pitch );
 
-            Object world_server = FieldReflection.getValue(w.getClass(), "world");
-            Object minecraft_server = MethodReflection.invoke(MethodReflection.get(world_server.getClass(), "getMinecraftServer"),
-                    world_server);
-            Object player_list = MethodReflection.invoke(MethodReflection.get(minecraft_server.getClass(), "getPlayerList"),
-                    minecraft_server);
+            Object world_server = FieldReflection.getValue( w.getClass( ), "world" );
+            Object minecraft_server = MethodReflection.invoke( MethodReflection.get( world_server.getClass( ), "getMinecraftServer" ),
+                    world_server );
+            Object player_list = MethodReflection.invoke( MethodReflection.get( minecraft_server.getClass( ), "getPlayerList" ),
+                    minecraft_server );
 
             Object dimension;
-            if (CoreAPI.getInstance().getServerVersion().isNewerEquals(Version.v1_16_R1)) {
-                dimension = MethodReflection.get(world_server.getClass().getSuperclass(), "getDimensionKey")
-                        .invoke(world_server);
-            } else if (CoreAPI.getInstance().getServerVersion().isNewerEquals(Version.v1_13_R2)) {
-                Object world_provider = MethodReflection.get(world_server.getClass().getSuperclass(), "getWorldProvider")
-                        .invoke(world_server);
-                dimension = MethodReflection.get(world_provider.getClass(), "getDimensionManager").invoke(world_provider);
+            if ( CoreAPI.getInstance( ).getServerVersion( ).isNewerEquals( Version.v1_16_R1 ) ) {
+                dimension = MethodReflection.get( world_server.getClass( ).getSuperclass( ), "getDimensionKey" )
+                        .invoke( world_server );
+            } else if ( CoreAPI.getInstance( ).getServerVersion( ).isNewerEquals( Version.v1_13_R2 ) ) {
+                Object world_provider = MethodReflection.get( world_server.getClass( ).getSuperclass( ), "getWorldProvider" )
+                        .invoke( world_server );
+                dimension = MethodReflection.get( world_provider.getClass( ), "getDimensionManager" ).invoke( world_provider );
             } else {
-                dimension = world_server.getClass().getField("dimension").getInt(world_server);
+                dimension = world_server.getClass( ).getField( "dimension" ).getInt( world_server );
             }
 
             MethodReflection.invoke(
-                    MethodReflection.get(player_list.getClass(), "sendPacketNearby", human_class, double.class, double.class,
-                            double.class, double.class, dimension.getClass(), packet_class),
-                    player_list, null, x, y, z, (volume > 1.0F ? 16.0F * volume : 16.0D), dimension, packet);
-        } catch (SecurityException | NoSuchFieldException | IllegalArgumentException | IllegalAccessException
-                | InvocationTargetException | NoSuchMethodException | InstantiationException e) {
-            e.printStackTrace();
+                    MethodReflection.get( player_list.getClass( ), "sendPacketNearby", human_class, double.class, double.class,
+                            double.class, double.class, dimension.getClass( ), packet_class ),
+                    player_list, null, x, y, z, ( volume > 1.0F ? 16.0F * volume : 16.0D ), dimension, packet );
+        } catch ( SecurityException | NoSuchFieldException | IllegalArgumentException | IllegalAccessException
+                | InvocationTargetException | NoSuchMethodException | InstantiationException e ) {
+            e.printStackTrace( );
         }
     }
+
 }

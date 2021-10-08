@@ -11,8 +11,8 @@ public class YamlFileFilter implements FileFilter {
     public static final String YML_EXTENSION = "yml";
 
     @Override
-    public boolean accept(File file) {
-        return FileExtensionFilter.of(YML_EXTENSION).accept(file);
+    public boolean accept( File file ) {
+        return FileExtensionFilter.of( YML_EXTENSION ).accept( file );
     }
 
 }

@@ -22,12 +22,12 @@ public class EntityUtils {
      * @return {@link Entity} associated with the given {@link UUID} and with
      * the given type, or null if could not be found.
      */
-    @SuppressWarnings("unchecked")
-    public static <T extends Entity> T getEntity(World world, Class<? extends Entity> type, UUID id) {
-        return (T) world.getEntities().stream()
-                .filter(entity ->
-                        type.isAssignableFrom(entity.getClass()) &&
-                                id.equals(entity.getUniqueId())).findAny().orElse(null);
+    @SuppressWarnings( "unchecked" )
+    public static < T extends Entity > T getEntity( World world, Class< ? extends Entity > type, UUID id ) {
+        return (T) world.getEntities( ).stream( )
+                .filter( entity ->
+                        type.isAssignableFrom( entity.getClass( ) ) &&
+                                id.equals( entity.getUniqueId( ) ) ).findAny( ).orElse( null );
     }
 
     /**
@@ -38,8 +38,9 @@ public class EntityUtils {
      * @param id    UUID of the entity to find
      * @return {@link Entity} associated with the given {@link UUID}, or null if could not be found
      */
-    public static Entity getEntity(World world, UUID id) {
-        return world.getEntities().stream().filter(entity ->
-                id.equals(entity.getUniqueId())).findAny().orElse(null);
+    public static Entity getEntity( World world, UUID id ) {
+        return world.getEntities( ).stream( ).filter( entity ->
+                id.equals( entity.getUniqueId( ) ) ).findAny( ).orElse( null );
     }
+
 }

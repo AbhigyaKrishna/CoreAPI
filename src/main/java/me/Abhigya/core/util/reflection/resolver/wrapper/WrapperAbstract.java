@@ -7,6 +7,6 @@ public abstract class WrapperAbstract {
      *
      * @return <code>true</code> if the wrapped object exists
      */
-    public abstract boolean exists();
+    public abstract boolean exists( );
 
 }

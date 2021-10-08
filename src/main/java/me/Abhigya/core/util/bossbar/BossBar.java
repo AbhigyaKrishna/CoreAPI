@@ -27,31 +27,31 @@ public abstract class BossBar {
      * @param flags    Optional list of flags to set on the boss bar
      * @return Created boss bar
      */
-    public static BossBar createBossBar(Player player, String title, double progress, BarColor color, BarStyle style,
-                                        BarFlag... flags) {
-        if (Version.getServerVersion().isNewerEquals(Version.v1_9_R1)) {
-            final BossBar bossbar = new me.Abhigya.core.util.bossbar.version.latest.BossBar(title, progress, player);
-            bossbar.setColor(color);
-            bossbar.setStyle(style);
+    public static BossBar createBossBar( Player player, String title, double progress, BarColor color, BarStyle style,
+                                         BarFlag... flags ) {
+        if ( Version.getServerVersion( ).isNewerEquals( Version.v1_9_R1 ) ) {
+            final BossBar bossbar = new me.Abhigya.core.util.bossbar.version.latest.BossBar( title, progress, player );
+            bossbar.setColor( color );
+            bossbar.setStyle( style );
 
-            for (BarFlag flag : flags) {
-                bossbar.addFlag(flag);
+            for ( BarFlag flag : flags ) {
+                bossbar.addFlag( flag );
             }
 
             return bossbar;
         }
 
         try {
-            final Class<?> c0 = Class.forName(VERSIONS_PACKAGE + Version.getServerVersion().name() + ".BossBar");
-            final Class<? extends BossBar> c1 = c0.asSubclass(BossBar.class);
+            final Class< ? > c0 = Class.forName( VERSIONS_PACKAGE + Version.getServerVersion( ).name( ) + ".BossBar" );
+            final Class< ? extends BossBar > c1 = c0.asSubclass( BossBar.class );
 
-            return c1.getConstructor(String.class, double.class, Player.class)
-                    .newInstance(title, progress, player);
-        } catch (ClassNotFoundException ex) {
-            throw new UnsupportedOperationException("unsupported server version!");
-        } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
-                | NoSuchMethodException | SecurityException ex_b) {
-            ex_b.printStackTrace();
+            return c1.getConstructor( String.class, double.class, Player.class )
+                    .newInstance( title, progress, player );
+        } catch ( ClassNotFoundException ex ) {
+            throw new UnsupportedOperationException( "unsupported server version!" );
+        } catch ( InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
+                | NoSuchMethodException | SecurityException ex_b ) {
+            ex_b.printStackTrace( );
         }
         return null;
     }
@@ -68,8 +68,8 @@ public abstract class BossBar {
      * @param flags  Optional list of flags to set on the boss bar
      * @return Created boss bar
      */
-    public static BossBar createBossBar(Player player, String title, BarColor color, BarStyle style, BarFlag... flags) {
-        return createBossBar(player, title, 1F, color, style, flags);
+    public static BossBar createBossBar( Player player, String title, BarColor color, BarStyle style, BarFlag... flags ) {
+        return createBossBar( player, title, 1F, color, style, flags );
     }
 
     /**
@@ -82,8 +82,8 @@ public abstract class BossBar {
      * @param progress Progress of the boss bar
      * @return Created boss bar
      */
-    public static BossBar createBossBar(Player player, String title, double progress) {
-        return createBossBar(player, title, 1F, BarColor.PINK, BarStyle.SOLID);
+    public static BossBar createBossBar( Player player, String title, double progress ) {
+        return createBossBar( player, title, 1F, BarColor.PINK, BarStyle.SOLID );
     }
 
     /**
@@ -96,8 +96,8 @@ public abstract class BossBar {
      * @param title  Title of the boss bar
      * @return Created boss bar
      */
-    public static BossBar createBossBar(Player player, String title) {
-        return createBossBar(player, title, 1F);
+    public static BossBar createBossBar( Player player, String title ) {
+        return createBossBar( player, title, 1F );
     }
 
     /**
@@ -106,7 +106,7 @@ public abstract class BossBar {
      *
      * @return Title of the bar
      */
-    public abstract String getTitle();
+    public abstract String getTitle( );
 
     /**
      * Sets the title of this boss bar
@@ -114,7 +114,7 @@ public abstract class BossBar {
      *
      * @param title Title of the bar
      */
-    public abstract void setTitle(String title);
+    public abstract void setTitle( String title );
 
     /**
      * Returns the color of this boss bar
@@ -122,7 +122,7 @@ public abstract class BossBar {
      *
      * @return Color of the bar
      */
-    public abstract BarColor getColor();
+    public abstract BarColor getColor( );
 
     /**
      * Sets the color of this boss bar.
@@ -130,7 +130,7 @@ public abstract class BossBar {
      *
      * @param color Color of the bar
      */
-    public abstract void setColor(BarColor color);
+    public abstract void setColor( BarColor color );
 
     /**
      * Returns the style of this boss bar
@@ -138,7 +138,7 @@ public abstract class BossBar {
      *
      * @return Style of the bar
      */
-    public abstract BarStyle getStyle();
+    public abstract BarStyle getStyle( );
 
     /**
      * Sets the bar style of this boss bar
@@ -146,7 +146,7 @@ public abstract class BossBar {
      *
      * @param style Style of the bar
      */
-    public abstract void setStyle(BarStyle style);
+    public abstract void setStyle( BarStyle style );
 
     /**
      * Remove an existing flag on this boss bar
@@ -154,7 +154,7 @@ public abstract class BossBar {
      *
      * @param flag Existing flag to remove
      */
-    public abstract void removeFlag(BarFlag flag);
+    public abstract void removeFlag( BarFlag flag );
 
     /**
      * Add an optional flag to this boss bar
@@ -162,7 +162,7 @@ public abstract class BossBar {
      *
      * @param flag Optional flag to set on the boss bar
      */
-    public abstract void addFlag(BarFlag flag);
+    public abstract void addFlag( BarFlag flag );
 
     /**
      * Returns whether this boss bar as the passed flag set
@@ -171,7 +171,7 @@ public abstract class BossBar {
      * @param flag Flag to check
      * @return Whether it has the flag
      */
-    public abstract boolean hasFlag(BarFlag flag);
+    public abstract boolean hasFlag( BarFlag flag );
 
     /**
      * Returns the progress of the bar between 0.0 and 1.0
@@ -179,7 +179,7 @@ public abstract class BossBar {
      *
      * @return Progress of the bar
      */
-    public abstract double getProgress();
+    public abstract double getProgress( );
 
     /**
      * Sets the progress of the bar. Values should be between 0.0 (empty) and 1.0
@@ -188,7 +188,7 @@ public abstract class BossBar {
      *
      * @param progress Progress of the bar
      */
-    public abstract void setProgress(double progress);
+    public abstract void setProgress( double progress );
 
     /**
      * Returns the player viewing this boss bar
@@ -196,7 +196,7 @@ public abstract class BossBar {
      *
      * @return Player viewing this bar
      */
-    public abstract Player getPlayer();
+    public abstract Player getPlayer( );
 
     /**
      * Return if the boss bar is displayed to attached player.
@@ -204,7 +204,7 @@ public abstract class BossBar {
      *
      * @return Visible status
      */
-    public abstract boolean isVisible();
+    public abstract boolean isVisible( );
 
     /**
      * Set if the boss bar is displayed to attached player.
@@ -212,7 +212,7 @@ public abstract class BossBar {
      *
      * @param visible Visible status
      */
-    public abstract void setVisible(boolean visible);
+    public abstract void setVisible( boolean visible );
 
     /**
      * Shows the previously hidden boss bar to all attached player
@@ -220,8 +220,8 @@ public abstract class BossBar {
      * This is the equivalent of calling {@link #setVisible(boolean)} providing
      * <strong>{@code false}</strong>.
      */
-    public void show() {
-        setVisible(true);
+    public void show( ) {
+        setVisible( true );
     }
 
     /**
@@ -230,7 +230,8 @@ public abstract class BossBar {
      * This is the equivalent of calling {@link #setVisible(boolean)} providing
      * <strong>{@code true}</strong>.
      */
-    public void hide() {
-        setVisible(false);
+    public void hide( ) {
+        setVisible( false );
     }
+
 }
