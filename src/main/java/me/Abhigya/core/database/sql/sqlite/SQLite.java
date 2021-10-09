@@ -145,18 +145,20 @@ public class SQLite extends SQLDatabase {
     @Override
     public synchronized void connect( )
             throws IOException, IllegalStateException, SQLException, SQLTimeoutException {
-        if ( !plugin.getDataFolder( ).exists( ) )
-            plugin.getDataFolder( ).mkdirs( );
         if ( !this.db.getName( ).endsWith( ".db" ) )
             throw new IllegalStateException( "The database file should have '.db' extension." );
+
+        if ( !this.db.getParentFile( ).exists( ) )
+            this.db.getParentFile( ).mkdirs( );
+
         if ( !this.db.exists( ) )
-            plugin.getDataFolder( ).createNewFile( );
+            this.db.createNewFile( );
         try {
             Class.forName( DRIVER_CLASS );
         } catch ( ClassNotFoundException ex ) {
-            throw new IllegalStateException( "Could not connect to SQLite! the JDBC driver is unavailable!" );
+            throw new IllegalStateException( "Could not connect to SQLite! The JDBC driver is unavailable!" );
         }
-        this.connection = DriverManager.getConnection( "jdbc:sqlite:" + db );
+        this.connection = DriverManager.getConnection( "jdbc:sqlite:" + this.db.getAbsolutePath( ) );
     }
 
     /**
