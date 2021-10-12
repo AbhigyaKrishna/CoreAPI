@@ -29,7 +29,7 @@ public final class PacketChannelHandler {
 
     /* initialize channels handler by registering a player injector instance */
     static {
-        Bukkit.getPluginManager( ).registerEvents( new PlayerInjector( ), CoreAPI.getInstance( ) );
+        Bukkit.getPluginManager( ).registerEvents( new PlayerInjector( ), CoreAPI.getInstance( ).getHandlingPlugin( ) );
     }
 
     private PacketChannelHandler( ) {

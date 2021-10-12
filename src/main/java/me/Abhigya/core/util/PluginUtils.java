@@ -30,7 +30,7 @@ public class PluginUtils {
         if ( Bukkit.getPluginManager( ).isPluginEnabled( pluginName ) ) {
             callback.accept( Bukkit.getPluginManager( ).getPlugin( pluginName ) );
         } else {
-            Bukkit.getPluginManager( ).registerEvents( new PluginLoadedListener( pluginName, callback ), CoreAPI.getInstance( ) );
+            Bukkit.getPluginManager( ).registerEvents( new PluginLoadedListener( pluginName, callback ), CoreAPI.getInstance( ).getHandlingPlugin( ) );
         }
     }
 

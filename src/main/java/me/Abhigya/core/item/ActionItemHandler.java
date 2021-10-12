@@ -27,8 +27,8 @@ public class ActionItemHandler extends PluginHandler {
      */
     protected static final Set< ActionItem > ACTION_ITEMS = new HashSet<>( );
 
-    public ActionItemHandler( CoreAPI plugin ) {
-        super( plugin );
+    public ActionItemHandler( CoreAPI api ) {
+        super( api.getHandlingPlugin( ) );
         register( );
 
         // registering executors

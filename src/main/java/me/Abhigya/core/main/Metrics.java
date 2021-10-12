@@ -1,13 +1,12 @@
 package me.Abhigya.core.main;
 
 import me.Abhigya.core.metrics.MetricsAdaptor;
-import me.Abhigya.core.plugin.Plugin;
 import org.bstats.charts.SingleLineChart;
 
 public class Metrics extends MetricsAdaptor {
 
-    protected Metrics( Plugin plugin, int pluginId ) {
-        super( plugin, pluginId );
+    protected Metrics( CoreAPI api, int pluginId ) {
+        super( api.getHandlingPlugin( ), pluginId );
     }
 
     @Override

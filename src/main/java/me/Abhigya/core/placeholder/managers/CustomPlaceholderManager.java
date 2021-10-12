@@ -31,7 +31,7 @@ public class CustomPlaceholderManager extends BasePlaceholderManager {
 
 
     public void addDefaults( ) {
-        Plugin plugin = CoreAPI.getInstance( );
+        Plugin plugin = CoreAPI.getInstance( ).getHandlingPlugin( );
         register( plugin, new PlayerPlaceholder( ) );
         register( plugin, new VaultPlaceholder( ) );
     }

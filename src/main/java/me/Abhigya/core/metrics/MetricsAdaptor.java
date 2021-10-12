@@ -28,7 +28,7 @@ public abstract class MetricsAdaptor {
     public MetricsAdaptor( Plugin plugin, int serviceId ) {
         this.plugin = plugin;
         this.serviceId = serviceId;
-        this.metrics = new Metrics( plugin, serviceId );
+        this.metrics = new Metrics( this.plugin, serviceId );
 
         this.chartTypes = new HashSet<>( );
     }

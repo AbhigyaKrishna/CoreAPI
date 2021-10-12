@@ -21,13 +21,13 @@ public class EconomyManager {
      * Enables the economy manager and hooks into Vault
      */
     public static void enable( ) {
-        ConsoleUtils.sendPluginMessage( ChatColor.YELLOW, "Disabling economy until vault loads", CoreAPI.getInstance( ) );
+        ConsoleUtils.sendPluginMessage( ChatColor.YELLOW, "Disabling economy until vault loads", CoreAPI.getInstance( ).getHandlingPlugin( ) );
         enabled = false;
 
         PluginUtils.onPluginLoaded( "Vault", p -> {
             RegisteredServiceProvider< Economy > rsp = Bukkit.getServicesManager( ).getRegistration( Economy.class );
             if ( rsp == null ) {
-                ConsoleUtils.sendPluginMessage( ChatColor.RED, "Cannot find any economy service, economy not supported", CoreAPI.getInstance( ) );
+                ConsoleUtils.sendPluginMessage( ChatColor.RED, "Cannot find any economy service, economy not supported", CoreAPI.getInstance( ).getHandlingPlugin( ) );
                 enabled = false;
                 return;
             }

@@ -1,7 +1,7 @@
 name: CoreAPI
 version: ${project.version}
-main: me.Abhigya.core.main.CoreAPI
-api-version: 1.16
+main: me.Abhigya.core.main.Main
+api-version: 1.13
 author: Abhigya
 softdepend: [Vault, PlaceHolderAPI]
 load: STARTUP

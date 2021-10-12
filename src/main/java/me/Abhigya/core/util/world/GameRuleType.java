@@ -546,7 +546,7 @@ public enum GameRuleType {
                 world.setGameRuleValue( getName( ), value.toString( ) );
             }
         } else { // metadata presentation mode
-            world.setMetadata( getName( ), new GameRuleMetadata( CoreAPI.getInstance( ), this, value ) );
+            world.setMetadata( getName( ), new GameRuleMetadata( CoreAPI.getInstance( ).getHandlingPlugin( ), this, value ) );
         }
     }
 }

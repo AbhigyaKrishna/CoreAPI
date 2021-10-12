@@ -48,7 +48,7 @@ public class StructureBuilder {
     public StructureBuildTask build( World world ) {
         StructureBuildTask build_task = new StructureBuildTask( this, world );
 
-        Bukkit.getScheduler( ).runTask( CoreAPI.getInstance( ), build_task );
+        Bukkit.getScheduler( ).runTask( CoreAPI.getInstance( ).getHandlingPlugin( ), build_task );
         return build_task;
     }
 
@@ -62,7 +62,7 @@ public class StructureBuilder {
     public StructureBuildTask buildAsynchronously( World world ) {
         StructureBuildTask build_task = new StructureBuildTask( this, world );
 
-        Bukkit.getScheduler( ).runTaskAsynchronously( CoreAPI.getInstance( ), build_task );
+        Bukkit.getScheduler( ).runTaskAsynchronously( CoreAPI.getInstance( ).getHandlingPlugin( ), build_task );
         return build_task;
     }
 
@@ -172,7 +172,7 @@ public class StructureBuilder {
             Block block = world.getBlockAt( x, y, z );
 
             // block set synchronously
-            Bukkit.getScheduler( ).scheduleSyncDelayedTask( CoreAPI.getInstance( ), new Runnable( ) {
+            Bukkit.getScheduler( ).scheduleSyncDelayedTask( CoreAPI.getInstance( ).getHandlingPlugin( ), new Runnable( ) {
                 @Override
                 public void run( ) {
                     block.setType( type );

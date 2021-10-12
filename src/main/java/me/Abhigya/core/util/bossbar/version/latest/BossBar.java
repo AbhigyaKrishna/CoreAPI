@@ -53,7 +53,7 @@ public class BossBar extends BossBarBase implements Listener {
         this.setTitle( title );
         this.setProgress( progress );
 
-        Bukkit.getPluginManager( ).registerEvents( this, CoreAPI.getInstance( ) );
+        Bukkit.getPluginManager( ).registerEvents( this, CoreAPI.getInstance( ).getHandlingPlugin( ) );
     }
 
     @Override

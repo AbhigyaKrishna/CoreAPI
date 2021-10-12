@@ -75,11 +75,11 @@ public interface PlaceholderValue< T > {
             parsed = parser.apply( string );
         } catch ( Exception e ) {
             if ( !PlaceholderUtil.hasPlaceholders( string ) ) {
-                ConsoleUtils.sendPluginMessage( ChatColor.RED, "Invalid value: " + string, CoreAPI.getInstance( ) );
+                ConsoleUtils.sendPluginMessage( ChatColor.RED, "Invalid value: " + string, CoreAPI.getInstance( ).getHandlingPlugin( ) );
                 return new FalsePlaceholderValue<>( onError );
             }
             return new SimplePlaceholderValue<>( string, parser, ( str, exc ) ->
-                    ConsoleUtils.sendPluginMessage( ChatColor.RED, "Cannot parse value: '" + str + "' (from '" + string + "')", CoreAPI.getInstance( ) ), onError );
+                    ConsoleUtils.sendPluginMessage( ChatColor.RED, "Cannot parse value: '" + str + "' (from '" + string + "')", CoreAPI.getInstance( ).getHandlingPlugin( ) ), onError );
         }
         return new FalsePlaceholderValue<>( parsed );
     }

@@ -26,7 +26,7 @@ public enum CoreVersion {
      * @return Version of CoreAPI
      */
     public static CoreVersion getCoreVersion( ) {
-        return valueOf( format( CoreAPI.getInstance( ).getDescription( ).getVersion( ) ) );
+        return CoreVersion.v1_2_1;
     }
 
     /**

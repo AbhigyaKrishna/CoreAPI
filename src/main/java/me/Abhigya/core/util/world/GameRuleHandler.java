@@ -18,8 +18,8 @@ import org.bukkit.event.entity.FoodLevelChangeEvent;
  */
 public class GameRuleHandler extends PluginHandler {
 
-    public GameRuleHandler( CoreAPI plugin ) {
-        super( plugin );
+    public GameRuleHandler( CoreAPI api ) {
+        super( api.getHandlingPlugin( ) );
         register( );
     }
 
