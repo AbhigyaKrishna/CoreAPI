@@ -29,13 +29,13 @@ public abstract class Plugin extends JavaPlugin {
     @Override
     public final void onEnable( ) {
         /* checking the required core version */
-        if ( getRequiredCoreVersion( ) != null
-                && CoreVersion.getCoreVersion( ).isOlder( getRequiredCoreVersion( ) ) ) {
-            ConsoleUtils.sendPluginMessage( ChatColor.RED, "Obsolete core version! A core version newer than or equal to "
-                    + getRequiredCoreVersion( ).name( ) + " is required!", this );
-            Bukkit.getPluginManager( ).disablePlugin( this );
-            return;
-        }
+//        if ( getRequiredCoreVersion( ) != null
+//                && CoreVersion.getCoreVersion( ).isOlder( getRequiredCoreVersion( ) ) ) {
+//            ConsoleUtils.sendPluginMessage( ChatColor.RED, "Obsolete core version! A core version newer than or equal to "
+//                    + getRequiredCoreVersion( ).name( ) + " is required!", this );
+//            Bukkit.getPluginManager( ).disablePlugin( this );
+//            return;
+//        }
 
         /* checking the plugin dependencies */
         if ( getDependences( ) != null && getDependences( ).length > 0 ) {
@@ -89,18 +89,6 @@ public abstract class Plugin extends JavaPlugin {
      * @return true if the initialization was successfully.
      */
     protected abstract boolean setUp( );
-
-    /**
-     * Gets the required core version by this plugin. If the current core version is
-     * older than the required, the plugin will be disabled.
-     * <p>
-     * Also this method might return <strong>{@code null}</strong> if no core
-     * version is required.
-     * <p>
-     *
-     * @return The required core version, or null if not required.
-     */
-    public abstract CoreVersion getRequiredCoreVersion( );
 
     /**
      * Gets the metrics adaptor and setup the metrics with the graphs accordingly.

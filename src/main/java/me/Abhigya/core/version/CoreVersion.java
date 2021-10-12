@@ -11,6 +11,7 @@ public enum CoreVersion {
     v1_1_2( 112 ),
     v1_2_0( 120 ),
     v1_2_1( 121 ),
+    v1_2_2( 122 ),
     ;
 
     private final int id;
@@ -19,26 +20,6 @@ public enum CoreVersion {
         this.id = id;
     }
 
-    /**
-     * Gets the current {@link CoreAPI} version in use.
-     * <p>
-     *
-     * @return Version of CoreAPI
-     */
-    public static CoreVersion getCoreVersion( ) {
-        return CoreVersion.v1_2_1;
-    }
-
-    /**
-     * Get the formatted string for the version.
-     * <p>
-     *
-     * @param suppose_version Version to format to string
-     * @return Formatted version string
-     */
-    private static String format( String suppose_version ) {
-        return "v" + suppose_version.trim( ).toLowerCase( ).replace( ".", "_" ).replace( "v", "" );
-    }
 
     /**
      * Gets the version's id.

@@ -10,11 +10,6 @@ import me.Abhigya.core.version.CoreVersion;
 public abstract class PluginAdapter extends Plugin {
 
     @Override
-    public CoreVersion getRequiredCoreVersion( ) {
-        return null;
-    }
-
-    @Override
     public MetricsAdaptor getMetrics( ) {
         return null;
     }
