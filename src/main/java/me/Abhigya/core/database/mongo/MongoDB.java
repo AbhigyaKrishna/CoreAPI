@@ -17,7 +17,6 @@ import java.util.Set;
  */
 public class MongoDB extends Database {
 
-    private final Plugin plugin;
     private final String ip;
     private final int port;
     private final String dbname;
@@ -30,33 +29,20 @@ public class MongoDB extends Database {
      * Constructs MongoDB with credentials.
      * <p>
      *
-     * @param plugin Plugin for which database is created
      * @param host   Database host address
      * @param port   Database port
      * @param dbname Database name
      */
-    public MongoDB( Plugin plugin, String host, int port, String dbname ) {
+    public MongoDB( String host, int port, String dbname ) {
         super( DatabaseType.MongoDB );
 
         Validate.isTrue( !StringUtils.isBlank( host ), "Host Address cannot be null or empty!" );
 
-        this.plugin = plugin;
         this.ip = host;
         this.port = port;
         this.dbname = dbname;
     }
 
-    /**
-     * Constructs MongoDB with credentials.
-     * <p>
-     *
-     * @param plugin Plugin for which database is created
-     * @param host   Database host address
-     * @param port   Database port
-     */
-    public MongoDB( Plugin plugin, String host, int port ) {
-        this( plugin, host, port, plugin.getName( ) );
-    }
 
     /**
      * Gets whether connected to MongoDB.
