@@ -377,6 +377,14 @@ public class SimpleScoreboard {
         this.set( index, null );
     }
 
+    public Scoreboard getHandle( ) {
+        return handle;
+    }
+
+    public Objective getObjective( ) {
+        return objective;
+    }
+
     /**
      * Clears all the entries.
      * <p>
