@@ -1,8 +1,12 @@
 package me.Abhigya.core.database;
 
 public enum DatabaseType {
-    MYSQL,
+
     SQLite,
+    H2,
+    PostGreSQL,
+    MYSQL,
     HikariCP,
     MongoDB;
+
 }

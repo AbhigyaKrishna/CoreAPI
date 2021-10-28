@@ -1,74 +1,62 @@
-package me.Abhigya.core.database.sql.hikaricp;
+package me.Abhigya.core.database.sql.h2;
 
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
 import me.Abhigya.core.database.DatabaseType;
 import me.Abhigya.core.database.sql.SQLDatabase;
 import org.apache.commons.lang.Validate;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.SQLTimeoutException;
 
-/**
- * Class for interacting with a Hikari database.
- */
-public class HikariCP extends SQLDatabase {
+public class H2 extends SQLDatabase {
 
     /**
      * The JDBC driver class.
      */
-    private static final String DRIVER_CLASS = "com.mysql.jdbc.Driver";
+    private static final String DRIVER_CLASS = "org.h2.Driver";
 
-    private final HikariConfig config;
-    private final HikariDataSource dataSource;
+    private final File db;
     private final boolean reconnect;
 
     private Connection connection;
     private int lost_connections;
 
     /**
-     * Constructs the HikariCP database.
+     * Constructs the H2 database.
+     * <p>
+     * <strong>Note:</strong> Database file should end with {@code .db}
+     * extension.
      * <p>
      *
-     * @param config     HikariConfig for connection
-     * @param dataSource DataSource for given config
-     * @param reconnect  <strong>{@code true}</strong> to auto reconnect
+     * @param db        Database file
+     * @param reconnect <strong>{@code true}</strong> to auto reconnect
      */
-    public HikariCP( HikariConfig config, HikariDataSource dataSource, boolean reconnect ) {
-        super( DatabaseType.HikariCP );
+    public H2(File db, boolean reconnect) {
+        super(DatabaseType.H2);
 
-        Validate.notNull( config, "HikariConfig cannot be null!" );
-        Validate.notNull( dataSource, "HikariDataSource cannot be null!" );
-
-        this.config = config;
-        this.dataSource = dataSource;
+        Validate.notNull(db, "The database file cannot be null!");
+        this.db = db;
         this.reconnect = reconnect;
     }
 
     /**
-     * Constructs the HikariCP database.
+     * Constructs the H2 database. Auto-reconnect is set {@code true}.
+     * <p>
+     * <strong>Note:</strong> Database file should end with {@code .db}
+     * extension.
      * <p>
      *
-     * @param config     HikariConfig for connection
-     * @param dataSource DataSource for given config
+     * @param db     Database file
      */
-    public HikariCP( HikariConfig config, HikariDataSource dataSource ) {
-        this( config, dataSource, true );
+    public H2( File db ) {
+        this( db, true );
     }
 
     /**
-     * Constructs the HikariCP database.
-     * <p>
-     *
-     * @param builder {@link HikariClientBuilder}
-     */
-    public HikariCP( HikariClientBuilder builder ) {
-        this( builder.getConfig( ), new HikariDataSource( builder.getConfig( ) ), builder.isReconnect( ) );
-    }
-
-    /**
-     * Gets whether connected to HikariCP.
+     * Gets whether connected to H2.
      * <p>
      *
      * @return true if connected.
@@ -83,10 +71,12 @@ public class HikariCP extends SQLDatabase {
     }
 
     /**
-     * Starts the connection with HikariCP.
+     * Starts the connection with H2.
      * <p>
      *
-     * @throws IllegalStateException if the JDBC drivers is unavailable.
+     * @throws IOException           when the given database file cannot be created
+     * @throws IllegalStateException if the JDBC drivers is unavailable or the file
+     *                               is not s H2 database file
      * @throws SQLException          if a database access error occurs.
      * @throws SQLTimeoutException   when the driver has determined that the timeout
      *                               has been exceeded and has at least tried to
@@ -94,18 +84,25 @@ public class HikariCP extends SQLDatabase {
      */
     @Override
     public synchronized void connect( )
-            throws IllegalStateException, SQLException {
-        try {
-            Class.forName(DRIVER_CLASS);
-        } catch (ClassNotFoundException ex) {
-            throw new IllegalStateException("Could not connect to HikariCP! The JDBC connection driver is unavailable!");
-        }
+            throws IOException, IllegalStateException, SQLException, SQLTimeoutException {
+        if ( !this.db.getName( ).endsWith( ".db" ) )
+            throw new IllegalStateException( "The database file should have '.db' extension." );
 
-        this.connection = dataSource.getConnection( );
+        if ( !this.db.getParentFile( ).exists( ) )
+            this.db.getParentFile( ).mkdirs( );
+
+        if ( !this.db.exists( ) )
+            this.db.createNewFile( );
+        try {
+            Class.forName( DRIVER_CLASS );
+        } catch ( ClassNotFoundException ex ) {
+            throw new IllegalStateException( "Could not connect to H2! The H2 driver is unavailable!" );
+        }
+        this.connection = DriverManager.getConnection( "jdbc:h2:" + this.db.getAbsolutePath( ) );
     }
 
     /**
-     * Closes the connection with HikariCP.
+     * Closes the connection with H2.
      * <p>
      *
      * @throws IllegalStateException if currently not connected, the connection
@@ -114,8 +111,7 @@ public class HikariCP extends SQLDatabase {
      * @throws SQLException          if a database access error occurs.
      */
     @Override
-    public void disconnect( )
-            throws SQLException, IllegalStateException {
+    public void disconnect( ) throws SQLException {
         if ( !isConnected( ) ) {
             throw new IllegalStateException( "Not connected!" );
         }
@@ -127,12 +123,11 @@ public class HikariCP extends SQLDatabase {
     /**
      * <h1>Returns:</h1>
      * <ul>
-     * <li>The current connection if connected to HikariCP:
+     * <li>The current connection if connected to H2:
      * <li>The new connection if and only if:
      * <ul>
      * <li>It wasn't connected.
      * <li>The auto-reconnection is enabled.
-     * <li>The attempt to get connection was successfully.
      * </ul>
      * <li><strong>{@code null}</strong> if:
      * <ul>
@@ -143,17 +138,19 @@ public class HikariCP extends SQLDatabase {
      * </ul>
      * <p>
      *
-     * @return Connection or null if not connected
+     * @return Connection or null if not connected.
+     * @throws IOException           when the given database file cannot be created
      * @throws SQLTimeoutException   when the driver has determined that the timeout
      *                               value has been exceeded and has at least tried
      *                               to cancel the current database connection
      *                               attempt.
-     * @throws IllegalStateException if the JDBC drivers is unavailable
+     * @throws IllegalStateException if the JDBC drivers is unavailable or the file
+     *                               is not s H2 database file
      * @throws SQLException          if a database access error occurs.
      */
     @Override
     public Connection getConnection( )
-            throws IllegalStateException, SQLException {
+            throws IOException, SQLTimeoutException, IllegalStateException, SQLException {
         if ( !isConnected( ) && reconnect ) {
             this.lost_connections++;
             this.connect( );
@@ -171,26 +168,6 @@ public class HikariCP extends SQLDatabase {
     @Override
     public int getLostConnections( ) {
         return reconnect ? lost_connections : -1;
-    }
-
-    /**
-     * Get {@link HikariConfig}.
-     * <p>
-     *
-     * @return Current HikariConfig
-     */
-    public HikariConfig getConfig( ) {
-        return config;
-    }
-
-    /**
-     * Get {@link HikariDataSource}.
-     * <p>
-     *
-     * @return Datasource for current HikariConfig
-     */
-    public HikariDataSource getDataSource( ) {
-        return dataSource;
     }
 
 }
