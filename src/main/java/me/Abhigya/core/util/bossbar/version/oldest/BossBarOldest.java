@@ -20,10 +20,7 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 
-/**
- * Base class for {@code BossBar}s for server versions {@code <=}
- * {@link Version#v1_8_R3}.
- */
+/** Base class for {@code BossBar}s for server versions {@code <=} {@link Version#v1_8_R3}. */
 public abstract class BossBarOldest extends BossBarBase implements Listener {
 
     protected static final float MINIMUM_PROGRESS = 0.00000000000000000000001F;
@@ -32,167 +29,160 @@ public abstract class BossBarOldest extends BossBarBase implements Listener {
     protected static final String DEFAULT_TITLE = "untitled";
     protected static final double DEFAULT_PROGRESS = MAXIMUM_PROGRESS;
 
-    /**
-     * the bar's viewer
-     */
+    /** the bar's viewer */
     protected final UUIDPlayer player;
-    /**
-     * the bar's title
-     */
+    /** the bar's title */
     protected volatile String title = DEFAULT_TITLE;
-    /**
-     * The bar's progress
-     */
+    /** The bar's progress */
     protected volatile double progress = DEFAULT_PROGRESS;
-    /**
-     * the update executor
-     */
+    /** the update executor */
     protected volatile BukkitTask update_executor;
-    /**
-     * the bar's visibility status
-     */
+    /** the bar's visibility status */
     private volatile boolean visible = true;
-    /**
-     * flag to determine if the bar has been destroyed because of the player was offline
-     */
+    /** flag to determine if the bar has been destroyed because of the player was offline */
     private volatile boolean offline = false;
 
-    public BossBarOldest( String title, double progress, Player player ) {
-        Validate.isTrue( player.isOnline( ), "the player must be online!" );
+    public BossBarOldest(String title, double progress, Player player) {
+        Validate.isTrue(player.isOnline(), "the player must be online!");
 
-        this.player = new UUIDPlayer( player );
+        this.player = new UUIDPlayer(player);
 
-        this.setTitle( title );
-        this.setProgress( progress );
-        this.create( );
+        this.setTitle(title);
+        this.setProgress(progress);
+        this.create();
 
-        Bukkit.getPluginManager( ).registerEvents( this, CoreAPI.getInstance( ).getHandlingPlugin( ) );
+        Bukkit.getPluginManager().registerEvents(this, CoreAPI.getInstance().getHandlingPlugin());
     }
 
-    @EventHandler( priority = EventPriority.MONITOR )
-    public void onTeleport( final PlayerTeleportEvent event ) {
-        Bukkit.getScheduler( ).runTaskLater( CoreAPI.getInstance( ).getHandlingPlugin( ), new Runnable( ) {
-            @Override
-            public void run( ) {
-                Player player = event.getPlayer( );
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onTeleport(final PlayerTeleportEvent event) {
+        Bukkit.getScheduler()
+                .runTaskLater(
+                        CoreAPI.getInstance().getHandlingPlugin(),
+                        new Runnable() {
+                            @Override
+                            public void run() {
+                                Player player = event.getPlayer();
 
-                if ( player.getUniqueId( ).equals( BossBarOldest.this.player.getUniqueId( ) )
-                        && !offline && isVisible( ) ) {
-                    BossBarOldest.this.create( );
+                                if (player.getUniqueId()
+                                                .equals(BossBarOldest.this.player.getUniqueId())
+                                        && !offline
+                                        && isVisible()) {
+                                    BossBarOldest.this.create();
+                                }
+                            }
+                        },
+                        10L);
+    }
+    /** the bar's updater command */
+
+    protected final Runnable update_command =
+            () -> {
+                if (isVisible()) {
+                    Player player = getPlayer();
+
+                    if (player == null || !player.isOnline()) {
+                        if (!offline) {
+                            this.destroy();
+                            this.offline = true;
+                        }
+                    } else {
+                        if (offline) {
+                            this.create();
+                            this.offline = false;
+                        }
+                    }
+
+                    if (!offline) {
+                        this.update();
+                    }
+                } else {
+                    this.destroy();
                 }
-            }
-        }, 10L );
-    }    /**
-     * the bar's updater command
-     */
-    protected final Runnable update_command = ( ) -> {
-        if ( isVisible( ) ) {
-            Player player = getPlayer( );
+            };
 
-            if ( player == null || !player.isOnline( ) ) {
-                if ( !offline ) {
-                    this.destroy( );
-                    this.offline = true;
-                }
-            } else {
-                if ( offline ) {
-                    this.create( );
-                    this.offline = false;
-                }
-            }
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onRespawn(final PlayerRespawnEvent event) {
+        Bukkit.getScheduler()
+                .runTaskLater(
+                        CoreAPI.getInstance().getHandlingPlugin(),
+                        new Runnable() {
+                            @Override
+                            public void run() {
+                                Player player = event.getPlayer();
 
-            if ( !offline ) {
-                this.update( );
-            }
-        } else {
-            this.destroy( );
-        }
-    };
-
-    @EventHandler( priority = EventPriority.MONITOR )
-    public void onRespawn( final PlayerRespawnEvent event ) {
-        Bukkit.getScheduler( ).runTaskLater( CoreAPI.getInstance( ).getHandlingPlugin( ), new Runnable( ) {
-            @Override
-            public void run( ) {
-                Player player = event.getPlayer( );
-
-                if ( player.getUniqueId( ).equals( BossBarOldest.this.player.getUniqueId( ) )
-                        && !offline && isVisible( ) ) {
-                    BossBarOldest.this.create( );
-                }
-            }
-        }, 10L );
+                                if (player.getUniqueId()
+                                                .equals(BossBarOldest.this.player.getUniqueId())
+                                        && !offline
+                                        && isVisible()) {
+                                    BossBarOldest.this.create();
+                                }
+                            }
+                        },
+                        10L);
     }
 
-    /**
-     * Creates the bar.
-     */
-    protected synchronized void create( ) {
-        disposeExecutors( );
+    /** Creates the bar. */
+    protected synchronized void create() {
+        disposeExecutors();
 
-        update_executor = Bukkit.getScheduler( ).runTaskTimerAsynchronously( CoreAPI.getInstance( ).getHandlingPlugin( ),
-                update_command, 0L, 0L );
+        update_executor =
+                Bukkit.getScheduler()
+                        .runTaskTimerAsynchronously(
+                                CoreAPI.getInstance().getHandlingPlugin(), update_command, 0L, 0L);
     }
 
-    /**
-     * Updates the title and the progress of the bar.
-     */
-    protected synchronized void update( ) {
-        throw new UnsupportedOperationException( "not implemented yet" );
+    /** Updates the title and the progress of the bar. */
+    protected synchronized void update() {
+        throw new UnsupportedOperationException("not implemented yet");
     }
 
-    /**
-     * Destroys the bar.
-     */
-    protected synchronized void destroy( ) {
-        disposeExecutors( );
+    /** Destroys the bar. */
+    protected synchronized void destroy() {
+        disposeExecutors();
     }
 
-    /**
-     * Disposes the {@link #update_executor}.
-     */
-    protected synchronized void disposeExecutors( ) {
-        if ( update_executor != null ) {
-            update_executor.cancel( );
+    /** Disposes the {@link #update_executor}. */
+    protected synchronized void disposeExecutors() {
+        if (update_executor != null) {
+            update_executor.cancel();
             update_executor = null;
         }
     }
 
     @Override
-    public synchronized String getTitle( ) {
+    public synchronized String getTitle() {
         return this.title;
     }
 
     @Override
-    public synchronized void setTitle( String title ) {
-        this.checkTitle( title );
+    public synchronized void setTitle(String title) {
+        this.checkTitle(title);
         this.title = title;
 
-        aliveCheck( );
+        aliveCheck();
     }
 
     @Override
-    public synchronized double getProgress( ) {
+    public synchronized double getProgress() {
         return this.progress;
     }
 
     @Override
-    public synchronized void setProgress( double progress ) {
-        this.checkProgress( progress );
+    public synchronized void setProgress(double progress) {
+        this.checkProgress(progress);
         this.progress = progress;
 
-        aliveCheck( );
+        aliveCheck();
     }
 
-    /**
-     * Re-starts the updater when the player reconnects.
-     */
-    protected synchronized void aliveCheck( ) {
-        if ( offline ) {
-            Player player = getPlayer( );
+    /** Re-starts the updater when the player reconnects. */
+    protected synchronized void aliveCheck() {
+        if (offline) {
+            Player player = getPlayer();
 
-            if ( player != null && player.isOnline( ) ) {
-                create( );
+            if (player != null && player.isOnline()) {
+                create();
 
                 offline = false;
             }
@@ -200,17 +190,17 @@ public abstract class BossBarOldest extends BossBarBase implements Listener {
     }
 
     @Override
-    public final synchronized boolean isVisible( ) {
+    public final synchronized boolean isVisible() {
         return this.visible;
     }
 
     @Override
-    public final synchronized void setVisible( boolean visible ) {
-        if ( visible != this.visible ) {
-            if ( visible ) {
-                this.create( );
+    public final synchronized void setVisible(boolean visible) {
+        if (visible != this.visible) {
+            if (visible) {
+                this.create();
             } else {
-                this.destroy( );
+                this.destroy();
             }
 
             this.visible = visible;
@@ -218,67 +208,61 @@ public abstract class BossBarOldest extends BossBarBase implements Listener {
     }
 
     @Override
-    public final Player getPlayer( ) {
-        return player.get( );
+    public final Player getPlayer() {
+        return player.get();
     }
 
     @Override
-    public final BarColor getColor( ) {
+    public final BarColor getColor() {
         return BarColor.PINK;
     }
 
     @Override
-    public final void setColor( BarColor color ) {
-    }
+    public final void setColor(BarColor color) {}
 
     @Override
-    public final BarStyle getStyle( ) {
+    public final BarStyle getStyle() {
         return BarStyle.SOLID;
     }
 
     @Override
-    public final void setStyle( BarStyle style ) {
-    }
+    public final void setStyle(BarStyle style) {}
 
     @Override
-    public final void removeFlag( BarFlag flag ) {
-    }
+    public final void removeFlag(BarFlag flag) {}
 
     @Override
-    public final void addFlag( BarFlag flag ) {
-    }
+    public final void addFlag(BarFlag flag) {}
 
     @Override
-    public final boolean hasFlag( BarFlag flag ) {
+    public final boolean hasFlag(BarFlag flag) {
         return false;
     }
 
     /**
      * Checks the provided title is valid.
+     *
      * <p>
      *
      * @param title Title to check
      */
-    protected void checkTitle( String title ) {
-        Validate.notNull( title, "the title cannot be null!" );
+    protected void checkTitle(String title) {
+        Validate.notNull(title, "the title cannot be null!");
     }
 
     /**
      * Calculates and gets the location for the handle entity.
+     *
      * <p>
      *
      * @return Location for the handle entity
      */
-    protected Location calculateHandleLocation( ) {
-        Vector direction = getPlayer( ).getLocation( ).getDirection( ).multiply( 20D );
-        direction = VectorUtils.rotateAroundAxisY( direction, Math.toRadians( 15.0D ) );
-        direction = VectorUtils.rotateAroundAxisX( direction, Math.toRadians( 15.0D ) );
-        direction = VectorUtils.rotateAroundAxisZ( direction, Math.toRadians( 15.0D ) );
+    protected Location calculateHandleLocation() {
+        Vector direction = getPlayer().getLocation().getDirection().multiply(20D);
+        direction = VectorUtils.rotateAroundAxisY(direction, Math.toRadians(15.0D));
+        direction = VectorUtils.rotateAroundAxisX(direction, Math.toRadians(15.0D));
+        direction = VectorUtils.rotateAroundAxisZ(direction, Math.toRadians(15.0D));
 
-        return getPlayer( ).getLocation( ).add( 0.0D, 3.0D, 0.0D ).add( direction );
+        return getPlayer().getLocation().add(0.0D, 3.0D, 0.0D).add(direction);
     }
-
-
-
-
 }

@@ -5,103 +5,102 @@ import me.Abhigya.core.util.reflection.resolver.wrapper.ConstructorWrapper;
 
 import java.lang.reflect.Constructor;
 
-/**
- * Resolver for constructors
- */
-public class ConstructorResolver extends MemberResolver< Constructor > {
+/** Resolver for constructors */
+public class ConstructorResolver extends MemberResolver<Constructor> {
 
-    public ConstructorResolver( Class< ? > clazz ) {
-        super( clazz );
+    public ConstructorResolver(Class<?> clazz) {
+        super(clazz);
     }
 
-    public ConstructorResolver( String className ) throws ClassNotFoundException {
-        super( className );
-    }
-
-    @Override
-    public Constructor resolveIndex( int index ) throws IndexOutOfBoundsException, ReflectiveOperationException {
-        return ConstructorReflection.setAccessible( this.clazz.getDeclaredConstructors( )[index] );
+    public ConstructorResolver(String className) throws ClassNotFoundException {
+        super(className);
     }
 
     @Override
-    public Constructor resolveIndexSilent( int index ) {
+    public Constructor resolveIndex(int index)
+            throws IndexOutOfBoundsException, ReflectiveOperationException {
+        return ConstructorReflection.setAccessible(this.clazz.getDeclaredConstructors()[index]);
+    }
+
+    @Override
+    public Constructor resolveIndexSilent(int index) {
         try {
-            return resolveIndex( index );
-        } catch ( IndexOutOfBoundsException | ReflectiveOperationException ignored ) {
+            return resolveIndex(index);
+        } catch (IndexOutOfBoundsException | ReflectiveOperationException ignored) {
         }
         return null;
     }
 
     @Override
-    public ConstructorWrapper resolveIndexWrapper( int index ) {
-        return new ConstructorWrapper<>( resolveIndexSilent( index ) );
+    public ConstructorWrapper resolveIndexWrapper(int index) {
+        return new ConstructorWrapper<>(resolveIndexSilent(index));
     }
 
-    public ConstructorWrapper resolveWrapper( Class< ? >[]... types ) {
-        return new ConstructorWrapper<>( resolveSilent( types ) );
+    public ConstructorWrapper resolveWrapper(Class<?>[]... types) {
+        return new ConstructorWrapper<>(resolveSilent(types));
     }
 
-    public Constructor resolveSilent( Class< ? >[]... types ) {
+    public Constructor resolveSilent(Class<?>[]... types) {
         try {
-            return resolve( types );
-        } catch ( NoSuchMethodException ignored ) {
+            return resolve(types);
+        } catch (NoSuchMethodException ignored) {
         }
         return null;
     }
 
-    public Constructor resolve( Class< ? >[]... types ) throws NoSuchMethodException {
-        ResolverQuery.Builder builder = ResolverQuery.builder( );
-        for ( Class< ? >[] type : types )
-            builder.with( type );
+    public Constructor resolve(Class<?>[]... types) throws NoSuchMethodException {
+        ResolverQuery.Builder builder = ResolverQuery.builder();
+        for (Class<?>[] type : types) builder.with(type);
         try {
-            return super.resolve( builder.build( ) );
-        } catch ( ReflectiveOperationException e ) {
+            return super.resolve(builder.build());
+        } catch (ReflectiveOperationException e) {
             throw (NoSuchMethodException) e;
         }
     }
 
     @Override
-    protected Constructor resolveObject( ResolverQuery query ) throws ReflectiveOperationException {
-        return ConstructorReflection.setAccessible( this.clazz.getDeclaredConstructor( query.getTypes( ) ) );
+    protected Constructor resolveObject(ResolverQuery query) throws ReflectiveOperationException {
+        return ConstructorReflection.setAccessible(
+                this.clazz.getDeclaredConstructor(query.getTypes()));
     }
 
-    public Constructor resolveFirstConstructor( ) throws ReflectiveOperationException {
-        for ( Constructor constructor : this.clazz.getDeclaredConstructors( ) ) {
-            return ConstructorReflection.setAccessible( constructor );
+    public Constructor resolveFirstConstructor() throws ReflectiveOperationException {
+        for (Constructor constructor : this.clazz.getDeclaredConstructors()) {
+            return ConstructorReflection.setAccessible(constructor);
         }
         return null;
     }
 
-    public Constructor resolveFirstConstructorSilent( ) {
+    public Constructor resolveFirstConstructorSilent() {
         try {
-            return resolveFirstConstructor( );
-        } catch ( Exception e ) {
+            return resolveFirstConstructor();
+        } catch (Exception e) {
         }
         return null;
     }
 
-    public Constructor resolveLastConstructor( ) throws ReflectiveOperationException {
+    public Constructor resolveLastConstructor() throws ReflectiveOperationException {
         Constructor constructor = null;
-        for ( Constructor constructor1 : this.clazz.getDeclaredConstructors( ) ) {
+        for (Constructor constructor1 : this.clazz.getDeclaredConstructors()) {
             constructor = constructor1;
         }
-        if ( constructor != null ) {
-            return ConstructorReflection.setAccessible( constructor );
+        if (constructor != null) {
+            return ConstructorReflection.setAccessible(constructor);
         }
         return null;
     }
 
-    public Constructor resolveLastConstructorSilent( ) {
+    public Constructor resolveLastConstructorSilent() {
         try {
-            return resolveLastConstructor( );
-        } catch ( Exception e ) {
+            return resolveLastConstructor();
+        } catch (Exception e) {
         }
         return null;
     }
 
     @Override
-    protected NoSuchMethodException notFoundException( String joinedNames ) {
-        return new NoSuchMethodException( "Could not resolve constructor for " + joinedNames + " in class " + this.clazz );
+    protected NoSuchMethodException notFoundException(String joinedNames) {
+        return new NoSuchMethodException(
+                "Could not resolve constructor for " + joinedNames + " in class " + this.clazz);
     }
-
 }

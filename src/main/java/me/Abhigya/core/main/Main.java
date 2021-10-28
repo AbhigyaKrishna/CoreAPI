@@ -7,23 +7,23 @@ public final class Main extends PluginAdapter {
 
     /**
      * Gets the {@link CoreAPI} plugin instance.
+     *
      * <p>
      *
      * @return Core instance.
      */
-    public static Main getInstance( ) {
-        return Plugin.getPlugin( Main.class );
+    public static Main getInstance() {
+        return Plugin.getPlugin(Main.class);
     }
 
     @Override
-    public void onLoad( ) {
-        CoreAPI.init( this );
+    public void onLoad() {
+        CoreAPI.init(this);
     }
 
     @Override
-    protected boolean setUp( ) {
-        CoreAPI.getInstance( ).load( );
+    protected boolean setUp() {
+        CoreAPI.getInstance().load();
         return true;
     }
-
 }

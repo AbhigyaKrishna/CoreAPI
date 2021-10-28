@@ -4,7 +4,6 @@ import me.Abhigya.core.util.noteblockapi.songplayer.SongPlayer;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-
 /**
  * Called whenever a SongPlayer is stopped
  *
@@ -12,14 +11,14 @@ import org.bukkit.event.HandlerList;
  */
 public class SongStoppedEvent extends Event {
 
-    private static final HandlerList handlers = new HandlerList( );
+    private static final HandlerList handlers = new HandlerList();
     private SongPlayer songPlayer;
 
-    public SongStoppedEvent( SongPlayer songPlayer ) {
+    public SongStoppedEvent(SongPlayer songPlayer) {
         this.songPlayer = songPlayer;
     }
 
-    public static HandlerList getHandlerList( ) {
+    public static HandlerList getHandlerList() {
         return handlers;
     }
 
@@ -28,13 +27,11 @@ public class SongStoppedEvent extends Event {
      *
      * @return SongPlayer
      */
-    public SongPlayer getSongPlayer( ) {
+    public SongPlayer getSongPlayer() {
         return songPlayer;
     }
 
-    public HandlerList getHandlers( ) {
+    public HandlerList getHandlers() {
         return handlers;
     }
-
 }
-

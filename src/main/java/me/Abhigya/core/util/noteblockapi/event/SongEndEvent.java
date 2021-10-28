@@ -6,21 +6,20 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 /**
- * Called when a Song ends
- * or when no players are listening and auto destroy is enabled
+ * Called when a Song ends or when no players are listening and auto destroy is enabled
  *
  * @see SongPlayer
  */
 public class SongEndEvent extends Event {
 
-    private static final HandlerList handlers = new HandlerList( );
+    private static final HandlerList handlers = new HandlerList();
     private SongPlayer song;
 
-    public SongEndEvent( SongPlayer song ) {
+    public SongEndEvent(SongPlayer song) {
         this.song = song;
     }
 
-    public static HandlerList getHandlerList( ) {
+    public static HandlerList getHandlerList() {
         return handlers;
     }
 
@@ -29,12 +28,11 @@ public class SongEndEvent extends Event {
      *
      * @return SongPlayer
      */
-    public SongPlayer getSongPlayer( ) {
+    public SongPlayer getSongPlayer() {
         return song;
     }
 
-    public HandlerList getHandlers( ) {
+    public HandlerList getHandlers() {
         return handlers;
     }
-
 }

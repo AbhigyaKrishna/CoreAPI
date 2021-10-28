@@ -6,25 +6,24 @@ import org.bukkit.event.HandlerList;
 
 public class PlaceholderManagerHookEvent extends Event {
 
-    private static final HandlerList handlers = new HandlerList( );
+    private static final HandlerList handlers = new HandlerList();
 
     private PlaceholderManager placeholderManager = null;
 
-    public static HandlerList getHandlerList( ) {
+    public static HandlerList getHandlerList() {
         return handlers;
     }
 
     @Override
-    public HandlerList getHandlers( ) {
+    public HandlerList getHandlers() {
         return handlers;
     }
 
-    public PlaceholderManager getPlaceholderManager( ) {
+    public PlaceholderManager getPlaceholderManager() {
         return placeholderManager;
     }
 
-    public void setPlaceholderManager( PlaceholderManager placeholderManager ) {
+    public void setPlaceholderManager(PlaceholderManager placeholderManager) {
         this.placeholderManager = placeholderManager;
     }
-
 }

@@ -4,61 +4,61 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Objects;
 
-public class ConstructorWrapper< R > extends WrapperAbstract {
+public class ConstructorWrapper<R> extends WrapperAbstract {
 
-    private final Constructor< R > constructor;
+    private final Constructor<R> constructor;
 
-    public ConstructorWrapper( Constructor< R > constructor ) {
+    public ConstructorWrapper(Constructor<R> constructor) {
         this.constructor = constructor;
     }
 
     @Override
-    public boolean exists( ) {
+    public boolean exists() {
         return this.constructor != null;
     }
 
-    public R newInstance( Object... args ) {
+    public R newInstance(Object... args) {
         try {
-            return this.constructor.newInstance( args );
-        } catch ( Exception e ) {
-            throw new RuntimeException( e );
+            return this.constructor.newInstance(args);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 
-    public R newInstanceSilent( Object... args ) {
+    public R newInstanceSilent(Object... args) {
         try {
-            return this.constructor.newInstance( args );
-        } catch ( InvocationTargetException | InstantiationException | IllegalAccessException ignored ) {
+            return this.constructor.newInstance(args);
+        } catch (InvocationTargetException
+                | InstantiationException
+                | IllegalAccessException ignored) {
         }
         return null;
     }
 
-    public Class< ? >[] getParameterTypes( ) {
-        return this.constructor.getParameterTypes( );
+    public Class<?>[] getParameterTypes() {
+        return this.constructor.getParameterTypes();
     }
 
-    public Constructor< R > getConstructor( ) {
+    public Constructor<R> getConstructor() {
         return constructor;
     }
 
     @Override
-    public boolean equals( Object object ) {
-        if ( this == object ) {
+    public boolean equals(Object object) {
+        if (this == object) {
             return true;
         }
-        if ( object == null || getClass( ) != object.getClass( ) ) {
+        if (object == null || getClass() != object.getClass()) {
             return false;
         }
 
-        ConstructorWrapper< ? > that = (ConstructorWrapper< ? >) object;
+        ConstructorWrapper<?> that = (ConstructorWrapper<?>) object;
 
-        return Objects.equals( constructor, that.constructor );
-
+        return Objects.equals(constructor, that.constructor);
     }
 
     @Override
-    public int hashCode( ) {
-        return constructor != null ? constructor.hashCode( ) : 0;
+    public int hashCode() {
+        return constructor != null ? constructor.hashCode() : 0;
     }
-
 }

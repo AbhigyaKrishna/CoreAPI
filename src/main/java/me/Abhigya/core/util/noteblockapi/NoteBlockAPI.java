@@ -18,18 +18,18 @@ public class NoteBlockAPI {
     private final WorkloadThread syncThread;
     private final WorkloadThread asyncThread;
 
-    private final Map< UUID, ArrayList< SongPlayer > > playingSongs;
-    private final Map< UUID, Byte > playerVolume;
+    private final Map<UUID, ArrayList<SongPlayer>> playingSongs;
+    private final Map<UUID, Byte> playerVolume;
 
-    public NoteBlockAPI( Plugin plugin, WorkloadThread syncThread, WorkloadThread asyncThread ) {
+    public NoteBlockAPI(Plugin plugin, WorkloadThread syncThread, WorkloadThread asyncThread) {
         this.plugin = plugin;
         this.syncThread = syncThread;
         this.asyncThread = asyncThread;
-        this.playingSongs = new ConcurrentHashMap<>( );
-        this.playerVolume = new ConcurrentHashMap<>( );
+        this.playingSongs = new ConcurrentHashMap<>();
+        this.playerVolume = new ConcurrentHashMap<>();
     }
 
-    public NoteBlockAPI( Plugin plugin ) {
+    public NoteBlockAPI(Plugin plugin) {
         this(plugin, null, null);
     }
 
@@ -39,8 +39,8 @@ public class NoteBlockAPI {
      * @param player
      * @return is receiving a song
      */
-    public boolean isReceivingSong( Player player ) {
-        return isReceivingSong( player.getUniqueId( ) );
+    public boolean isReceivingSong(Player player) {
+        return isReceivingSong(player.getUniqueId());
     }
 
     /**
@@ -49,9 +49,9 @@ public class NoteBlockAPI {
      * @param uuid
      * @return is receiving a song
      */
-    public boolean isReceivingSong( UUID uuid ) {
-        ArrayList< SongPlayer > songs = this.playingSongs.get( uuid );
-        return ( songs != null && !songs.isEmpty( ) );
+    public boolean isReceivingSong(UUID uuid) {
+        ArrayList<SongPlayer> songs = this.playingSongs.get(uuid);
+        return (songs != null && !songs.isEmpty());
     }
 
     /**
@@ -59,8 +59,8 @@ public class NoteBlockAPI {
      *
      * @param player
      */
-    public void stopPlaying( Player player ) {
-        stopPlaying( player.getUniqueId( ) );
+    public void stopPlaying(Player player) {
+        stopPlaying(player.getUniqueId());
     }
 
     /**
@@ -68,13 +68,13 @@ public class NoteBlockAPI {
      *
      * @param uuid
      */
-    public void stopPlaying( UUID uuid ) {
-        ArrayList< SongPlayer > songs = this.playingSongs.get( uuid );
-        if ( songs == null ) {
+    public void stopPlaying(UUID uuid) {
+        ArrayList<SongPlayer> songs = this.playingSongs.get(uuid);
+        if (songs == null) {
             return;
         }
-        for ( SongPlayer songPlayer : songs ) {
-            songPlayer.removePlayer( uuid );
+        for (SongPlayer songPlayer : songs) {
+            songPlayer.removePlayer(uuid);
         }
     }
 
@@ -84,8 +84,8 @@ public class NoteBlockAPI {
      * @param player
      * @param volume
      */
-    public void setPlayerVolume( Player player, byte volume ) {
-        this.setPlayerVolume( player.getUniqueId( ), volume );
+    public void setPlayerVolume(Player player, byte volume) {
+        this.setPlayerVolume(player.getUniqueId(), volume);
     }
 
     /**
@@ -94,8 +94,8 @@ public class NoteBlockAPI {
      * @param uuid
      * @param volume
      */
-    public void setPlayerVolume( UUID uuid, byte volume ) {
-        this.playerVolume.put( uuid, volume );
+    public void setPlayerVolume(UUID uuid, byte volume) {
+        this.playerVolume.put(uuid, volume);
     }
 
     /**
@@ -104,8 +104,8 @@ public class NoteBlockAPI {
      * @param player
      * @return volume (byte)
      */
-    public byte getPlayerVolume( Player player ) {
-        return this.getPlayerVolume( player.getUniqueId( ) );
+    public byte getPlayerVolume(Player player) {
+        return this.getPlayerVolume(player.getUniqueId());
     }
 
     /**
@@ -114,59 +114,60 @@ public class NoteBlockAPI {
      * @param uuid
      * @return volume (byte)
      */
-    public byte getPlayerVolume( UUID uuid ) {
-        Byte byteObj = this.playerVolume.get( uuid );
-        if ( byteObj == null ) {
+    public byte getPlayerVolume(UUID uuid) {
+        Byte byteObj = this.playerVolume.get(uuid);
+        if (byteObj == null) {
             byteObj = 100;
-            this.playerVolume.put( uuid, byteObj );
+            this.playerVolume.put(uuid, byteObj);
         }
         return byteObj;
     }
 
-    public ArrayList< SongPlayer > getSongPlayersByPlayer( Player player ) {
-        return getSongPlayersByPlayer( player.getUniqueId( ) );
+    public ArrayList<SongPlayer> getSongPlayersByPlayer(Player player) {
+        return getSongPlayersByPlayer(player.getUniqueId());
     }
 
-    public ArrayList< SongPlayer > getSongPlayersByPlayer( UUID player ) {
-        return this.playingSongs.get( player );
+    public ArrayList<SongPlayer> getSongPlayersByPlayer(UUID player) {
+        return this.playingSongs.get(player);
     }
 
-    public void setSongPlayersByPlayer( Player player, ArrayList< SongPlayer > songs ) {
-        setSongPlayersByPlayer( player.getUniqueId( ), songs );
+    public void setSongPlayersByPlayer(Player player, ArrayList<SongPlayer> songs) {
+        setSongPlayersByPlayer(player.getUniqueId(), songs);
     }
 
-    public void setSongPlayersByPlayer( UUID player, ArrayList< SongPlayer > songs ) {
-        this.playingSongs.put( player, songs );
+    public void setSongPlayersByPlayer(UUID player, ArrayList<SongPlayer> songs) {
+        this.playingSongs.put(player, songs);
     }
 
-    public void doSync( Runnable runnable ) {
-        if ( this.syncThread != null ) {
-            this.syncThread.add( new Workload( ) {
-                @Override
-                public void compute( ) {
-                    runnable.run();
-                }
-            } );
+    public void doSync(Runnable runnable) {
+        if (this.syncThread != null) {
+            this.syncThread.add(
+                    new Workload() {
+                        @Override
+                        public void compute() {
+                            runnable.run();
+                        }
+                    });
         } else {
-            SchedulerUtils.runTask( runnable, this.plugin );
+            SchedulerUtils.runTask(runnable, this.plugin);
         }
     }
 
-    public void doAsync( Runnable runnable ) {
-        if ( this.asyncThread != null ) {
-            this.asyncThread.add( new Workload( ) {
-                @Override
-                public void compute( ) {
-                    runnable.run();
-                }
-            } );
+    public void doAsync(Runnable runnable) {
+        if (this.asyncThread != null) {
+            this.asyncThread.add(
+                    new Workload() {
+                        @Override
+                        public void compute() {
+                            runnable.run();
+                        }
+                    });
         } else {
-            SchedulerUtils.runTaskAsynchronously( runnable, this.plugin );
+            SchedulerUtils.runTaskAsynchronously(runnable, this.plugin);
         }
     }
 
-    public Plugin getPlugin( ) {
+    public Plugin getPlugin() {
         return this.plugin;
     }
-
 }

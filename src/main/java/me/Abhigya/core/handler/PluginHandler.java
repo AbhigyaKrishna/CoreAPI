@@ -9,88 +9,82 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Class for handling {@link Plugin}. Also this is an implementation of
- * {@link Listener}, so the events in this class can be registered by using
- * {@link #register()} or unregister by using {@link #unregister()}.
- * <p>
- * Also {@link #isAllowMultipleInstances()} allows the developer to protect its handler
- * from the creation of more than one instance of it. Also
- * {@link #isAllowMultipleInstances()} or the class extending {@link PluginHandler} must
- * be <strong>{@code final}</strong> to prevent overriding.
+ * Class for handling {@link Plugin}. Also this is an implementation of {@link Listener}, so the
+ * events in this class can be registered by using {@link #register()} or unregister by using {@link
+ * #unregister()}.
+ *
+ * <p>Also {@link #isAllowMultipleInstances()} allows the developer to protect its handler from the
+ * creation of more than one instance of it. Also {@link #isAllowMultipleInstances()} or the class
+ * extending {@link PluginHandler} must be <strong>{@code final}</strong> to prevent overriding.
  */
 public abstract class PluginHandler implements Listener {
 
-    /**
-     * Map for storing handler instances.
-     */
-    protected static final Map< Class< ? extends PluginHandler >, PluginHandler > HANDLER_INSTANCES = new HashMap<>( );
-    /**
-     * The handling plugin
-     */
+    /** Map for storing handler instances. */
+    protected static final Map<Class<? extends PluginHandler>, PluginHandler> HANDLER_INSTANCES =
+            new HashMap<>();
+    /** The handling plugin */
     protected final Plugin plugin;
 
     /**
      * Constructs the plugin handler.
+     *
      * <p>
      *
      * @param plugin The plugin to handle.
      */
-    public PluginHandler( Plugin plugin ) {
-        if ( !isAllowMultipleInstances( ) && HANDLER_INSTANCES.containsKey( getClass( ) ) ) {
-            throw new IllegalStateException( "Cannot create more than one instance of this handler!" );
+    public PluginHandler(Plugin plugin) {
+        if (!isAllowMultipleInstances() && HANDLER_INSTANCES.containsKey(getClass())) {
+            throw new IllegalStateException(
+                    "Cannot create more than one instance of this handler!");
         }
 
         this.plugin = plugin;
-        PluginHandler.HANDLER_INSTANCES.put( getClass( ), this );
+        PluginHandler.HANDLER_INSTANCES.put(getClass(), this);
     }
 
     /**
-     * This method provides fast access to the plugin handler that has provided the
-     * given class.
+     * This method provides fast access to the plugin handler that has provided the given class.
+     *
      * <p>
      *
-     * @param <T>   Class that extends PluginHandler
+     * @param <T> Class that extends PluginHandler
      * @param clazz Class desired
      * @return Instance of the plugin handle that provided the class
      */
-    public static < T extends PluginHandler > PluginHandler getPluginHandler( Class< T > clazz ) {
-        return HANDLER_INSTANCES.get( clazz );
+    public static <T extends PluginHandler> PluginHandler getPluginHandler(Class<T> clazz) {
+        return HANDLER_INSTANCES.get(clazz);
     }
 
     /**
      * Gets the plugin this handler handles.
+     *
      * <p>
      *
      * @return The handling plugin.
      */
-    public Plugin getPlugin( ) {
+    public Plugin getPlugin() {
         return plugin;
     }
 
     /**
-     * Gets whether this handler allows the creation of more than one instance of
-     * it.
-     * <p>
-     * This is useful to avoid users to create instances of this handler.
+     * Gets whether this handler allows the creation of more than one instance of it.
+     *
+     * <p>This is useful to avoid users to create instances of this handler.
+     *
      * <p>
      *
      * @return true to allow more than one instance
      */
-    protected abstract boolean isAllowMultipleInstances( );
+    protected abstract boolean isAllowMultipleInstances();
 
-    /**
-     * Registers events in this class.
-     */
-    protected void register( ) {
-        HandlerList.unregisterAll( this );
-        Bukkit.getPluginManager( ).registerEvents( this, plugin );
+    /** Registers events in this class. */
+    protected void register() {
+        HandlerList.unregisterAll(this);
+        Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
-    /**
-     * Unregisters events in this class.
-     */
-    protected void unregister( ) {
-        HandlerList.unregisterAll( this );
+    /** Unregisters events in this class. */
+    protected void unregister() {
+        HandlerList.unregisterAll(this);
     }
-
 }

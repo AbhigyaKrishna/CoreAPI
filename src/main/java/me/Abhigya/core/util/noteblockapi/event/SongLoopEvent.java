@@ -8,15 +8,15 @@ import org.bukkit.event.HandlerList;
 
 public class SongLoopEvent extends Event implements Cancellable {
 
-    private static final HandlerList handlers = new HandlerList( );
+    private static final HandlerList handlers = new HandlerList();
     private SongPlayer song;
     private boolean cancelled = false;
 
-    public SongLoopEvent( SongPlayer song ) {
+    public SongLoopEvent(SongPlayer song) {
         this.song = song;
     }
 
-    public static HandlerList getHandlerList( ) {
+    public static HandlerList getHandlerList() {
         return handlers;
     }
 
@@ -25,22 +25,21 @@ public class SongLoopEvent extends Event implements Cancellable {
      *
      * @return SongPlayer
      */
-    public SongPlayer getSongPlayer( ) {
+    public SongPlayer getSongPlayer() {
         return song;
     }
 
-    public HandlerList getHandlers( ) {
+    public HandlerList getHandlers() {
         return handlers;
     }
 
     @Override
-    public boolean isCancelled( ) {
+    public boolean isCancelled() {
         return cancelled;
     }
 
     @Override
-    public void setCancelled( boolean cancel ) {
+    public void setCancelled(boolean cancel) {
         this.cancelled = cancel;
     }
-
 }

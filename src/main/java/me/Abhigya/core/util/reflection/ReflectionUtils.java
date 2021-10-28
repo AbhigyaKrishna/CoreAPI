@@ -7,66 +7,33 @@ import me.Abhigya.core.util.reflection.general.*;
 
 /**
  * Class for dealing with reflecting
- * <p>
- * This only contains short-cuts to the different classes for dealing with the
- * different reflections.
+ *
+ * <p>This only contains short-cuts to the different classes for dealing with the different
+ * reflections.
  */
 public class ReflectionUtils {
 
-    /**
-     * Classes reflection
-     */
-    public static final class Classes extends ClassReflection {
+    /** Classes reflection */
+    public static final class Classes extends ClassReflection {}
 
-    }
+    /** Constructors reflection */
+    public static final class Constructors extends ConstructorReflection {}
 
-    /**
-     * Constructors reflection
-     */
-    public static final class Constructors extends ConstructorReflection {
+    /** Fields reflection */
+    public static final class Fields extends FieldReflection {}
 
-    }
+    /** Methods reflection */
+    public static final class Methods extends MethodReflection {}
 
-    /**
-     * Fields reflection
-     */
-    public static final class Fields extends FieldReflection {
+    /** Enumerations reflection */
+    public static final class Enumerations extends EnumReflection {}
 
-    }
+    /** Bukkit reflection */
+    public static final class Bukkit extends BukkitReflection {}
 
-    /**
-     * Methods reflection
-     */
-    public static final class Methods extends MethodReflection {
+    /** Entities reflection */
+    public static final class Entities extends EntityReflection {}
 
-    }
-
-    /**
-     * Enumerations reflection
-     */
-    public static final class Enumerations extends EnumReflection {
-
-    }
-
-    /**
-     * Bukkit reflection
-     */
-    public static final class Bukkit extends BukkitReflection {
-
-    }
-
-    /**
-     * Entities reflection
-     */
-    public static final class Entities extends EntityReflection {
-
-    }
-
-    /**
-     * Players reflection
-     */
-    public static final class Player extends PlayerReflection {
-
-    }
-
+    /** Players reflection */
+    public static final class Player extends PlayerReflection {}
 }

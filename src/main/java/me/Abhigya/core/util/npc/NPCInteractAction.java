@@ -4,10 +4,10 @@ import org.bukkit.entity.Player;
 
 public interface NPCInteractAction {
 
-    void onInteract( NPC npc, Player player, ClickType clickType );
+    void onInteract(NPC npc, Player player, ClickType clickType);
 
     enum ClickType {
-        LEFT_CLICK, RIGHT_CLICK;
+        LEFT_CLICK,
+        RIGHT_CLICK;
     }
-
 }

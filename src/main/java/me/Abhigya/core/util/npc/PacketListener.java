@@ -14,40 +14,48 @@ public class PacketListener extends PacketListenerAbstract {
 
     private NPCPool pool;
 
-    public PacketListener( NPCPool pool ) {
+    public PacketListener(NPCPool pool) {
         this.pool = pool;
     }
 
     @Override
-    public void onPacketPlayReceive( PacketPlayReceiveEvent event ) {
-        if ( event.getPacketId( ) == PacketType.Play.Client.USE_ENTITY ) {
-            WrappedPacketInUseEntity packet = new WrappedPacketInUseEntity( event.getNMSPacket( ) );
-            int targetId = packet.getEntityId( );
+    public void onPacketPlayReceive(PacketPlayReceiveEvent event) {
+        if (event.getPacketId() == PacketType.Play.Client.USE_ENTITY) {
+            WrappedPacketInUseEntity packet = new WrappedPacketInUseEntity(event.getNMSPacket());
+            int targetId = packet.getEntityId();
 
-            if ( this.pool.npcMap.containsKey( targetId ) ) {
-                NPC npc = this.pool.npcMap.get( targetId );
+            if (this.pool.npcMap.containsKey(targetId)) {
+                NPC npc = this.pool.npcMap.get(targetId);
 
-                WrappedPacketInUseEntity.EntityUseAction action = packet.getAction( );
+                WrappedPacketInUseEntity.EntityUseAction action = packet.getAction();
                 Hand usedHand;
 
-                if ( NPCModifier.MINECRAFT_VERSION.isNewerThanOrEquals( ServerVersion.v_1_17 ) ) {
+                if (NPCModifier.MINECRAFT_VERSION.isNewerThanOrEquals(ServerVersion.v_1_17)) {
                     // the hand is only available when not attacking
-                    usedHand = action == WrappedPacketInUseEntity.EntityUseAction.ATTACK
-                            ? Hand.MAIN_HAND
-                            : packet.getHand( ).orElse( Hand.MAIN_HAND );
+                    usedHand =
+                            action == WrappedPacketInUseEntity.EntityUseAction.ATTACK
+                                    ? Hand.MAIN_HAND
+                                    : packet.getHand().orElse(Hand.MAIN_HAND);
                 } else {
                     // the hand is only available when not attacking
-                    usedHand = action == WrappedPacketInUseEntity.EntityUseAction.ATTACK
-                            ? Hand.MAIN_HAND
-                            : packet.getHand( ).orElse( Hand.MAIN_HAND );
+                    usedHand =
+                            action == WrappedPacketInUseEntity.EntityUseAction.ATTACK
+                                    ? Hand.MAIN_HAND
+                                    : packet.getHand().orElse(Hand.MAIN_HAND);
                 }
 
-                Bukkit.getScheduler( ).runTask( this.pool.plugin,
-                        ( ) -> Bukkit.getPluginManager( ).callEvent(
-                                new PlayerNPCInteractEvent( event.getPlayer( ), npc, action, usedHand ) )
-                );
+                Bukkit.getScheduler()
+                        .runTask(
+                                this.pool.plugin,
+                                () ->
+                                        Bukkit.getPluginManager()
+                                                .callEvent(
+                                                        new PlayerNPCInteractEvent(
+                                                                event.getPlayer(),
+                                                                npc,
+                                                                action,
+                                                                usedHand)));
             }
         }
     }
-
 }

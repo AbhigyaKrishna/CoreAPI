@@ -5,12 +5,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 
-/**
- * An event fired when a NPC is shown for a certain player.
- */
+/** An event fired when a NPC is shown for a certain player. */
 public class PlayerNPCShowEvent extends PlayerNPCEvent {
 
-    private static final HandlerList HANDLER_LIST = new HandlerList( );
+    private static final HandlerList HANDLER_LIST = new HandlerList();
 
     /**
      * Constructs a new event instance.
@@ -18,8 +16,8 @@ public class PlayerNPCShowEvent extends PlayerNPCEvent {
      * @param who The player who is now seeing the npc
      * @param npc The npc the player is now seeing
      */
-    public PlayerNPCShowEvent( Player who, NPC npc ) {
-        super( who, npc );
+    public PlayerNPCShowEvent(Player who, NPC npc) {
+        super(who, npc);
     }
 
     /**
@@ -28,17 +26,14 @@ public class PlayerNPCShowEvent extends PlayerNPCEvent {
      * @return the handlers for this event.
      */
     @NotNull
-    public static HandlerList getHandlerList( ) {
+    public static HandlerList getHandlerList() {
         return HANDLER_LIST;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @NotNull
     @Override
-    public HandlerList getHandlers( ) {
+    public HandlerList getHandlers() {
         return HANDLER_LIST;
     }
-
 }

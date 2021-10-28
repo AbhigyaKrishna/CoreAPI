@@ -13,11 +13,11 @@ public class Note {
     private int panning;
     private short pitch;
 
-    public Note( byte instrument, byte key ) {
-        this( instrument, key, (byte) 100, (byte) 100, (short) 0 );
+    public Note(byte instrument, byte key) {
+        this(instrument, key, (byte) 100, (byte) 100, (short) 0);
     }
 
-    public Note( byte instrument, byte key, byte velocity, int panning, short pitch ) {
+    public Note(byte instrument, byte key, byte velocity, int panning, short pitch) {
         this.instrument = instrument;
         this.key = key;
         this.velocity = velocity;
@@ -25,17 +25,13 @@ public class Note {
         this.pitch = pitch;
     }
 
-    /**
-     * Gets instrument number
-     */
-    public byte getInstrument( ) {
+    /** Gets instrument number */
+    public byte getInstrument() {
         return instrument;
     }
 
-    /**
-     * Sets instrument number
-     */
-    public void setInstrument( byte instrument ) {
+    /** Sets instrument number */
+    public void setInstrument(byte instrument) {
         this.instrument = instrument;
     }
 
@@ -44,7 +40,7 @@ public class Note {
      *
      * @return
      */
-    public byte getKey( ) {
+    public byte getKey() {
         return key;
     }
 
@@ -53,29 +49,25 @@ public class Note {
      *
      * @param key
      */
-    public void setKey( byte key ) {
+    public void setKey(byte key) {
         this.key = key;
     }
 
     /**
-     * Returns note pitch.
-     * 100 = 1 key
-     * 1200 = 1 octave
+     * Returns note pitch. 100 = 1 key 1200 = 1 octave
      *
      * @return
      */
-    public short getPitch( ) {
+    public short getPitch() {
         return pitch;
     }
 
     /**
-     * Sets note pitch.
-     * 100 = 1 key
-     * 1200 = 1 octave
+     * Sets note pitch. 100 = 1 key 1200 = 1 octave
      *
      * @param pitch note pitch
      */
-    public void setPitch( short pitch ) {
+    public void setPitch(short pitch) {
         this.pitch = pitch;
     }
 
@@ -84,7 +76,7 @@ public class Note {
      *
      * @return
      */
-    public byte getVelocity( ) {
+    public byte getVelocity() {
         return velocity;
     }
 
@@ -93,9 +85,9 @@ public class Note {
      *
      * @param velocity number from 0 - 100
      */
-    public void setVelocity( byte velocity ) {
-        if ( velocity < 0 ) velocity = 0;
-        if ( velocity > 100 ) velocity = 100;
+    public void setVelocity(byte velocity) {
+        if (velocity < 0) velocity = 0;
+        if (velocity > 100) velocity = 100;
 
         this.velocity = velocity;
     }
@@ -105,7 +97,7 @@ public class Note {
      *
      * @return
      */
-    public int getPanning( ) {
+    public int getPanning() {
         return panning;
     }
 
@@ -114,8 +106,7 @@ public class Note {
      *
      * @param panning
      */
-    public void setPanning( int panning ) {
+    public void setPanning(int panning) {
         this.panning = panning;
     }
-
 }

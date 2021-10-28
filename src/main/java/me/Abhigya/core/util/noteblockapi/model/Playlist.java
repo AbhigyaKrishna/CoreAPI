@@ -6,14 +6,14 @@ import java.util.List;
 
 public class Playlist {
 
-    ArrayList< Song > songs = new ArrayList<>( );
+    ArrayList<Song> songs = new ArrayList<>();
 
-    public Playlist( Song... songs ) {
-        if ( songs.length == 0 ) {
-            throw new IllegalArgumentException( "Cannot create empty playlist" );
+    public Playlist(Song... songs) {
+        if (songs.length == 0) {
+            throw new IllegalArgumentException("Cannot create empty playlist");
         }
-        checkNull( songs );
-        this.songs.addAll( Arrays.asList( songs ) );
+        checkNull(songs);
+        this.songs.addAll(Arrays.asList(songs));
     }
 
     /**
@@ -21,12 +21,12 @@ public class Playlist {
      *
      * @param songs
      */
-    public void add( Song... songs ) {
-        if ( songs.length == 0 ) {
+    public void add(Song... songs) {
+        if (songs.length == 0) {
             return;
         }
-        checkNull( songs );
-        this.songs.addAll( Arrays.asList( songs ) );
+        checkNull(songs);
+        this.songs.addAll(Arrays.asList(songs));
     }
 
     /**
@@ -35,21 +35,21 @@ public class Playlist {
      * @param index
      * @param songs
      */
-    public void insert( int index, Song... songs ) {
-        if ( songs.length == 0 ) {
+    public void insert(int index, Song... songs) {
+        if (songs.length == 0) {
             return;
         }
-        if ( index > this.songs.size( ) ) {
-            throw new IllegalArgumentException( "Index is higher than playlist size" );
+        if (index > this.songs.size()) {
+            throw new IllegalArgumentException("Index is higher than playlist size");
         }
-        checkNull( songs );
-        this.songs.addAll( index, Arrays.asList( songs ) );
+        checkNull(songs);
+        this.songs.addAll(index, Arrays.asList(songs));
     }
 
-    private void checkNull( Song... songs ) {
-        List< Song > songList = Arrays.asList( songs );
-        if ( songList.contains( null ) ) {
-            throw new IllegalArgumentException( "Cannot add null to playlist" );
+    private void checkNull(Song... songs) {
+        List<Song> songList = Arrays.asList(songs);
+        if (songList.contains(null)) {
+            throw new IllegalArgumentException("Cannot add null to playlist");
         }
     }
 
@@ -57,16 +57,17 @@ public class Playlist {
      * Removes songs from playlist
      *
      * @param songs
-     * @throws IllegalArgumentException when you try to remove all {@link Song} from {@link Playlist}
+     * @throws IllegalArgumentException when you try to remove all {@link Song} from {@link
+     *     Playlist}
      */
-    public void remove( Song... songs ) {
-        ArrayList< Song > songsTemp = new ArrayList<>( );
-        songsTemp.addAll( this.songs );
-        songsTemp.removeAll( Arrays.asList( songs ) );
-        if ( songsTemp.size( ) > 0 ) {
+    public void remove(Song... songs) {
+        ArrayList<Song> songsTemp = new ArrayList<>();
+        songsTemp.addAll(this.songs);
+        songsTemp.removeAll(Arrays.asList(songs));
+        if (songsTemp.size() > 0) {
             this.songs = songsTemp;
         } else {
-            throw new IllegalArgumentException( "Cannot remove all songs from playlist" );
+            throw new IllegalArgumentException("Cannot remove all songs from playlist");
         }
     }
 
@@ -76,8 +77,8 @@ public class Playlist {
      * @param songNumber - song index
      * @return
      */
-    public Song get( int songNumber ) {
-        return songs.get( songNumber );
+    public Song get(int songNumber) {
+        return songs.get(songNumber);
     }
 
     /**
@@ -85,8 +86,8 @@ public class Playlist {
      *
      * @return
      */
-    public int getCount( ) {
-        return songs.size( );
+    public int getCount() {
+        return songs.size();
     }
 
     /**
@@ -95,8 +96,8 @@ public class Playlist {
      * @param songNumber
      * @return true if there is another {@link Song} after specified index
      */
-    public boolean hasNext( int songNumber ) {
-        return songs.size( ) > ( songNumber + 1 );
+    public boolean hasNext(int songNumber) {
+        return songs.size() > (songNumber + 1);
     }
 
     /**
@@ -105,8 +106,8 @@ public class Playlist {
      * @param songNumber
      * @return
      */
-    public boolean exist( int songNumber ) {
-        return songs.size( ) > songNumber;
+    public boolean exist(int songNumber) {
+        return songs.size() > songNumber;
     }
 
     /**
@@ -115,8 +116,8 @@ public class Playlist {
      * @param song
      * @return Index of song. -1 if song is not in playelist
      */
-    public int getIndex( Song song ) {
-        return songs.indexOf( song );
+    public int getIndex(Song song) {
+        return songs.indexOf(song);
     }
 
     /**
@@ -125,8 +126,8 @@ public class Playlist {
      * @param song
      * @return
      */
-    public boolean contains( Song song ) {
-        return songs.contains( song );
+    public boolean contains(Song song) {
+        return songs.contains(song);
     }
 
     /**
@@ -134,8 +135,7 @@ public class Playlist {
      *
      * @return
      */
-    public ArrayList< Song > getSongList( ) {
-        return (ArrayList< Song >) songs.clone( );
+    public ArrayList<Song> getSongList() {
+        return (ArrayList<Song>) songs.clone();
     }
-
 }

@@ -8,9 +8,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
-/**
- * A wrapper for a game profile which can be completed.
- */
+/** A wrapper for a game profile which can be completed. */
 public class Profile implements Cloneable {
 
     private String name;
@@ -22,18 +20,18 @@ public class Profile implements Cloneable {
      *
      * @param uniqueId The unique id of the profile.
      */
-    public Profile( @NotNull UUID uniqueId ) {
-        this( uniqueId, null );
+    public Profile(@NotNull UUID uniqueId) {
+        this(uniqueId, null);
     }
 
     /**
      * Creates a new profile.
      *
      * @param uniqueId The unique id of the profile.
-     * @param skin     The properties of the profile.
+     * @param skin The properties of the profile.
      */
-    public Profile( @NotNull UUID uniqueId, Skin skin ) {
-        this( uniqueId, null, skin );
+    public Profile(@NotNull UUID uniqueId, Skin skin) {
+        this(uniqueId, null, skin);
     }
 
     /**
@@ -41,8 +39,8 @@ public class Profile implements Cloneable {
      *
      * @param name The name of the profile.
      */
-    public Profile( @NotNull String name ) {
-        this( name, null );
+    public Profile(@NotNull String name) {
+        this(name, null);
     }
 
     /**
@@ -51,19 +49,20 @@ public class Profile implements Cloneable {
      * @param name The name of the profile.
      * @param skin The properties of the profile.
      */
-    public Profile( @NotNull String name, Skin skin ) {
-        this( null, name, skin );
+    public Profile(@NotNull String name, Skin skin) {
+        this(null, name, skin);
     }
 
     /**
      * Creates a new profile. Either {@code uniqueId} or {@code name} must be non-null.
      *
      * @param uniqueId The unique id of the profile.
-     * @param name     The name of the profile.
-     * @param skin     The properties of the profile.
+     * @param name The name of the profile.
+     * @param skin The properties of the profile.
      */
-    public Profile( UUID uniqueId, String name, Skin skin ) {
-        Preconditions.checkArgument( name != null || uniqueId != null, "Either name or uniqueId must be given!" );
+    public Profile(UUID uniqueId, String name, Skin skin) {
+        Preconditions.checkArgument(
+                name != null || uniqueId != null, "Either name or uniqueId must be given!");
 
         this.uniqueId = uniqueId;
         this.name = name;
@@ -75,7 +74,7 @@ public class Profile implements Cloneable {
      *
      * @return if this profile is complete (has unique id and name)
      */
-    public boolean isComplete( ) {
+    public boolean isComplete() {
         return this.uniqueId != null && this.name != null;
     }
 
@@ -84,7 +83,7 @@ public class Profile implements Cloneable {
      *
      * @return if this profile has properties
      */
-    public boolean hasSkin( ) {
+    public boolean hasSkin() {
         return this.skin != null;
     }
 
@@ -93,7 +92,7 @@ public class Profile implements Cloneable {
      *
      * @return if this profile has a unique id.
      */
-    public boolean hasUniqueId( ) {
+    public boolean hasUniqueId() {
         return this.uniqueId != null;
     }
 
@@ -103,18 +102,18 @@ public class Profile implements Cloneable {
      *
      * @return the unique id of this profile.
      */
-    public UUID getUniqueId( ) {
+    public UUID getUniqueId() {
         return this.uniqueId;
     }
 
     /**
-     * Sets the unique of this profile. To re-request the profile textures/uuid of this profile, make
-     * sure the properties are clear.
+     * Sets the unique of this profile. To re-request the profile textures/uuid of this profile,
+     * make sure the properties are clear.
      *
      * @param uniqueId the new unique of this profile.
      * @return the same profile instance, for chaining.
      */
-    public Profile setUniqueId( UUID uniqueId ) {
+    public Profile setUniqueId(UUID uniqueId) {
         this.uniqueId = uniqueId;
         return this;
     }
@@ -125,7 +124,7 @@ public class Profile implements Cloneable {
      * @return if this profile has a name.
      * @since 2.5-SNAPSHOT
      */
-    public boolean hasName( ) {
+    public boolean hasName() {
         return this.name != null;
     }
 
@@ -135,7 +134,7 @@ public class Profile implements Cloneable {
      *
      * @return the name of this profile.
      */
-    public String getName( ) {
+    public String getName() {
         return this.name;
     }
 
@@ -147,7 +146,7 @@ public class Profile implements Cloneable {
      * @return the same profile instance, for chaining.
      */
     @NotNull
-    public Profile setName( String name ) {
+    public Profile setName(String name) {
         this.name = name;
         return this;
     }
@@ -158,7 +157,7 @@ public class Profile implements Cloneable {
      * @return the properties of this profile.
      */
     @NotNull
-    public Skin getSkin( ) {
+    public Skin getSkin() {
         return this.skin;
     }
 
@@ -167,39 +166,41 @@ public class Profile implements Cloneable {
      *
      * @param skin The new properties of this profile.
      */
-    public void setSkin( Skin skin ) {
+    public void setSkin(Skin skin) {
         this.skin = skin;
     }
 
     /**
-     * Converts this profile to a protocol lib wrapper. This method requires protocol lib a dependency
-     * of your project and is not the point of this class. It will be removed in a further release.
+     * Converts this profile to a protocol lib wrapper. This method requires protocol lib a
+     * dependency of your project and is not the point of this class. It will be removed in a
+     * further release.
      *
      * @return this profile as a protocol lib wrapper.
      * @deprecated No longer supported for public use, convert it yourself when needed.
      */
     @NotNull
     @Deprecated
-    public WrappedGameProfile asWrapped( ) {
-        return this.asWrapped( true );
+    public WrappedGameProfile asWrapped() {
+        return this.asWrapped(true);
     }
 
     /**
-     * Converts this profile to a protocol lib wrapper. This method requires protocol lib a dependency
-     * of your project and is not the point of this class. It will be removed in a further release.
+     * Converts this profile to a protocol lib wrapper. This method requires protocol lib a
+     * dependency of your project and is not the point of this class. It will be removed in a
+     * further release.
      *
      * @param withProperties If the properties of this wrapper should get copied.
      * @return this profile as a protocol lib wrapper.
      */
     @NotNull
-    public WrappedGameProfile asWrapped( boolean withProperties ) {
-        Object profile = GameProfileUtil.getGameProfile( this.getUniqueId( ), this.getName( ) );
+    public WrappedGameProfile asWrapped(boolean withProperties) {
+        Object profile = GameProfileUtil.getGameProfile(this.getUniqueId(), this.getName());
 
-        if ( withProperties ) {
-            GameProfileUtil.setGameProfileSkin( profile, this.skin );
+        if (withProperties) {
+            GameProfileUtil.setGameProfileSkin(profile, this.skin);
         }
 
-        return GameProfileUtil.getWrappedGameProfile( profile );
+        return GameProfileUtil.getWrappedGameProfile(profile);
     }
 
     /**
@@ -208,12 +209,11 @@ public class Profile implements Cloneable {
      * @return the cloned profile.
      */
     @Override
-    public Profile clone( ) {
+    public Profile clone() {
         try {
-            return (Profile) super.clone( );
-        } catch ( CloneNotSupportedException exception ) {
-            return new Profile( this.uniqueId, this.name, this.skin );
+            return (Profile) super.clone();
+        } catch (CloneNotSupportedException exception) {
+            return new Profile(this.uniqueId, this.name, this.skin);
         }
     }
-
 }

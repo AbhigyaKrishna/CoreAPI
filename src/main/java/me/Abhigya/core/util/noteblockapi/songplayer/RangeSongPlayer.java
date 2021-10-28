@@ -6,41 +6,39 @@ import me.Abhigya.core.util.noteblockapi.model.Song;
 import me.Abhigya.core.util.noteblockapi.model.SoundCategory;
 import org.bukkit.entity.Player;
 
-/**
- * SongPlayer playing only in specified distance
- */
+/** SongPlayer playing only in specified distance */
 public abstract class RangeSongPlayer extends SongPlayer {
 
     private int distance = 16;
 
-    public RangeSongPlayer( NoteBlockAPI api, Song song, SoundCategory soundCategory ) {
-        super( api, song, soundCategory );
+    public RangeSongPlayer(NoteBlockAPI api, Song song, SoundCategory soundCategory) {
+        super(api, song, soundCategory);
     }
 
-    public RangeSongPlayer( NoteBlockAPI api, Song song ) {
-        super( api, song );
+    public RangeSongPlayer(NoteBlockAPI api, Song song) {
+        super(api, song);
     }
 
-    public RangeSongPlayer( NoteBlockAPI api, Playlist playlist, SoundCategory soundCategory ) {
-        super( api, playlist, soundCategory );
+    public RangeSongPlayer(NoteBlockAPI api, Playlist playlist, SoundCategory soundCategory) {
+        super(api, playlist, soundCategory);
     }
 
-    public RangeSongPlayer( NoteBlockAPI api, Playlist playlist ) {
-        super( api, playlist );
+    public RangeSongPlayer(NoteBlockAPI api, Playlist playlist) {
+        super(api, playlist);
     }
 
     @Override
-    void update( String key, Object value ) {
-        super.update( key, value );
+    void update(String key, Object value) {
+        super.update(key, value);
 
-        switch ( key ) {
+        switch (key) {
             case "distance":
                 distance = (int) value;
                 break;
         }
     }
 
-    public int getDistance( ) {
+    public int getDistance() {
         return distance;
     }
 
@@ -49,7 +47,7 @@ public abstract class RangeSongPlayer extends SongPlayer {
      *
      * @param distance (Default 16 blocks)
      */
-    public void setDistance( int distance ) {
+    public void setDistance(int distance) {
         this.distance = distance;
     }
 
@@ -59,6 +57,5 @@ public abstract class RangeSongPlayer extends SongPlayer {
      * @param player in range
      * @return ability to hear the current RangeSongPlayer
      */
-    public abstract boolean isInRange( Player player );
-
+    public abstract boolean isInRange(Player player);
 }

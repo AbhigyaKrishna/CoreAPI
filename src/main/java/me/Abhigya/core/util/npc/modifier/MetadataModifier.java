@@ -1,26 +1,28 @@
-//package me.Abhigya.core.util.npc.modifier;
+// package me.Abhigya.core.util.npc.modifier;
 //
-//import com.comphenix.protocol.PacketType;
-//import com.comphenix.protocol.events.PacketContainer;
-//import com.comphenix.protocol.wrappers.EnumWrappers;
-//import com.comphenix.protocol.wrappers.WrappedDataWatcher;
-//import com.comphenix.protocol.wrappers.WrappedWatchableObject;
-//import io.github.retrooper.packetevents.packetwrappers.WrappedPacket;
-//import io.github.retrooper.packetevents.packetwrappers.play.out.animation.WrappedPacketOutAnimation;
-//import io.github.retrooper.packetevents.packetwrappers.play.out.entitymetadata.WrappedPacketOutEntityMetadata;
-//import me.abhigya.particles.npc.NPC;
-//import org.bukkit.entity.Player;
-//import org.jetbrains.annotations.NotNull;
-//import org.jetbrains.annotations.Nullable;
+// import com.comphenix.protocol.PacketType;
+// import com.comphenix.protocol.events.PacketContainer;
+// import com.comphenix.protocol.wrappers.EnumWrappers;
+// import com.comphenix.protocol.wrappers.WrappedDataWatcher;
+// import com.comphenix.protocol.wrappers.WrappedWatchableObject;
+// import io.github.retrooper.packetevents.packetwrappers.WrappedPacket;
+// import
+// io.github.retrooper.packetevents.packetwrappers.play.out.animation.WrappedPacketOutAnimation;
+// import
+// io.github.retrooper.packetevents.packetwrappers.play.out.entitymetadata.WrappedPacketOutEntityMetadata;
+// import me.abhigya.particles.npc.NPC;
+// import org.bukkit.entity.Player;
+// import org.jetbrains.annotations.NotNull;
+// import org.jetbrains.annotations.Nullable;
 //
-//import java.util.*;
-//import java.util.function.Function;
-//import java.util.function.Supplier;
+// import java.util.*;
+// import java.util.function.Function;
+// import java.util.function.Supplier;
 //
-///**
+/// **
 // * A modifier for modifying the metadata of a player.
 // */
-//public class MetadataModifier extends NPCModifier {
+// public class MetadataModifier extends NPCModifier {
 //
 //    /**
 //     * The queued metadata.
@@ -47,7 +49,8 @@
 //     * @return The same instance of this class, for chaining.
 //     */
 //    @NotNull
-//    public <I, O> MetadataModifier queue(@NotNull EntityMetadata<I, O> metadata, @NotNull I value) {
+//    public <I, O> MetadataModifier queue(@NotNull EntityMetadata<I, O> metadata, @NotNull I value)
+// {
 //        if (!metadata.getAvailabilitySupplier().get()) {
 //            return this;
 //        }
@@ -60,7 +63,8 @@
 //                    relatedMetadata.getOutputType());
 //        }
 //        return this
-//                .queue(metadata.getIndex(), metadata.getMapper().apply(value), metadata.getOutputType());
+//                .queue(metadata.getIndex(), metadata.getMapper().apply(value),
+// metadata.getOutputType());
 //    }
 //
 //    /**
@@ -75,7 +79,8 @@
 //    @NotNull
 //    public <T> MetadataModifier queue(int index, @NotNull T value, @NotNull Class<T> clazz) {
 //        return this
-//                .queue(index, value, MINECRAFT_VERSION < 9 ? null : WrappedDataWatcher.Registry.get(clazz));
+//                .queue(index, value, MINECRAFT_VERSION < 9 ? null :
+// WrappedDataWatcher.Registry.get(clazz));
 //    }
 //
 //    /**
@@ -107,7 +112,8 @@
 //     */
 //    @Override
 //    public void send(@NotNull Iterable<? extends Player> players, boolean createClone) {
-////        PacketContainer packetContainer = super.newContainer(PacketType.Play.Server.ENTITY_METADATA);
+////        PacketContainer packetContainer =
+// super.newContainer(PacketType.Play.Server.ENTITY_METADATA);
 //        WrappedPacket packet = new WrappedPacketOutEntityMetadata();
 //        packetContainer.getWatchableCollectionModifier().write(0, this.metadata);
 //        super.send(players, createClone);
@@ -135,7 +141,8 @@
 //                        6,
 //                        (Class<Object>) EnumWrappers.getEntityPoseClass(),
 //                        Collections.emptyList(),
-//                        input -> (input ? EnumWrappers.EntityPose.CROUCHING : EnumWrappers.EntityPose.STANDING)
+//                        input -> (input ? EnumWrappers.EntityPose.CROUCHING :
+// EnumWrappers.EntityPose.STANDING)
 //                                .toNms(),
 //                        () -> NPCModifier.MINECRAFT_VERSION >= 14));
 //        /**
@@ -150,7 +157,8 @@
 //         * An entity metadata for modifying the pose.
 //         */
 //        @SuppressWarnings("unchecked")
-//        public static final EntityMetadata<EnumWrappers.EntityPose, Object> POSE = new EntityMetadata<>(
+//        public static final EntityMetadata<EnumWrappers.EntityPose, Object> POSE = new
+// EntityMetadata<>(
 //                6,
 //                (Class<Object>) EnumWrappers.getEntityPoseClass(),
 //                Collections.emptyList(),
@@ -166,7 +174,8 @@
 //         */
 //        private final Class<O> outputType;
 //        /**
-//         * The mapper which maps the input value type to the writeable output type for the data watcher
+//         * The mapper which maps the input value type to the writeable output type for the data
+// watcher
 //         * object.
 //         */
 //        private final Function<I, O> mapper;
@@ -189,17 +198,21 @@
 //         *
 //         * @param baseIndex            The base index of the metadata in the data watcher object.
 //         * @param outputType           The output mapper class.
-//         * @param shiftVersions        The versions in which the data watcher index was shifted and must
+//         * @param shiftVersions        The versions in which the data watcher index was shifted
+// and must
 //         *                             be modified.
 //         * @param mapper               The mapper which maps the input value type to the writeable
 //         *                             output type for the data watcher object.
-//         * @param availabilitySupplier A supplier returning if the entity metadata is available for this
+//         * @param availabilitySupplier A supplier returning if the entity metadata is available
+// for this
 //         *                             server version.
-//         * @param relatedMetadata      The metadata which is related to this metadata, will be applied
+//         * @param relatedMetadata      The metadata which is related to this metadata, will be
+// applied
 //         *                             too if this metadata is applied.
 //         */
 //        @SafeVarargs
-//        public EntityMetadata(int baseIndex, Class<O> outputType, Collection<Integer> shiftVersions,
+//        public EntityMetadata(int baseIndex, Class<O> outputType, Collection<Integer>
+// shiftVersions,
 //                              Function<I, O> mapper, Supplier<Boolean> availabilitySupplier,
 //                              EntityMetadata<I, Object>... relatedMetadata) {
 //            this.baseIndex = baseIndex;
@@ -215,28 +228,35 @@
 //         *
 //         * @param baseIndex       The base index of the metadata in the data watcher object.
 //         * @param outputType      The output mapper class.
-//         * @param shiftVersions   The versions in which the data watcher index was shifted and must be
+//         * @param shiftVersions   The versions in which the data watcher index was shifted and
+// must be
 //         *                        modified.
-//         * @param mapper          The mapper which maps the input value type to the writeable output
+//         * @param mapper          The mapper which maps the input value type to the writeable
+// output
 //         *                        type for the data watcher object.
-//         * @param relatedMetadata The metadata which is related to this metadata, will be applied too if
+//         * @param relatedMetadata The metadata which is related to this metadata, will be applied
+// too if
 //         *                        this metadata is applied.
 //         */
 //        @SafeVarargs
-//        public EntityMetadata(int baseIndex, Class<O> outputType, Collection<Integer> shiftVersions,
-//                              Function<I, O> mapper, EntityMetadata<I, Object>... relatedMetadata) {
+//        public EntityMetadata(int baseIndex, Class<O> outputType, Collection<Integer>
+// shiftVersions,
+//                              Function<I, O> mapper, EntityMetadata<I, Object>... relatedMetadata)
+// {
 //            this(baseIndex, outputType, shiftVersions, mapper, () -> true, relatedMetadata);
 //        }
 //
 //        /**
-//         * Get the index in the data watcher object for the minecraft version of the current server
+//         * Get the index in the data watcher object for the minecraft version of the current
+// server
 //         * instance.
 //         *
 //         * @return the index in the data watcher object to modify.
 //         */
 //        public int getIndex() {
 //            return this.baseIndex + Math.toIntExact(
-//                    this.shiftVersions.stream().filter(minor -> NPCModifier.MINECRAFT_VERSION >= minor)
+//                    this.shiftVersions.stream().filter(minor -> NPCModifier.MINECRAFT_VERSION >=
+// minor)
 //                            .count());
 //        }
 //
@@ -251,7 +271,8 @@
 //        }
 //
 //        /**
-//         * Get the mapper of this modifier converting the input type to a writeable object for a data
+//         * Get the mapper of this modifier converting the input type to a writeable object for a
+// data
 //         * watcher.
 //         *
 //         * @return the mapper of this modifier converting the input type.
@@ -262,7 +283,8 @@
 //        }
 //
 //        /**
-//         * @return A supplier returning if the entity metadata is available for this server version.
+//         * @return A supplier returning if the entity metadata is available for this server
+// version.
 //         */
 //        @NotNull
 //        public Supplier<Boolean> getAvailabilitySupplier() {
@@ -270,7 +292,8 @@
 //        }
 //
 //        /**
-//         * @return The metadata which is related to this metadata, will be applied too if this metadata
+//         * @return The metadata which is related to this metadata, will be applied too if this
+// metadata
 //         * is applied.
 //         */
 //        @NotNull
@@ -278,4 +301,4 @@
 //            return this.relatedMetadata;
 //        }
 //    }
-//}
+// }

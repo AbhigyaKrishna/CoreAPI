@@ -2,61 +2,59 @@ package me.Abhigya.core.util.reflection.resolver.wrapper;
 
 import java.util.Objects;
 
-public class ClassWrapper< R > extends WrapperAbstract {
+public class ClassWrapper<R> extends WrapperAbstract {
 
-    private final Class< R > clazz;
+    private final Class<R> clazz;
 
-    public ClassWrapper( Class< R > clazz ) {
+    public ClassWrapper(Class<R> clazz) {
         this.clazz = clazz;
     }
 
     @Override
-    public boolean exists( ) {
+    public boolean exists() {
         return this.clazz != null;
     }
 
-    public Class< R > getClazz( ) {
+    public Class<R> getClazz() {
         return clazz;
     }
 
-    public String getName( ) {
-        return this.clazz.getName( );
+    public String getName() {
+        return this.clazz.getName();
     }
 
-    public R newInstance( ) {
+    public R newInstance() {
         try {
-            return this.clazz.newInstance( );
-        } catch ( Exception e ) {
-            throw new RuntimeException( e );
+            return this.clazz.newInstance();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 
-    public R newInstanceSilent( ) {
+    public R newInstanceSilent() {
         try {
-            return this.clazz.newInstance( );
-        } catch ( InstantiationException | IllegalAccessException ignored ) {
+            return this.clazz.newInstance();
+        } catch (InstantiationException | IllegalAccessException ignored) {
         }
         return null;
     }
 
     @Override
-    public boolean equals( Object object ) {
-        if ( this == object ) {
+    public boolean equals(Object object) {
+        if (this == object) {
             return true;
         }
-        if ( object == null || getClass( ) != object.getClass( ) ) {
+        if (object == null || getClass() != object.getClass()) {
             return false;
         }
 
-        ClassWrapper< ? > that = (ClassWrapper< ? >) object;
+        ClassWrapper<?> that = (ClassWrapper<?>) object;
 
-        return Objects.equals( clazz, that.clazz );
-
+        return Objects.equals(clazz, that.clazz);
     }
 
     @Override
-    public int hashCode( ) {
-        return clazz != null ? clazz.hashCode( ) : 0;
+    public int hashCode() {
+        return clazz != null ? clazz.hashCode() : 0;
     }
-
 }

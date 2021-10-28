@@ -10,24 +10,23 @@ public interface PlaceholderManager {
      *
      * @return the registry accessing the manager's placeholders
      */
-    PlaceholderRegistry< ? > getRegistry( );
+    PlaceholderRegistry<?> getRegistry();
 
-    void register( Plugin plugin, Placeholder placeholder );
+    void register(Plugin plugin, Placeholder placeholder);
 
-    boolean hasPlaceholders( String str );
+    boolean hasPlaceholders(String str);
 
-    String apply( Player player, String text, PlaceholderRegistry< ? > registry );
+    String apply(Player player, String text, PlaceholderRegistry<?> registry);
 
-    default String apply( Player player, String text ) {
-        return apply( player, text, getRegistry( ) );
+    default String apply(Player player, String text) {
+        return apply(player, text, getRegistry());
     }
 
-    default String single( Player player, String string ) {
-        return apply( player, '%' + string + '%' );
+    default String single(Player player, String string) {
+        return apply(player, '%' + string + '%');
     }
 
-    default String single( Player player, String string, PlaceholderRegistry< ? > registry ) {
-        return apply( player, '%' + string + '%', registry );
+    default String single(Player player, String string, PlaceholderRegistry<?> registry) {
+        return apply(player, '%' + string + '%', registry);
     }
-
 }

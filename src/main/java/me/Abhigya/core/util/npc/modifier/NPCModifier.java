@@ -24,18 +24,13 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
 public class NPCModifier {
 
-    /**
-     * The minor version of the servers minecraft version.
-     */
-    public static final ServerVersion MINECRAFT_VERSION = PacketEvents.get( ).getServerUtils( ).getVersion( );
+    /** The minor version of the servers minecraft version. */
+    public static final ServerVersion MINECRAFT_VERSION =
+            PacketEvents.get().getServerUtils().getVersion();
 
-    /**
-     * All queued packet containers.
-     */
-    protected final List< WrappedPacket > packetContainers = new CopyOnWriteArrayList<>( );
-    /**
-     * The target npc.
-     */
+    /** All queued packet containers. */
+    protected final List<WrappedPacket> packetContainers = new CopyOnWriteArrayList<>();
+    /** The target npc. */
     protected NPC npc;
 
     /**
@@ -43,7 +38,7 @@ public class NPCModifier {
      *
      * @param npc The npc this modifier is for.
      */
-    public NPCModifier( @NotNull NPC npc ) {
+    public NPCModifier(@NotNull NPC npc) {
         this.npc = npc;
     }
 
@@ -53,36 +48,38 @@ public class NPCModifier {
      * @param packetType The type of the packet.
      * @return The created packet container.
      */
-//    @NotNull
-//    protected WrappedPacket newContainer(@NotNull PacketType packetType) {
-//        return this.newContainer(packetType, true);
-//    }
+    //    @NotNull
+    //    protected WrappedPacket newContainer(@NotNull PacketType packetType) {
+    //        return this.newContainer(packetType, true);
+    //    }
 
     /**
      * Creates and adds a new packet container to the packet queue.
      *
-     * @param packetType   The type of the packet.
+     * @param packetType The type of the packet.
      * @param withEntityId If the first integer if the packet is the entity id.
      * @return The created packet container.
      */
-//    protected WrappedPacket newContainer(@NotNull PacketType packetType, boolean withEntityId) {
-//        WrappedPacket packetContainer = new WrappedPacket(packetType);
-//        if (withEntityId) {
-//            packetContainer.writeInt(0, this.npc.getEntityId());
-//        }
-//
-//        this.packetContainers.add(packetContainer);
-//        return packetContainer;
-//    }
+    //    protected WrappedPacket newContainer(@NotNull PacketType packetType, boolean withEntityId)
+    // {
+    //        WrappedPacket packetContainer = new WrappedPacket(packetType);
+    //        if (withEntityId) {
+    //            packetContainer.writeInt(0, this.npc.getEntityId());
+    //        }
+    //
+    //        this.packetContainers.add(packetContainer);
+    //        return packetContainer;
+    //    }
 
     /**
      * Get the last container in the packet queue or null if there is no container.
      *
      * @return the last container in the packet queue or {@code null} if there is no container.
      */
-    protected WrappedPacket lastContainer( ) {
-        return this.packetContainers.isEmpty( ) ? null
-                : this.packetContainers.get( this.packetContainers.size( ) - 1 );
+    protected WrappedPacket lastContainer() {
+        return this.packetContainers.isEmpty()
+                ? null
+                : this.packetContainers.get(this.packetContainers.size() - 1);
     }
 
     /**
@@ -91,16 +88,14 @@ public class NPCModifier {
      * @param def The container to return if there is no last container in the queue.
      * @return the last container in the packet queue or {@code def} if there is no container.
      */
-    protected WrappedPacket lastContainer( WrappedPacket def ) {
-        final WrappedPacket container = this.lastContainer( );
+    protected WrappedPacket lastContainer(WrappedPacket def) {
+        final WrappedPacket container = this.lastContainer();
         return container == null ? def : container;
     }
 
-    /**
-     * Sends the queued modifications to all players
-     */
-    public void send( ) {
-        this.send( Bukkit.getOnlinePlayers( ) );
+    /** Sends the queued modifications to all players */
+    public void send() {
+        this.send(Bukkit.getOnlinePlayers());
     }
 
     /**
@@ -108,8 +103,8 @@ public class NPCModifier {
      *
      * @param createClone If a copy of each packet container should be done before sending.
      */
-    public void send( boolean createClone ) {
-        this.send( Bukkit.getOnlinePlayers( ), createClone );
+    public void send(boolean createClone) {
+        this.send(Bukkit.getOnlinePlayers(), createClone);
     }
 
     /**
@@ -117,23 +112,26 @@ public class NPCModifier {
      *
      * @param players The receivers of the packet.
      */
-    public void send( @NotNull Iterable< ? extends Player > players ) {
-        this.send( players, false );
+    public void send(@NotNull Iterable<? extends Player> players) {
+        this.send(players, false);
     }
 
     /**
      * Sends the queued modifications to all given {@code players}.
      *
-     * @param players     The receivers of the packet.
+     * @param players The receivers of the packet.
      * @param createClone If a copy of each packet container should be done before sending.
      */
-    public void send( @NotNull Iterable< ? extends Player > players, boolean createClone ) {
-        players.forEach( player -> {
-            for ( WrappedPacket packetContainer : this.packetContainers ) {
-                PacketEvents.get( ).getPlayerUtils( ).sendPacket( player, (SendableWrapper) packetContainer );
-            }
-        } );
-        this.packetContainers.clear( );
+    public void send(@NotNull Iterable<? extends Player> players, boolean createClone) {
+        players.forEach(
+                player -> {
+                    for (WrappedPacket packetContainer : this.packetContainers) {
+                        PacketEvents.get()
+                                .getPlayerUtils()
+                                .sendPacket(player, (SendableWrapper) packetContainer);
+                    }
+                });
+        this.packetContainers.clear();
     }
 
     /**
@@ -141,18 +139,17 @@ public class NPCModifier {
      *
      * @param targetPlayers the players which should see the modification
      */
-    public void send( @NotNull Player... targetPlayers ) {
-        this.send( Arrays.asList( targetPlayers ) );
+    public void send(@NotNull Player... targetPlayers) {
+        this.send(Arrays.asList(targetPlayers));
     }
 
     /**
      * Sends the queued modifications to certain players
      *
      * @param targetPlayers the players which should see the modification
-     * @param createClone   If a copy of each packet container should be done before sending.
+     * @param createClone If a copy of each packet container should be done before sending.
      */
-    public void send( boolean createClone, @NotNull Player... targetPlayers ) {
-        this.send( Arrays.asList( targetPlayers ), createClone );
+    public void send(boolean createClone, @NotNull Player... targetPlayers) {
+        this.send(Arrays.asList(targetPlayers), createClone);
     }
-
 }

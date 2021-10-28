@@ -5,13 +5,12 @@ import org.bstats.charts.SingleLineChart;
 
 public class Metrics extends MetricsAdaptor {
 
-    protected Metrics( CoreAPI api, int pluginId ) {
-        super( api.getHandlingPlugin( ), pluginId );
+    protected Metrics(CoreAPI api, int pluginId) {
+        super(api.getHandlingPlugin(), pluginId);
     }
 
     @Override
-    public void register( ) {
-        this.addChart( new SingleLineChart( "servers", ( ) -> 1 ) );
+    public void register() {
+        this.addChart(new SingleLineChart("servers", () -> 1));
     }
-
 }

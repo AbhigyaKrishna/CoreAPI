@@ -1,10 +1,7 @@
 package me.Abhigya.core.util.noteblockapi.model;
 
-/**
- * @see org.bukkit.SoundCategory
- */
+/** @see org.bukkit.SoundCategory */
 public enum SoundCategory {
-
     MASTER,
     MUSIC,
     RECORDS,
@@ -15,5 +12,4 @@ public enum SoundCategory {
     PLAYERS,
     AMBIENT,
     VOICE;
-
 }

@@ -7,15 +7,14 @@ public class BossWitherNavigation extends Navigation {
 
     protected final BossWither boss;
 
-    public BossWitherNavigation( BossWither boss, World world ) {
-        super( boss, world );
+    public BossWitherNavigation(BossWither boss, World world) {
+        super(boss, world);
 
         this.boss = boss;
     }
 
     @Override // canNavigate
-    protected boolean b( ) {
+    protected boolean b() {
         return false;
     }
-
 }

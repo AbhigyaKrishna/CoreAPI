@@ -1,8 +1,6 @@
 package me.Abhigya.core.util.noteblockapi.model;
 
-/**
- * Create custom instruments from a sound file
- */
+/** Create custom instruments from a sound file */
 public class CustomInstrument {
 
     private byte index;
@@ -17,12 +15,12 @@ public class CustomInstrument {
      * @param name
      * @param soundFileName
      */
-    public CustomInstrument( byte index, String name, String soundFileName ) {
+    public CustomInstrument(byte index, String name, String soundFileName) {
         this.index = index;
         this.name = name;
-        this.soundFileName = soundFileName.replaceAll( ".ogg", "" );
-        if ( this.soundFileName.equalsIgnoreCase( "pling" ) ) {
-            this.sound = Sound.NOTE_PLING.bukkitSound( );
+        this.soundFileName = soundFileName.replaceAll(".ogg", "");
+        if (this.soundFileName.equalsIgnoreCase("pling")) {
+            this.sound = Sound.NOTE_PLING.bukkitSound();
         }
     }
 
@@ -31,7 +29,7 @@ public class CustomInstrument {
      *
      * @return index
      */
-    public byte getIndex( ) {
+    public byte getIndex() {
         return index;
     }
 
@@ -40,7 +38,7 @@ public class CustomInstrument {
      *
      * @return name
      */
-    public String getName( ) {
+    public String getName() {
         return name;
     }
 
@@ -49,7 +47,7 @@ public class CustomInstrument {
      *
      * @return file name
      */
-    public String getSoundFileName( ) {
+    public String getSoundFileName() {
         return soundFileName;
     }
 
@@ -58,8 +56,7 @@ public class CustomInstrument {
      *
      * @return org.bukkit.Sound enum
      */
-    public org.bukkit.Sound getSound( ) {
+    public org.bukkit.Sound getSound() {
         return sound;
     }
-
 }

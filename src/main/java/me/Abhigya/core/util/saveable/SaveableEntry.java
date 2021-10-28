@@ -7,21 +7,20 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Retention( RetentionPolicy.RUNTIME )
-@Target( ElementType.FIELD )
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.FIELD)
 public @interface SaveableEntry {
 
-    String key( );
+    String key();
 
-    SaveActionType action( ) default SaveActionType.NORMAL;
+    SaveActionType action() default SaveActionType.NORMAL;
 
     /**
-     * Gets the name of the sub-section where this
-     * will be saved on.
+     * Gets the name of the sub-section where this will be saved on.
+     *
      * <p>
      *
      * @return Name of the sub-section where this will be saved.
      */
-    String subsection( ) default StringUtils.EMPTY;
-
+    String subsection() default StringUtils.EMPTY;
 }

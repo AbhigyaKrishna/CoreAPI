@@ -13,54 +13,52 @@ public abstract class MetricsAdaptor {
     private final int serviceId;
     private final Metrics metrics;
 
-    /**
-     * Set of all {@link CustomChart} added to the metrics of this plugin.
-     */
-    private Set< CustomChart > chartTypes;
+    /** Set of all {@link CustomChart} added to the metrics of this plugin. */
+    private Set<CustomChart> chartTypes;
 
     /**
      * Constructs the class
+     *
      * <p>
      *
-     * @param plugin    Plugin for which the metrics is
+     * @param plugin Plugin for which the metrics is
      * @param serviceId Id of the plugin metrics
      */
-    public MetricsAdaptor( Plugin plugin, int serviceId ) {
+    public MetricsAdaptor(Plugin plugin, int serviceId) {
         this.plugin = plugin;
         this.serviceId = serviceId;
-        this.metrics = new Metrics( this.plugin, serviceId );
+        this.metrics = new Metrics(this.plugin, serviceId);
 
-        this.chartTypes = new HashSet<>( );
+        this.chartTypes = new HashSet<>();
     }
 
-    /**
-     * Register customs charts and stuffs
-     */
-    public abstract void register( );
+    /** Register customs charts and stuffs */
+    public abstract void register();
 
     /**
      * Add {@link CustomChart} to metrics.
+     *
      * <p>
      *
      * @param chart {@link CustomChart} to add
      */
-    public void addChart( CustomChart chart ) {
-        metrics.addCustomChart( chart );
-        this.chartTypes.add( chart );
+    public void addChart(CustomChart chart) {
+        metrics.addCustomChart(chart);
+        this.chartTypes.add(chart);
     }
 
-    public int getServiceId( ) {
+    public int getServiceId() {
         return serviceId;
     }
 
     /**
      * Get all registered charts.
+     *
      * <p>
      *
      * @return Set of registered charts
      */
-    public Set< CustomChart > getChartTypes( ) {
+    public Set<CustomChart> getChartTypes() {
         return chartTypes;
     }
-
 }

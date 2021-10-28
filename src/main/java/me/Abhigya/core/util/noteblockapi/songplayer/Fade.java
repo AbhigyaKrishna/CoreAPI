@@ -14,22 +14,23 @@ public class Fade {
     /**
      * Create new fade effect
      *
-     * @param type         Type of fade effect
+     * @param type Type of fade effect
      * @param fadeDuration - duration of fade effect in ticks
      */
-    public Fade( FadeType type, int fadeDuration ) {
+    public Fade(FadeType type, int fadeDuration) {
         this.type = type;
         this.fadeDuration = fadeDuration;
     }
 
-    protected byte calculateFade( ) {
-        switch ( type ) {
+    protected byte calculateFade() {
+        switch (type) {
             case LINEAR:
-                if ( fadeDone == fadeDuration ) {
+                if (fadeDone == fadeDuration) {
                     return -1; // no fade today
                 }
-                double targetVolume = Interpolator.interpLinear(
-                        new double[]{ 0, fadeStart, fadeDuration, fadeTarget }, fadeDone );
+                double targetVolume =
+                        Interpolator.interpLinear(
+                                new double[] {0, fadeStart, fadeDuration, fadeTarget}, fadeDone);
                 fadeDone++;
                 return (byte) targetVolume;
             default:
@@ -38,11 +39,11 @@ public class Fade {
         }
     }
 
-    protected int getFadeDone( ) {
+    protected int getFadeDone() {
         return fadeDone;
     }
 
-    protected void setFadeDone( int fadeDone ) {
+    protected void setFadeDone(int fadeDone) {
         this.fadeDone = fadeDone;
     }
 
@@ -51,7 +52,7 @@ public class Fade {
      *
      * @return {@link FadeType}
      */
-    public FadeType getType( ) {
+    public FadeType getType() {
         return type;
     }
 
@@ -60,7 +61,7 @@ public class Fade {
      *
      * @param type FadeType
      */
-    public void setType( FadeType type ) {
+    public void setType(FadeType type) {
         this.type = type;
     }
 
@@ -69,7 +70,7 @@ public class Fade {
      *
      * @return duration in ticks
      */
-    public int getFadeDuration( ) {
+    public int getFadeDuration() {
         return fadeDuration;
     }
 
@@ -78,28 +79,27 @@ public class Fade {
      *
      * @param fadeDuration duration in ticks
      */
-    public void setFadeDuration( int fadeDuration ) {
+    public void setFadeDuration(int fadeDuration) {
         this.fadeDuration = fadeDuration;
     }
 
-    protected byte getFadeStart( ) {
+    protected byte getFadeStart() {
         return fadeStart;
     }
 
-    protected void setFadeStart( byte fadeStart ) {
+    protected void setFadeStart(byte fadeStart) {
         this.fadeStart = fadeStart;
     }
 
-    protected byte getFadeTarget( ) {
+    protected byte getFadeTarget() {
         return fadeTarget;
     }
 
-    protected void setFadeTarget( byte fadeTarget ) {
+    protected void setFadeTarget(byte fadeTarget) {
         this.fadeTarget = fadeTarget;
     }
 
-    public boolean isDone( ) {
+    public boolean isDone() {
         return fadeDone >= fadeDuration;
     }
-
 }

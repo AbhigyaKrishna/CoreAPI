@@ -10,9 +10,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 
-/**
- * Class for managing AnvilItem click action in menu.
- */
+/** Class for managing AnvilItem click action in menu. */
 public class AnvilItemClickAction {
 
     protected final AnvilMenu menu;
@@ -27,16 +25,35 @@ public class AnvilItemClickAction {
 
     /**
      * Constructs the Item Click Action.
+     *
      * <p>
      *
-     * @param menu  AnvilItem to bind action
+     * @param menu AnvilItem to bind action
      * @param event {@link InventoryClickEvent}
      */
-    public AnvilItemClickAction( AnvilMenu menu, InventoryClickEvent event ) {
-        this( menu, event.getView( ), event.getClick( ), event.getAction( ), event.getSlotType( ), event.getRawSlot( ), event.getCurrentItem( ), event.getHotbarButton( ), false );
+    public AnvilItemClickAction(AnvilMenu menu, InventoryClickEvent event) {
+        this(
+                menu,
+                event.getView(),
+                event.getClick(),
+                event.getAction(),
+                event.getSlotType(),
+                event.getRawSlot(),
+                event.getCurrentItem(),
+                event.getHotbarButton(),
+                false);
     }
 
-    public AnvilItemClickAction( AnvilMenu menu, InventoryView view, ClickType click_type, InventoryAction action, InventoryType.SlotType slot_type, int raw_slot, ItemStack clicked, int hotbar_key, boolean update ) {
+    public AnvilItemClickAction(
+            AnvilMenu menu,
+            InventoryView view,
+            ClickType click_type,
+            InventoryAction action,
+            InventoryType.SlotType slot_type,
+            int raw_slot,
+            ItemStack clicked,
+            int hotbar_key,
+            boolean update) {
         this.menu = menu;
         this.inventory_view = view;
         this.click_type = click_type;
@@ -48,52 +65,51 @@ public class AnvilItemClickAction {
         this.update = update;
     }
 
-    public AnvilMenu getMenu( ) {
+    public AnvilMenu getMenu() {
         return menu;
     }
 
-    public Inventory getInventory( ) {
-        return this.getInventoryView( ).getTopInventory( );
+    public Inventory getInventory() {
+        return this.getInventoryView().getTopInventory();
     }
 
-    public InventoryView getInventoryView( ) {
+    public InventoryView getInventoryView() {
         return this.inventory_view;
     }
 
-    public Player getPlayer( ) {
-        return (Player) this.getInventoryView( ).getPlayer( );
+    public Player getPlayer() {
+        return (Player) this.getInventoryView().getPlayer();
     }
 
-    public ClickType getClickType( ) {
+    public ClickType getClickType() {
         return this.click_type;
     }
 
-    public InventoryAction getInventoryAction( ) {
+    public InventoryAction getInventoryAction() {
         return this.action;
     }
 
-    public InventoryType.SlotType getSlotType( ) {
+    public InventoryType.SlotType getSlotType() {
         return this.slot_type;
     }
 
-    public int getRawSlot( ) {
+    public int getRawSlot() {
         return this.raw_slot;
     }
 
-    public ItemStack getClickedItem( ) {
+    public ItemStack getClickedItem() {
         return this.clicked;
     }
 
-    public int getHotbarKey( ) {
+    public int getHotbarKey() {
         return this.hotbar_key;
     }
 
-    public boolean isWillUpdate( ) {
+    public boolean isWillUpdate() {
         return this.update;
     }
 
-    public void setUpdate( boolean update ) {
+    public void setUpdate(boolean update) {
         this.update = update;
     }
-
 }

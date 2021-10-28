@@ -11,20 +11,20 @@ public class EntitySongPlayer extends RangeSongPlayer {
 
     private Entity entity;
 
-    public EntitySongPlayer( NoteBlockAPI api, Song song ) {
-        super( api, song );
+    public EntitySongPlayer(NoteBlockAPI api, Song song) {
+        super(api, song);
     }
 
-    public EntitySongPlayer( NoteBlockAPI api, Song song, SoundCategory soundCategory ) {
-        super( api, song, soundCategory );
+    public EntitySongPlayer(NoteBlockAPI api, Song song, SoundCategory soundCategory) {
+        super(api, song, soundCategory);
     }
 
-    public EntitySongPlayer( NoteBlockAPI api, Playlist playlist, SoundCategory soundCategory ) {
-        super( api, playlist, soundCategory );
+    public EntitySongPlayer(NoteBlockAPI api, Playlist playlist, SoundCategory soundCategory) {
+        super(api, playlist, soundCategory);
     }
 
-    public EntitySongPlayer( NoteBlockAPI api, Playlist playlist ) {
-        super( api, playlist );
+    public EntitySongPlayer(NoteBlockAPI api, Playlist playlist) {
+        super(api, playlist);
     }
 
     /**
@@ -34,8 +34,8 @@ public class EntitySongPlayer extends RangeSongPlayer {
      * @return ability to hear the current {@link EntitySongPlayer}
      */
     @Override
-    public boolean isInRange( Player player ) {
-        return player.getLocation( ).distance( entity.getLocation( ) ) <= getDistance( );
+    public boolean isInRange(Player player) {
+        return player.getLocation().distance(entity.getLocation()) <= getDistance();
     }
 
     /**
@@ -43,7 +43,7 @@ public class EntitySongPlayer extends RangeSongPlayer {
      *
      * @return
      */
-    public Entity getEntity( ) {
+    public Entity getEntity() {
         return entity;
     }
 
@@ -52,46 +52,60 @@ public class EntitySongPlayer extends RangeSongPlayer {
      *
      * @param entity
      */
-    public void setEntity( Entity entity ) {
+    public void setEntity(Entity entity) {
         this.entity = entity;
     }
 
     @Override
-    public void playTick( Player player, int tick ) {
-        if ( entity.isDead( ) ) {
-            if ( autoDestroy ) {
-                destroy( );
+    public void playTick(Player player, int tick) {
+        if (entity.isDead()) {
+            if (autoDestroy) {
+                destroy();
             } else {
-                setPlaying( false );
+                setPlaying(false);
             }
         }
-        if ( !player.getWorld( ).getName( ).equals( entity.getWorld( ).getName( ) ) ) {
+        if (!player.getWorld().getName().equals(entity.getWorld().getName())) {
             return; // not in same world
         }
 
-        byte playerVolume = this.api.getPlayerVolume( player );
+        byte playerVolume = this.api.getPlayerVolume(player);
 
-        for ( Layer layer : song.getLayerHashMap( ).values( ) ) {
-            Note note = layer.getNote( tick );
-            if ( note == null ) continue;
+        for (Layer layer : song.getLayerHashMap().values()) {
+            Note note = layer.getNote(tick);
+            if (note == null) continue;
 
-            float volume = ( ( layer.getVolume( ) * (int) this.volume * (int) playerVolume * note.getVelocity( ) ) / 100_00_00_00F )
-                    * ( ( 1F / 16F ) * getDistance( ) );
+            float volume =
+                    ((layer.getVolume()
+                                            * (int) this.volume
+                                            * (int) playerVolume
+                                            * note.getVelocity())
+                                    / 100_00_00_00F)
+                            * ((1F / 16F) * getDistance());
 
-            channelMode.play( player, entity.getLocation( ), song, layer, note, soundCategory, volume, !enable10Octave );
+            channelMode.play(
+                    player,
+                    entity.getLocation(),
+                    song,
+                    layer,
+                    note,
+                    soundCategory,
+                    volume,
+                    !enable10Octave);
 
-            if ( isInRange( player ) ) {
-                if ( !playerList.get( player.getUniqueId( ) ) ) {
-                    playerList.put( player.getUniqueId( ), true );
-                    Bukkit.getPluginManager( ).callEvent( new PlayerRangeStateChangeEvent( this, player, true ) );
+            if (isInRange(player)) {
+                if (!playerList.get(player.getUniqueId())) {
+                    playerList.put(player.getUniqueId(), true);
+                    Bukkit.getPluginManager()
+                            .callEvent(new PlayerRangeStateChangeEvent(this, player, true));
                 }
             } else {
-                if ( playerList.get( player.getUniqueId( ) ) ) {
-                    playerList.put( player.getUniqueId( ), false );
-                    Bukkit.getPluginManager( ).callEvent( new PlayerRangeStateChangeEvent( this, player, false ) );
+                if (playerList.get(player.getUniqueId())) {
+                    playerList.put(player.getUniqueId(), false);
+                    Bukkit.getPluginManager()
+                            .callEvent(new PlayerRangeStateChangeEvent(this, player, false));
                 }
             }
         }
     }
-
 }

@@ -6,10 +6,10 @@ public interface ClickAction {
 
     /**
      * Action triggered when a gui slot is clicked.
+     *
      * <p>
      *
      * @param action {@link AnvilItemClickAction}
      */
-    void onClick( AnvilItemClickAction action );
-
+    void onClick(AnvilItemClickAction action);
 }

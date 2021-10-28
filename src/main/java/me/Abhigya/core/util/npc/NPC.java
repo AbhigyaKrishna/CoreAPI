@@ -22,20 +22,18 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArraySet;
 
-/**
- * Represents a non-person player which can be spawned and is managed by a {@link NPCPool}.
- */
+/** Represents a non-person player which can be spawned and is managed by a {@link NPCPool}. */
 public class NPC {
 
-    private final Collection< Player > seeingPlayers = new CopyOnWriteArraySet<>( );
-    private final Collection< Player > excludedPlayers = new CopyOnWriteArraySet<>( );
+    private final Collection<Player> seeingPlayers = new CopyOnWriteArraySet<>();
+    private final Collection<Player> excludedPlayers = new CopyOnWriteArraySet<>();
 
     private final Profile profile;
     private final int entityId;
     private final Location location;
     private final WrappedGameProfile gameProfile;
     private final SpawnCustomizer spawnCustomizer;
-    private final List< NPCInteractAction > actions = new LinkedList<>( );
+    private final List<NPCInteractAction> actions = new LinkedList<>();
 
     private boolean lookAtPlayer;
     private boolean imitatePlayer;
@@ -43,11 +41,11 @@ public class NPC {
     /**
      * Creates a new npc instance.
      *
-     * @param profile         The profile of the npc.
-     * @param entityId        The entity id of the npc.
-     * @param location        The location of the npc.
-     * @param lookAtPlayer    If the npc should always look in the direction of the player.
-     * @param imitatePlayer   If the npc should imitate the player.
+     * @param profile The profile of the npc.
+     * @param entityId The entity id of the npc.
+     * @param location The location of the npc.
+     * @param lookAtPlayer If the npc should always look in the direction of the player.
+     * @param imitatePlayer If the npc should imitate the player.
      * @param spawnCustomizer The spawn customizer of the npc.
      */
     private NPC(
@@ -56,9 +54,9 @@ public class NPC {
             Location location,
             boolean lookAtPlayer,
             boolean imitatePlayer,
-            SpawnCustomizer spawnCustomizer ) {
+            SpawnCustomizer spawnCustomizer) {
         this.profile = profile;
-        this.gameProfile = this.convertProfile( profile );
+        this.gameProfile = this.convertProfile(profile);
         this.entityId = entityId;
 
         this.location = location;
@@ -74,40 +72,54 @@ public class NPC {
      * @since 2.5-SNAPSHOT
      */
     @NotNull
-    public static Builder builder( ) {
-        return new Builder( );
+    public static Builder builder() {
+        return new Builder();
     }
 
     /**
      * Shows this npc to a player.
      *
-     * @param player             The player to show this npc to.
-     * @param plugin             The plugin requesting the change.
+     * @param player The player to show this npc to.
+     * @param plugin The plugin requesting the change.
      * @param tabListRemoveTicks The ticks before removing the player from the player list after
-     *                           spawning. A negative value indicates that this npc shouldn't get
-     *                           removed from the player list.
+     *     spawning. A negative value indicates that this npc shouldn't get removed from the player
+     *     list.
      */
-    protected void show( @NotNull Player player, @NotNull Plugin plugin, long tabListRemoveTicks ) {
-        this.seeingPlayers.add( player );
+    protected void show(@NotNull Player player, @NotNull Plugin plugin, long tabListRemoveTicks) {
+        this.seeingPlayers.add(player);
 
-        VisibilityModifier visibilityModifier = new VisibilityModifier( this );
-        visibilityModifier.queuePlayerListChange( WrappedPacketOutPlayerInfo.PlayerInfoAction.ADD_PLAYER ).send( player );
+        VisibilityModifier visibilityModifier = new VisibilityModifier(this);
+        visibilityModifier
+                .queuePlayerListChange(WrappedPacketOutPlayerInfo.PlayerInfoAction.ADD_PLAYER)
+                .send(player);
 
-        Bukkit.getScheduler( ).runTaskLater( plugin, ( ) -> {
-            visibilityModifier.queueSpawn( ).send( player );
-            this.spawnCustomizer.handleSpawn( this, player );
-
-            if ( tabListRemoveTicks >= 0 ) {
-                // keeping the NPC longer in the player list, otherwise the skin might not be shown sometimes.
-                Bukkit.getScheduler( ).runTaskLater(
+        Bukkit.getScheduler()
+                .runTaskLater(
                         plugin,
-                        ( ) -> visibilityModifier.queuePlayerListChange( WrappedPacketOutPlayerInfo.PlayerInfoAction.REMOVE_PLAYER ).send( player ),
-                        tabListRemoveTicks
-                );
-            }
+                        () -> {
+                            visibilityModifier.queueSpawn().send(player);
+                            this.spawnCustomizer.handleSpawn(this, player);
 
-            Bukkit.getPluginManager( ).callEvent( new PlayerNPCShowEvent( player, this ) );
-        }, 10L );
+                            if (tabListRemoveTicks >= 0) {
+                                // keeping the NPC longer in the player list, otherwise the skin
+                                // might not be shown sometimes.
+                                Bukkit.getScheduler()
+                                        .runTaskLater(
+                                                plugin,
+                                                () ->
+                                                        visibilityModifier
+                                                                .queuePlayerListChange(
+                                                                        WrappedPacketOutPlayerInfo
+                                                                                .PlayerInfoAction
+                                                                                .REMOVE_PLAYER)
+                                                                .send(player),
+                                                tabListRemoveTicks);
+                            }
+
+                            Bukkit.getPluginManager()
+                                    .callEvent(new PlayerNPCShowEvent(player, this));
+                        },
+                        10L);
     }
 
     /**
@@ -117,15 +129,23 @@ public class NPC {
      * @param plugin The plugin requesting the change.
      * @param reason The reason why the npc was hidden for the player.
      */
-    protected void hide( @NotNull Player player, @NotNull Plugin plugin, @NotNull PlayerNPCHideEvent.Reason reason ) {
-        new VisibilityModifier( this )
-                .queuePlayerListChange( WrappedPacketOutPlayerInfo.PlayerInfoAction.REMOVE_PLAYER )
-                .queueDestroy( )
-                .send( player );
+    protected void hide(
+            @NotNull Player player,
+            @NotNull Plugin plugin,
+            @NotNull PlayerNPCHideEvent.Reason reason) {
+        new VisibilityModifier(this)
+                .queuePlayerListChange(WrappedPacketOutPlayerInfo.PlayerInfoAction.REMOVE_PLAYER)
+                .queueDestroy()
+                .send(player);
 
-        this.removeSeeingPlayer( player );
+        this.removeSeeingPlayer(player);
 
-        Bukkit.getScheduler( ).runTask( plugin, ( ) -> Bukkit.getPluginManager( ).callEvent( new PlayerNPCHideEvent( player, this, reason ) ) );
+        Bukkit.getScheduler()
+                .runTask(
+                        plugin,
+                        () ->
+                                Bukkit.getPluginManager()
+                                        .callEvent(new PlayerNPCHideEvent(player, this, reason)));
     }
 
     /**
@@ -136,10 +156,11 @@ public class NPC {
      * @since 2.5-SNAPSHOT
      */
     @NotNull
-    protected WrappedGameProfile convertProfile( @NotNull Profile profile ) {
-        Object gameProfile = GameProfileUtil.getGameProfile( profile.getUniqueId( ), profile.getName( ) );
-        GameProfileUtil.setGameProfileSkin( gameProfile, profile.getSkin( ) );
-        return GameProfileUtil.getWrappedGameProfile( gameProfile );
+    protected WrappedGameProfile convertProfile(@NotNull Profile profile) {
+        Object gameProfile =
+                GameProfileUtil.getGameProfile(profile.getUniqueId(), profile.getName());
+        GameProfileUtil.setGameProfileSkin(gameProfile, profile.getSkin());
+        return GameProfileUtil.getWrappedGameProfile(gameProfile);
     }
 
     /**
@@ -147,8 +168,8 @@ public class NPC {
      *
      * @param player The player to remove.
      */
-    protected void removeSeeingPlayer( @NotNull Player player ) {
-        this.seeingPlayers.remove( player );
+    protected void removeSeeingPlayer(@NotNull Player player) {
+        this.seeingPlayers.remove(player);
     }
 
     /**
@@ -157,8 +178,8 @@ public class NPC {
      * @return a copy of all players seeing this npc.
      */
     @NotNull
-    public Collection< Player > getSeeingPlayers( ) {
-        return Collections.unmodifiableCollection( this.seeingPlayers );
+    public Collection<Player> getSeeingPlayers() {
+        return Collections.unmodifiableCollection(this.seeingPlayers);
     }
 
     /**
@@ -167,8 +188,8 @@ public class NPC {
      * @param player The player to check.
      * @return If the npc is shown for the given {@code player}.
      */
-    public boolean isShownFor( @NotNull Player player ) {
-        return this.seeingPlayers.contains( player );
+    public boolean isShownFor(@NotNull Player player) {
+        return this.seeingPlayers.contains(player);
     }
 
     /**
@@ -176,8 +197,8 @@ public class NPC {
      *
      * @param player the player to be excluded
      */
-    public void addExcludedPlayer( @NotNull Player player ) {
-        this.excludedPlayers.add( player );
+    public void addExcludedPlayer(@NotNull Player player) {
+        this.excludedPlayers.add(player);
     }
 
     /**
@@ -185,19 +206,19 @@ public class NPC {
      *
      * @param player the player to be included again
      */
-    public void removeExcludedPlayer( @NotNull Player player ) {
-        this.excludedPlayers.remove( player );
+    public void removeExcludedPlayer(@NotNull Player player) {
+        this.excludedPlayers.remove(player);
     }
 
     /**
-     * A modifiable collection of all players which are not allowed to see this player. Modifications
-     * to the returned collection should be done using {@link #addExcludedPlayer(Player)} and {@link
-     * #removeExcludedPlayer(Player)}.
+     * A modifiable collection of all players which are not allowed to see this player.
+     * Modifications to the returned collection should be done using {@link
+     * #addExcludedPlayer(Player)} and {@link #removeExcludedPlayer(Player)}.
      *
      * @return a collection of all players which are explicitly excluded from seeing this NPC.
      */
     @NotNull
-    public Collection< Player > getExcludedPlayers( ) {
+    public Collection<Player> getExcludedPlayers() {
         return this.excludedPlayers;
     }
 
@@ -207,8 +228,8 @@ public class NPC {
      * @param player The player to check.
      * @return if the specified {@code player} is explicitly not allowed to see this npc.
      */
-    public boolean isExcluded( @NotNull Player player ) {
-        return this.excludedPlayers.contains( player );
+    public boolean isExcluded(@NotNull Player player) {
+        return this.excludedPlayers.contains(player);
     }
 
     /**
@@ -217,8 +238,8 @@ public class NPC {
      * @return a animation modifier modifying this NPC
      */
     @NotNull
-    public AnimationModifier animation( ) {
-        return new AnimationModifier( this );
+    public AnimationModifier animation() {
+        return new AnimationModifier(this);
     }
 
     /**
@@ -227,8 +248,8 @@ public class NPC {
      * @return a rotation modifier modifying this NPC
      */
     @NotNull
-    public RotationModifier rotation( ) {
-        return new RotationModifier( this );
+    public RotationModifier rotation() {
+        return new RotationModifier(this);
     }
 
     /**
@@ -237,8 +258,8 @@ public class NPC {
      * @return an equipment modifier modifying this NPC
      */
     @NotNull
-    public EquipmentModifier equipment( ) {
-        return new EquipmentModifier( this );
+    public EquipmentModifier equipment() {
+        return new EquipmentModifier(this);
     }
 
     /**
@@ -247,10 +268,10 @@ public class NPC {
      *
      * @return a metadata modifier modifying this NPC
      */
-//    @NotNull
-//    public MetadataModifier metadata() {
-//        return new MetadataModifier(this);
-//    }
+    //    @NotNull
+    //    public MetadataModifier metadata() {
+    //        return new MetadataModifier(this);
+    //    }
 
     /**
      * Creates a new visibility modifier which serves methods to change an NPCs visibility.
@@ -259,19 +280,19 @@ public class NPC {
      * @since 2.5-SNAPSHOT
      */
     @NotNull
-    public VisibilityModifier visibility( ) {
-        return new VisibilityModifier( this );
+    public VisibilityModifier visibility() {
+        return new VisibilityModifier(this);
     }
 
     /**
      * Get the protocol lib profile wrapper for this npc. To use this method {@code ProtocolLib} is
-     * needed as a dependency of your project. If you don't want to do that, use {@link #getProfile()}
-     * instead.
+     * needed as a dependency of your project. If you don't want to do that, use {@link
+     * #getProfile()} instead.
      *
      * @return the protocol lib profile wrapper for this npc
      */
     @NotNull
-    public WrappedGameProfile getGameProfile( ) {
+    public WrappedGameProfile getGameProfile() {
         return this.gameProfile;
     }
 
@@ -283,7 +304,7 @@ public class NPC {
      * @since 2.5-SNAPSHOT
      */
     @NotNull
-    public Profile getProfile( ) {
+    public Profile getProfile() {
         return this.profile;
     }
 
@@ -292,7 +313,7 @@ public class NPC {
      *
      * @return the entity id of this npc.
      */
-    public int getEntityId( ) {
+    public int getEntityId() {
         return this.entityId;
     }
 
@@ -302,7 +323,7 @@ public class NPC {
      * @return the location where this npc is located.
      */
     @NotNull
-    public Location getLocation( ) {
+    public Location getLocation() {
         return this.location;
     }
 
@@ -311,7 +332,7 @@ public class NPC {
      *
      * @return if this npc should always look to the player.
      */
-    public boolean isLookAtPlayer( ) {
+    public boolean isLookAtPlayer() {
         return this.lookAtPlayer;
     }
 
@@ -320,7 +341,7 @@ public class NPC {
      *
      * @param lookAtPlayer if this npc should always look to the player.
      */
-    public void setLookAtPlayer( boolean lookAtPlayer ) {
+    public void setLookAtPlayer(boolean lookAtPlayer) {
         this.lookAtPlayer = lookAtPlayer;
     }
 
@@ -329,7 +350,7 @@ public class NPC {
      *
      * @return if this npc should always imitate the player.
      */
-    public boolean isImitatePlayer( ) {
+    public boolean isImitatePlayer() {
         return this.imitatePlayer;
     }
 
@@ -338,21 +359,19 @@ public class NPC {
      *
      * @param imitatePlayer if this npc should always imitate the player.
      */
-    public void setImitatePlayer( boolean imitatePlayer ) {
+    public void setImitatePlayer(boolean imitatePlayer) {
         this.imitatePlayer = imitatePlayer;
     }
 
-    public void addInteractAction( NPCInteractAction action ) {
-        this.actions.add( action );
+    public void addInteractAction(NPCInteractAction action) {
+        this.actions.add(action);
     }
 
-    protected void handleInteract( Player player, NPCInteractAction.ClickType clickType ) {
-        this.actions.forEach( a -> a.onInteract( this, player, clickType ) );
+    protected void handleInteract(Player player, NPCInteractAction.ClickType clickType) {
+        this.actions.forEach(a -> a.onInteract(this, player, clickType));
     }
 
-    /**
-     * A builder for a npc.
-     */
+    /** A builder for a npc. */
     public static class Builder {
 
         private Profile profile;
@@ -360,15 +379,11 @@ public class NPC {
         private boolean lookAtPlayer = true;
         private boolean imitatePlayer = true;
 
-        private Location location = new Location( Bukkit.getWorlds( ).get( 0 ), 0D, 0D, 0D );
-        private SpawnCustomizer spawnCustomizer = ( npc, player ) -> {
-        };
+        private Location location = new Location(Bukkit.getWorlds().get(0), 0D, 0D, 0D);
+        private SpawnCustomizer spawnCustomizer = (npc, player) -> {};
 
-        /**
-         * Creates a new builder instance.
-         */
-        private Builder( ) {
-        }
+        /** Creates a new builder instance. */
+        private Builder() {}
 
         /**
          * Creates a new instance of the NPC builder
@@ -377,7 +392,7 @@ public class NPC {
          * @deprecated Use {@link NPC#builder()} instead
          */
         @Deprecated
-        public Builder( @NotNull Profile profile ) {
+        public Builder(@NotNull Profile profile) {
             this.profile = profile;
         }
 
@@ -387,8 +402,8 @@ public class NPC {
          * @param profile the profile
          * @return this builder instance
          */
-        public Builder profile( @NotNull Profile profile ) {
-            this.profile = Preconditions.checkNotNull( profile, "profile" );
+        public Builder profile(@NotNull Profile profile) {
+            this.profile = Preconditions.checkNotNull(profile, "profile");
             return this;
         }
 
@@ -398,8 +413,8 @@ public class NPC {
          * @param location the location
          * @return this builder instance
          */
-        public Builder location( @NotNull Location location ) {
-            this.location = Preconditions.checkNotNull( location, "location" );
+        public Builder location(@NotNull Location location) {
+            this.location = Preconditions.checkNotNull(location, "location");
             return this;
         }
 
@@ -409,33 +424,33 @@ public class NPC {
          * @param lookAtPlayer if the NPC should look at the player
          * @return this builder instance
          */
-        public Builder lookAtPlayer( boolean lookAtPlayer ) {
+        public Builder lookAtPlayer(boolean lookAtPlayer) {
             this.lookAtPlayer = lookAtPlayer;
             return this;
         }
 
         /**
-         * Enables/disables imitation of the player, such as sneaking and hitting the player, default is
-         * true
+         * Enables/disables imitation of the player, such as sneaking and hitting the player,
+         * default is true
          *
          * @param imitatePlayer if the NPC should imitate players
          * @return this builder instance
          */
-        public Builder imitatePlayer( boolean imitatePlayer ) {
+        public Builder imitatePlayer(boolean imitatePlayer) {
             this.imitatePlayer = imitatePlayer;
             return this;
         }
 
         /**
          * Sets an executor which will be called every time the NPC is spawned for a certain player.
-         * Permanent NPC modifications should be done in this method, otherwise they will be lost at the
-         * next respawn of the NPC.
+         * Permanent NPC modifications should be done in this method, otherwise they will be lost at
+         * the next respawn of the NPC.
          *
          * @param spawnCustomizer the spawn customizer which will be called on every spawn
          * @return this builder instance
          */
-        public Builder spawnCustomizer( @NotNull SpawnCustomizer spawnCustomizer ) {
-            this.spawnCustomizer = Preconditions.checkNotNull( spawnCustomizer, "spawnCustomizer" );
+        public Builder spawnCustomizer(@NotNull SpawnCustomizer spawnCustomizer) {
+            this.spawnCustomizer = Preconditions.checkNotNull(spawnCustomizer, "spawnCustomizer");
             return this;
         }
 
@@ -447,22 +462,22 @@ public class NPC {
          * @return this builder instance
          */
         @NotNull
-        public NPC build( @NotNull NPCPool pool ) {
-            Preconditions.checkNotNull( this.profile, "A profile must be given" );
-            Preconditions.checkArgument( this.profile.isComplete( ), "The provided profile has to be complete!" );
+        public NPC build(@NotNull NPCPool pool) {
+            Preconditions.checkNotNull(this.profile, "A profile must be given");
+            Preconditions.checkArgument(
+                    this.profile.isComplete(), "The provided profile has to be complete!");
 
-            NPC npc = new NPC(
-                    this.profile,
-                    pool.getFreeEntityId( ),
-                    this.location,
-                    this.lookAtPlayer,
-                    this.imitatePlayer,
-                    this.spawnCustomizer );
-            pool.takeCareOf( npc );
+            NPC npc =
+                    new NPC(
+                            this.profile,
+                            pool.getFreeEntityId(),
+                            this.location,
+                            this.lookAtPlayer,
+                            this.imitatePlayer,
+                            this.spawnCustomizer);
+            pool.takeCareOf(npc);
 
             return npc;
         }
-
     }
-
 }
