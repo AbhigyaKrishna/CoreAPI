@@ -75,7 +75,6 @@ public abstract class BossBarOldest extends BossBarBase implements Listener {
                         10L);
     }
     /** the bar's updater command */
-
     protected final Runnable update_command =
             () -> {
                 if (isVisible()) {

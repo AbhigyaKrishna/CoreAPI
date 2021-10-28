@@ -566,7 +566,7 @@ public class BookItemMenu extends ItemMenu {
                     pages_size.getSize()
                             - buttons_bar_size
                                     .getSize(); // pages_fit_size = the pages size - (buttons bar
-                                                // size).
+            // size).
             int length = contents_length;
             if (length > pages_fit_size) {
                 while (length - pages_fit_size > 0) {

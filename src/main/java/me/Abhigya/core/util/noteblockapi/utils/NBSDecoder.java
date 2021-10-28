@@ -123,7 +123,7 @@ public class NBSDecoder {
                                 200
                                         - dataInputStream
                                                 .readUnsignedByte(); // note panning, 0 is right in
-                                                                     // nbs format
+                        // nbs format
                         pitch = readShort(dataInputStream); // note block pitch
                     }
 
@@ -163,7 +163,7 @@ public class NBSDecoder {
                             200
                                     - dataInputStream
                                             .readUnsignedByte(); // layer stereo, 0 is right in nbs
-                                                                 // format
+                    // format
                 }
 
                 if (panning != 100) {

@@ -1,6 +1,5 @@
 package me.Abhigya.core.version;
 
-
 public enum CoreVersion {
     v1_0_0(100),
     v1_0_1(101),

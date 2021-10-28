@@ -133,10 +133,10 @@ public final class StainedGlassItemStack extends CustomItemStack {
     public void setColor(StainedGlassColor color) {
         Validate.notNull(color, "Color cannot be null");
         if (COLOR_SET_BY_SHORT) {
-                /* setting color by changing the durability */
+            /* setting color by changing the durability */
             rawSetDurability(color.getShortValue());
         } else {
-                /* setting color by changing the item stack type */
+            /* setting color by changing the item stack type */
             super.setType(
                     XMaterial.valueOf((color.name() + "_STAINED_GLASS" + (pane ? "_PANE" : "")))
                             .parseMaterial());

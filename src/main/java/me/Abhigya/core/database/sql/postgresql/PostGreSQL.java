@@ -12,20 +12,19 @@ import java.sql.SQLTimeoutException;
 
 public class PostGreSQL extends SQLDatabase {
 
-    /**
-     * Connection URL format.
-     */
-    private static final String URL_FORMAT = "jdbc:postgresql://"
-            + "%s" // host
-            + ":"
-            + "%d" // port
-            + "/"
-            + "%s" // database
-            + "?autoReconnect="
-            + "%s" // auto reconnect
-            + "&"
-            + "useSSL="
-            + "%s" // use ssl
+    /** Connection URL format. */
+    private static final String URL_FORMAT =
+            "jdbc:postgresql://"
+                    + "%s" // host
+                    + ":"
+                    + "%d" // port
+                    + "/"
+                    + "%s" // database
+                    + "?autoReconnect="
+                    + "%s" // auto reconnect
+                    + "&"
+                    + "useSSL="
+                    + "%s" // use ssl
             ;
 
     private static final String DRIVER_CLASS = "org.postgresql.Driver";
@@ -43,17 +42,25 @@ public class PostGreSQL extends SQLDatabase {
 
     /**
      * Constructs the PostGreSQL database.
+     *
      * <p>
      *
-     * @param host      Host name
-     * @param port      Port number
-     * @param database  Database name
-     * @param username  User name
-     * @param password  User password
+     * @param host Host name
+     * @param port Port number
+     * @param database Database name
+     * @param username User name
+     * @param password User password
      * @param reconnect <strong>{@code true}</strong> to auto reconnect
-     * @param ssl       <strong>{@code true}</strong> to use SSL
+     * @param ssl <strong>{@code true}</strong> to use SSL
      */
-    public PostGreSQL(String host, int port, String database, String username, String password, boolean reconnect, boolean ssl) {
+    public PostGreSQL(
+            String host,
+            int port,
+            String database,
+            String username,
+            String password,
+            boolean reconnect,
+            boolean ssl) {
         super(DatabaseType.PostGreSQL);
 
         Validate.isTrue(!StringUtils.isBlank(host), "The host cannot be null or empty!");
@@ -72,21 +79,29 @@ public class PostGreSQL extends SQLDatabase {
 
     /**
      * Constructs the PostGreSQL database.
+     *
      * <p>
      *
-     * @param host      Host name
-     * @param port      Port number
-     * @param database  Database name
-     * @param username  User name
-     * @param password  User password
+     * @param host Host name
+     * @param port Port number
+     * @param database Database name
+     * @param username User name
+     * @param password User password
      * @param reconnect <strong>{@code true}</strong> to auto reconnect
      */
-    public PostGreSQL(String host, int port, String database, String username, String password, boolean reconnect) {
+    public PostGreSQL(
+            String host,
+            int port,
+            String database,
+            String username,
+            String password,
+            boolean reconnect) {
         this(host, port, database, username, password, reconnect, true);
     }
 
     /**
      * Gets whether connected to PostGreSQL.
+     *
      * <p>
      *
      * @return true if connected.
@@ -102,13 +117,13 @@ public class PostGreSQL extends SQLDatabase {
 
     /**
      * Starts the connection with PostGreSQL.
+     *
      * <p>
      *
      * @throws IllegalStateException if the JDBC drivers is unavailable.
-     * @throws SQLException          if a database access error occurs.
-     * @throws SQLTimeoutException   when the driver has determined that the timeout
-     *                               has been exceeded and has at least tried to
-     *                               cancel the current database connection attempt.
+     * @throws SQLException if a database access error occurs.
+     * @throws SQLTimeoutException when the driver has determined that the timeout has been exceeded
+     *     and has at least tried to cancel the current database connection attempt.
      */
     @Override
     public synchronized void connect()
@@ -116,22 +131,31 @@ public class PostGreSQL extends SQLDatabase {
         try {
             Class.forName(DRIVER_CLASS);
         } catch (ClassNotFoundException ex) {
-            throw new IllegalStateException("Could not connect to PostGreSQL! The JDBC driver is unavailable!");
+            throw new IllegalStateException(
+                    "Could not connect to PostGreSQL! The JDBC driver is unavailable!");
         }
 
-        this.connection = DriverManager.getConnection(
-                String.format(URL_FORMAT, host, port, database, String.valueOf(reconnect), String.valueOf(ssl)),
-                username, password);
+        this.connection =
+                DriverManager.getConnection(
+                        String.format(
+                                URL_FORMAT,
+                                host,
+                                port,
+                                database,
+                                String.valueOf(reconnect),
+                                String.valueOf(ssl)),
+                        username,
+                        password);
     }
 
     /**
      * Closes the connection with PostGreSQL.
+     *
      * <p>
      *
-     * @throws IllegalStateException if currently not connected, the connection
-     *                               should be checked before calling this:
-     *                               {@link #isConnected()}.
-     * @throws SQLException          if a database access error occurs.
+     * @throws IllegalStateException if currently not connected, the connection should be checked
+     *     before calling this: {@link #isConnected()}.
+     * @throws SQLException if a database access error occurs.
      */
     @Override
     public void disconnect() throws SQLException {
@@ -144,31 +168,33 @@ public class PostGreSQL extends SQLDatabase {
     }
 
     /**
+     *
+     *
      * <h1>Returns:</h1>
+     *
      * <ul>
-     * <li>The current connection if connected to PostGreSQL:
-     * <li>The new connection if and only if:
-     * <ul>
-     * <li>It wasn't connected.
-     * <li>The auto-reconnection is enabled.
-     * <li>The attempt to get connection was successfully.
+     *   <li>The current connection if connected to PostGreSQL:
+     *   <li>The new connection if and only if:
+     *       <ul>
+     *         <li>It wasn't connected.
+     *         <li>The auto-reconnection is enabled.
+     *         <li>The attempt to get connection was successfully.
+     *       </ul>
+     *   <li><strong>{@code null}</strong> if:
+     *       <ul>
+     *         <li>It wasn't connected and the auto-reconnection is disabled.
+     *         <li>The auto-reconnection is enabled but the attempt to get connection was
+     *             unsuccessfully.
+     *       </ul>
      * </ul>
-     * <li><strong>{@code null}</strong> if:
-     * <ul>
-     * <li>It wasn't connected and the auto-reconnection is disabled.
-     * <li>The auto-reconnection is enabled but the attempt to get connection was
-     * unsuccessfully.
-     * </ul>
-     * </ul>
+     *
      * <p>
      *
      * @return Connection or null if not connected
-     * @throws SQLTimeoutException   when the driver has determined that the timeout
-     *                               value has been exceeded and has at least tried
-     *                               to cancel the current database connection
-     *                               attempt.
+     * @throws SQLTimeoutException when the driver has determined that the timeout value has been
+     *     exceeded and has at least tried to cancel the current database connection attempt.
      * @throws IllegalStateException if the JDBC drivers is unavailable
-     * @throws SQLException          if a database access error occurs.
+     * @throws SQLException if a database access error occurs.
      */
     @Override
     public Connection getConnection()
@@ -182,14 +208,14 @@ public class PostGreSQL extends SQLDatabase {
 
     /**
      * The times the connection was lost.
+     *
      * <p>
      *
-     * @return Times the connection was lost, or
-     * <strong>{@code -1}</strong> if the auto-reconnection is disabled.
+     * @return Times the connection was lost, or <strong>{@code -1}</strong> if the
+     *     auto-reconnection is disabled.
      */
     @Override
     public int getLostConnections() {
         return reconnect ? lost_connections : -1;
     }
-
 }

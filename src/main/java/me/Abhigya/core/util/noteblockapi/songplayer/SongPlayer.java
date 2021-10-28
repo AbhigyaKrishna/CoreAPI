@@ -405,7 +405,7 @@ public abstract class SongPlayer {
                                                 Bukkit.getLogger()
                                                         .severe(
                                                                 "An error occurred during the"
-                                                                    + " playback of song "
+                                                                        + " playback of song "
                                                                         + (song != null
                                                                                 ? song.getPath()
                                                                                         + " ("
