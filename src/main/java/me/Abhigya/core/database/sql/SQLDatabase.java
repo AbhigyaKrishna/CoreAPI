@@ -36,15 +36,16 @@ public abstract class SQLDatabase extends Database {
     }
 
     public CompletableFuture<Boolean> executeAsync(String query) {
-        return CompletableFuture.supplyAsync( ( ) -> {
-            try {
-                return execute(query);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+        return CompletableFuture.supplyAsync(
+                () -> {
+                    try {
+                        return execute(query);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
 
-            return false;
-        } );
+                    return false;
+                });
     }
 
     public ResultSet query(String query) throws SQLException {
