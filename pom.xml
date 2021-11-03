@@ -32,10 +32,6 @@
                             <shadedPattern>me.Abhigya.core.metrics.bstats</shadedPattern>
                         </relocation>
                         <relocation>
-                            <pattern>de.slikey.effectlib</pattern>
-                            <shadedPattern>me.Abhigya.core.particle.effectlib</shadedPattern>
-                        </relocation>
-                        <relocation>
                             <pattern>xyz.xenondevs.particle</pattern>
                             <shadedPattern>me.Abhigya.core.particle.particlelib</shadedPattern>
                         </relocation>
@@ -88,6 +84,13 @@
             </resource>
         </resources>
     </build>
+
+    <distributionManagement>
+        <repository>
+            <id>pepedevs</id>
+            <url>http://13.233.67.205:8080/releases</url>
+        </repository>
+    </distributionManagement>
 
     <repositories>
         <!-- Spigot -->
@@ -200,14 +203,6 @@
             <artifactId>placeholderapi</artifactId>
             <version>2.10.10</version>
             <scope>provided</scope>
-        </dependency>
-
-        <!-- Effect Lib -->
-        <dependency>
-            <groupId>com.elmakers.mine.bukkit</groupId>
-            <artifactId>EffectLib</artifactId>
-            <version>9.0</version>
-            <scope>compile</scope>
         </dependency>
 
         <!-- Particle Lib -->

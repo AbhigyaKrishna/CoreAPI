@@ -19,6 +19,34 @@ public abstract class SQLDatabase extends Database {
 
     public abstract int getLostConnections();
 
+    public boolean execute(String query) throws SQLException {
+        try {
+            PreparedStatement statement = this.getConnection().prepareStatement(query);
+            boolean b = statement.execute();
+            statement.close();
+            return b;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean execute(PreparedStatement statement) throws SQLException {
+        return statement.execute();
+    }
+
+    public CompletableFuture<Boolean> executeAsync(String query) {
+        return CompletableFuture.supplyAsync( ( ) -> {
+            try {
+                return execute(query);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+            return false;
+        } );
+    }
+
     public ResultSet query(String query) throws SQLException {
         try {
             PreparedStatement statement = this.getConnection().prepareStatement(query);
