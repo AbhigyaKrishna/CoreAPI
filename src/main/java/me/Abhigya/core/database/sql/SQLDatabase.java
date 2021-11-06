@@ -68,8 +68,10 @@ public abstract class SQLDatabase extends Database {
 
         consumer.accept(resultSet);
 
-        resultSet.close();
-        resultSet.getStatement().close();
+        if(!resultSet.isClosed())
+            resultSet.close();
+        if(!resultSet.getStatement().isClosed())
+            resultSet.getStatement().close();
     }
 
     public void query(PreparedStatement statement, SQLConsumer<ResultSet> consumer)
@@ -78,8 +80,10 @@ public abstract class SQLDatabase extends Database {
 
         consumer.accept(resultSet);
 
-        resultSet.close();
-        resultSet.getStatement().close();
+        if(!resultSet.isClosed())
+            resultSet.close();
+        if(!resultSet.getStatement().isClosed())
+            resultSet.getStatement().close();
     }
 
     public CompletableFuture<ResultSet> queryAsync(String query) {
