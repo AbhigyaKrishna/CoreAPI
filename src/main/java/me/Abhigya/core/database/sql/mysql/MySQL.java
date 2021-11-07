@@ -4,7 +4,6 @@ import me.Abhigya.core.database.DatabaseType;
 import me.Abhigya.core.database.sql.SQLDatabase;
 import me.Abhigya.core.util.StringUtils;
 import org.apache.commons.lang.Validate;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
