@@ -33,7 +33,8 @@ public abstract class SQLDatabase extends Database {
 
     public boolean execute(PreparedStatement statement) throws SQLException {
         final boolean result = statement.execute();
-        statement.close();
+        if(!statement.isClosed())
+            statement.close();
         return result;
     }
 
@@ -55,7 +56,8 @@ public abstract class SQLDatabase extends Database {
                 () -> {
                     try {
                         final boolean result = statement.execute();
-                        statement.close();
+                        if(!statement.isClosed())
+                            statement.close();
                         return result;
                     } catch (SQLException e) {
                         e.printStackTrace();
