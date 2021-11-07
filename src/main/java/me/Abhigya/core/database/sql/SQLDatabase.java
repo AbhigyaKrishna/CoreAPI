@@ -32,7 +32,9 @@ public abstract class SQLDatabase extends Database {
     }
 
     public boolean execute(PreparedStatement statement) throws SQLException {
-        return statement.execute();
+        final boolean result = statement.execute();
+        if (!statement.isClosed()) statement.close();
+        return result;
     }
 
     public CompletableFuture<Boolean> executeAsync(String query) {
@@ -40,6 +42,21 @@ public abstract class SQLDatabase extends Database {
                 () -> {
                     try {
                         return execute(query);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+
+                    return false;
+                });
+    }
+
+    public CompletableFuture<Boolean> executeAsync(PreparedStatement statement) {
+        return CompletableFuture.supplyAsync(
+                () -> {
+                    try {
+                        final boolean result = statement.execute();
+                        if (!statement.isClosed()) statement.close();
+                        return result;
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
@@ -68,8 +85,8 @@ public abstract class SQLDatabase extends Database {
 
         consumer.accept(resultSet);
 
-        resultSet.close();
-        resultSet.getStatement().close();
+        if (!resultSet.isClosed()) resultSet.close();
+        if (!resultSet.getStatement().isClosed()) resultSet.getStatement().close();
     }
 
     public void query(PreparedStatement statement, SQLConsumer<ResultSet> consumer)
@@ -78,8 +95,8 @@ public abstract class SQLDatabase extends Database {
 
         consumer.accept(resultSet);
 
-        resultSet.close();
-        resultSet.getStatement().close();
+        if (!resultSet.isClosed()) resultSet.close();
+        if (!resultSet.getStatement().isClosed()) resultSet.getStatement().close();
     }
 
     public CompletableFuture<ResultSet> queryAsync(String query) {
