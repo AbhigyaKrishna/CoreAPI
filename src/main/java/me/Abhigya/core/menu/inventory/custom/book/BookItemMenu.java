@@ -48,7 +48,7 @@ public class BookItemMenu extends ItemMenu {
                 "The book pages size must be higher than ItemMenuSize.ONE_LINE!");
         Validate.isTrue(
                 pages_size.isHigherThan(buttons_bar_size),
-                "The pages size must be higher the buttons bar size");
+                "The pages size must be higher than the buttons bar size");
 
         this.buttons_bar_size = buttons_bar_size;
         this.bar_buttons = new Item[buttons_bar_size.getSize()];
