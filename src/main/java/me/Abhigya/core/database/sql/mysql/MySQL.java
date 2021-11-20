@@ -28,7 +28,7 @@ public class MySQL extends SQLDatabase {
             ;
 
     /** The JDBC driver class. */
-    private static final String DRIVER_CLASS = "com.mysql.jdbc.Driver";
+    private static final String DRIVER_CLASS = "com.mysql.cj.jdbc.Driver";
 
     private final String host;
     private final int port;
