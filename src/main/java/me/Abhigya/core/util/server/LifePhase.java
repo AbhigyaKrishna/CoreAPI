@@ -21,7 +21,7 @@ public class LifePhase {
      *
      * @return Server's life phase
      */
-    public ServerLifePhase getLifePhase() {
+    public static ServerLifePhase getLifePhase() {
         try {
             final Field currentTickField =
                     Bukkit.getScheduler().getClass().getDeclaredField("currentTick");
