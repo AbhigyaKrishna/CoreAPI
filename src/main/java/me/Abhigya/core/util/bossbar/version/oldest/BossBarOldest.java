@@ -31,14 +31,19 @@ public abstract class BossBarOldest extends BossBarBase implements Listener {
 
     /** the bar's viewer */
     protected final UUIDPlayer player;
+
     /** the bar's title */
     protected volatile String title = DEFAULT_TITLE;
+
     /** The bar's progress */
     protected volatile double progress = DEFAULT_PROGRESS;
+
     /** the update executor */
     protected volatile BukkitTask update_executor;
+
     /** the bar's visibility status */
     private volatile boolean visible = true;
+
     /** flag to determine if the bar has been destroyed because of the player was offline */
     private volatile boolean offline = false;
 
@@ -74,6 +79,7 @@ public abstract class BossBarOldest extends BossBarBase implements Listener {
                         },
                         10L);
     }
+
     /** the bar's updater command */
     protected final Runnable update_command =
             () -> {

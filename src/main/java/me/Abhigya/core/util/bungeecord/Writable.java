@@ -85,8 +85,12 @@ public class Writable {
      *     method or constructor
      */
     public void writeTo(DataOutput data)
-            throws IOException, IllegalAccessException, IllegalArgumentException,
-                    InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws IOException,
+                    IllegalAccessException,
+                    IllegalArgumentException,
+                    InvocationTargetException,
+                    NoSuchMethodException,
+                    SecurityException {
         /* cannot write when the object to write is null or the write type is null */
         if (to_write == null || type == null) {
             throw new IllegalArgumentException("The WriteType or the object to write is null!");

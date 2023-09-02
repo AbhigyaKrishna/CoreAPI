@@ -239,8 +239,11 @@ public class MethodReflection {
      */
     public static Object invoke(
             Object object, String name, Class<?>[] parameter_types, Object... arguments)
-            throws IllegalAccessException, IllegalArgumentException, InvocationTargetException,
-                    NoSuchMethodException, SecurityException {
+            throws IllegalAccessException,
+                    IllegalArgumentException,
+                    InvocationTargetException,
+                    NoSuchMethodException,
+                    SecurityException {
         return invoke(get(object.getClass(), name, parameter_types), object, arguments);
     }
 
@@ -274,8 +277,11 @@ public class MethodReflection {
      */
     public static Object invokeAccessible(
             Object object, String name, Class<?>[] parameter_types, Object... arguments)
-            throws IllegalAccessException, IllegalArgumentException, InvocationTargetException,
-                    NoSuchMethodException, SecurityException {
+            throws IllegalAccessException,
+                    IllegalArgumentException,
+                    InvocationTargetException,
+                    NoSuchMethodException,
+                    SecurityException {
         return invokeAccessible(get(object.getClass(), name, parameter_types), object, arguments);
     }
 
@@ -305,8 +311,11 @@ public class MethodReflection {
      * @throws InvocationTargetException if the underlying method throws an exception.
      */
     public static Object invoke(Object object, String name, Object... arguments)
-            throws IllegalAccessException, IllegalArgumentException, InvocationTargetException,
-                    NoSuchMethodException, SecurityException {
+            throws IllegalAccessException,
+                    IllegalArgumentException,
+                    InvocationTargetException,
+                    NoSuchMethodException,
+                    SecurityException {
         return invoke(
                 get(object.getClass(), name, DataType.getPrimitive(arguments)), object, arguments);
     }
@@ -339,8 +348,11 @@ public class MethodReflection {
      * @throws InvocationTargetException if the underlying method throws an exception.
      */
     public static Object invokeAccessible(Object object, String name, Object... arguments)
-            throws IllegalAccessException, IllegalArgumentException, InvocationTargetException,
-                    NoSuchMethodException, SecurityException {
+            throws IllegalAccessException,
+                    IllegalArgumentException,
+                    InvocationTargetException,
+                    NoSuchMethodException,
+                    SecurityException {
         return invokeAccessible(
                 get(object.getClass(), name, DataType.getPrimitive(arguments)), object, arguments);
     }
@@ -381,7 +393,9 @@ public class MethodReflection {
      * @see #setAccessible(Method, boolean)
      */
     public static Method setAccessible(Method method)
-            throws NoSuchFieldException, SecurityException, IllegalArgumentException,
+            throws NoSuchFieldException,
+                    SecurityException,
+                    IllegalArgumentException,
                     IllegalAccessException {
         return setAccessible(method, true);
     }

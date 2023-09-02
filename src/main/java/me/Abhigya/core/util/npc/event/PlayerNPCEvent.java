@@ -34,7 +34,9 @@ public abstract class PlayerNPCEvent extends PlayerEvent {
         }
     }
 
-    /** @return The npc involved in this event */
+    /**
+     * @return The npc involved in this event
+     */
     public NPC getNPC() {
         return this.npc;
     }

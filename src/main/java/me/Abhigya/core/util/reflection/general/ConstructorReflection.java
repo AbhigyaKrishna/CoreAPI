@@ -189,8 +189,12 @@ public class ConstructorReflection {
     @SuppressWarnings("unchecked")
     public static <T> T newInstance(
             Class<?> clazz, boolean declared, Class<?>[] parameter_types, Object... arguments)
-            throws NoSuchMethodException, SecurityException, InstantiationException,
-                    IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+            throws NoSuchMethodException,
+                    SecurityException,
+                    InstantiationException,
+                    IllegalAccessException,
+                    IllegalArgumentException,
+                    InvocationTargetException {
         return (T) getAccessible(clazz, declared, parameter_types).newInstance(arguments);
     }
 
@@ -319,8 +323,12 @@ public class ConstructorReflection {
      * @throws InvocationTargetException if the underlying constructor throws an exception.
      */
     public static <T> T newInstance(Class<?> clazz, Class<?>[] parameter_types, Object... arguments)
-            throws NoSuchMethodException, SecurityException, InstantiationException,
-                    IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+            throws NoSuchMethodException,
+                    SecurityException,
+                    InstantiationException,
+                    IllegalAccessException,
+                    IllegalArgumentException,
+                    InvocationTargetException {
         try {
             return newInstance(clazz, false, parameter_types, arguments);
         } catch (NoSuchMethodException ex) {
@@ -446,7 +454,9 @@ public class ConstructorReflection {
      * @see #setAccessible(Constructor, boolean)
      */
     public static <T> Constructor<T> setAccessible(Constructor<T> constructor)
-            throws NoSuchFieldException, SecurityException, IllegalArgumentException,
+            throws NoSuchFieldException,
+                    SecurityException,
+                    IllegalArgumentException,
                     IllegalAccessException {
         return setAccessible(constructor, true);
     }

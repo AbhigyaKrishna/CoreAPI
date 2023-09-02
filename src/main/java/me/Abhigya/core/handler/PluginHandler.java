@@ -22,6 +22,7 @@ public abstract class PluginHandler implements Listener {
     /** Map for storing handler instances. */
     protected static final Map<Class<? extends PluginHandler>, PluginHandler> HANDLER_INSTANCES =
             new HashMap<>();
+
     /** The handling plugin */
     protected final Plugin plugin;
 

@@ -15,30 +15,35 @@ public class EquipmentModifier extends NPCModifier {
      * @since 2.5-SNAPSHOT
      */
     public static final int MAINHAND = 0;
+
     /**
      * The id of the off hand item slot.
      *
      * @since 2.5-SNAPSHOT
      */
     public static final int OFFHAND = 1;
+
     /**
      * The id of the feet armor item slot.
      *
      * @since 2.5-SNAPSHOT
      */
     public static final int FEET = 2;
+
     /**
      * The id of the legs armor item slot.
      *
      * @since 2.5-SNAPSHOT
      */
     public static final int LEGS = 3;
+
     /**
      * The id of the chest armor item slot.
      *
      * @since 2.5-SNAPSHOT
      */
     public static final int CHEST = 4;
+
     /**
      * The id of the head armor item slot.
      *

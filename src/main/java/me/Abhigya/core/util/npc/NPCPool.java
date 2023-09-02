@@ -172,7 +172,9 @@ public class NPCPool implements Listener {
                         2);
     }
 
-    /** @return A free entity id which can be used for NPCs */
+    /**
+     * @return A free entity id which can be used for NPCs
+     */
     protected int getFreeEntityId() {
         int id;
 
@@ -340,8 +342,10 @@ public class NPCPool implements Listener {
 
         /** The distance in which NPCs are spawned for players */
         private int spawnDistance = 50;
+
         /** The distance in which NPC actions are displayed for players */
         private int actionDistance = 20;
+
         /** The time in ticks after which the NPC will be removed from the players tab */
         private long tabListRemoveTicks = 30;
 

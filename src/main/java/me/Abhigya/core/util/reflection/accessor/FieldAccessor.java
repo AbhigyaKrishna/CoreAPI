@@ -88,7 +88,9 @@ public class FieldAccessor {
     }
 
     private static Unsafe getUnsafe()
-            throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException,
+            throws IllegalArgumentException,
+                    IllegalAccessException,
+                    NoSuchFieldException,
                     SecurityException {
         Field field = Unsafe.class.getDeclaredField("theUnsafe");
         field.setAccessible(true);

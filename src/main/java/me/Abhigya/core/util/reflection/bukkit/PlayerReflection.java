@@ -36,7 +36,9 @@ public class PlayerReflection {
      * @see BukkitReflection#getHandle(Object)
      */
     public static Object getHandle(Player player)
-            throws IllegalAccessException, IllegalArgumentException, InvocationTargetException,
+            throws IllegalAccessException,
+                    IllegalArgumentException,
+                    InvocationTargetException,
                     SecurityException {
         return BukkitReflection.getHandle(player);
     }
@@ -55,8 +57,11 @@ public class PlayerReflection {
      * @throws InvocationTargetException reflection exception...
      */
     public static Object getPlayerConnection(Player player)
-            throws SecurityException, NoSuchFieldException, IllegalArgumentException,
-                    IllegalAccessException, InvocationTargetException {
+            throws SecurityException,
+                    NoSuchFieldException,
+                    IllegalArgumentException,
+                    IllegalAccessException,
+                    InvocationTargetException {
         return FieldReflection.getValue(
                 BukkitReflection.getHandle(player), PLAYER_CONNECTION_FIELD_NAME);
     }
@@ -75,8 +80,11 @@ public class PlayerReflection {
      * @throws InvocationTargetException reflection exception...
      */
     public static Object getNetworkManager(Player player)
-            throws SecurityException, NoSuchFieldException, IllegalArgumentException,
-                    IllegalAccessException, InvocationTargetException {
+            throws SecurityException,
+                    NoSuchFieldException,
+                    IllegalArgumentException,
+                    IllegalAccessException,
+                    InvocationTargetException {
         return FieldReflection.getValue(getPlayerConnection(player), NETWORK_MANAGER_FIELD_NAME);
     }
 
@@ -94,8 +102,11 @@ public class PlayerReflection {
      * @throws InvocationTargetException reflection exception...
      */
     public static Channel getChannel(Player player)
-            throws SecurityException, NoSuchFieldException, IllegalArgumentException,
-                    IllegalAccessException, InvocationTargetException {
+            throws SecurityException,
+                    NoSuchFieldException,
+                    IllegalArgumentException,
+                    IllegalAccessException,
+                    InvocationTargetException {
         String channelField;
         switch (CoreAPI.getInstance().getServerVersion()) {
             case v1_8_R1:

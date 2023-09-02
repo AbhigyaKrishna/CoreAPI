@@ -29,14 +29,19 @@ public class ColorUtils {
      * <p>#RRGGBB
      */
     public static final int HTML_FORMAT = 1;
+
     /** Useful constant for Color display preference, display Color as integer. */
     public static final int INT_FORMAT = 0;
+
     /** Color display preference for JAVA style: 0xRRGGBB. */
     public static final int JAVA_FORMAT = 2;
+
     /** Color display preference for CSS absolute style: RGB(r,g,b). */
     public static final int CSS_ABSOLUTE_FORMAT = 3;
+
     /** Color display preference for CSS relative style: RGB(r%,g%,b%). */
     public static final int CSS_RELATIVE_FORMAT = 4;
+
     /** Default format for display preference: <code>CSS_ABSOLUTE_FORMAT</code>. */
     public static final int DEFAULT_FORMAT = CSS_ABSOLUTE_FORMAT;
 
@@ -61,6 +66,7 @@ public class ColorUtils {
                             .put("PURPLE", Color.PURPLE)
                             .put("ORANGE", Color.ORANGE)
                             .build());
+
     /** Regular expression for "RGB(255, 0, 0)", integer range 0 - 255 */
     private static final String COLOR_CSS_PATTERN =
             "[rR][gG][bB][(]"
@@ -68,6 +74,7 @@ public class ColorUtils {
                     + "[\\s]*[\\d]+[\\s]*[,]"
                     + "[\\s]*[\\d]+[\\s]*"
                     + "[)]";
+
     /** Regular expression for "RGB(255.0%, 0.0%, 0.0%)", float range 0.0% - 100.0% */
     private static final String COLOR_CSS_PERCENT_PATTERN =
             "[rR][gG][bB][(]"
@@ -75,8 +82,10 @@ public class ColorUtils {
                     + "[\\s]*[\\d]+(.\\d+)?[\\s]*[%][\\s]*[,]"
                     + "[\\s]*[\\d]+(.\\d+)?[\\s]*[%][\\s]*"
                     + "[)]";
+
     /** Compiled pattern for CSS absolute pattern: "RGB(255, 0, 0)" */
     private static Pattern cssAbsolutePattern = Pattern.compile(COLOR_CSS_PATTERN);
+
     /** Compiled pattern for CSS relative pattern: "RGB(255%, 0%, 0%)" */
     private static Pattern cssRelativePattern = Pattern.compile(COLOR_CSS_PERCENT_PATTERN);
 

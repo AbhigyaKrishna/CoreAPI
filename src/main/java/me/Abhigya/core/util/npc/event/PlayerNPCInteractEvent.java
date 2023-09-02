@@ -142,6 +142,7 @@ public class PlayerNPCInteractEvent extends PlayerNPCEvent {
 
         /** All values of the action, to prevent a copy. */
         private static final EntityUseAction[] VALUES = values();
+
         /** The entity use action as the protocol lib wrapper. */
         private final WrappedPacketInUseEntity.EntityUseAction handle;
 
@@ -186,7 +187,9 @@ public class PlayerNPCInteractEvent extends PlayerNPCEvent {
         /** The hand as the protocol lib wrapper. */
         private final io.github.retrooper.packetevents.utils.player.Hand handle;
 
-        /** @param handle The hand as the protocol lib wrapper. */
+        /**
+         * @param handle The hand as the protocol lib wrapper.
+         */
         Hand(io.github.retrooper.packetevents.utils.player.Hand handle) {
             this.handle = handle;
         }

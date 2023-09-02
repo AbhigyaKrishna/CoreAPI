@@ -164,7 +164,9 @@ public class FieldReflection {
      */
     @SuppressWarnings("unchecked")
     public static <T> T getValue(Object object, String name, boolean declared)
-            throws SecurityException, NoSuchFieldException, IllegalArgumentException,
+            throws SecurityException,
+                    NoSuchFieldException,
+                    IllegalArgumentException,
                     IllegalAccessException {
         final Field field = getAccessible(object.getClass(), name, declared);
         final boolean b0 = field.isAccessible();
@@ -210,7 +212,9 @@ public class FieldReflection {
      * @see #getValue(Object, String, boolean)
      */
     public static <T> T getValue(Object object, String name)
-            throws SecurityException, NoSuchFieldException, IllegalArgumentException,
+            throws SecurityException,
+                    NoSuchFieldException,
+                    IllegalArgumentException,
                     IllegalAccessException {
         try {
             return getValue(object, name, false);
@@ -344,7 +348,9 @@ public class FieldReflection {
      * @see #setAccessible(Field, boolean)
      */
     public static Field setAccessible(Field field)
-            throws NoSuchFieldException, SecurityException, IllegalArgumentException,
+            throws NoSuchFieldException,
+                    SecurityException,
+                    IllegalArgumentException,
                     IllegalAccessException {
         return setAccessible(field, true);
     }

@@ -42,8 +42,12 @@ public class MessagingUtils {
      *     method or constructor
      */
     public static void sendPluginMessage(Plugin plugin, Writable... arguments)
-            throws IOException, IllegalAccessException, IllegalArgumentException,
-                    InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws IOException,
+                    IllegalAccessException,
+                    IllegalArgumentException,
+                    InvocationTargetException,
+                    NoSuchMethodException,
+                    SecurityException {
         /* do not send empty arguments */
         if (arguments == null || arguments.length == 0) {
             return;
@@ -83,8 +87,12 @@ public class MessagingUtils {
      *     method or constructor
      */
     public static void sendPluginMessage(Plugin plugin, Written written)
-            throws IOException, IllegalAccessException, IllegalArgumentException,
-                    InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws IOException,
+                    IllegalAccessException,
+                    IllegalArgumentException,
+                    InvocationTargetException,
+                    NoSuchMethodException,
+                    SecurityException {
         /* donnot send empty arguments */
         if (written == null || written.getWritables().isEmpty()) {
             return;
@@ -125,8 +133,12 @@ public class MessagingUtils {
      *     method or constructor
      */
     public static void sendPluginMessage(Plugin plugin, Player player, Writable... arguments)
-            throws IOException, IllegalAccessException, IllegalArgumentException,
-                    InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws IOException,
+                    IllegalAccessException,
+                    IllegalArgumentException,
+                    InvocationTargetException,
+                    NoSuchMethodException,
+                    SecurityException {
         /* donnot send empty arguments */
         if (player == null || arguments == null || arguments.length == 0) {
             return;
@@ -167,8 +179,12 @@ public class MessagingUtils {
      *     method or constructor
      */
     public static void sendPluginMessage(Plugin plugin, Player player, Written written)
-            throws IOException, IllegalAccessException, IllegalArgumentException,
-                    InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws IOException,
+                    IllegalAccessException,
+                    IllegalArgumentException,
+                    InvocationTargetException,
+                    NoSuchMethodException,
+                    SecurityException {
         /* donnot send empty arguments */
         if (player == null || written == null || written.getWritables().isEmpty()) {
             return;

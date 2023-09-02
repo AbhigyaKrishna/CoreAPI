@@ -28,7 +28,9 @@ public class BukkitReflection {
      * @throws UnsupportedOperationException if couldn't get the handle of the provided object
      */
     public static Object getHandle(Object object)
-            throws IllegalAccessException, IllegalArgumentException, InvocationTargetException,
+            throws IllegalAccessException,
+                    IllegalArgumentException,
+                    InvocationTargetException,
                     SecurityException {
         try {
             return object.getClass().getMethod("getHandle").invoke(object);

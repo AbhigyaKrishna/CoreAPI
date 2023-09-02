@@ -29,7 +29,9 @@ public class BossTypeRegistering {
 
     @SuppressWarnings("unchecked")
     protected static <K, V> Map<K, V> extract(String field_name)
-            throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException,
+            throws IllegalArgumentException,
+                    IllegalAccessException,
+                    NoSuchFieldException,
                     SecurityException {
         Class<EntityTypes> clazz = EntityTypes.class;
         Field field = clazz.getDeclaredField(field_name);

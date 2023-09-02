@@ -25,6 +25,7 @@ public class ConfigurableLocation extends Location implements Configurable, Init
     public static final String[] CONFIGURABLE_LOCATION_KEYS = {
         WORLD_UID_KEY, X_KEY, Y_KEY, Z_KEY, YAW_KEY, PITCH_KEY
     };
+
     /** Whether {@link #load(ConfigurationSection)} method has been called. */
     protected boolean initialized;
 

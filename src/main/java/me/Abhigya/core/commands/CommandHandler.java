@@ -16,6 +16,7 @@ public class CommandHandler extends PluginHandler implements TabCompleter, Comma
 
     /** The handling command */
     protected final PluginCommand command;
+
     /** The handling arguments */
     protected final Set<CommandArgument> arguments;
 

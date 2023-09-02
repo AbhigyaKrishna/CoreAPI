@@ -35,7 +35,9 @@ public class PlayerNPCHideEvent extends PlayerNPCEvent {
         return HANDLER_LIST;
     }
 
-    /** @return The reason why the npc was hidden */
+    /**
+     * @return The reason why the npc was hidden
+     */
     @NotNull
     public Reason getReason() {
         return this.reason;

@@ -30,6 +30,7 @@ public class NPCModifier {
 
     /** All queued packet containers. */
     protected final List<WrappedPacket> packetContainers = new CopyOnWriteArrayList<>();
+
     /** The target npc. */
     protected NPC npc;
 
